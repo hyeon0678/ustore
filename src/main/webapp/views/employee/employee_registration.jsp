@@ -24,6 +24,17 @@
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
+		<style>
+			.chart-div{
+				display: flex;
+				height: 500px;
+				margin-bottom: 20px;	
+			}
+			.chart-body-div{
+				width: 45%;
+				margin: 10px 20px;
+			}
+		</style>
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
@@ -36,17 +47,47 @@
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
+				<!--begin::Wrapper-->
+				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
+					<!--================================메인 내용들어가는부분================================================-->
+						
+						<!--begin::Toolbar-->
+						<div class="toolbar" id="kt_toolbar">
+							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
+								<!--begin::Info-->
+								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
+									<!--begin::Title-->
+									<h1 class="text-gray-900 fw-bold my-1 fs-2">인사관리
+									<small class="text-muted fs-6 fw-normal ms-1"></small></h1>
+									<!--end::Title-->
+									<!--begin::Breadcrumb-->
+									<ul class="breadcrumb fw-semibold fs-base my-1">
+										<li class="breadcrumb-item text-muted">
+											<a href="index.go" class="text-muted text-hover-primary">Home</a>
+										</li>
+										<li class="breadcrumb-item text-muted">인사관리</li>
+										<li class="breadcrumb-item text-gray-900">직원등록</li>
+									</ul>
+									<!--end::Breadcrumb-->
+								</div>
+								<!--end::Info-->
+								<!--begin::Actions-->
+								
+								<!--end::Actions-->
+							</div>
+						</div>
+						<!--end::Toolbar-->
 						<!--begin::Post-->
-						<form action="/employee/registration" method="post">
+						<form action="" method="post">
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
 							<!--begin::Container-->
-							<div class="container-xxl">
+							<div class="container-xxl" style="background-color: white;margin: 20px;">
 								
 								<div style="margin-top:20px">
 								부서
-								<select class="form-select" aria-label="Select example" name="deptName">
+								<select class="form-select" aria-label="Select example">
     								<option value="인사팀">인사팀</option>
     								<option value="회계팀">회계팀</option>
     								<option value="고객관리팀">고객관리팀</option>
@@ -56,7 +97,7 @@
 								
 								<div style="margin-top:20px">
 								직책
-								<select class="form-select" aria-label="Select example" name="positionType">
+								<select class="form-select" aria-label="Select example">
     								<option value="팀장">팀장</option>
     								<option value="매니저">매니저</option>
     								<option value="팀원">팀원</option>
@@ -65,28 +106,28 @@
 								
 								<div style="margin-top:20px">
 								이름
-								<input type="text" name="empName" class="form-control" placeholder="이름을 입력해주세요"/>
+								<input type="text" name="" class="form-control" placeholder="이름을 입력해주세요"/>
 								</div>
 								
 								<div style="margin-top:20px">
 								비상 연락처
-								<input type="text" name="empEmergencyPhone" class= "form-control" placeholder="비상 연락망을 입력해주세요"/>
+								<input type="text" name="" class= "form-control" placeholder="비상 연락망을 입력해주세요"/>
 								</div>
 								
 								<div style="margin-top:20px">
 								개인 연락처
-								<input type="text" name="empPhone" class="form-control" placeholder="개인 번호를 입력해주세요"/>
+								<input type="text" name="" class="form-control" placeholder="개인 번호를 입력해주세요"/>
 								</div>
 								
 								<div style="margin-top:20px">
 								성별
 								<div class="form-check form-check-custom form-check-solid">
-    								<input class="form-check-input" name="empGender" type="radio" value="M" id="flexRadioDefault" checked="checked"/>
+    								<input class="form-check-input" name="gender" type="radio" value="" id="flexRadioDefault" checked="checked"/>
     								<label class="form-check-label" for="flexRadioDefault">
         								남자
     								</label>
     								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    								<input class="form-check-input" name="empGender" type="radio" value="W" id="flexRadioDefault"/>
+    								<input class="form-check-input" name="gender" type="radio" value="" id="flexRadioDefault"/>
     								<label class="form-check-label" for="flexRadioDefault">
         								여자
     								</label>
@@ -95,30 +136,88 @@
 								
 								<div style="margin-top:20px">
 								생년월일
-								<input type="date" name="empBrith" class= "form-control"/>
+								<input type="date" name="" class= "form-control"/>
 								
 								</div>
 								
 								<div style="margin-top:20px">
 									<div class="d-flex flex-stack flex-wrap flex-sm-nowrap">
-										<div>
-											주소 
-										</div>
-										<input type="button" onclick="findlocation()" class="btn btn-primary" id="kt_toolbar_primary_button" value="주소 찾기"/>
+										<div>주소</div>
+										<input type="button" onclick="findlocation()" class="btn btn-primary" id="kt_toolbar_primary_button" value="주소 찾기" />
 									</div>
-									<input type="text" class="form-control" placeholder="우편번호" hidden="true" id="post_num" name="empZipcode"/>
-									<input type="text" class="form-control" placeholder="주소" id="roadaddress" name="empRoadAddr"/>
+									<input type="text" class="form-control" placeholder="우편번호" hidden="true" id="post_num"/>
+									<input type="text" class="form-control" placeholder="주소" id="roadaddress" style="margin-top: 5px;"/>
 									<input type="text" class="form-control" placeholder="지번" hidden="true" id="jibunAddress"/>
 									<span id="guide" style="color:#999;display:none"></span>
 									<div style="margin-top: 5px">
-										<input type="text" class="form-control" placeholder="상세 주소" id="detailAddress" name="empDetailAddr"/>
+										<input type="text" class="form-control" placeholder="상세 주소" id="detailAddress"/>
 									</div>
 									<input type="text" class="form-control" placeholder="참고항목" id="extraAddress" hidden="true"/>
 								</div>
 								
 								
 								
-								<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+								
+								
+								<div style="margin-top:20px">
+ 									최종 학력
+								<select class="form-select" aria-label="Select example">
+    								<option value="초등학교 졸업">초등학교 졸업</option>
+    								<option value="중학교 졸업">중학교 졸업</option>
+    								<option value="고등학교 졸업">고등학교 졸업</option>
+    								<option value="대학교 졸업">대학교 졸업</option>
+    								<option value="직업전문학원·학교 및 기타학력 졸업">직업전문학원·학교 및 기타학력 졸업</option>
+								</select>
+								
+								<div style="margin-top: 5px">
+									<input type="text" class="form-control" placeholder="대학교"/>
+								</div>
+								<div style="margin-top: 5px">
+									<input type="text" class="form-control" placeholder="전공"/>								
+								</div>
+								</div>
+								<input type="submit" class="btn btn-primary" id="kt_toolbar_primary_button" value="등록" style="margin: 20px 0px;" />
+							</div>
+							<!--end::Container-->
+						</div>
+						
+						</form>
+						<!--end::Post-->
+					</div>
+					<!--end::Content-->
+					</div>
+				<!--end::Wrapper-->
+			</div>
+			<!--end::Page-->
+		</div>
+		<!--end::Root-->
+								
+		<!--begin::Javascript-->
+		<script>var hostUrl = "resource/assets/";</script>
+		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
+		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="resource/assets/js/scripts.bundle.js"></script>
+		<!--end::Global Javascript Bundle-->
+		<!--begin::Vendors Javascript(used for this page only)-->
+		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<script src="resource/assets/plugins/custom/vis-timeline/vis-timeline.bundle.js"></script>
+		<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+		<script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+		<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+		<script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
+		<script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
+		<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+		<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+		<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+		<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+		<!--end::Vendors Javascript-->
+		<!--begin::Custom Javascript(used for this page only)-->
+		<script src="resource/assets/js/widgets.bundle.js"></script>
+		<script src="resource/assets/js/custom/widgets.js"></script>
+		<!--end::Custom Javascript-->
+		<!--end::Javascript-->
+		
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 									<script>
     								//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
     								function findlocation() {
@@ -176,66 +275,6 @@
         								}).open();
     								}
 									</script>
-								
-								<div style="margin-top:20px">
- 									최종 학력
-								<select class="form-select" aria-label="Select example" name="education">
-    								<option value="초등학교 졸업">초등학교 졸업</option>
-    								<option value="중학교 졸업">중학교 졸업</option>
-    								<option value="고등학교 졸업">고등학교 졸업</option>
-    								<option value="대학교 졸업">대학교 졸업</option>
-    								<option value="직업전문학원·학교 및 기타학력 졸업">직업전문학원·학교 및 기타학력 졸업</option>
-								</select>
-								
-								<div style="margin-top: 5px">
-									<input type="text" class="form-control" placeholder="학교" name="schoolName"/>
-								</div>
-								<div style="margin-top: 5px">
-									<input type="text" class="form-control" placeholder="전공" name="major"/>								
-								</div>
-								</div>
-								<input type="submit" class="btn btn-primary" id="kt_toolbar_primary_button" value="등록"">
-							</div>
-							<!--end::Container-->
-						</div>
-						
-						</form>
-						<!--end::Post-->
-					</div>
-					<!--end::Content-->
-					
-				</div>
-				<!--end::Wrapper-->
-			</div>
-			<!--end::Page-->
-		</div>
-		
-		<!--end::Modal - Users Search-->
-		<!--end::Modals-->
-		<!--begin::Javascript-->
-		<script>var hostUrl = "resource/assets/";</script>
-		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="resource/assets/js/scripts.bundle.js"></script>
-		<!--end::Global Javascript Bundle-->
-		<!--begin::Vendors Javascript(used for this page only)-->
-		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/vis-timeline/vis-timeline.bundle.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
-		<!--end::Vendors Javascript-->
-		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="resource/assets/js/widgets.bundle.js"></script>
-		<script src="resource/assets/js/custom/widgets.js"></script>
-		<!--end::Custom Javascript-->
-		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
 </html>
