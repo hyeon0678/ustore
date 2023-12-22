@@ -145,15 +145,21 @@
 										<div>주소</div>
 										<input type="button" onclick="findlocation()" class="btn btn-primary" id="kt_toolbar_primary_button" value="주소 찾기" />
 									</div>
+<<<<<<< HEAD
 									<input type="text" class="form-control" placeholder="우편번호" hidden="true" id="post_num"/>
 									<input type="text" class="form-control" placeholder="주소" id="roadaddress" style="margin-top: 5px;"/>
 									<input type="text" class="form-control" placeholder="지번" hidden="true" id="jibunAddress"/>
+=======
+									<input type="text" class="form-control" placeholder="우편번호" id="post_num" name="empZipcode"/>
+									<input type="text" class="form-control" placeholder="주소" id="roadaddress" name="empRoadAddr"/>
+>>>>>>> fa434db01739221094315cefb64d2b81809324ff
 									<span id="guide" style="color:#999;display:none"></span>
 									<div style="margin-top: 5px">
 										<input type="text" class="form-control" placeholder="상세 주소" id="detailAddress"/>
 									</div>
 									<input type="text" class="form-control" placeholder="참고항목" id="extraAddress" hidden="true"/>
 								</div>
+<<<<<<< HEAD
 								
 								
 								
@@ -162,6 +168,11 @@
 								<div style="margin-top:20px">
  									최종 학력
 								<select class="form-select" aria-label="Select example">
+=======
+								<div style="margin-top:20px">
+ 									최종 학력
+								<select class="form-select" aria-label="Select example" name="education">
+>>>>>>> fa434db01739221094315cefb64d2b81809324ff
     								<option value="초등학교 졸업">초등학교 졸업</option>
     								<option value="중학교 졸업">중학교 졸업</option>
     								<option value="고등학교 졸업">고등학교 졸업</option>
@@ -170,6 +181,7 @@
 								</select>
 								
 								<div style="margin-top: 5px">
+<<<<<<< HEAD
 									<input type="text" class="form-control" placeholder="대학교"/>
 								</div>
 								<div style="margin-top: 5px">
@@ -177,6 +189,15 @@
 								</div>
 								</div>
 								<input type="submit" class="btn btn-primary" id="kt_toolbar_primary_button" value="등록" style="margin: 20px 0px;" />
+=======
+									<input type="text" class="form-control" placeholder="학교" name="schoolName"/>
+								</div>
+								<div style="margin-top: 5px">
+									<input type="text" class="form-control" placeholder="전공" name="major"/>								
+								</div>
+								</div>
+								<input type="submit" class="btn btn-primary" id="kt_toolbar_primary_button" value="등록"">
+>>>>>>> fa434db01739221094315cefb64d2b81809324ff
 							</div>
 							<!--end::Container-->
 						</div>
@@ -185,13 +206,24 @@
 						<!--end::Post-->
 					</div>
 					<!--end::Content-->
+<<<<<<< HEAD
 					</div>
+=======
+					
+				</div>
+>>>>>>> fa434db01739221094315cefb64d2b81809324ff
 				<!--end::Wrapper-->
 			</div>
 			<!--end::Page-->
 		</div>
+<<<<<<< HEAD
 		<!--end::Root-->
 								
+=======
+		
+		<!--end::Modal - Users Search-->
+		<!--end::Modals-->
+>>>>>>> fa434db01739221094315cefb64d2b81809324ff
 		<!--begin::Javascript-->
 		<script>var hostUrl = "resource/assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
@@ -210,12 +242,17 @@
 		<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
 		<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
 		<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+<<<<<<< HEAD
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
+=======
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+>>>>>>> fa434db01739221094315cefb64d2b81809324ff
 		<script src="resource/assets/js/widgets.bundle.js"></script>
 		<script src="resource/assets/js/custom/widgets.js"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
+<<<<<<< HEAD
 		
 		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 									<script>
@@ -275,6 +312,27 @@
         								}).open();
     								}
 									</script>
+=======
+>>>>>>> fa434db01739221094315cefb64d2b81809324ff
 	</body>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
+		//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+		function findlocation() {
+			new daum.Postcode({
+				oncomplete: function(data) {
+					
+					if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	                    addr = data.roadAddress;
+	                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                    addr = data.roadAddress;
+	                }
+					
+					$('#post_num').val(data.zonecode);
+					$('#roadaddress').val(addr);
+				}
+			}).open();
+		}
+</script>
 	<!--end::Body-->
 </html>
