@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ustore.employee.dao.GroupManageDao;
 import com.ustore.employee.dto.EmployeeDto;
+import com.ustore.utils.dfineEnums.PositionEnum;
 
 @Service
 public class GroupManageService {
@@ -32,20 +33,30 @@ public class GroupManageService {
 		logger.info(employee.getEmpPhone().substring(3));
 		employee.setEmpPw(newPw);
 		
-		Integer maxEmpIdx = groupManageDao.selectMaxEmpIdx();
-		int nextIdx = 0;
+		String maxEmpIdx = groupManageDao.selectMaxEmpIdx();
+		String nextIdx = "0001";
+		String empId = "";
+		String maxYear = maxEmpIdx.substring(0,4);
 		
-		if(maxEmpIdx!=null || maxEmpIdx!=0) {
-			nextIdx = maxEmpIdx%10000;
-		}else {
-			nextIdx=1;
+		if(!maxYear.equals(enterYear)) {
+			maxYear = enterYear;
+		}else if(maxYear.equals(enterYear)&&(maxEmpIdx!=null || maxEmpIdx!="")){
+			nextIdx = maxEmpIdx.substring(3);
+			nextIdx = String.format("%04d", Integer.parseInt(nextIdx)+1);			
 		}
-		enterYear+=nextIdx;
-		logger.info("emp id : "+enterYear);
-		employee.setDeptId(Integer.parseInt(enterYear));
-		//int row = groupManageDao.insertEmp(employee);
-		//row += groupManageDao.insertEducation(employee);
 		
+		empId = maxYear + nextIdx;
+		employee.setEmpIdx(empId);
+		
+		int positionCode = PositionEnum.findDefindCode(employee.getPositionType());
+		employee.setPosition(positionCode);
+		
+//		int departmentCode = 
+		//employee.setEmpIdx(empId);
+		
+//		int row = groupManageDao.insertEmp(employee);
+//		row += groupManageDao.insertEducation(employee);
+//		
 //		if(row>1) {
 //			return true;
 //		}

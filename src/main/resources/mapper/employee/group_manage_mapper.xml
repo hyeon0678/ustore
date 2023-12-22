@@ -14,7 +14,7 @@
 			#{empJoinDate}, #{empGender}, #{empBirth}, #{empChangepwDate}, #{position}, '관리자1'
 		) 
 	</insert>
-	<select id="selectMaxEmpIdx" resultType="int">
+	<select id="selectMaxEmpIdx" resultType="String">
 		SELECT MAX(emp_idx) FROM employee;
 	</select>
 	<insert id="insertEducation" parameterType="EmployeeDto">
