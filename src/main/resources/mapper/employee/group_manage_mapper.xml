@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustore.employee.dao.GroupManageDao">
+	<insert id="insertEmp" parameterType="EmployeeDto">
+		INSERT INTO employee (
+			emp_idx, dept_id, emp_pw, emp_ext_no, emp_email, emp_emergency_phone,
+    		emp_phone, emp_zipcode, emp_roadAddr, emp_detailAddr, emp_name,
+    		emp_join_date, emp_gender, emp_birth, emp_changepw_date, position, reg_by)
+		VALUES(
+			#{empIdx}, #{deptId}, #{empPw}, #{empExtNo}, #{empEmail}, #{empEmergencyPhone}, 
+			#{empPhone}, #{empZipcode}, #{empRoadAddr}, #{empDetailAddr}, #{empName}, 
+			#{empJoinDate}, #{empGender}, #{empBirth}, #{empChangepwDate}, #{position}, '관리자1'
+		) 
+	</insert>
+	<select id="selectMaxEmpIdx" resultType="int">
+		SELECT MAX(emp_idx) FROM employee;
+	</select>
+	<insert id="insertEducation" parameterType="EmployeeDto">
+		INSERT INTO education(emp_idx, education, school_name, major, reg_by)
+		VALUES(#{empIdx}, #{education}, #{schoolName}, #{major}, , '관리자1')
+	</insert>
+</mapper>
