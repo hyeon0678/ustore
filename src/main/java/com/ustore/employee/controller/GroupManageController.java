@@ -1,6 +1,8 @@
 package com.ustore.employee.controller;
 
 
+import java.util.HashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ustore.employee.dto.EmployeeDto;
@@ -28,15 +31,16 @@ public class GroupManageController {
 	}
 	
 	@PostMapping("/registration")
-	public String insertEmp(@ModelAttribute EmployeeDto employee, RedirectAttributes rattr) {
-		logger.info("params : " + employee);
-		boolean success = groupManageService.insertEmp(employee);
+	//@ModelAttribute EmployeeDto employee
+	public String insertEmp(@ModelAttribute EmployeeDto params, RedirectAttributes rattr) {
+		logger.info("params : " + params);
+		boolean success = groupManageService.insertEmp(params);
 		if(success) {
 			return "redirect:/registration";
 			//회원 상세 페이지로 이동...
 		}
 		rattr.addFlashAttribute("msg","사원등록에 실패했습니다");
-		return "redirect:/registration";
+		return "redirect:/employee/registration";
 	}
 	
 }	

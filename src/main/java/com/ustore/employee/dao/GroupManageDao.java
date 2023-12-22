@@ -9,7 +9,7 @@ public interface GroupManageDao {
 
 	int insertEmp(EmployeeDto employee);
 
-	Integer selectMaxEmpIdx();
+	String selectMaxEmpIdx();
 
 	int insertEducation(EmployeeDto employee);
 
