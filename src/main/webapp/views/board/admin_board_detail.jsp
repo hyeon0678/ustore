@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 	<!--begin::Head-->
@@ -26,14 +25,12 @@
 				<!--end::Vendor Stylesheets-->
 				<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 				<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-				<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+				<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
 				
 				<!--end::Global Stylesheets Bundle-->
 				<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 				<style>
-					h1 {
-						color: lightgray; /* 원하는 색상으로 변경 */
-					}
+					
 					.distroyBtn {
 				   display: inline-block;
 				   background-color: #C6DA52;
@@ -58,6 +55,7 @@
 				width: 45%;
 				margin: 10px 20px;
 			}
+			
 				</style>
 			</head>
 	<!--end::Head-->
@@ -76,210 +74,46 @@
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
 					<!--================================메인 내용들어가는부분================================================-->
-					
-					
-					<!--begin::Post-->
-						<div class="container"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1" style="background-color: #C6DA52;">
-    단위/단가 수정
+						<div style="margin-top: 100px; margin-left: 50px;"><h1>공지사항 입니다.</h1></div>
+						
+						<div class="text-end">
+							<button type="button"  style="background-color: #C6DA52; position: absolute; width:70px; height: 40px; top:200px; right:200px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
+    목록으로
 </button>
-
-<div class="modal fade" tabindex="-1" id="kt_modal_1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">단위/단가 수정</h3>
-
-                <!--begin::Close-->
-                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                </div>
-                <!--end::Close-->
-            </div>
-
-            <div class="modal-body">
-                <div class="table-responsive">
-	<table class="table table-hover table-rounded table-striped border gy-7 gs-7">
-		<thead>
-			<tr class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200">
-				<th>단가</th>
-				<th><input type="text" class="form-control" placeholder="수정할 단가를 입력해 주세요."/></th>
-			
-				
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>단위(파레트)</td>
-				<td><input type="text" class="form-control" placeholder="수정할 단위를 입력해 주세요."/></td>
-			
-			</tr>
-		</tbody>
-	</table>
 </div>
-            </div>
-
-            <div class="modal-footer">
-                
-                <button type="button" class="btn btn-primary" style ="background-color: #255000">저장</button>
-            </div>
-        </div>
-    </div>
-</div></div>
-					<div class = "stock" >
-				<table>
-				<tr>
-				<td>분류</td>
-				<td colspan="2">식품>음료</td>
-				</tr>
-				<tr>
-				<td>상품 코드</td>
-				<td>P113006</td>
-				</tr>
-				<tr>
-				<td>상품 명</td>
-				<td>코카콜라</td>
-				</tr>
-				<tr>
-				<td>재고</td>
-				<td>8381</td>
-				</tr>
-					<tr>
-				<td>단위(파렛트)</td>
-				<td>1000</td>
-				</tr>
-				<tr>
-				<td>단가</td>
-				<td>1,000</td>
-				
-				</tr>
-				
-				</table>
-					
-					
-					</div>
-					<div>
-					<div class="table-responsive">
-	<table class="table table-hover table-rounded table-striped border gy-7 gs-7" style = "text-align: center;">
-		<thead>
-			<tr class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200" style="background-color: rgb(235, 234, 234);">
-				<th>입고 날짜</th>
-				<th>파렛트/전체</th>
-			
-				
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>23.12.20</td>
-				<td>4/399</td>
-
-			</tr>
-			<tr>
-				<td>23.12.20</td>
-				<td>4/399</td>
-
-			</tr>
-		</tbody>
-	</table>
-</div>
-					
-					</div>
-					<hr width = "100%" color = "black" align="center">
-					
-					<h1>폐기/파손/분실</h1>
-					<div class="container"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_2" style ="background-color:#C6DA52">
-    폐기/파손 등록
-</button>
-
-<div class="modal fade" tabindex="-1" id="kt_modal_2">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">폐기/파손 등록</h3>
-
-                <!--begin::Close-->
-                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                </div>
-                <!--end::Close-->
-            </div>
-
-            <div class="modal-body">
-                <div class="table-responsive">
-	<table class="table table-hover table-rounded table-striped border gy-7 gs-7">
-		<thead>
-			<tr class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200" >
-				
-				<th>구분</th>
-				<th colspan="2"><select class="form-select form-select-solid" data-control="select2" data-placeholder="파손" data-hide-search="true">
-    <option></option>
-    <option value="1">파손</option>
-    <option value="2">폐기</option>
-    <option value="3">분실</option>
-  
-</select></th>
-			
-				
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>수량</td>
-				<td colspan="2"><input type="text" class="form-control" placeholder="개수를 입력해 주세요."/></td>
-				
-			
-			</tr>
-			<tr>
-				<td>사유</td>
-				<td colspan="2" rowspan="5"><textarea cols="50" rows = "10" placeholder="내용을 입력해 주세요"></textarea></td>
-				
-			
-			</tr>
-		</tbody>
-	</table>
-</div>
-            </div>
-
-            <div class="modal-footer">
-               
-                <button type="button" class="btn btn-primary" style ="background-color: #255000">등록</button>
-            </div>
-        </div>
-    </div>
-</div></div>
-				
-					<div>
-					<div class="table-responsive">
-	<table class="table table-hover table-rounded table-striped border gy-7 gs-7">
-		<thead>
-			<tr class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200" style="background-color: rgb(235, 234, 234);" >
-				<th>파손/폐기/분실 일자</th>
-				<th>구분</th>
-				<th>수량(낱개)</th>
-				<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;사유</th>
-				
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>23.12.20</td>
-				<td>파손</td>
-				<td >1</td>
-				<td>창고에서 떨어뜨려 파손</td>
-			
-			</tr>
-			<tr>
-				<td>23.12.20</td>
-				<td>파손</td>
-				<td>1</td>
-				<td>창고에서 떨어뜨려 파손</td>
-			
-			</tr>
-		</tbody>
-	</table>
+<div style="text-align: left; margin-top: 100px; margin-left: 50px;"><p><i class="ki-duotone ki-user fs-2">
+												<span class="path1"></span>
+												<span class="path2"></span>
+											</i> <i>json </i>2023-12-10 14:28 <div class="form-check" style="margin-left: 640px;">
+    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+    <label class="form-check-label" for="flexCheckDefault">
+        상단 고정 여부
+    </label>
+</div></p><div style="text-align: right; margin-top: -48px; margin-right: 380px;">
+    
+												<button type="button" class="btn btn-light">
+    <i class="ki-duotone ki-basket fs-2 text-gray-600">
+        <span class="path1"></span>
+        <span class="path2"></span>
+        <span class="path3"></span>
+        <span class="path4"></span>
+    </i>
 	
+</button>
+
+	<div style="width: 800px; height: 200px; overflow: auto; border: solid lightgrey;">
+    <p style="text-align: left;width: 100%;">공지사항 입니다.</p>
 </div>
-					</div>
+<div style="text-align: left;">조회수 : 1 </div>
+<div style="margin-right:150px;"><p>file:&nbsp; img.jpg&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (0.1mb)&nbsp;&nbsp;
+	<button type="button"  style="background-color: #C6DA52; position: absolute; width:60px; height: 20px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
+    다운로드</p></div>
+</button>
+<hr color="black" width="100%">
+
+
+
+</div>
 					</div>
 				<!--end::Content--> 
     			</div>
@@ -287,7 +121,6 @@
 			</div>
 			<!--end::Page-->
 		</div>
-		<!--end::Root-->
 								
 		<!--begin::Javascript-->
 		<script>var hostUrl = "/";</script>

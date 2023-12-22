@@ -30,18 +30,6 @@
 				
 				<!--end::Global Stylesheets Bundle-->
 				<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
-				<style>
-					.chart-div{
-						display: flex;
-						height: 500px;
-						margin-bottom: 20px;	
-					}
-					.chart-body-div{
-						width: 45%;
-						margin: 10px 20px;
-					}
-				</style>
-		
 			</head>
 	<!--end::Head-->
 	<!--begin::Body-->
@@ -61,9 +49,8 @@
 					<!--================================메인 내용들어가는부분================================================-->
 						
 
-
-
-					<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
+					<!--begin::Post-->
+						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
 							<!--begin::Container-->
 							<div class="container-xxl">
 								<!--begin::Category-->
@@ -83,9 +70,7 @@
 											<!--end::Search-->
 											
 										</div>
-										<div class="mb-0">
-    <input class="form-control form-control-solid" placeholder="Pick date rage" id="kt_daterangepicker_1"/>
-</div>
+										
 										<!--end::Card title-->
 										<!--begin::Card toolbar-->
 										<!--begin::Add product-->
@@ -101,8 +86,8 @@
 												<tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0" style="background-color: #ebe9e9">
 													<th class="w-150px pe-2">입고 예정일</th>
 							<th class="min-w-150px">발주 번호</th>
-							<th class="min-w-450px">차량 번호</th>
-							<th class="text-end min-w-170px">배송기사 이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+							<th class="min-w-650px">차량 번호</th>
+							<th class="text-end min-w-70px">배송기사 이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 												</tr>
 											</thead>
 											<tbody class="fw-semibold text-gray-600">
@@ -138,7 +123,7 @@
 																	<th>상품 명</th>
 																	<th>수량(파렛트/전체)</th>
 																	<th>파손/반송</th>
-																	<th>입고 확인</th>
+																
 																</tr>
 															</thead>
 															<tbody>
@@ -146,14 +131,8 @@
 																	<td style="text-align: center;">1</td>
 																	<td style="text-align: center;">코카콜라</td>
 																	<td style="text-align: center;">10/900</td>
-																	<td style="text-align: center;"><input type = "text" style="width: 70px;" placeholder = "개수 입력"/></td>
-																	<td style="text-align: center;">
-																	 <button style="background-color: #C6DA52" >확인</button> 
+																	<td style="text-align: center;">6개</td>
 																	
-																	
-																	
-																	
-																	</td>
 
 																</tr>
 
@@ -211,7 +190,7 @@
 																	<td style="text-align: center;">1</td>
 																	<td style="text-align: center;">코카콜라</td>
 																	<td style="text-align: center;">10/900</td>
-																	<td style="text-align: center;"><input type = "text" style="width: 70px;" placeholder = "개수 입력"/></td>
+																	<td style="text-align: center;">6개</td>
 																	<td style="text-align: center;">
 																	 <button style="background-color: #C6DA52" >확인</button> 
 																	
@@ -276,7 +255,7 @@
 																	<td style="text-align: center;">1</td>
 																	<td style="text-align: center;">코카콜라</td>
 																	<td style="text-align: center;">10/900</td>
-																	<td style="text-align: center;"><input type = "text" style="width: 70px;" placeholder = "개수 입력"/></td>
+																	<td style="text-align: center;">6개</td>
 																	<td style="text-align: center;">
 																	 <button style="background-color: #C6DA52" >확인</button> 
 																	
@@ -341,7 +320,7 @@
 																	<td style="text-align: center;">1</td>
 																	<td style="text-align: center;">코카콜라</td>
 																	<td style="text-align: center;">10/900</td>
-																	<td style="text-align: center;"><input type = "text" style="width: 70px;" placeholder = "개수 입력"/></td>
+																	<td style="text-align: center;">6개</td>
 																	<td style="text-align: center;">
 																	 <button style="background-color: #C6DA52" >확인</button> 
 																	
@@ -406,7 +385,7 @@
 																	<td style="text-align: center;">1</td>
 																	<td style="text-align: center;">코카콜라</td>
 																	<td style="text-align: center;">10/900</td>
-																	<td style="text-align: center;"><input type = "text" style="width: 70px;" placeholder = "개수 입력"/></td>
+																	<td style="text-align: center;">6개</td>
 																	<td style="text-align: center;">
 																	 <button style="background-color: #C6DA52" >확인</button> 
 																	
@@ -471,7 +450,7 @@
 																	<td style="text-align: center;">1</td>
 																	<td style="text-align: center;">코카콜라</td>
 																	<td style="text-align: center;">10/900</td>
-																	<td style="text-align: center;"><input type = "text" style="width: 70px;" placeholder = "개수 입력"/></td>
+																	<td style="text-align: center;">6개</td>
 																	<td style="text-align: center;">
 																	 <button style="background-color: #C6DA52" >확인</button> 
 																	
@@ -536,7 +515,7 @@
 																	<td style="text-align: center;">1</td>
 																	<td style="text-align: center;">코카콜라</td>
 																	<td style="text-align: center;">10/900</td>
-																	<td style="text-align: center;"><input type = "text" style="width: 70px;" placeholder = "개수 입력"/></td>
+																	<td style="text-align: center;">6개</td>
 																	<td style="text-align: center;">
 																	 <button style="background-color: #C6DA52" >확인</button> 
 																	
@@ -573,25 +552,7 @@
 							</div>
 							<!--end::Container-->
 						</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+						<!--end::Post-->
 					</div>
 				<!--end::Content--> 
     			</div>
@@ -628,7 +589,6 @@
 		<script>$("#kt_daterangepicker_1").daterangepicker();</script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
-	
 	</body>
 	<!--end::Body-->
 </html>
