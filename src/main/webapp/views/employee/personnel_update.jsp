@@ -66,13 +66,13 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="d-flex flex-column flex-lg-row">
 									<!--begin::Layout-->
 									<div class="flex-md-row-fluid ms-lg-12">
+													<h3 class="fw-bold m-0 mb-5">직원 수정</h3>
 										<!--begin::Basic info-->
 										<div class="card mb-5 mb-xl-10">
 											<!--begin::Card header-->
 											<div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
 												<!--begin::Card title-->
 												<div class="card-title m-0">
-													<h3 class="fw-bold m-0">직원 수정</h3>
 												</div>
 												<!--end::Card title-->
 											</div>
