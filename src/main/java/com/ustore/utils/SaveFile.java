@@ -22,9 +22,6 @@ public class SaveFile {
 	@Value("${filePath}")
 	private String filePath;
 	
-	@Value("${imgFilePath}")
-	private String imgFilePath;
-	
 	@Value("${imgExtensions}")
 	private List<String> imgExtList;
 	
@@ -62,7 +59,7 @@ public class SaveFile {
 				file.setExtension(ext);
 				file.setConnIdx(Integer.parseInt(connIdx));
 				file.setFileType(fileType);
-				file.setFilePath(returnPath(ext));
+				file.setFilePath(filePath);
 				
 				fileList.add(file);
 			}
@@ -98,18 +95,12 @@ public class SaveFile {
 			fileDto.setExtension(ext);
 			fileDto.setConnIdx(Integer.parseInt(connIdx));
 			fileDto.setFileType(fileType);
-			fileDto.setFilePath(returnPath(ext));
+			fileDto.setFilePath(filePath);
 		}
 		
 		return fileDto;
 	}
 	
-	private String returnPath(String ext){
-		if(imgExtList.contains(ext)) {
-			return imgFilePath;
-		}
-		return filePath;
-	}
 	
 	/**
 	 * 파일 저장 (서버)
