@@ -4,11 +4,17 @@ public class Paging {
 	private int totalPage;
 	private int limit;
 	
+	
 	public Paging(int totalPage, int limit) {
 		this.limit = limit;
 		this.totalPage = totalPage;
 	}
 	
+	
+	/**
+	 * 페이지수를 계산해서 반환합니다
+	 * @return : 총 페이지 수
+	 */
 	public int getPageNum() {
 		int pageNum = 0;
 		
@@ -22,6 +28,5 @@ public class Paging {
 			return 1;
 		}
 	}
-	
 	
 }

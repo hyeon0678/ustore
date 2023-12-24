@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustore.utils.dao.OrganizationChartDao">
+	<sql id="chartJoin">
+		FROM employee e 
+		LEFT OUTER JOIN department d
+		ON d.dept_id = e.dept_id 
+		LEFT OUTER JOIN common
+		ON e.position = common.common_idx
+	</sql>
+	<select id="selectParent" resultType="OrganizationChartDto">
+		SELECT d.dept_name as id
+		,IFNULL((
+			SELECT d2.dept_name 
+			FROM department d2
+			WHERE d2.dept_id = d.parent_dept_id),'#') parent
+		, CONCAT(e.emp_name,'(',d.dept_name,' ',common.common_type,')') text
+		<include refid="chartJoin"></include>
+		WHERE e.position in (20,21);
+	</select>
+	
+	<select id="selectChild" resultType="OrganizationChartDto">
+		SELECT CONCAT(e.emp_name,'(',d.dept_name,' ',common.common_type,')')id
+		,d.dept_name as parent
+		, CONCAT(e.emp_name,'(',d.dept_name,' ',common.common_type,')') text
+		<include refid="chartJoin"></include>
+		WHERE e.position in (22, 23);
+	</select>
+</mapper>
