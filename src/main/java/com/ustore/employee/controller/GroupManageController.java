@@ -33,7 +33,7 @@ public class GroupManageController {
 	@PostMapping("/registration")
 	//@ModelAttribute EmployeeDto employee
 	public String insertEmp(@ModelAttribute EmployeeDto params, RedirectAttributes rattr) {
-		logger.info("params : " + params);
+		logger.info("params : " + params.getEmpBirth());
 		boolean success = groupManageService.insertEmp(params);
 		if(success) {
 			return "redirect:/registration";

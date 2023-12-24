@@ -46,6 +46,7 @@
 		<!--begin::Root-->
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
+			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
@@ -80,14 +81,14 @@
 						</div>
 						<!--end::Toolbar-->
 						<!--begin::Post-->
-						<form action="" method="post">
+						
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
 							<!--begin::Container-->
 							<div class="container-xxl" style="background-color: white;margin: 20px;">
-								
+								<form action="/employee/registration" method="post">
 								<div style="margin-top:20px">
 								부서
-								<select class="form-select" aria-label="Select example">
+								<select class="form-select" aria-label="Select example" name="deptName">
     								<option value="인사팀">인사팀</option>
     								<option value="회계팀">회계팀</option>
     								<option value="고객관리팀">고객관리팀</option>
@@ -97,7 +98,7 @@
 								
 								<div style="margin-top:20px">
 								직책
-								<select class="form-select" aria-label="Select example">
+								<select class="form-select" aria-label="Select example" name="positionType">
     								<option value="팀장">팀장</option>
     								<option value="매니저">매니저</option>
     								<option value="팀원">팀원</option>
@@ -106,28 +107,33 @@
 								
 								<div style="margin-top:20px">
 								이름
-								<input type="text" name="" class="form-control" placeholder="이름을 입력해주세요"/>
+								<input type="text" name="empName" class="form-control" placeholder="이름을 입력해주세요"/>
 								</div>
 								
 								<div style="margin-top:20px">
 								비상 연락처
-								<input type="text" name="" class= "form-control" placeholder="비상 연락망을 입력해주세요"/>
+								<input type="text" name="empEmergencyPhone" class= "form-control" placeholder="비상 연락망을 입력해주세요"/>
 								</div>
 								
 								<div style="margin-top:20px">
 								개인 연락처
-								<input type="text" name="" class="form-control" placeholder="개인 번호를 입력해주세요"/>
+								<input type="text" name="empPhone" class="form-control" placeholder="개인 번호를 입력해주세요"/>
+								</div>
+								
+								<div style="margin-top:20px">
+								내선 번호
+								<input type="text" name="empExtNo" class= "form-control" placeholder="내선 번호를 입력해주세요"/>
 								</div>
 								
 								<div style="margin-top:20px">
 								성별
 								<div class="form-check form-check-custom form-check-solid">
-    								<input class="form-check-input" name="gender" type="radio" value="" id="flexRadioDefault" checked="checked"/>
+    								<input class="form-check-input" name="empGender" type="radio" value="M" id="flexRadioDefault" checked="checked"/>
     								<label class="form-check-label" for="flexRadioDefault">
         								남자
     								</label>
     								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    								<input class="form-check-input" name="gender" type="radio" value="" id="flexRadioDefault"/>
+    								<input class="form-check-input" name="empGender" type="radio" value="W" id="flexRadioDefault"/>
     								<label class="form-check-label" for="flexRadioDefault">
         								여자
     								</label>
@@ -136,8 +142,8 @@
 								
 								<div style="margin-top:20px">
 								생년월일
-								<input type="date" name="" class= "form-control"/>
-								
+								<input type="date" name="empBirth" class= "form-control brith"/>
+								<input type="text"  value="" style="visibility: hidden;"> 
 								</div>
 								
 								<div style="margin-top:20px">
@@ -145,21 +151,14 @@
 										<div>주소</div>
 										<input type="button" onclick="findlocation()" class="btn btn-primary" id="kt_toolbar_primary_button" value="주소 찾기" />
 									</div>
-									<input type="text" class="form-control" placeholder="우편번호" hidden="true" id="post_num"/>
-									<input type="text" class="form-control" placeholder="주소" id="roadaddress" style="margin-top: 5px;"/>
-									<input type="text" class="form-control" placeholder="지번" hidden="true" id="jibunAddress"/>
 									<input type="text" class="form-control" placeholder="우편번호" id="post_num" name="empZipcode"/>
 									<input type="text" class="form-control" placeholder="주소" id="roadaddress" name="empRoadAddr"/>
 									<span id="guide" style="color:#999;display:none"></span>
 									<div style="margin-top: 5px">
-										<input type="text" class="form-control" placeholder="상세 주소" id="detailAddress"/>
+										<input type="text" class="form-control" placeholder="상세 주소" id="detailAddress" name="empDetailAddr"/>
 									</div>
-									<input type="text" class="form-control" placeholder="참고항목" id="extraAddress" hidden="true"/>
 								</div>
 								
-								<div style="margin-top:20px">
- 									최종 학력
-								<select class="form-select" aria-label="Select example">
 								<div style="margin-top:20px">
  									최종 학력
 								<select class="form-select" aria-label="Select example" name="education">
@@ -171,25 +170,21 @@
 								</select>
 								
 								<div style="margin-top: 5px">
-									<input type="text" class="form-control" placeholder="대학교"/>
-								</div>
-								<div style="margin-top: 5px">
-									<input type="text" class="form-control" placeholder="전공"/>								
-								</div>
-								</div>
-								<input type="submit" class="btn btn-primary" id="kt_toolbar_primary_button" value="등록" style="margin: 20px 0px;" />
 									<input type="text" class="form-control" placeholder="학교" name="schoolName"/>
 								</div>
 								<div style="margin-top: 5px">
 									<input type="text" class="form-control" placeholder="전공" name="major"/>								
 								</div>
 								</div>
-								<input type="submit" class="btn btn-primary" id="kt_toolbar_primary_button" value="등록"">
-							</div>
+								</form>
+									<button type="button" class="btn btn-primary submit_btn" id="kt_toolbar_primary_button" style="margin: 20px 0px;" >등록</button>
+									
+								</div>
+								</div>
 							<!--end::Container-->
 						</div>
 						
-						</form>
+						
 						<!--end::Post-->
 					</div>
 					<!--end::Content-->
@@ -201,31 +196,30 @@
 			<!--end::Page-->
 		</div>
 		<script>var hostUrl = "resource/assets/";</script>
-		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
-		<!--end::Global Javascript Bundle-->
-		<!--begin::Vendors Javascript(used for this page only)-->
-		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/vis-timeline/vis-timeline.bundle.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-		<script src="resource/assets/js/widgets.bundle.js"></script>
-		<script src="resource/assets/js/custom/widgets.js"></script>
-		<!--end::Custom Javascript-->
-		<!--end::Javascript-->
 	</body>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
-		//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+		
+		let elemName = {
+				'deptName':'부서명',
+				'positionType':'직책',
+				'empEmergencyPhone':'비상 연락망',
+				'empName':'사원명',
+				'empPhone':'개인 전화번호',
+				'empExtNo':'내선번호',
+				'empBirth':'생년월일',
+				'empZipcode':'우편번호',
+				'empRoadAddr':'도로명 주소',
+				'empDetailAddr':'상세 주소',
+				'education':'학력',
+				'schoolName':'학교 명',
+				'major':'전공'
+		}
+		
+		// 주소 api
 		function findlocation() {
 			new daum.Postcode({
 				oncomplete: function(data) {
@@ -241,6 +235,49 @@
 				}
 			}).open();
 		}
+		// get elements value
+		function getElems(){
+			elements = [];
+			elements.push($('select[name=deptName]'))
+			elements.push($('select[name=positionType]'));
+			elements.push($('input[name=empEmergencyPhone]'));
+			elements.push($('input[name=empName]'));
+			elements.push($('input[name=empPhone]'));
+			elements.push($('input[name=empExtNo]'));
+			elements.push($('input[name=empBirth]'));
+			elements.push($('input[name=empZipcode]'));
+			elements.push($('input[name=empRoadAddr]'));
+			elements.push($('input[name=empDetailAddr]'));
+			elements.push($('select[name=education]'));
+			elements.push($('input[name=schoolName]'));
+			elements.push($('input[name=major]'));
+			return elements;
+		}
+		
+		//validation
+		function validation(){
+			let elements = getElems();
+			console.log(elements);
+			for(let elem of elements){
+				console.log("elem" + elem);
+				console.log("elem value"+elem.val());
+				if(elem.val()==''){
+					let name = elemName[elem.attr('name')];
+					alert(name + '의 값을 입력해주세요!');
+					elem.focus();
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		$('.submit_btn').on('click', function(){
+			console.log('test')
+			if(validation() == true){
+				$('form').submit();
+			}
+		});
+
 </script>
 	<!--end::Body-->
 </html>

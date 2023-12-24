@@ -34,11 +34,11 @@ License: For each use you must have a valid license purchased only from above li
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Vendor Stylesheets(used for this page only)-->
-		<link href="/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
@@ -66,13 +66,13 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="d-flex flex-column flex-lg-row">
 									<!--begin::Layout-->
 									<div class="flex-md-row-fluid ms-lg-12">
+													<h3 class="fw-bold m-0 mb-5">직원 수정</h3>
 										<!--begin::Basic info-->
 										<div class="card mb-5 mb-xl-10">
 											<!--begin::Card header-->
 											<div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
 												<!--begin::Card title-->
 												<div class="card-title m-0">
-													<h3 class="fw-bold m-0">직원 수정</h3>
 												</div>
 												<!--end::Card title-->
 											</div>
@@ -551,31 +551,31 @@ License: For each use you must have a valid license purchased only from above li
 		<!--begin::Javascript-->
 		<script>var hostUrl = "/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="/plugins/global/plugins.bundle.js"></script>
-		<script src="/js/scripts.bundle.js"></script>
+		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Vendors Javascript(used for this page only)-->
-		<script src="/plugins/custom/datatables/datatables.bundle.js"></script>
+		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="/js/custom/account/settings/signin-methods.js"></script>
-		<script src="/js/custom/account/settings/profile-details.js"></script>
-		<script src="/js/custom/account/settings/deactivate-account.js"></script>
-		<script src="/js/custom/pages/user-profile/general.js"></script>
-		<script src="/js/widgets.bundle.js"></script>
-		<script src="/js/custom/widgets.js"></script>
-		<script src="/js/custom/apps/chat/chat.js"></script>
-		<script src="/js/custom/utilities/modals/upgrade-plan.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/type.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/budget.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/settings.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/team.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/targets.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/files.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/complete.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/main.js"></script>
-		<script src="/js/custom/utilities/modals/two-factor-authentication.js"></script>
-		<script src="/js/custom/utilities/modals/users-search.js"></script>
+		<script src="resource/assets/js/custom/account/settings/signin-methods.js"></script>
+		<script src="resource/assets/js/custom/account/settings/profile-details.js"></script>
+		<script src="resource/assets/js/custom/account/settings/deactivate-account.js"></script>
+		<script src="resource/assets/js/custom/pages/user-profile/general.js"></script>
+		<script src="resource/assets/js/widgets.bundle.js"></script>
+		<script src="resource/assets/js/custom/widgets.js"></script>
+		<script src="resource/assets/js/custom/apps/chat/chat.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/type.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/budget.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/settings.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/team.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/targets.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/files.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/complete.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/main.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/two-factor-authentication.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/users-search.js"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>
