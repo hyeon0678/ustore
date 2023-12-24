@@ -19,7 +19,7 @@ public class ProductsController {
 		logger.info("parmas : "+params);
 		return "";
 	}
-	@GetMapping(value = "/stock")
+	@GetMapping(value = "/products/stock_management")
 	public String hom1231231e() {
 		
 		

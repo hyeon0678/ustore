@@ -16,7 +16,7 @@ public class ApprovalController {
 	
 	@GetMapping(value="/approval")
 	public String newApproval() {
-		return "approval/selectDoc";
+		return "board/admin_board_detail";
 	}
 	
 	

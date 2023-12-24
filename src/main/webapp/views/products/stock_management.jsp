@@ -27,6 +27,7 @@
 				<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 				<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 				<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+				<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
 				<!--end::Global Stylesheets Bundle-->
 				<script>
 					// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }
@@ -82,7 +83,7 @@
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
 					<!--================================메인 내용들어가는부분================================================-->
-						
+					
 
 					<!--begin::Post-->
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
@@ -99,7 +100,7 @@
 											<i
 												class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
 												<span class="path1"></span> <span class="path2"></span>
-											</i> <input type="text" data-kt-ecommerce-category-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Category" />
+											</i> <input type="text" data-kt-ecommerce-category-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="내용을 입력 해주세요." />
 											</div>
 											<!--end::Search-->
 										</div>
