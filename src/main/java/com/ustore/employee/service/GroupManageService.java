@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ustore.employee.dao.GroupManageDao;
 import com.ustore.employee.dto.EmployeeDto;
-import com.ustore.utils.dfineEnums.PositionEnum;
+import com.ustore.utils.defineEnums.DepartmentEnum;
+import com.ustore.utils.defineEnums.PositionEnum;
 
 @Service
 public class GroupManageService {
@@ -51,18 +52,18 @@ public class GroupManageService {
 		int positionCode = PositionEnum.findDefindCode(employee.getPositionType());
 		employee.setPosition(positionCode);
 		
-//		int departmentCode = 
-		//employee.setEmpIdx(empId);
+		int departmentCode = DepartmentEnum.findDefindCode(employee.getDeptName());
+		employee.setDeptId(departmentCode);
 		
-//		int row = groupManageDao.insertEmp(employee);
-//		row += groupManageDao.insertEducation(employee);
-//		
-//		if(row>1) {
-//			return true;
-//		}
+		int row = groupManageDao.insertEmp(employee);
+		row += groupManageDao.insertEducation(employee);
+		
+		employee.setEmpPhone(employee.getEmpPhone().replace("-", ""));
+		
+		if(row>1) {
+			return true;
+		}
 		return false;
 	}
-	
-	
 	
 }

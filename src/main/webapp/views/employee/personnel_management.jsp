@@ -29,17 +29,17 @@ License: For each use you must have a valid license purchased only from above li
 		<meta property="og:url" content="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" />
 		<meta property="og:site_name" content="Craft by Keenthemes" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Vendor Stylesheets(used for this page only)-->
-		<link href="/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="/plugins/custom/jstree/jstree.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/custom/jstree/jstree.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
@@ -101,38 +101,7 @@ License: For each use you must have a valid license purchased only from above li
 												
 												<!-- js트리 그리는 공간 -->
 												<div id="kt_docs_jstree_basic">
-													<ul>
-														<li>
-															Root node 1
-															<ul>
-																<li data-jstree='{ "selected" : true }'>
-																	<a href="javascript:;">
-																		Initially selected </a>
-																</li>
-																<li data-jstree='{ "icon" : "ki-outline ki-geolocation text-success fs-4" }'>
-																	custom icon URL
-																</li>
-																<li data-jstree='{ "opened" : true }'>
-																	initially open
-																	<ul>
-																		<li data-jstree='{ "disabled" : true }'>
-																			Disabled Node
-																		</li>
-																		<li data-jstree='{ "type" : "file" }'>
-																			Another node
-																		</li>
-																	</ul>
-																</li>
-																<li data-jstree='{ "icon" : "ki-outline ki-message-text-2 text-danger fs-7" }'>
-																	Custom icon class (bootstrap)
-																</li>
-															</ul>
-														</li>
-														<li data-jstree='{ "type" : "file" }'>
-															<a href="http://www.keenthemes.com">
-																Clickable link node </a>
-														</li>
-													</ul>
+													
 												</div>
 												<!-- js트리 끝나는 곳-->
 
@@ -154,7 +123,7 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="me-7 mb-4">
 												<!-- 프로필 사진 -->
 												<div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-													<img src="/media/avatars/300-1.jpg" alt="image" />
+													<img src="resource/assets/media/avatars/300-1.jpg" alt="image" />
 												</div>
 											</div>
 											<!--end::Pic-->
@@ -513,57 +482,76 @@ License: For each use you must have a valid license purchased only from above li
 		<!--begin::Javascript-->
 		<script>var hostUrl = "/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="/plugins/global/plugins.bundle.js"></script>
-		<script src="/js/scripts.bundle.js"></script>
+		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Vendors Javascript(used for this page only)-->
-		<script src="/plugins/custom/datatables/datatables.bundle.js"></script>
-		<!--end::Vendors Javascript-->
-		<!--begin::Vendors Javascript(used for this page only)-->
-		<!--begin::Custom Javascript(used for this page only)-->
+		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 
-		<script src="/plugins/custom/jstree/jstree.bundle.js"></script>
-		<script src="src/js/custom/apps/calendar/calendar.js"></script>
-		<script src="/js/custom/pages/user-profile/general.js"></script>
-		<script src="/js/widgets.bundle.js"></script>
-		<script src="/js/custom/widgets.js"></script>
-		<script src="/js/custom/apps/chat/chat.js"></script>
-		<script src="/js/custom/utilities/modals/upgrade-plan.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/type.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/budget.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/settings.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/team.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/targets.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/files.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/complete.js"></script>
-		<script src="/js/custom/utilities/modals/create-project/main.js"></script>
-		<script src="/js/custom/utilities/modals/offer-a-deal/type.js"></script>
-		<script src="/js/custom/utilities/modals/offer-a-deal/details.js"></script>
-		<script src="/js/custom/utilities/modals/offer-a-deal/finance.js"></script>
-		<script src="/js/custom/utilities/modals/offer-a-deal/complete.js"></script>
-		<script src="/js/custom/utilities/modals/offer-a-deal/main.js"></script>
-		<script src="/js/custom/utilities/modals/create-app.js"></script>
-		<script src="/js/custom/utilities/modals/users-search.js"></script>
+		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
+		<script src="resource/assets/js/custom/pages/user-profile/general.js"></script>
+		<script src="resource/assets/js/widgets.bundle.js"></script>
+		<script src="resource/assets/js/custom/widgets.js"></script>
+		<script src="resource/assets/js/custom/apps/chat/chat.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/type.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/budget.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/settings.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/team.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/targets.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/files.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/complete.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/main.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/offer-a-deal/type.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/offer-a-deal/details.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/offer-a-deal/finance.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/offer-a-deal/complete.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/offer-a-deal/main.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-app.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/users-search.js"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->	
 	<script>
-		$('#kt_docs_jstree_basic').jstree({
-			"core" : {
-				"themes" : {
-					"responsive": false
+		// document ready
+		$(function(){
+			getTreeData();
+		})
+	
+		function getTreeData(){
+			$.ajax({
+				url:'/organizationChart.ajax',
+				method:'GET',
+				dataType:'JSON',
+				success:function(data){
+					console.log(data);
+					jsTreeData = data.treeData;
+					jsTree(data.treeData);
+				},error: function(error){
+					console.log(error);
 				}
-			},
-			"types" : {
-				"default" : {
-					"icon" : "ki-outline ki-folder"
+			})
+		}
+		
+		function jsTree(treeData){
+			$('#kt_docs_jstree_basic').jstree({
+				"core" : {
+					"data" : treeData,
+					"themes" : {
+						"responsive": false
+					}
 				},
-				"file" : {
-					"icon" : "ki-outline ki-file"
-				}
-			},
-			"plugins": ["types"]
-		});
+				"types" : {
+					"default" : {
+						"icon" : "ki-outline ki-folder"
+					},
+					"file" : {
+						"icon" : "ki-outline ki-file"
+					}
+				},
+				"plugins": ["types"]
+			});
+		}
 	</script>
 </html>

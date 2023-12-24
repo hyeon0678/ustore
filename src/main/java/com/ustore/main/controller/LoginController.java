@@ -17,27 +17,7 @@ public class LoginController {
 	public String home() {
 		return "main/login";
 	}
+
 	
-	@GetMapping("/mailIn")
-	public String mailIn() {
-		return "mail/maillist_in";
-	}
 	
-	@GetMapping("/mailtest")
-	@ResponseBody
-	public HashMap<String, Object> mailList(){
-		HashMap<String, Object> list = new HashMap<String, Object>();
-		String l = "";
-		list.put("list", l);
-		return list;
-	}
-	
-	@GetMapping("/approval/myapproval/{applovalIdx}")
-	public String test(@PathVariable("applovalIdx") String applovalIdx, @RequestParam String type){
-		logger.info(type+", "+applovalIdx);
-		HashMap<String, Object> list = new HashMap<String, Object>();
-		String l = "";
-		list.put("list", l);
-		return "index";
-	}
 }
