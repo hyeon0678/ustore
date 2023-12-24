@@ -24,10 +24,7 @@
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-
 		<link href="resource/assets/plugins/custom/jstree/jstree.bundle.css" rel="stylesheet" type="text/css" />
-		
-
 		<style>
 			#kt_modal_1 .modal-content {
 				height: 800px; /* 원하는 높이로 조절하세요 */

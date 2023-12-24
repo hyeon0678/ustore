@@ -14,13 +14,13 @@ public class ApprovalController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired ApprovalService service;
 	
-	@GetMapping(value="/approval")
+	@GetMapping(value="/approval/newapproval")
 	public String newApproval() {
 		return "approval/selectDoc";
 	}
 	
 	
-	@GetMapping(value="/approval/newapproval") 
+	@GetMapping(value="/approval/newapproval/write") 
 	public String writeApprDoc() {
 		return "approval/writeApprDoc";
 	}
