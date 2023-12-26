@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ustore.organizationChart.dao.OrganizationChartDao">
-	<sql id="chartJoin">
+<!-- 	<sql id="chartJoin">
 		FROM employee e 
 		LEFT OUTER JOIN department d
 		ON d.dept_id = e.dept_id 
@@ -27,5 +27,43 @@
 		, CONCAT(e.emp_name,'(',d.dept_name,' ',common.common_type,')') text
 		<include refid="chartJoin"></include>
 		WHERE e.position in (22, 23);
+	</select> -->
+	
+	<select id="selectDepartments" resultMap="organizationChartResultMap">
+	    SELECT
+	        d.dept_id AS id,
+	        COALESCE(d.parent_dept_id, '#') AS parent,
+	        d.dept_name AS text,
+	        'department' AS type
+	    FROM
+	        department d
+	    ORDER BY
+	        COALESCE(d.parent_dept_id, '#'), d.dept_id
 	</select>
+	
+	
+	<select id="selectEmployees" resultMap="organizationChartResultMap">
+	    SELECT
+	        e.emp_idx AS id,
+	        e.dept_id AS parent,
+	        CONCAT(e.emp_name, ' (', c.common_type, ')') AS text,
+	        'employee' AS type
+	    FROM
+	        employee e
+	    JOIN
+	        department d ON e.dept_id = d.dept_id
+	    JOIN
+	        common c ON e.position = c.common_idx
+	    ORDER BY
+	        e.dept_id, position, e.emp_idx
+	</select>
+	
+	<resultMap id="organizationChartResultMap" type="OrganizationChartDto">
+	    <id property="id" column="id" />
+	    <result property="parent" column="parent" />
+	    <result property="text" column="text" />
+	    <result property="type" column="type" />
+	    <collection property="children" column="{id=id, parent=parent}" ofType="OrganizationChartDto" />
+	</resultMap>
+	
 </mapper>

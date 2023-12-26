@@ -1,5 +1,6 @@
 package com.ustore.organizationChart.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import com.ustore.organizationChart.dto.OrganizationChartDto;
 
 @Mapper
 public interface OrganizationChartDao {
-	List<OrganizationChartDto> selectParent();
-	List<OrganizationChartDto> selectChild();
+	
+	List<OrganizationChartDto> selectDepartments();
+	List<OrganizationChartDto> selectEmployees();
 }

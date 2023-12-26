@@ -10,20 +10,18 @@
 	<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-	<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
+	<link rel="shortcut icon" href="<c:url value='/resource/assets/media/logos/favicon.ico' />" />
 	<!--begin::Fonts(mandatory for all pages)-->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 	<!--end::Fonts-->
 	<!--begin::Vendor Stylesheets(used for this page only)-->
-	<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
-	<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+	<link href="<c:url value='/resource/assets/plugins/custom/leaflet/leaflet.bundle.css' />" rel="stylesheet" type="text/css" />
+	<link href="<c:url value='/resource/assets/plugins/custom/datatables/datatables.bundle.css' />" rel="stylesheet" type="text/css" />
 	<!--end::Vendor Stylesheets-->
 	<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-	<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-	
-	<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+	<link href="<c:url value='/resource/assets/plugins/global/plugins.bundle.css'/>" rel="stylesheet" type="text/css" />
+	<link href="<c:url value='/resource/assets/css/style.bundle.css'/>" rel="stylesheet" type="text/css" />
 	<!--end::Global Stylesheets Bundle-->
-	<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 	<style>
 		.chart-div{
 			display: flex;
@@ -151,10 +149,9 @@
 	<!--end::Root-->
 							
 	<!--begin::Javascript-->
-	<script>var hostUrl = "resource/assets/";</script>
 	<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-	<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-	<script src="resource/assets/js/scripts.bundle.js"></script>
+	<script src="<c:url value='/resource/assets/plugins/global/plugins.bundle.js' />"></script>
+	<script src="<c:url value='/resource/assets/js/scripts.bundle.js'/>"></script>
 	<!--end::Global Javascript Bundle-->
 	<!--end::Javascript-->
 </body>
@@ -170,32 +167,12 @@
     	selectedForm.common_idx = common_idx;
         selectedForm.name = name;
         
-
-        // 여기에서 선택한 양식 정보를 서버로 전송하거나 필요한 동작을 수행할 수 있음
-
-        // 동적으로 페이지 로드
         loadFormPage(common_idx);
     }
-
-    // 페이지 동적으로 로드 함수
-    /* function loadFormPage(common_idx) {
-        // Ajax를 사용하여 선택한 양식에 해당하는 페이지를 서버에서 가져와 동적으로 로드
-        $.ajax({
-            type: 'GET',
-            url: '/write', // 서버의 페이지 로드 엔드포인트
-            data: { common_idx: common_idx },
-            success: function(response) {
-                // 페이지를 로드한 후에 양식을 표시하거나 추가 동작 수행
-                $('.loadApprDoc').html(response);
-            },
-            error: function(error) {
-                console.error('페이지 로드 중 오류가 발생했습니다.');
-            }
-        });
-    } */
+   
     function loadFormPage(common_idx) {
         // URL을 변경하여 페이지 이동
-        window.location.href = '/write?common_idx=' + common_idx;
+        window.location.href = '/newapproval/write?common_idx=' + common_idx;
     }
 </script>
 </html>
