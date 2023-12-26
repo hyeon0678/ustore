@@ -20,16 +20,8 @@ License: For each use you must have a valid license purchased only from above li
 <base href="../" />
 		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
 		<meta charset="utf-8" />
-		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
-		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta property="og:locale" content="en_US" />
-		<meta property="og:type" content="article" />
-		<meta property="og:title" content="Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes" />
-		<meta property="og:url" content="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" />
-		<meta property="og:site_name" content="Craft by Keenthemes" />
-		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="/media/logos/favicon.ico" />
+
+	
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
@@ -91,7 +83,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin::Col-->
 															<div class="col-lg-8">
 																<!--begin::Image input-->
-																<div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('/media/svg/avatars/blank.svg')">
+																<div class="image-input image-input-outline" data-kt-image-input="true">
 																	<!--begin::Preview existing avatar-->
 																	<div class="image-input-wrapper w-125px h-125px" style="background-image: url(/media/avatars/300-1.jpg)"></div>
 																	<!--end::Preview existing avatar-->
@@ -143,7 +135,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4">김동동</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4" id="emp_name">${list.get(0).empName}</span>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -160,12 +152,11 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
 																<!-- 셀렉트 박스 -->
-																<select class="form-select w-50" aria-label="Select option">
-																	<option value="1">매장관리팀</option>
-																	<option value="2">고객관리팀</option>
-																	<option value="3">회계팀</option>
-																	<option value="4">인사팀</option>
-																	<!-- 추가적인 옵션들을 필요에 따라 추가할 수 있습니다 -->
+																<select class="form-select w-50" aria-label="Select option" id="dept_name">
+																	<option value="매장관리팀" ${list.get(0).deptName eq '매장관리팀' ? 'selected' : ''}>매장관리팀</option>
+																    <option value="고객관리팀" ${list.get(0).deptName eq '고객관리팀' ? 'selected' : ''}>고객관리팀</option>
+																    <option value="회계팀" ${list.get(0).deptName eq '회계팀' ? 'selected' : ''}>회계팀</option>
+																    <option value="인사팀" ${list.get(0).deptName eq '인사팀' ? 'selected' : ''}>인사팀</option>
 																</select>
 															</div>
 															<!--end::Col-->
@@ -180,11 +171,10 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<select class="form-select w-50" aria-label="Select option">
-																	<option value="1">팀장</option>
-																	<option value="2">매니저</option>
-																	<option value="3">팀원</option>
-																	<!-- 추가적인 옵션들을 필요에 따라 추가할 수 있습니다 -->
+																<select class="form-select w-50" aria-label="Select option" id="common_type">
+																	<option value="팀장" ${list.get(0).positionType eq '팀장' ? 'selected' : ''}>팀장</option>
+																	<option value="매니저" ${list.get(0).positionType eq '매니저' ? 'selected' : ''}>매니저</option>
+																	<option value="사원" ${list.get(0).positionType eq '사원' ? 'selected' : ''}>사원</option>
 																</select>
 															</div>
 															<!--end::Col-->
@@ -201,7 +191,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4">qqqq@test</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4">${list.get(0).empEmail}</span>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -221,7 +211,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4">20230001</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4" id="emp_idx">${list.get(0).empIdx}</span>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -242,7 +232,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4">2023-12-21</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4">${list.get(0).empJoinDate}</span>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -266,7 +256,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="fname" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" value="연차 갯수" />
+																		<input type="text" name="fname" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="leave_incdec" value="${list.get(0).leave_incdec}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -289,7 +279,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" value="0000" />
+																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_ext_no" value="${list.get(0).empExtNo}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -315,7 +305,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" value="기존 비상 연락망" />
+																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_emergency_phone" value="${list.get(0).empEmergencyPhone}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -337,7 +327,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="fname" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" value="기존 전화번호" />
+																		<input type="text" name="fname" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_phone" value="${list.get(0).empPhone}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -349,26 +339,7 @@ License: For each use you must have a valid license purchased only from above li
 
 
 
-														<!--begin::Input group-->
-														<div class="row mb-6">
-															<!--begin::Label-->
-															<label class="col-lg-4 col-form-label fw-semibold fs-6">생년월일</label>
-															<!--end::Label-->
-															<!--begin::Col-->
-															<div class="col-lg-8">
-																<!--begin::Row-->
-																<div class="row">
-																	<!--begin::Col-->
-																	<div class="col-lg-6 fv-row">
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4">2023-12-21</span>
-																	</div>
-																	<!--end::Col-->
-																</div>
-																<!--end::Row-->
-															</div>
-															<!--end::Col-->
-														</div>
-														<!--end::Input group-->
+
 
 
 
@@ -381,15 +352,15 @@ License: For each use you must have a valid license purchased only from above li
 															<div class="col-lg-8 fv-row">
 																<div class="col-lg-8 fv-row">
 																	<!-- 시작::입력 -->
-																	<div class="form-check form-check-custom form-check-solid">
-																		<input class="form-check-input" type="radio" value="" id="flexRadioDefault" name="scheduleType" checked/>
-																		<label class="form-check-label" for="flexRadioDefault">
-																			남자
-																		</label>
-																		<input class="form-check-input" type="radio" value="" name="scheduleType" style="margin-left: 30px;"/>
-																		<label class="form-check-label">
-																			여자
-																		</label>
+																	<div class="form-check form-check-custom form-check-solid" id="emp_gender">
+																	    <input class="form-check-input" type="radio" value="남자" id="maleRadio" name="gender" ${list.get(0).empGender eq '남자' ? 'checked' : ''}/>
+																	    <label class="form-check-label" for="maleRadio">
+																	        남자
+																	    </label>
+																	    <input class="form-check-input" type="radio" value="여자" id="femaleRadio" name="gender" ${list.get(0).empGender eq '여자' ? 'checked' : ''} style="margin-left: 30px;"/>
+																	    <label class="form-check-label" for="femaleRadio">
+																	        여자
+																	    </label>
 																	</div>
 																</div>
 															</div>
@@ -408,7 +379,7 @@ License: For each use you must have a valid license purchased only from above li
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
 																		<div class="mb-0">
-																			<input class="form-control form-control-solid" placeholder="기존 생년 월일" id="kt_datepicker_2"/>
+																			<input class="form-control form-control-solid" value="${list.get(0).empBirth}" id="kt_datepicker_2"/>
 																		</div>
 																	</div>
 																	<!--end::Col-->
@@ -429,9 +400,9 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4">도로명 주소</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4" id="emp_roadAddr">${list.get(0).empRoadAddr}</span>
 																		</br>
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4">상세주소</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4" id="emp_detailAddr">${list.get(0).empDetailAddr}</span>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -448,11 +419,12 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
 																<!-- 셀렉트 박스 -->
-																<select class="form-select w-50" aria-label="Select option">
-																	<option value="1">대학교 4년제 졸업</option>
-																	<option value="2">대학교 2년제 졸업</option>
-																	<option value="3">대학교 초졸</option>
-																	<option value="4">고졸</option>
+																<select class="form-select w-50" aria-label="Select option" id="education">
+																	<option value="대학교 4년제 졸업" ${list.get(0).education eq '대학교 4년제 졸업' ? 'selected' : ''}>대학교 4년제 졸업</option>
+																	<option value="대학교 2년제 졸업" ${list.get(0).education eq '대학교 2년제 졸업' ? 'selected' : ''}>대학교 2년제 졸업</option>
+																	<option value="대학교 초졸" ${list.get(0).education eq '대학교 초졸' ? 'selected' : ''}>대학교 초졸</option>
+																	<option value="고졸" ${list.get(0).education eq '고졸' ? 'selected' : ''}>고졸</option>
+																	<option value="" ${list.get(0).education eq null ? 'selected' : ''}></option>
 																	<!-- 추가적인 옵션들을 필요에 따라 추가할 수 있습니다 -->
 																</select>
 																<!--begin::Row-->
@@ -460,7 +432,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" value="기존 대학교" />
+																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="school_name" value="${list.get(0).schoolName}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -470,7 +442,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" value="기존 전공" />
+																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="major" value="${list.get(0).major}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -487,7 +459,7 @@ License: For each use you must have a valid license purchased only from above li
 														<button class="btn btn-primary">삭제하기</button>
 														<div>
 															<button class="btn btn-light btn-active-light-primary me-2">돌아가기</button>
-															<button class="btn btn-primary">저장</button>
+															<button class="btn btn-primary" id="modify">저장</button>
 														</div>
 													</div>
 													<!--end::Actions-->
@@ -558,24 +530,7 @@ License: For each use you must have a valid license purchased only from above li
 		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="resource/assets/js/custom/account/settings/signin-methods.js"></script>
-		<script src="resource/assets/js/custom/account/settings/profile-details.js"></script>
-		<script src="resource/assets/js/custom/account/settings/deactivate-account.js"></script>
-		<script src="resource/assets/js/custom/pages/user-profile/general.js"></script>
-		<script src="resource/assets/js/widgets.bundle.js"></script>
-		<script src="resource/assets/js/custom/widgets.js"></script>
-		<script src="resource/assets/js/custom/apps/chat/chat.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/type.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/budget.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/settings.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/team.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/targets.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/files.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/complete.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/main.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/two-factor-authentication.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/users-search.js"></script>
+
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>
@@ -583,5 +538,92 @@ License: For each use you must have a valid license purchased only from above li
 	<script>
 		<!-- 생년월일 데이트 피커-->
 		$("#kt_datepicker_2").flatpickr();	
+		
+		
+		
+		<!-- 수정하기 -->
+		$(document).ready(function() {
+		    $("#modify").on("click", function() {
+		        var education = $("#education").val();
+		        var school_name = $("#school_name").val();
+		        var major = $("#major").val();
+		        var emp_birth = $("#kt_datepicker_2").val();
+		        var emp_gender = $("input[name='gender']:checked").val();
+		        var emp_phone = $("#emp_phone").val();
+		        var emp_emergency_phone = $("#emp_emergency_phone").val();
+		        var emp_ext_no = $("#emp_ext_no").val();
+		        var leave_incdec = $("#leave_incdec").val();
+		        var common_type = $("#common_type").val();
+		        var dept_name = $("#dept_name").val();
+		        var emp_idx = document.getElementById('emp_idx').innerText;
+		        var emp_name = document.getElementById('emp_name').innerText;
+
+
+		        var url = "employee/modify.ajax?education=" + education +
+		                  "&school_name=" + school_name +
+		                  "&major=" + major +
+		                  "&emp_birth=" + emp_birth +
+		                  "&emp_gender=" + emp_gender +
+		                  "&emp_phone=" + emp_phone +
+		                  "&emp_emergency_phone=" + emp_emergency_phone +
+		                  "&emp_ext_no=" + emp_ext_no +
+		                  "&leave_incdec=" + leave_incdec +
+		                  "&common_type=" + common_type +
+		                  "&dept_name=" + dept_name +
+		                  "&emp_idx=" + emp_idx +
+		                  "&emp_name=" + emp_name;
+
+
+		        window.location.href = url;
+		    });
+		});
+		
+		
+		
+		/*
+		$(document).ready(function() {
+	        $("#modify").on("click", function() {
+				var education = $("#education").val();
+				var school_name = $("#school_name").val();
+				var major = $("#major").val();
+	        	var emp_birth = $("#kt_datepicker_2").val();
+	        	var emp_gender = $("input[name='gender']:checked").val();
+	        	var emp_phone = $("#emp_phone").val();
+	        	var emp_emergency_phone = $("#emp_emergency_phone").val();
+	        	var emp_ext_no = $("#emp_ext_no").val();
+	        	var leave_incdec = $("#leave_incdec").val();
+	        	var common_type = $("#common_type").val();
+	        	var dept_name = $("#dept_name").val();
+				var emp_idx = document.getElementById('emp_idx').innerText;
+	        	var emp_name=document.getElementById('emp_name').innerText;
+	        	$.ajax({
+	                type: "get",
+	                url: "employee/modify.ajax",
+	                data: {
+	                    education: education,
+	                    school_name: school_name,
+	                    major: major,
+	                    emp_birth: emp_birth,
+	                    emp_gender: emp_gender,
+	                    emp_phone: emp_phone,
+	                    emp_emergency_phone: emp_emergency_phone,
+	                    emp_ext_no: emp_ext_no,
+	                    leave_incdec: leave_incdec,
+	                    common_type: common_type,
+	                    dept_name: dept_name,
+	                    emp_idx: emp_idx,
+	                    emp_name: emp_name
+	                },
+	                dataType: 'json',
+	                success: function(data) {
+	                    console.log(data);
+	                },
+	                error: function(e) {
+						console.log(e);
+	                }
+	            });
+	        });
+	    });
+		*/
 	</script>
 </html>

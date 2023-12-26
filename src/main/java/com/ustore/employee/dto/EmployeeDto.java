@@ -27,7 +27,14 @@ public class EmployeeDto {
 	private String education;
 	private String schoolName;
 	private String major;
+	private int leave_incdec;  // 연차 갯수
 	
+	public int getLeave_incdec() {
+		return leave_incdec;
+	}
+	public void setLeave_incdec(int leave_incdec) {
+		this.leave_incdec = leave_incdec;
+	}
 	public String getDeptName() {
 		return deptName;
 	}

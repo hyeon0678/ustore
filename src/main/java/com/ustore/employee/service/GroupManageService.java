@@ -2,6 +2,9 @@ package com.ustore.employee.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +67,21 @@ public class GroupManageService {
 			return true;
 		}
 		return false;
+	}
+
+	public ArrayList<EmployeeDto> employeeInfo(HashMap<String, String> params) {
+		ArrayList<EmployeeDto> list = groupManageDao.employeeInfo(params);
+		return list;
+	}
+
+	public void empModify(HashMap<String, String> params) {
+		groupManageDao.empModifyEmp(params);
+		//Map<String, Object>map = groupManageDao.selectEdu(params);
+		//if(map != null) {
+			//groupManageDao.empModEduUpdate(params);
+		//}else {
+			//groupManageDao.empModEduInsert(params);
+		//}
 	}
 	
 }
