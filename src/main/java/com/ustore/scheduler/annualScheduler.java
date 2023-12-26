@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class annualScheduler {
 
-	@Autowired
+//	@Autowired
 	
 	
 	// 입사년도가 1년이 안 되는 사람은 1개월 만근 시 연차 +1 
 		// 현재 날짜 기준 입사 년도가 1년이 안 되는 사람들의 출퇴근 기록을 가져온다 -> 휴일 + 격주마다 쉬는 거 제외 
-	@Scheduled
+//	@Scheduled
 	public void grantInitialLeaves() {
 		
 	}
@@ -25,7 +25,7 @@ public class annualScheduler {
 		
 		// 이 후 2년 마다 +1
 	
-	@Scheduled
+//	@Scheduled
 	public void grantAnnualLeavesForLongService() {
 		
 	}
