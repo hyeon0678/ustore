@@ -1,5 +1,5 @@
 package com.ustore.products.dao;
 
-public class ProductsDao {
+public interface OrderDao {
 
 }
