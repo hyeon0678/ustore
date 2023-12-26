@@ -1,5 +1,5 @@
 package com.ustore.member.dao;
 
-public class MemberDao {
+public interface memberDao {
 
 }
