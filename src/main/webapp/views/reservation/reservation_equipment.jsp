@@ -60,7 +60,7 @@
 											<a href="index.html" class="text-muted text-hover-primary">Home</a>
 										</li>
 										<li class="breadcrumb-item text-muted">자원 관리</li>
-										<li class="breadcrumb-item text-gray-900">회의실 예약</li>
+										<li class="breadcrumb-item text-gray-900">물류장비 예약</li>
 									</ul>
 									<!--end::Breadcrumb-->
 								</div>
@@ -130,7 +130,7 @@
 														
 														<!-- 시작::입력 -->
 														<div class="form-check form-check-custom form-check-solid">
-															<input class="form-control form-control-solid" type="text" value="301호" id="" name="" readonly="readonly"/>
+															<input class="form-control form-control-solid" type="text" value="1호 차량" id="" name="calendar_event_name" readonly="readonly"/>
 														</div>
 
 														<!-- 끝::입력 -->
@@ -215,7 +215,7 @@
 													<button type="reset" id="kt_modal_add_event_cancel" class="btn btn-light">취소</button>
 													<!--end::Button-->
 													<!--begin::Button-->
-													<button type="button" id="kt_modal_add_event_submit" class="btn btn-primary">
+													<button type="button" id="kt_modal_add_event_submit" class="btn btn-primary submit_btn">
 														<span class="indicator-label">추가</span>
 														<span class="indicator-progress">Please wait... 
 														<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -286,8 +286,10 @@
 													</i>
 													<!--end::Icon-->
 													<div class="mb-9">
+														예약 정보
 														<!--begin::Event name-->
 														<div class="d-flex align-items-center mb-2">
+															자원명
 															<span class="fs-3 fw-bold me-3" data-kt-calendar="event_name"></span>
 															<span class="badge badge-light-success" data-kt-calendar="all_day"></span>
 														</div>
@@ -305,6 +307,7 @@
 													<!--end::Bullet-->
 													<!--begin::Event start date/time-->
 													<div class="fs-6">
+														일시
 														<span class="fw-bold">Starts</span>
 														<span data-kt-calendar="event_start_date"></span>
 													</div>
@@ -369,7 +372,7 @@
 															<thead>
 																<tr class="fw-bold fs-6 text-gray-800">
 																	<th>자원 종류</th>
-																	<th>회의실</th>
+																	<th>물류 장비</th>
 																	<th class="text-end"></th>
 																	<th class="text-end"></th>
 																</tr>
@@ -389,7 +392,7 @@
 											</div>
 
 											<div class="modal-footer">
-												<button type="button" class="btn btn-primary">추가</button>
+												<button type="button" class="btn btn-primary submit_btn">추가</button>
 												<button type="button" class="btn btn-light">취소</button>
 											</div>
 										</div>
@@ -420,7 +423,7 @@
 															<thead>
 																<tr class="fw-bold fs-6 text-gray-800">
 																	<th>자원 종류</th>
-																	<th>회의실</th>
+																	<th>물류 장비</th>
 																	<th class="text-end"></th>
 																	<th class="text-end"></th>
 																</tr>
@@ -431,9 +434,12 @@
 																	<td style="padding-top: 30px;">
 																	
 																		<select class="form-select" aria-label="Select example">
-    																		<option value="301호">301호</option>
-																			<option value="302호">302호</option>
-																			<option value="303호">303호</option>
+    																		<option value="1호차량">1호차량</option>
+    																		<option value="2호차량">2호차량</option>
+    																		<option value="3호차량">3호차량</option>
+    																		<option value="4호차량">4호차량</option>
+    																		<option value="5호차량">5호차량</option>
+    																		<option value="6호차량">6호차량</option>
 																		</select>
 																	
 																	</td>
@@ -446,7 +452,7 @@
 											</div>
 
 											<div class="modal-footer">
-												<button type="button" class="btn btn-primary">삭제</button>
+												<button type="button" class="btn btn-primary submit_btn">삭제</button>
 												<button type="button" class="btn btn-light">취소</button>
 											</div>
 										</div>
@@ -489,7 +495,7 @@
 
 	
 	let elemName = {
-			'calendar_event_name':'예약명',
+			'calendar_event_description':'예약 내용',
 			
 	}
 	
@@ -497,7 +503,7 @@
 	// get elements value
 	function getElems(){
 		elements = [];
-		elements.push($('select[name=calendar_event_name]'))
+		elements.push($('select[name=calendar_event_description]'))
 		return elements;
 	}
 	
