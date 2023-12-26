@@ -92,7 +92,9 @@
     								<option value="인사팀">인사팀</option>
     								<option value="회계팀">회계팀</option>
     								<option value="고객관리팀">고객관리팀</option>
-    								<option value="매장관리팀">매장관리팀</option>
+    								<option value="식품팀">식품팀</option>
+    								<option value="생필품팀">생필품팀</option>
+    								<option value="전자제품팀">전자제품팀</option>
 								</select>
 								</div>
 								
