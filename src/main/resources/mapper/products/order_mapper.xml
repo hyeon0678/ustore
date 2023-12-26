@@ -3,4 +3,26 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ustore.products.dao.OrderDao">
+
+
+<select id="list" resultType="OrderDto">
+SELECT products.*, category.category_name
+FROM products
+JOIN category ON products.category_id = category.category_id
+order by product_id asc;
+
+
+
+</select>
+
+<insert id="orderCartInsert" parameterType="OrderDto">
+
+
+insert into order_cart (product_id,emp_idx,order_quantity)
+values(#{productId},"20060001",#{orderQuantity});
+
+</insert>
+
+
+
 </mapper>

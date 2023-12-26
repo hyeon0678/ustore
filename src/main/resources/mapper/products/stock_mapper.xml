@@ -6,23 +6,25 @@
 
 
 
-<resultMap id="stockResultMap" type="com.ustore.products.dto.StockDto">
-    <id property="product_id" column="product_id"/>
-    <result property="product_name" column="product_name"/>
-    <result property="stock" column="stock"/>
-    <!-- 나머지 필드에 대한 매핑 추가 -->
-</resultMap>
-
-
-
-
 
 <select id="list" resultType="com.ustore.products.dto.StockDto">
 
-	SELECT product_id,product_name,stock FROM products
+	SELECT product_id,product_name,stock FROM products order by product_id asc;
 	
 </select>
-<insert id="stock_insert" parameterType="com.ustore.products.dto.StockDto">
+<select id="stock_insert" resultType="String">
+
+
+SELECT product_id
+FROM products
+WHERE product_id LIKE CONCAT(#{proNum}, '%')
+ORDER BY product_id DESC
+LIMIT 1;
+
+</select>
+
+
+<insert id="stock_insert2" parameterType="com.ustore.products.dto.StockDto">
 INSERT
 	INTO
 	products (
@@ -38,22 +40,20 @@ INSERT
 	reg_by
 )
 VALUES (
-    'A010020',
-    #{product_name},
-    #{purchase_price},
-    #{selling_price},
-    #{unit_quantity},
+    #{productId},
+    #{productName},
+    #{purchasePrice},
+    #{sellingPrice},
+    #{unitQuantity},
     0,
-#{category_id},
+#{categoryId},
     CASE
 	WHEN category_id = '1' THEN 'N'
 	ELSE 'Y'
 END,
     NOW(),
     12);
-
 </insert>
-
 
 
 

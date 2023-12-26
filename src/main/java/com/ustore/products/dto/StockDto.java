@@ -5,47 +5,45 @@ import org.apache.ibatis.type.Alias;
 
 public class StockDto {
 	
-	private String product_id;
-	private String product_name;
-	private int purchase_price;
-	private int selling_price;
-	private int unit_quantity;
+	private String productId;
+	private String productName;
+	private int purchasePrice;
+	private int sellingPrice;
+	private int unitQuantity;
 	private int stock;
-	private String point_enabled;
-	private String category_id;
-	private int reg_by;
-	private int update_by;
-	
-	
-	public String getProduct_id() {
-		return product_id;
+	private String pointEnabled;
+	private String categoryId;
+	private int regBy;
+	private int updateBy;
+	public String getProductId() {
+		return productId;
 	}
-	public void setProduct_id(String product_id) {
-		this.product_id = product_id;
+	public void setProductId(String productId) {
+		this.productId = productId;
 	}
-	public String getProduct_name() {
-		return product_name;
+	public String getProductName() {
+		return productName;
 	}
-	public void setProduct_name(String product_name) {
-		this.product_name = product_name;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
-	public int getPurchase_price() {
-		return purchase_price;
+	public int getPurchasePrice() {
+		return purchasePrice;
 	}
-	public void setPurchase_price(int purchase_price) {
-		this.purchase_price = purchase_price;
+	public void setPurchasePrice(int purchasePrice) {
+		this.purchasePrice = purchasePrice;
 	}
-	public int getSelling_price() {
-		return selling_price;
+	public int getSellingPrice() {
+		return sellingPrice;
 	}
-	public void setSelling_price(int selling_price) {
-		this.selling_price = selling_price;
+	public void setSellingPrice(int sellingPrice) {
+		this.sellingPrice = sellingPrice;
 	}
-	public int getUnit_quantity() {
-		return unit_quantity;
+	public int getUnitQuantity() {
+		return unitQuantity;
 	}
-	public void setUnit_quantity(int unit_quantity) {
-		this.unit_quantity = unit_quantity;
+	public void setUnitQuantity(int unitQuantity) {
+		this.unitQuantity = unitQuantity;
 	}
 	public int getStock() {
 		return stock;
@@ -53,30 +51,33 @@ public class StockDto {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-	public String getPoint_enabled() {
-		return point_enabled;
+	public String getPointEnabled() {
+		return pointEnabled;
 	}
-	public void setPoint_enabled(String point_enabled) {
-		this.point_enabled = point_enabled;
+	public void setPointEnabled(String pointEnabled) {
+		this.pointEnabled = pointEnabled;
 	}
-	public String getCategory_id() {
-		return category_id;
+	public String getCategoryId() {
+		return categoryId;
 	}
-	public void setCategory_id(String category_id) {
-		this.category_id = category_id;
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 	}
-	public int getReg_by() {
-		return reg_by;
+	public int getRegBy() {
+		return regBy;
 	}
-	public void setReg_by(int reg_by) {
-		this.reg_by = reg_by;
+	public void setRegBy(int regBy) {
+		this.regBy = regBy;
 	}
-	public int getUpdate_by() {
-		return update_by;
+	public int getUpdateBy() {
+		return updateBy;
 	}
-	public void setUpdate_by(int update_by) {
-		this.update_by = update_by;
+	public void setUpdateBy(int updateBy) {
+		this.updateBy = updateBy;
 	}
+	
+	
+	
 	
 	
 }
