@@ -42,13 +42,13 @@ public class GroupManageService {
 		if(!maxYear.equals(enterYear)) {
 			maxYear = enterYear;
 		}else if(maxYear.equals(enterYear)&&(maxEmpIdx!=null || maxEmpIdx!="")){
-			nextIdx = maxEmpIdx.substring(3);
+			nextIdx = maxEmpIdx.substring(4);
 			nextIdx = String.format("%04d", Integer.parseInt(nextIdx)+1);			
 		}
 		
 		empId = maxYear + nextIdx;
 		employee.setEmpIdx(empId);
-		
+		logger.info(empId);
 		int positionCode = PositionEnum.findDefindCode(employee.getPositionType());
 		employee.setPosition(positionCode);
 		
