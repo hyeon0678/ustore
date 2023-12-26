@@ -73,8 +73,6 @@
 								<div class="text-center">
 									<button type="button" id="kt_sign_in_submit" class="btn btn-lg btn-primary w-100 mb-5">
 										<span class="indicator-label">로그인</span>
-										<span class="indicator-progress">Please wait... 
-										<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
 									</button>
 									
 								</div>
@@ -94,9 +92,11 @@
 		<script>var hostUrl = "/";</script>
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
-		<script src="resource/assets/js/custom/authentication/sign-in/general.js"></script>
 	</body>
 	<script>
-		
+		let msg = '${msg}'
+		if(msg == 'fail'){
+			alert('로그인 실패');
+		}
 	</script>
 </html>

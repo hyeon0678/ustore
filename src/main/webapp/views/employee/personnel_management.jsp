@@ -20,16 +20,7 @@ License: For each use you must have a valid license purchased only from above li
 <base href="../" />
 		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
 		<meta charset="utf-8" />
-		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
-		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta property="og:locale" content="en_US" />
-		<meta property="og:type" content="article" />
-		<meta property="og:title" content="Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes" />
-		<meta property="og:url" content="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" />
-		<meta property="og:site_name" content="Craft by Keenthemes" />
-		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
+
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
@@ -136,28 +127,28 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin::Name-->
 														<div class="d-flex align-items-center mb-2">
 															<p class="text-gray-900 fs-2 fw-bold me-1">이름</p>
-															<p class="fw-bold fs-3 text-gray-800 mx-20">김동동</p>
+															<p class="fw-bold fs-3 text-gray-800 mx-20" id="empName"></p>
 														</div>
 														<!--end::Name-->
 														<!--begin::Info-->
 														<div class="d-flex align-items-center mb-2">
 															<p class="text-gray-900 fs-2 fw-bold me-1">부서</p>
-															<p class="fw-bold fs-3 text-gray-800 mx-20">인사팀</p>
+															<p class="fw-bold fs-3 text-gray-800 mx-20" id="deptName"></p>
 														</div>
 														<div class="d-flex align-items-center mb-2">
 															<p class="text-gray-900 fs-2 fw-bold me-1">직책</p>
-															<p class="fw-bold fs-3 text-gray-800 mx-20">팀장</p>
+															<p class="fw-bold fs-3 text-gray-800 mx-20" id="positionType"></p>
 														</div>
 														<div class="d-flex align-items-center mb-2">
 															<p class="text-gray-900 fs-2 fw-bold me-1">이메일</p>
-															<p class="fw-bold fs-3 text-gray-800 mx-15">qqqq@test</p>
+															<p class="fw-bold fs-3 text-gray-800 mx-15" id="empEmail"></p>
 														</div>
 														<!--end::Info-->
 													</div>
 													<!--end::User-->
 													<!--begin::Actions-->
 													<div class="d-flex my-4 mx-20">
-														<a href="#" class="btn btn-sm btn-primary me-2">프로필 수정</a>
+														<a href="#" id="update" class="btn btn-sm btn-primary me-2">프로필 수정</a>
 													</div>
 													<!--end::Actions-->
 												</div>
@@ -189,7 +180,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fw-bold fs-6 text-gray-800">20230001</span>
+																<span class="fw-bold fs-6 text-gray-800" id="empIdx"></span>
 															</div>
 															<!--end::Col-->
 														</div>
@@ -201,7 +192,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<span class="fw-bold fs-6 text-gray-800">0000</span>
+																<span class="fw-bold fs-6 text-gray-800" id="empExtNo"></span>
 															</div>
 															<!--end::Col-->
 														</div>
@@ -214,7 +205,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 d-flex align-items-center">
-																<span class="fw-bold fs-6 text-gray-800">044 3276 454 935</span>
+																<span class="fw-bold fs-6 text-gray-800" id="empEmergencyPhone"></span>
 															</div>
 															<!--end::Col-->
 														</div>
@@ -226,7 +217,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fw-bold fs-6 text-gray-800">010-0000-0000</span>
+																<span class="fw-bold fs-6 text-gray-800" id="empPhone"></span>
 															</div>
 															<!--end::Col-->
 														</div>
@@ -239,7 +230,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fw-bold fs-6 text-gray-800">2023-12-19</span>
+																<span class="fw-bold fs-6 text-gray-800" id="empJoinDate"></span>
 															</div>
 															<!--end::Col-->
 														</div>
@@ -251,7 +242,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fw-bold fs-6 text-gray-800">6개</span>
+																<span class="fw-bold fs-6 text-gray-800" id="leave_incdec"></span>
 															</div>
 															<!--end::Col-->
 														</div>
@@ -262,9 +253,9 @@ License: For each use you must have a valid license purchased only from above li
 																<!--begin::Label-->
 																<!--begin::Label-->
 																<div class="col-lg-8">
-																	<span class="fw-bold fs-6 text-gray-800">서울 금천구 ~~ 도로명 주소</span>
+																	<span class="fw-bold fs-6 text-gray-800" id="empRoadAddr"></span>
 																	<br/>
-																	<span class="fw-bold fs-6 text-gray-800">타워1층 ~~ 상세 주소</span>
+																	<span class="fw-bold fs-6 text-gray-800" id="empDetailAddr"></span>
 																</div>
 																<!--begin::Label-->
 															</div>
@@ -276,11 +267,11 @@ License: For each use you must have a valid license purchased only from above li
 																<!--begin::Label-->
 																<!--begin::Label-->
 																<div class="col-lg-8">
-																	<span class="fw-bold fs-6 text-gray-800">대학교 (4년)졸업</span>
+																	<span class="fw-bold fs-6 text-gray-800" id="education"></span>
 																	<br/>
-																	<span class="fw-bold fs-6 text-gray-800">구디대학교</span>
+																	<span class="fw-bold fs-6 text-gray-800" id="schoolName"></span>
 																	<br/>
-																	<span class="fw-bold fs-6 text-gray-800">컴퓨터공학</span>
+																	<span class="fw-bold fs-6 text-gray-800" id="major"></span>
 																</div>
 																<!--begin::Label-->
 															</div>
@@ -488,29 +479,9 @@ License: For each use you must have a valid license purchased only from above li
 		<!--begin::Vendors Javascript(used for this page only)-->
 		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 
-		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
-		<script src="resource/assets/js/custom/pages/user-profile/general.js"></script>
-		<script src="resource/assets/js/widgets.bundle.js"></script>
-		<script src="resource/assets/js/custom/widgets.js"></script>
-		<script src="resource/assets/js/custom/apps/chat/chat.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/type.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/budget.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/settings.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/team.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/targets.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/files.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/complete.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/main.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/offer-a-deal/type.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/offer-a-deal/details.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/offer-a-deal/finance.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/offer-a-deal/complete.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/offer-a-deal/main.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-app.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/users-search.js"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
+		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
 	</body>
 	<!--end::Body-->	
 	<script>
@@ -553,5 +524,82 @@ License: For each use you must have a valid license purchased only from above li
 				"plugins": ["types"]
 			});
 		}
+		
+		
+		$('#kt_docs_jstree_basic').bind("dblclick.jstree", function (e, data) {
+		    // 더블클릭한 엘리먼트의 텍스트 가져오기
+		    var selectedNodeText = e.target.textContent || e.target.innerText;
+
+		    // 선택된 노드 텍스트를 출력하거나 다른 작업 수행
+		    console.log("선택된 노드 텍스트:", selectedNodeText);
+
+		    // 텍스트를 분할하고 빈 문자열을 제거하여 배열 생성
+		    var nodes = selectedNodeText.split(/[( )]/).filter(function (value) {
+		        return value !== '';
+		    });
+		    
+		    // 요소 뽑아서 가져오기
+		    var emp_name = nodes[0];
+		    var dept_name = nodes[1];
+		    var common_type = nodes[2];
+
+		    console.log("emp_name = ", emp_name);
+			console.log("dept_name = ", dept_name);
+			console.log("common_type = ", common_type);
+		    // 예시: 다른 요소에 값을 설정하기
+		    $('#selectedNodeInput').val("선택된 노드: " + selectedNodeText);
+			drawEmployeeDetail(emp_name,dept_name,common_type);
+		});
+		
+		function drawEmployeeDetail(emp_name,dept_name,common_type){
+			$.ajax({
+		        type: 'get',
+		        url: 'employee/employeeInfo.ajax',
+		        data: {
+		            'emp_name': emp_name,
+		            'dept_name': dept_name,
+		            'common_type': common_type
+		        },
+		        dataType: 'json',
+		        success: function (data) {
+					console.log(data);
+					
+		            // 요소의 텍스트 변경
+		            $('#empName').text(data.list[0].empName);
+		            $('#deptName').text(data.list[0].deptName);
+		            $('#empDetailAddr').text(data.list[0].empDetailAddr);
+		            $('#empEmail').text(data.list[0].empEmail);
+		            $('#empEmergencyPhone').text(data.list[0].empEmergencyPhone);
+		            $('#empExtNo').text(data.list[0].empExtNo);
+		            $('#empIdx').text(data.list[0].empIdx);
+		            $('#empJoinDate').text(data.list[0].empJoinDate);
+		            $('#empPhone').text(data.list[0].empPhone);
+		            $('#empRoadAddr').text(data.list[0].empRoadAddr);
+		            $('#leave_incdec').text(data.list[0].leave_incdec);
+		            $('#positionType').text(data.list[0].positionType);
+		            $('#education').text(data.list[0].education);
+		            $('#schoolName').text(data.list[0].schoolName);
+		            $('#major').text(data.list[0].major);
+		            
+		            
+		            $(document).ready(function() {
+		                var emp_name = data.list[0].empName;
+		                var dept_name = data.list[0].deptName;
+		                var common_type = data.list[0].positionType;
+
+		                // href 속성에 값을 동적으로 추가
+		                $('#update').attr("href", "employee/update?emp_name=" + emp_name + "&dept_name=" + dept_name + "&common_type=" + common_type);
+		            });
+
+		            
+		        },
+		        error: function (e) {
+		            console.log(e);
+		        }
+		    });
+		}
+		
+
+
 	</script>
 </html>
