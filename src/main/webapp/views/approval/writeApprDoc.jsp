@@ -4,46 +4,36 @@
 <html lang="ko">
 	<!--begin::Head-->
 	<head>
-		<title>UStore</title>
-		<meta charset="utf-8" />
-		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
-		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
-		<!--begin::Fonts(mandatory for all pages)-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Vendor Stylesheets(used for this page only)-->
-		<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Vendor Stylesheets-->
-		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />		
-		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Global Stylesheets Bundle-->		
-		<link href="resource/assets/plugins/custom/jstree/jstree.bundle.css" rel="stylesheet" type="text/css" />		
-		
-		<style>
-			.chart-div{
-				display: flex;
-				height: 500px;
-				margin-bottom: 20px;	
-			}
-			.chart-body-div{
-				width: 45%;
-				margin: 10px 20px;
-			}
-			.signature-table {
-            float: right;
-            margin-left: 20px;
-			}
-			.signature-table td {
-				border: 1px solid #ddd;
-				padding: 10px;
-				text-align: center;
-			}
-		</style>
+	<title>UStore</title>
+	<meta charset="utf-8" />
+	<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
+	<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="canonical" href="https://preview.keenthemes.com/craft" />
+	<link rel="shortcut icon" href="<c:url value='/resource/assets/media/logos/favicon.ico' />" />
+	<!--begin::Fonts(mandatory for all pages)-->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+	<!--end::Fonts-->
+	<!--begin::Vendor Stylesheets(used for this page only)-->
+	<link href="<c:url value='/resource/assets/plugins/custom/leaflet/leaflet.bundle.css' />" rel="stylesheet" type="text/css" />
+	<link href="<c:url value='/resource/assets/plugins/custom/datatables/datatables.bundle.css' />" rel="stylesheet" type="text/css" />
+	<!--end::Vendor Stylesheets-->
+	<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+	<link href="<c:url value='/resource/assets/plugins/global/plugins.bundle.css'/>" rel="stylesheet" type="text/css" />
+	<link href="<c:url value='/resource/assets/css/style.bundle.css'/>" rel="stylesheet" type="text/css" />
+	<!--end::Global Stylesheets Bundle-->		
+	<link href="<c:url value='/resource/assets/plugins/custom/jstree/jstree.bundle.css'/>" rel="stylesheet" type="text/css" />	
+	<style>		
+		.signature-table {
+           float: right;
+           margin-left: 20px;
+		}
+		.signature-table td {
+			border: 1px solid #ddd;
+			padding: 10px;
+			text-align: center;
+		}
+	</style>
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
@@ -79,7 +69,7 @@
 										<span class="path1"></span>
 										<span class="path2"></span>
 									</i>결재상신</button>
-									<button type="button" class="btn btn-light-primary me-3" id="btnApprovalInfo" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+									<button type="button" class="btn btn-light-primary me-3" id="btnApprovalInfo" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
 									<i class="ki-duotone ki-filter fs-2">
 										<span class="path1"></span>
 										<span class="path2"></span>
@@ -102,9 +92,8 @@
 						<!-- 결재 양식 들어오는 곳 -->	
 						<form id="docFormContainer" action="/saveDocument" method="post">	
 							<p>Selected Form: <%= request.getParameter("common_idx") %></p>
-							<div class="loadApprDoc">
-							
-							
+							<div class="loadApprDoc">	
+							${htmlContent}				
 							</div>	
 						</form>					
 					</div>
@@ -208,26 +197,24 @@
 								
 		<!--begin::Javascript-->
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="resource/assets/js/scripts.bundle.js"></script>
+		<script src="<c:url value='/resource/assets/plugins/global/plugins.bundle.js' />"></script>
+		<script src="<c:url value='/resource/assets/js/scripts.bundle.js' />"></script>
 		<!--end::Global Javascript Bundle-->
-		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
+		<script src="<c:url value='/resource/assets/plugins/custom/jstree/jstree.bundle.js' />"></script>
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
 	<script>
 	
-
-    
-	
+		
     // 동적으로 HTML 파일 로드하는 함수
-    function loadFormPage(formPage) {
+    function loadFormPage(formPage, common_idx) {
         $.ajax({
             type: 'GET',
-            url: formPage,
-            success: function (response) {
+            url: "/getHtml?common_idx=" + common_idx,
+            success: function (data) {
                 // 로드한 HTML을 동적으로 추가
-                $('.loadApprDoc').html(response);
+                $('.loadApprDoc').html(data);
             },
             error: function (error) {
                 console.error('페이지 로드 중 오류가 발생했습니다.');
@@ -242,10 +229,11 @@
     });
     
     $(document).ready(function () {
+    	var common_idx=${common_idx};
     	// 초기에 선택된 양식에 대한 HTML 파일 로드
         var formPage = '<%= request.getAttribute("formPage") %>';
         if (formPage) {
-            loadFormPage(formPage);
+            loadFormPage(formPage, common_idx);
         }
         
         
@@ -314,12 +302,13 @@
 				}
 			},
 			"types" : {
-				"default" : {
-					"icon" : "ki-outline ki-folder"
-				},
-				"file" : {
-					"icon" : "ki-outline ki-file"
-				}
+				  "department": {
+					    "icon": "fa fa-building" // 부서 아이콘
+				  },
+				  "employee": {
+				    "icon": "fa fa-user", // 직원 아이콘
+				    "selectable": true // 선택 가능하도록 설정
+				  }
 			},
 			"plugins": ["types","search"]
 			,

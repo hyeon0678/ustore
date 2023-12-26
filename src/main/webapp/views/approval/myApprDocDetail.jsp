@@ -4,46 +4,36 @@
 <html lang="ko">
 	<!--begin::Head-->
 	<head>
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
-		<meta charset="utf-8" />
-		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
-		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
-		<!--begin::Fonts(mandatory for all pages)-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Vendor Stylesheets(used for this page only)-->
-		<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Vendor Stylesheets-->
-		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		
-		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Global Stylesheets Bundle-->
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<style>
-			.chart-div{
-				display: flex;
-				height: 500px;
-				margin-bottom: 20px;	
-			}
-			.chart-body-div{
-				width: 45%;
-				margin: 10px 20px;
-			}
-			.signature-table {
-            float: right;
-            margin-left: 20px;
-			}
-			.signature-table td {
-				border: 1px solid #ddd;
-				padding: 10px;
-				text-align: center;
-			}
-		</style>
+	<title>UStore</title>
+	<meta charset="utf-8" />
+	<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
+	<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="canonical" href="https://preview.keenthemes.com/craft" />
+	<link rel="shortcut icon" href="<c:url value='/resource/assets/media/logos/favicon.ico' />" />
+	<!--begin::Fonts(mandatory for all pages)-->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+	<!--end::Fonts-->
+	<!--begin::Vendor Stylesheets(used for this page only)-->
+	<link href="<c:url value='/resource/assets/plugins/custom/leaflet/leaflet.bundle.css' />" rel="stylesheet" type="text/css" />
+	<link href="<c:url value='/resource/assets/plugins/custom/datatables/datatables.bundle.css' />" rel="stylesheet" type="text/css" />
+	<!--end::Vendor Stylesheets-->
+	<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+	<link href="<c:url value='/resource/assets/plugins/global/plugins.bundle.css' />" rel="stylesheet" type="text/css" />		
+	<link href="<c:url value='/resource/assets/css/style.bundle.css' />" rel="stylesheet" type="text/css" />
+	<!--end::Global Stylesheets Bundle-->
+	<link href="<c:url value='/resource/assets/plugins/custom/jstree/jstree.bundle.css' />" rel="stylesheet" type="text/css" />
+	<style>
+		.signature-table {
+           float: right;
+           margin-left: 20px;
+		}
+		.signature-table td {
+			border: 1px solid #ddd;
+			padding: 10px;
+			text-align: center;
+		}		
+	</style>
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
@@ -69,30 +59,22 @@
 									<!--begin::Title-->
 									<h1 class="text-gray-900 fw-bold my-1 fs-2">내결재문서</h1>
 									<!--end::Title-->
-									<!--begin::Breadcrumb-->
-									<ul class="breadcrumb fw-semibold fs-base my-1">
-										<li class="breadcrumb-item text-muted">
-											<a href="index.jsp" class="text-muted text-hover-primary">Home</a>
-										</li>
-										<li class="breadcrumb-item text-muted">전자결재</li>
-									</ul>
-									<!--end::Breadcrumb-->
 								</div>
 								<!--end::Info-->
 								<!--begin::Toolbaricon-->
 								<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
 									<!--begin::Filter-->
-									<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+									<button type="button" class="btn btn-light-primary me-3" id="btnApprRetrieve" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
 									<i class="ki-duotone ki-filter fs-2">
 										<span class="path1"></span>
 										<span class="path2"></span>
 									</i>결재회수</button>
-									<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+									<button type="button" class="btn btn-light-primary me-3" id="btnApprInfo" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
 									<i class="ki-duotone ki-filter fs-2">
 										<span class="path1"></span>
 										<span class="path2"></span>
 									</i>결재정보</button>
-									<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+									<button type="button" class="btn btn-light-primary me-3" id="btnGoBack" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
 									<i class="ki-duotone ki-filter fs-2">
 										<span class="path1"></span>
 										<span class="path2"></span>
@@ -103,8 +85,12 @@
 						</div>
 						<!--end::Toolbar-->	
 						<!-- 결재 양식 들어오는 곳 -->		
-						<div class="loadApprDoc">
-						</div>						
+						<form id="docFormContainer" action="/saveDocument" method="post">	
+							<p>Selected Form: <%= request.getParameter("common_idx") %></p>
+							<div class="loadApprDoc">	
+							${htmlContent}				
+							</div>	
+						</form>						
 					</div>
 				<!--end::Content--> 
     			</div>
@@ -113,24 +99,201 @@
 			<!--end::Page-->
 		</div>
 		<!--end::Root-->
+		
+		<!--begin::modal-->
+		<!-- 결재정보 모달 -->
+		<div class="modal fade" tabindex="-1" id="kt_modal_1" role="dialog">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title">결재정보</h3>
+						<!--begin::Close-->
+						<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+							<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+						</div>
+						<!--end::Close-->
+					</div>
+
+					<div class="modal-body">
+						<div class="d-flex flex-row h-600px border">
+							<!-- 왼쪽 div -->
+							<div class="emptree border" style="max-height: 600px; overflow-y: auto; overflow-x: hidden; margin: 5px;" >
+								<div class="d-flex flex-column flex-row-fluid w-350px justify-content-between" style="align-items: center; margin: 5px;">
+									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 5px 0px; width: 100%;">
+										<span class="text-center">조 직 도</span>						
+									</div>
+								</div>
+								<div style="margin: 10px;">
+									<input type="text" id="empName" placeholder="사원명을 입력하세요"/>
+									<button onclick="empSearch()">검색</button>	
+								</div>
+								<div class="d-flex flex-column-fluid scroll px-5" style="max-height: 400px; overflow-y: auto;">
+									<div class="text-black" id="kt_docs_jstree_basic"></div>
+								</div>
+								<div style="position: absolute; bottom: 40px; text-align: center; left: 15%;">
+									<button id="addline" onclick="addApprovalLine()">결재선 추가</button>
+									<button id="addrecv" onclick="addReceiver()">수신자 추가</button>
+								</div>
+							</div>		
+
+							<!-- 오른쪽 div -->
+							<div class="d-flex flex-column flex-row-fluid w-350px justify-content-between">
+								<div class="apprlineSec border" style="align-items: center; margin: 5px;">
+									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
+										<span class="text-center">결 재 선</span>
+									</div>
+									<div class="apprline d-flex flex-column scroll" id="apprline" style="height: 250px;">
+										<div style="overflow: auto;">
+											<table class="w-100">
+												<thead>
+													<tr>
+														<th>결재타입</th>
+														<th>이름</th>
+														<th>직책</th>
+														<th>부서</th>
+													</tr>
+												</thead>
+												<tbody>											
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+
+								<div class="apprreceiver border"  style="align-items: center; margin: 5px;">
+									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
+										<span class="text-center">수 신 자</span>
+									</div>										
+									<div class="d-flex flex-column receiver scroll" id="receiver" style="height: 200px;">
+										<div style="overflow: auto;">
+											<table class="w-100">
+												<thead>
+													<tr>
+														<th>이름</th>
+														<th>직책</th>
+														<th>부서</th>
+													</tr>
+												</thead>
+												<tbody>														
+												</tbody>
+											</table>
+										</div>										
+									</div>
+								</div>
+							</div>
+						</div>											
+					</div>
+
+					<div class="modal-footer" style="display: flex; justify-content: center;">
+						<button type="button" class="btn btn-primary">저장</button>
+					</div>
+				</div>
+			</div>
+		</div>
 								
 		<!--begin::Javascript-->
-		<script>var hostUrl = "resource/assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="resource/assets/js/scripts.bundle.js"></script>
+		<script src="<c:url value='/resource/assets/plugins/global/plugins.bundle.js' />"></script>
+		<script src="<c:url value='/resource/assets/js/scripts.bundle.js' />"></script>		
 		<!--end::Global Javascript Bundle-->
-		<!--CKEditor Build Bundles:: Only include the relevant bundles accordingly-->
-		<script src="resource/assets/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/ckeditor/ckeditor-inline.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/ckeditor/ckeditor-balloon.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/ckeditor/ckeditor-balloon-block.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/ckeditor/ckeditor-document.bundle.js"></script>
-		
+		<script src="<c:url value='/resource/assets/plugins/custom/jstree/jstree.bundle.js' />"></script>
+	
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
 	<script>
+	$(document).ready(function () {
+    	
+    	 // 결재회수 버튼 클릭 시의 동작
+        $('#btnApprRetrieve').on('click', function () {
+            // 여기에 결재회수 버튼 클릭 시 수행할 동작 추가
+            console.log('결재회수 버튼 클릭');
+        });
+                
+     	// 결재정보 버튼 클릭 시의 동작
+        $('#btnApprInfo').on('click', function () {
+            // 여기에 임시저장 버튼 클릭 시 수행할 동작 추가
+            console.log('임시저장 버튼 클릭');
+            var myModal1 = new bootstrap.Modal(document.getElementById('kt_modal_1'), {
+                backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
+                keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
+            });
+            myModal1.show();
+        });
 
+        // 뒤로가기 버튼 클릭 시의 동작
+        $('#btnGoBack').on('click', function () {
+        	window.location.href = '/myApproval';                    
+        });
+        
+        $('#kt_modal_1').on('shown.bs.modal', function(){
+			getTreeData();
+		})
+        
+    });
+		
+	
+	function getTreeData(){
+		$.ajax({
+			url:'/organizationChart.ajax',
+			method:'GET',
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				jsTreeData = data.treeData;
+				jsTree(data.treeData);
+			},error: function(error){
+				console.log(error);
+			}
+		})
+	}
+	
+	function jsTree(treeData){
+		$('#kt_docs_jstree_basic').jstree({
+			"core" : {
+				"data" : treeData,
+				"themes" : {
+					"responsive": true
+				}
+			},
+			"types" : {
+				  "department": {
+					    "icon": "fa fa-building" // 부서 아이콘
+				  },
+				  "employee": {
+				    "icon": "fa fa-user", // 직원 아이콘
+				    "selectable": true // 선택 가능하도록 설정
+				  }
+			},
+			"plugins": ["types","search"]
+			,
+			"search":{
+				/* "show_only_matches" : true,  */
+				"show_only_matches_children" : true
+			}
+		});
+	}
+
+	function empSearch() {
+		console.log("검색");
+		$('#kt_docs_jstree_basic').jstree(true).search($('#empName').val());
+	}
+
+	//이벤트
+	$('#kt_docs_jstree_basic').on("changed.jstree", function (e, data) {
+		console.log("changed 했을 때", data.selected);
+	});
+
+	// Node 열렸을 때
+	let isAdded = false;
+	$('#kt_docs_jstree_basic').on("open_node.jstree", function (e, data) {
+		console.log("open되었을때", data.node);
+	});
+
+	// Node 선택했을 때
+	$('#kt_docs_jstree_basic').on("select_node.jstree", function (e, data) {
+		console.log("select했을때", data.node);
+	});
+	
 	</script>
 </html>
