@@ -21,4 +21,97 @@
 		INSERT INTO education(emp_idx, education, school_name, major, reg_by)
 		VALUES(#{empIdx}, #{education}, #{schoolName}, #{major}, '관리자1')
 	</insert>
+	
+	<select id="employeeInfo" resultType="com.ustore.employee.dto.EmployeeDto">
+		SELECT 
+		    e.emp_idx,
+		    e.emp_email,
+		    e.emp_ext_no,
+		    e.emp_emergency_phone,
+		    e.emp_phone,
+		    e.emp_join_date,
+		    e.emp_birth,
+		    e.emp_gender,
+		    e.emp_zipcode,
+		    e.emp_roadAddr,
+		    e.emp_detailAddr,
+		    e.emp_name,
+		    e.reg_date,    
+		    e.emp_quit,
+		    e.emp_quit_date,
+		    u.education,
+		    u.school_name,
+		    u.major ,
+		    d.dept_name,
+    		c.common_type AS positionType,
+		    SUM(COALESCE(al.leave_incdec, 0)) AS leave_incdec
+		FROM 
+		    employee e
+		INNER JOIN
+		    department d ON e.dept_id = d.dept_id
+		INNER JOIN
+		common c ON e.position = c.common_idx
+		LEFT JOIN 
+		education u ON e.emp_idx = u.emp_idx 
+		LEFT JOIN 
+		annual_leave al ON e.emp_idx = al.emp_idx
+		WHERE
+		    d.dept_name = #{dept_name}
+		    AND c.common_type = #{common_type}
+		    AND e.emp_name = #{emp_name}
+		   GROUP BY
+		    e.emp_idx, 
+		    e.emp_email, 
+		    e.emp_ext_no,
+		    e.emp_emergency_phone, 
+		    e.emp_phone,
+		    e.emp_join_date,
+		    e.emp_birth,
+		    e.emp_gender,
+		    e.emp_zipcode, 
+		    e.emp_roadAddr, 
+		    e.emp_detailAddr, 
+		    e.emp_name,
+		    e.reg_date, 
+		    e.emp_quit,
+		    e.emp_quit_date,
+		    u.education, 
+		    u.school_name, 
+		    u.major,
+		    d.dept_name,
+    		c.common_type;
+	</select>
+	
+	<!-- 직원 업데이트 Emp 테이블 -->
+	<update id="empModifyEmp">
+		UPDATE employee e 
+	  	SET 
+		   	e.emp_birth = #{emp_birth},
+		   	e.emp_phone = #{emp_phone},
+		   	e.emp_emergency_phone = #{emp_emergency_phone},
+		  	e.emp_ext_no =#{emp_ext_no},
+		  	e.`position` = (SELECT common_idx FROM common WHERE common_type= #{common_type}),
+		   	e.dept_id = (SELECT dept_id FROM department WHERE dept_name=#{dept_name})
+	   	WHERE 
+	   		e.emp_idx =#{emp_idx}
+	</update>
+	<!-- 직원 학력 보유 여부 -->
+	<select id="selectEdu" resultType="map">
+		SELECT * FROM education WHERE emp_idx=#{emp_idx}
+	</select>
+	<!-- 직원 학력 업데이트 -->
+	<update id="empModEduUpdate">
+		UPDATE education u
+		SET
+			u.education =#{education},
+			u.school_name =#{school_name},
+			u.major =#{major}
+		WHERE 
+			u.emp_idx =#{emp_idx}
+	</update>
+	<!-- 직원 학력 추가 -->
+	<insert id="empModEduInsert">
+	    INSERT INTO education (emp_idx, education, school_name, major)
+	    VALUES (#{emp_idx}, #{education}, #{school_name}, #{major})
+	</insert>
 </mapper>

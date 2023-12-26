@@ -2,6 +2,9 @@ package com.ustore.employee.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,13 +45,13 @@ public class GroupManageService {
 		if(!maxYear.equals(enterYear)) {
 			maxYear = enterYear;
 		}else if(maxYear.equals(enterYear)&&(maxEmpIdx!=null || maxEmpIdx!="")){
-			nextIdx = maxEmpIdx.substring(3);
+			nextIdx = maxEmpIdx.substring(4);
 			nextIdx = String.format("%04d", Integer.parseInt(nextIdx)+1);			
 		}
 		
 		empId = maxYear + nextIdx;
 		employee.setEmpIdx(empId);
-		
+		logger.info(empId);
 		int positionCode = PositionEnum.findDefindCode(employee.getPositionType());
 		employee.setPosition(positionCode);
 		
@@ -64,6 +67,21 @@ public class GroupManageService {
 			return true;
 		}
 		return false;
+	}
+
+	public ArrayList<EmployeeDto> employeeInfo(HashMap<String, String> params) {
+		ArrayList<EmployeeDto> list = groupManageDao.employeeInfo(params);
+		return list;
+	}
+
+	public void empModify(HashMap<String, String> params) {
+		groupManageDao.empModifyEmp(params);
+		//Map<String, Object>map = groupManageDao.selectEdu(params);
+		//if(map != null) {
+			//groupManageDao.empModEduUpdate(params);
+		//}else {
+			//groupManageDao.empModEduInsert(params);
+		//}
 	}
 	
 }
