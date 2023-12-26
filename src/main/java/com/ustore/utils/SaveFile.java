@@ -34,7 +34,7 @@ public class SaveFile {
 	 * @param connIdx : 파일 연결 번호
 	 * @return FileDto객체 리스트 반환
 	 */
-	public List<FileDto> returnFileList(MultipartFile[] files, String fileType, String connIdx){
+	public List<FileDto> returnFileList(MultipartFile[] files, int fileType, String connIdx){
 		List<FileDto> fileList = null;
 		if(files == null) {
 			throw new NullPointerException();
@@ -77,7 +77,7 @@ public class SaveFile {
 	 * @param connIdx : 파일 연결 번호
 	 * @return FileDto객체 반환
 	 */
-	public FileDto returnFileList(MultipartFile file, String fileType, String connIdx){
+	public FileDto returnFileList(MultipartFile file, int fileType, String connIdx){
 		FileDto fileDto = null;
 		if(file == null) {
 			throw new NullPointerException();
