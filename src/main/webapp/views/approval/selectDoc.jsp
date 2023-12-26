@@ -4,7 +4,7 @@
 <html lang="ko">
 <!--begin::Head-->
 <head>
-	<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+	<title>UStore</title>
 	<meta charset="utf-8" />
 	<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 	<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
@@ -96,7 +96,7 @@
 												<td class="d-flex align-items-center">											
 													<!--begin::User details-->
 													<div class="d-flex flex-column">
-														<a href="apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">일반기안문</a>
+														<a href="#" onclick="selectForm(30, '일반기안문')" class="text-gray-800 text-hover-primary mb-1">일반기안문</a>
 													</div>
 													<!--begin::User details-->
 												</td>										
@@ -109,7 +109,7 @@
 												<td class="d-flex align-items-center">											
 													<!--begin::User details-->
 													<div class="d-flex flex-column">
-														<a href="apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">대금지급결의서</a>
+														<a href="#" onclick="selectForm(31, '대금지급결의서')" class="text-gray-800 text-hover-primary mb-1">대금지급결의서</a>
 													</div>
 													<!--begin::User details-->
 												</td>										
@@ -122,7 +122,7 @@
 												<td class="d-flex align-items-center">											
 													<!--begin::User details-->
 													<div class="d-flex flex-column">
-														<a href="apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">휴가신청서</a>
+														<a href="#" onclick="selectForm(32, '휴가신청서')" class="text-gray-800 text-hover-primary mb-1">휴가신청서</a>
 													</div>
 													<!--begin::User details-->
 												</td>										
@@ -160,12 +160,42 @@
 </body>
 <!--end::Body-->
 <script>
-function selectDocumentForm() {
-    // 선택한 양식의 파일명
-    var selectedForm = $("#formSelector").val() + ".html";
+	var selectedForm = {
+        common_idx: 0,
+        name: ""
+    };
 
-    // 선택한 양식에 맞춰 페이지 이동
-    window.location.href = "document_creation_page.html?form=" + selectedForm;
-}
+    // 양식 선택 함수
+    function selectForm(common_idx, name) {
+    	selectedForm.common_idx = common_idx;
+        selectedForm.name = name;
+        
+
+        // 여기에서 선택한 양식 정보를 서버로 전송하거나 필요한 동작을 수행할 수 있음
+
+        // 동적으로 페이지 로드
+        loadFormPage(common_idx);
+    }
+
+    // 페이지 동적으로 로드 함수
+    /* function loadFormPage(common_idx) {
+        // Ajax를 사용하여 선택한 양식에 해당하는 페이지를 서버에서 가져와 동적으로 로드
+        $.ajax({
+            type: 'GET',
+            url: '/write', // 서버의 페이지 로드 엔드포인트
+            data: { common_idx: common_idx },
+            success: function(response) {
+                // 페이지를 로드한 후에 양식을 표시하거나 추가 동작 수행
+                $('.loadApprDoc').html(response);
+            },
+            error: function(error) {
+                console.error('페이지 로드 중 오류가 발생했습니다.');
+            }
+        });
+    } */
+    function loadFormPage(common_idx) {
+        // URL을 변경하여 페이지 이동
+        window.location.href = '/write?common_idx=' + common_idx;
+    }
 </script>
 </html>

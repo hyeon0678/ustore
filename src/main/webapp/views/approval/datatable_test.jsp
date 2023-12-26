@@ -2,8 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 
-
-
 <!-- 버튼을 클릭하면 ajax방식으로 리스트를 요청하게 됩니다.
 		리스트 요청이 보내지면 컨트롤러에서 값을 가져오게 되고
 		가져온 리스트 정보를 drawList로 값을 넘겨주어 저희가 평소에 하던
@@ -15,17 +13,6 @@
 		이 와야됩니다.
 		이해가 안되신다면 아래 스크립트 부분으로 가시면 확인하실 수 있습니다.
  -->
-
-
-
-
-
-
-
-
-
-
-
 
 <html lang="ko">
 	<!--begin::Head-->
