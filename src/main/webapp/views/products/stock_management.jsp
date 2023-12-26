@@ -27,6 +27,7 @@
 				<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 				<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 				<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+				<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
 				<!--end::Global Stylesheets Bundle-->
 				<script>
 					// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }
@@ -82,7 +83,7 @@
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
 					<!--================================메인 내용들어가는부분================================================-->
-						
+					
 
 					<!--begin::Post-->
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
@@ -99,7 +100,7 @@
 											<i
 												class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
 												<span class="path1"></span> <span class="path2"></span>
-											</i> <input type="text" data-kt-ecommerce-category-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Category" />
+											</i> <input type="text" data-kt-ecommerce-category-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="내용을 입력 해주세요." />
 											</div>
 											<!--end::Search-->
 										</div>
@@ -122,7 +123,7 @@
                 </div>
                 <!--end::Close-->
             </div>
-<form action="aditem" method="get">
+<form action="stock/stock_management/insert" method="post">
             <div class="modal-body">
                 <h2>물품 항목 추가</h2>
                 	<div class="table-responsive">
@@ -132,43 +133,43 @@
 			<tr class="fw-semibold fs-6 text-gray-800 border	-bottom-2 border-gray-200">
 			
 				<td>물품명</td>
-				<td colspan="2"><Input type = "text" name="itemName"/></td>
+				<td colspan="2"><Input type = "text" name="product_name"/></td>
 		
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td>분류</td>
-				<td>대분류<select class="form-select form-select-solid" data-control="select2" data-placeholder="생필품" data-hide-search="true" name="Bselect">
-    <option></option>
-    <option value="1">Option 1</option>
-    <option value="2">Option 2</option>
-    
-</select></td>
-				<td>중분류<select class="form-select form-select-solid" data-control="select2" data-placeholder="생활 잡화" data-hide-search="true"name="Sselect">
-    <option></option>
-    <option value="1">Option 1</option>
-    <option value="2">Option 2</option>
-   
-    
-</select></td>
+<td>대분류
+    <select class="form-select form-select-solid" data-control="select2" data-placeholder="생필품" data-hide-search="true" name="Bselect" id="Bselect">
+        <option></option>
+        <option value="식품">식품</option>
+        <option value="생필품">생필품</option>
+        <option value="전자제품">전자제품</option>
+    </select>
+</td>
+<td>중분류
+    <select class="form-select form-select-solid" data-control="select2" data-placeholder="생활 잡화" data-hide-search="true" name="category_id" id="Sselect">
+        <option></option>
+    </select>
+</td>
 
 			
 			</tr>
 
 				<tr>
 				<td>단위(파렛트)</td>
-				<td colspan="2"><input type  ="text" name="cols"/></td>
+				<td colspan="2"><input type  ="text" name="unit_quantity"/></td>
 			</tr>
 				<tr>
 				<td>단가(낱개)</td>
-				<td colspan="2"><input type  ="text" name="price"/></td>
+				<td colspan="2"><input type  ="text" name="purchase_price"/></td>
 		
 			
 			
 			<tr>
 				<td>판매가</td>
-				<td colspan="2"><input type  ="text"  name="diPrice"/></td>
+				<td colspan="2"><input type  ="text"  name="selling_price"/></td>
 				
 			
 			</tr>
@@ -210,21 +211,21 @@
 												</tr>
 											</thead>
 											<tbody class="fw-semibold text-gray-600">
+											<c:forEach items="${list}" var="stock">
 												<tr>
 													<td>
-														10203012
-													
+														${stock.product_id}
 													</td>
 													<td>
 														<div class="d-flex">
 															
-															<a href="views/products/stock_detail.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">코카콜라</a>
+															<a href="views/products/stock_detail.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">${stock.product_name}</a>
 												
 														</div>
 													</div>
 													</td>
 													<td>
-														10/878
+														${stock.stock}
 													</td>
 													
 													<td class="text-end">
@@ -246,476 +247,8 @@
 														<!--end::Menu-->
 													</td>
 												</tr>
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td>
-														<div class="d-flex">
-															<!--begin::Thumbnail-->
-															<a href="apps/ecommerce/catalog/edit-category.jsp" class="symbol symbol-50px">
-																<span class="symbol-label" style="background-image:url(resource/assets/media//stock/ecommerce/71.png);"></span>
-															</a>
-															<!--end::Thumbnail-->
-															<div class="ms-5">
-																<!--begin::Title-->
-																<a href="apps/ecommerce/catalog/edit-category.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">Watches</a>
-																<!--end::Title-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7 fw-bold">Our range of watches are perfect whether you’re looking to upgrade</div>
-																<!--end::Description-->
-															</div>
-														</div>
-													</td>
-													<td>
-														<!--begin::Badges-->
-														<div class="badge badge-light-success">Automated</div>
-														<!--end::Badges-->
-													</td>
-													<td class="text-end">
-														<a href="#" class="btn btn-sm btn-light btn-active-light-primary btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
-														<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="apps/ecommerce/catalog/add-category.jsp" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-ecommerce-category-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td>
-														<div class="d-flex">
-															<!--begin::Thumbnail-->
-															<a href="apps/ecommerce/catalog/edit-category.jsp" class="symbol symbol-50px">
-																<span class="symbol-label" style="background-image:url(resource/assets/media//stock/ecommerce/58.png);"></span>
-															</a>
-															<!--end::Thumbnail-->
-															<div class="ms-5">
-																<!--begin::Title-->
-																<a href="apps/ecommerce/catalog/edit-category.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">Headphones</a>
-																<!--end::Title-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7 fw-bold">Our big range of headphones makes it easy to upgrade your device at a great price.</div>
-																<!--end::Description-->
-															</div>
-														</div>
-													</td>
-													<td>
-														<!--begin::Badges-->
-														<div class="badge badge-light-primary">Manual</div>
-														<!--end::Badges-->
-													</td>
-													<td class="text-end">
-														<a href="#" class="btn btn-sm btn-light btn-active-light-primary btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
-														<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="apps/ecommerce/catalog/add-category.jsp" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-ecommerce-category-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td>
-														<div class="d-flex">
-															<!--begin::Thumbnail-->
-															<a href="apps/ecommerce/catalog/edit-category.jsp" class="symbol symbol-50px">
-																<span class="symbol-label" style="background-image:url(resource/assets/media//stock/ecommerce/52.png);"></span>
-															</a>
-															<!--end::Thumbnail-->
-															<div class="ms-5">
-																<!--begin::Title-->
-																<a href="apps/ecommerce/catalog/edit-category.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">Footwear</a>
-																<!--end::Title-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7 fw-bold">Whatever your activity needs are, we’ve got you covered.</div>
-																<!--end::Description-->
-															</div>
-														</div>
-													</td>
-													<td>
-														<!--begin::Badges-->
-														<div class="badge badge-light-success">Automated</div>
-														<!--end::Badges-->
-													</td>
-													<td class="text-end">
-														<a href="#" class="btn btn-sm btn-light btn-active-light-primary btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
-														<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="apps/ecommerce/catalog/add-category.jsp" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-ecommerce-category-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td>
-														<div class="d-flex">
-															<!--begin::Thumbnail-->
-															<a href="apps/ecommerce/catalog/edit-category.jsp" class="symbol symbol-50px">
-																<span class="symbol-label" style="background-image:url(resource/assets/media//stock/ecommerce/76.png);"></span>
-															</a>
-															<!--end::Thumbnail-->
-															<div class="ms-5">
-																<!--begin::Title-->
-																<a href="apps/ecommerce/catalog/edit-category.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">Cameras</a>
-																<!--end::Title-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7 fw-bold">You’ll find exactly what you’re looking for with our huge range of cameras.</div>
-																<!--end::Description-->
-															</div>
-														</div>
-													</td>
-													<td>
-														<!--begin::Badges-->
-														<div class="badge badge-light-primary">Manual</div>
-														<!--end::Badges-->
-													</td>
-													<td class="text-end">
-														<a href="#" class="btn btn-sm btn-light btn-active-light-primary btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
-														<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="apps/ecommerce/catalog/add-category.jsp" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-ecommerce-category-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td>
-														<div class="d-flex">
-															<!--begin::Thumbnail-->
-															<a href="apps/ecommerce/catalog/edit-category.jsp" class="symbol symbol-50px">
-																<span class="symbol-label" style="background-image:url(resource/assets/media//stock/ecommerce/207.png);"></span>
-															</a>
-															<!--end::Thumbnail-->
-															<div class="ms-5">
-																<!--begin::Title-->
-																<a href="apps/ecommerce/catalog/edit-category.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">Shirts</a>
-																<!--end::Title-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7 fw-bold">Any occasion, any time, we have everything you'll ever need.</div>
-																<!--end::Description-->
-															</div>
-														</div>
-													</td>
-													<td>
-														<!--begin::Badges-->
-														<div class="badge badge-light-success">Automated</div>
-														<!--end::Badges-->
-													</td>
-													<td class="text-end">
-														<a href="#" class="btn btn-sm btn-light btn-active-light-primary btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
-														<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="apps/ecommerce/catalog/add-category.jsp" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-ecommerce-category-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td>
-														<div class="d-flex">
-															<!--begin::Thumbnail-->
-															<a href="apps/ecommerce/catalog/edit-category.jsp" class="symbol symbol-50px">
-																<span class="symbol-label" style="background-image:url(resource/assets/media//stock/ecommerce/50.png);"></span>
-															</a>
-															<!--end::Thumbnail-->
-															<div class="ms-5">
-																<!--begin::Title-->
-																<a href="apps/ecommerce/catalog/edit-category.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">Household</a>
-																<!--end::Title-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7 fw-bold">Spice up your home decor with our wide selection.</div>
-																<!--end::Description-->
-															</div>
-														</div>
-													</td>
-													<td>
-														<!--begin::Badges-->
-														<div class="badge badge-light-primary">Manual</div>
-														<!--end::Badges-->
-													</td>
-													<td class="text-end">
-														<a href="#" class="btn btn-sm btn-light btn-active-light-primary btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
-														<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="apps/ecommerce/catalog/add-category.jsp" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-ecommerce-category-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td>
-														<div class="d-flex">
-															<!--begin::Thumbnail-->
-															<a href="apps/ecommerce/catalog/edit-category.jsp" class="symbol symbol-50px">
-																<span class="symbol-label" style="background-image:url(resource/assets/media//stock/ecommerce/193.png);"></span>
-															</a>
-															<!--end::Thumbnail-->
-															<div class="ms-5">
-																<!--begin::Title-->
-																<a href="apps/ecommerce/catalog/edit-category.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">Toys</a>
-																<!--end::Title-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7 fw-bold">Get the perfect gift for the little ones.</div>
-																<!--end::Description-->
-															</div>
-														</div>
-													</td>
-													<td>
-														<!--begin::Badges-->
-														<div class="badge badge-light-success">Automated</div>
-														<!--end::Badges-->
-													</td>
-													<td class="text-end">
-														<a href="#" class="btn btn-sm btn-light btn-active-light-primary btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
-														<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="apps/ecommerce/catalog/add-category.jsp" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-ecommerce-category-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td>
-														<div class="d-flex">
-															<!--begin::Thumbnail-->
-															<a href="apps/ecommerce/catalog/edit-category.jsp" class="symbol symbol-50px">
-																<span class="symbol-label" style="background-image:url(resource/assets/media//stock/ecommerce/169.png);"></span>
-															</a>
-															<!--end::Thumbnail-->
-															<div class="ms-5">
-																<!--begin::Title-->
-																<a href="apps/ecommerce/catalog/edit-category.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">Handbags</a>
-																<!--end::Title-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7 fw-bold">Great fashion, great selections, great prices</div>
-																<!--end::Description-->
-															</div>
-														</div>
-													</td>
-													<td>
-														<!--begin::Badges-->
-														<div class="badge badge-light-primary">Manual</div>
-														<!--end::Badges-->
-													</td>
-													<td class="text-end">
-														<a href="#" class="btn btn-sm btn-light btn-active-light-primary btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
-														<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="apps/ecommerce/catalog/add-category.jsp" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-ecommerce-category-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td>
-														<div class="d-flex">
-															<!--begin::Thumbnail-->
-															<a href="apps/ecommerce/catalog/edit-category.jsp" class="symbol symbol-50px">
-																<span class="symbol-label" style="background-image:url(resource/assets/media//stock/ecommerce/177.png);"></span>
-															</a>
-															<!--end::Thumbnail-->
-															<div class="ms-5">
-																<!--begin::Title-->
-																<a href="apps/ecommerce/catalog/edit-category.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">Wines</a>
-																<!--end::Title-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7 fw-bold">Great taste, great selections, great prices</div>
-																<!--end::Description-->
-															</div>
-														</div>
-													</td>
-													<td>
-														<!--begin::Badges-->
-														<div class="badge badge-light-success">Automated</div>
-														<!--end::Badges-->
-													</td>
-													<td class="text-end">
-														<a href="#" class="btn btn-sm btn-light btn-active-light-primary btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
-														<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="apps/ecommerce/catalog/add-category.jsp" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-ecommerce-category-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-												</tr>
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td>
-														<div class="d-flex">
-															<!--begin::Thumbnail-->
-															<a href="apps/ecommerce/catalog/edit-category.jsp" class="symbol symbol-50px">
-																<span class="symbol-label" style="background-image:url(resource/assets/media//stock/ecommerce/151.png);"></span>
-															</a>
-															<!--end::Thumbnail-->
-															<div class="ms-5">
-																<!--begin::Title-->
-																<a href="apps/ecommerce/catalog/edit-category.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">Sandals</a>
-																<!--end::Title-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7 fw-bold">In season summer footwear with a huge range of options</div>
-																<!--end::Description-->
-															</div>
-														</div>
-													</td>
-													<td>
-														<!--begin::Badges-->
-														<div class="badge badge-light-success">Automated</div>
-														<!--end::Badges-->
-													</td>
-													<td class="text-end">
-														<a href="#" class="btn btn-sm btn-light btn-active-light-primary btn-flex btn-center" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
-														<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-														<!--begin::Menu-->
-														<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="apps/ecommerce/catalog/add-category.jsp" class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-ecommerce-category-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div>
-														<!--end::Menu-->
-													</td>
-												</tr>
+												</c:forEach>
+												
 											</tbody>
 											<!--end::Table body-->
 										</table>
@@ -765,6 +298,36 @@
 		<script src="resource/assets/js/custom/utilities/modals/users-search.js"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
+		
+		
+		<script>
+    $(document).ready(function() {
+        // 대분류 선택이 변경될 때 이벤트 처리
+        $("#Bselect").change(function() {
+            // 선택한 대분류 값 가져오기
+            var selectedCategory = $(this).val();
+
+            // 중분류 선택 옵션 초기화
+            $("#Sselect").empty();
+
+            // 선택한 대분류에 따라 중분류 옵션 추가
+            if (selectedCategory === "식품") {
+                $("#Sselect").append('<option value="1">주류</option>');
+                $("#Sselect").append('<option value="2">가공</option>');
+                $("#Sselect").append('<option value="3">신선</option>');
+            } else if (selectedCategory === "생필품") {
+                $("#Sselect").append('<option value="4">주방</option>');
+                $("#Sselect").append('<option value="5">청소</option>');
+                $("#Sselect").append('<option value="6">생활잡화</option>');
+            } else if (selectedCategory === "전자제품") {
+            	 $("#Sselect").append('<option value="7">가전</option>');
+                 $("#Sselect").append('<option value="8">컴퓨터</option>');
+                 $("#Sselect").append('<option value="9">디지털</option>');
+            }
+        });
+    });
+</script>
+		
 	</body>
 	<!--end::Body-->
 </html>

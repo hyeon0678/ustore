@@ -13,11 +13,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.ustore.main.dao.EmployeeUserDao;
+import com.ustore.main.dto.EmployeeRoleDto;
+import com.ustore.main.dto.EmployeeUserDto;
+
 @Service
 public class CustomUserdetailsService implements UserDetailsService{
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
-	UserDbService userDbService;
+	EmployeeUserDao userDbService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -30,15 +34,15 @@ public class CustomUserdetailsService implements UserDetailsService{
 		customUserDetails.setUsername(customUser.getEmpIdx());
 		customUserDetails.setPassword(customUser.getEmpPw());
 		
-		List<EmployeeRoleDto> customRoles = userDbService.getUserRoles(username);
-		
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		if(customRoles != null) {
-			for(EmployeeRoleDto role : customRoles) {
-				authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-			}
-		}
-			
+//		List<EmployeeRoleDto> customRoles = userDbService.getUserRoles(username);
+//		
+//		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+//		if(customRoles != null) {
+//			for(EmployeeRoleDto role : customRoles) {
+//				authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+//			}
+//		}
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();	
 		
 		// CustomUserDetails객체에 권한 목록 (authorities)를 설정한다.
         customUserDetails.setAuthorities(authorities);

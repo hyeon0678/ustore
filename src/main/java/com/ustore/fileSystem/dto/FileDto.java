@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Alias("FileDto")
 public class FileDto {
 	private String fileIdx;
-	private String fileType;
+	private int fileType;
 	private String fileName;
 	private String newFileName;
 	private int connIdx;
@@ -26,10 +26,10 @@ public class FileDto {
 	public void setFileIdx(String fileIdx) {
 		this.fileIdx = fileIdx;
 	}
-	public String getFileType() {
+	public int getFileType() {
 		return fileType;
 	}
-	public void setFileType(String fileType) {
+	public void setFileType(int fileType) {
 		this.fileType = fileType;
 	}
 	public String getFileName() {

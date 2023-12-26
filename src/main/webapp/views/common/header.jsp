@@ -2,31 +2,15 @@
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
-<!--
-Author: Keenthemes
-Product Name: Craft 
-Product Version: 1.1.4
-Purchase: https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme
-Website: http://www.keenthemes.com
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-License: For each use you must have a valid license purchased only from above link in order to legally use the theme for your project.
--->
-<html lang="en">
+<html lang="ko">
 	<!--begin::Head-->
+	<base href="../../" />
 	<head>
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+		<title></title>
 		<meta charset="utf-8" />
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta property="og:locale" content="en_US" />
-		<meta property="og:type" content="article" />
-		<meta property="og:title" content="Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes" />
-		<meta property="og:url" content="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" />
-		<meta property="og:site_name" content="Craft by Keenthemes" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />		
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
 		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
 		<!--begin::Fonts(mandatory for all pages)-->
@@ -53,10 +37,6 @@ License: For each use you must have a valid license purchased only from above li
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
-				<!--begin::Aside-->
-				<div >
-			    </div>
-				<!--end::Aside-->
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Header-->
@@ -135,45 +115,117 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin::Chat-->
 									<div class="d-flex align-items-center ms-1 ms-lg-2">
 										<!--begin::Menu wrapper-->
-										<div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px position-relative" id="kt_drawer_chat_toggle">
-											<img src="resource/assets/media/icons/duotune/communication/com007.svg" class="ki-duotone ki-message-text-2 fs-1"/>
-											
+										<div class="btn btn-icon w-30px h-30px w-md-40px h-md-40px position-relative" id="kt_drawer_chat_toggle">
+											<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/craft/docs/core/html/src/media/icons/duotune/communication/com007.svg-->
+											<span class="svg-icon svg-icon-2x svg-icon-white"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path opacity="0.3" d="M8 8C8 7.4 8.4 7 9 7H16V3C16 2.4 15.6 2 15 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H5V16.1C5 16.8 5.79999 17.1 6.29999 16.6L8 14.9V8Z" fill="currentColor"/>
+											<path d="M22 8V18C22 18.6 21.6 19 21 19H19V21.1C19 21.8 18.2 22.1 17.7 21.6L15 18.9H9C8.4 18.9 8 18.5 8 17.9V7.90002C8 7.30002 8.4 6.90002 9 6.90002H21C21.6 7.00002 22 7.4 22 8ZM19 11C19 10.4 18.6 10 18 10H12C11.4 10 11 10.4 11 11C11 11.6 11.4 12 12 12H18C18.6 12 19 11.6 19 11ZM17 15C17 14.4 16.6 14 16 14H12C11.4 14 11 14.4 11 15C11 15.6 11.4 16 12 16H16C16.6 16 17 15.6 17 15Z" fill="currentColor"/>
+											</svg>
+											</span>
+											<!--end::Svg Icon-->											
 											<span class="bullet bullet-dot bg-success h-6px w-6px position-absolute translate-middle top-0 start-50 animation-blink"></span>
 										</div>
 										<!--end::Menu wrapper-->
 									</div>
 									<!--end::Chat-->
+									<!--====================================================================헤더 알림 모달 ============================================================================-->
 									<!--begin::Notifications-->
 									<div class="d-flex align-items-center ms-1 ms-lg-2">
 										<!--begin::Menu wrapper-->
-										<div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-											<img src="resource/assets/media/icons/duotune/general/gen007.svg" class="ki-duotone ki-element-11 fs-1"/>
+										<div class="btn btn-icon w-30px h-30px w-md-40px h-md-40px"
+											data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+											data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+											<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/craft/docs/core/html/src/media/icons/duotune/general/gen007.svg-->
+											<span class="svg-icon svg-icon-2x svg-icon-white">
+												<svg width="24"	height="24" viewBox="0 0 24 24" fill="none"
+													xmlns="http://www.w3.org/2000/svg">
+													<path opacity="0.3"
+														d="M12 22C13.6569 22 15 20.6569 15 19C15 17.3431 13.6569 16 12 16C10.3431 16 9 17.3431 9 19C9 20.6569 10.3431 22 12 22Z"
+														fill="currentColor" />
+													<path
+														d="M19 15V18C19 18.6 18.6 19 18 19H6C5.4 19 5 18.6 5 18V15C6.1 15 7 14.1 7 13V10C7 7.6 8.7 5.6 11 5.1V3C11 2.4 11.4 2 12 2C12.6 2 13 2.4 13 3V5.1C15.3 5.6 17 7.6 17 10V13C17 14.1 17.9 15 19 15ZM11 10C11 9.4 11.4 9 12 9C12.6 9 13 8.6 13 8C13 7.4 12.6 7 12 7C10.3 7 9 8.3 9 10C9 10.6 9.4 11 10 11C10.6 11 11 10.6 11 10Z"
+														fill="currentColor" />
+												</svg>
+											</span>
+											<!--end::Svg Icon-->
+
 										</div>
 										<!--begin::Menu-->
-										<div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px" data-kt-menu="true" id="kt_menu_notifications">
+										<div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px"
+											data-kt-menu="true" id="kt_menu_notifications">
 											<!--begin::Heading-->
-											<div class="d-flex flex-column bgi-no-repeat rounded-top" style="background-image:url('resource/assets/media/icons/duotune/general/gen007.svg')">
+											<div class="d-flex flex-column bgi-no-repeat rounded-top"
+												style="background-color: #C6DA52;">
 												<!--begin::Title-->
-												<h3 class="text-white fw-semibold px-9 mt-10 mb-6">Notifications 
-												<span class="fs-8 opacity-75 ps-3">24 reports</span></h3>
+												<h3 class="text-white fw-semibold px-9 mt-10 mb-6">Notifications
+
+												</h3>
 												<!--end::Title-->
 												<!--begin::Tabs-->
-												<ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9">
+												<ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9 "
+													style="display: flex; justify-content: space-between; ">
 													<li class="nav-item">
-														<a class="nav-link text-white opacity-75 opacity-state-100 pb-4" data-bs-toggle="tab" href="#kt_topbar_notifications_1">Alerts</a>
+														<a class="nav-link text-white opacity-75 opacity-state-100 pb-4 active"
+															data-bs-toggle="tab"
+															href="#kt_topbar_notifications_1">Alerts</a>
 													</li>
 													<li class="nav-item">
-														<a class="nav-link text-white opacity-75 opacity-state-100 pb-4 active" data-bs-toggle="tab" href="#kt_topbar_notifications_2">Updates</a>
+														<input type="button" value="전체삭제"
+															style="color: white; background-color:#C6DA52; width: 70px; height: 30px; border: none;" />
 													</li>
-													<li class="nav-item">
-														<a class="nav-link text-white opacity-75 opacity-state-100 pb-4" data-bs-toggle="tab" href="#kt_topbar_notifications_3">Logs</a>
-													</li>
+
 												</ul>
 												<!--end::Tabs-->
 											</div>
 											<!--end::Heading-->
+											<!--begin::Tab content-->
+											<div class="tab-content">
+												<!--begin::Tab panel-->
+												<div class="tab-pane fade show active" id="kt_topbar_notifications_2"
+													role="tabpanel">
+													<!--begin::Items-->
+													<div class="scroll-y mh-325px my-5 px-8" style="height: 500px;">
+														<!--====================알림 리스트가 그려지는 시작 공간============================-->
+
+														<!--begin::Item >>> 리스트 예시 -->
+														<div class="d-flex flex-stack py-4">
+															<!--begin::Section-->
+															<div class="d-flex align-items-center">
+																<!--begin::Title-->
+																<div class="mb-0 me-2">
+																	<a href="#"
+																		class="fs-6 text-gray-800 text-hover-primary fw-bold">라면이
+																		들어오는 일정</a>
+
+																	<div class="text-gray-500 fs-7">오뚜기 라면 예정 13:00이니까
+																		준비를 해야.....</div>
+																</div>
+																<!--end::Title-->
+															</div>
+															<!--end::Section-->
+															<!--begin::Label-->
+															<div class="mb-0 me-2">
+																<span style="float: right; margin-bottom: 5px;"
+																	class="badge badge-light fs-8">X</span><br>
+																<span class="badge badge-light fs-8">YYYY.MM.DD.HH:mm</span>
+																<!--end::Label-->
+															</div>
+														</div>
+														<!--end::Item >>> 리스트 예시 끝-->
+
+
+													</div>
+													<!--end::Items-->
+
+												</div>
+												<!--end::Tab panel-->
+												<!--================================================알림 모달창 끝=================================================================-->
+
+											</div>
+											<!--end::Tab content-->
 										</div>
 										<!--end::Menu-->
+										<!--=========================================================================여기 까지 헤더 의 알림 모달??======================================================================================================-->
 										<!--end::Menu wrapper-->
 									</div>
 									<!--end::Notifications-->
@@ -181,7 +233,7 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center ms-2 ms-lg-3" id="kt_header_user_menu_toggle">
 										<!--begin::Menu wrapper-->
 										<div class="cursor-pointer symbol symbol-35px symbol-lg-35px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-											<img alt="Pic" src="resource/assets/media/avatars/300-1.jpg" />
+											<img alt="Pic" src="resource/assets/media/profil/blank.png" />
 										</div>
 										<!--begin::User account menu-->
 										<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
@@ -191,7 +243,7 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin::Avatar-->
 													<div class="symbol symbol-50px me-5">
 														<!--================================메인 프로필 이미지 경로 고쳐 주세요================================================-->
-														<img alt="Logo" src="resource/assets/media/avatars/300-1.jpg" />
+														<img alt="Logo" src="resource/assets/media/profil/blank.png" />
 													</div>
 													<!--end::Avatar-->
 													<!--begin::Username 유저의 이름과 소속-->

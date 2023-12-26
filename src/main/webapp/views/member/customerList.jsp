@@ -4,32 +4,27 @@
 <html lang="ko">
 	<!--begin::Head-->
 	<head>
+	<base href="../../" />
 		<title>USstore</title>
 		<meta charset="utf-8" />
+		
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-		<!-- jstree 링크  -->
-		<link href="assets/plugins/custom/jstree/jstree.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="src/sass/components/_variables.scss" rel="stylesheet" type="text/css" />
-		<link href="src/sass/components/buttons" rel="stylesheet" type="text/css" />
-
-		
 		
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Vendor Stylesheets(used for this page only)-->
-		<link href="assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
-		<script src="assets/plugins/global/plugins.bundle.js"></script>
+		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<style>
 			.chart-div{
 				display: flex;
@@ -57,27 +52,37 @@
 		<!--begin::Root-->
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
-			<div class="page d-flex flex-row flex-column-fluid">
+			<div class="page d-flex flex-row flex-column-fluid" style="background-color: white;">
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;"> 
+						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">Membership</h1>
+						
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
 							<div class="" style="display:flex; margin-left:11%; margin-right:10%; justify-content: space-between;">
 								<!--begin::Info-->
 								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
 									<!--begin::Title-->
-									<h1 class="text-gray-900 fw-bold my-1 fs-2">Membership</h1>
+									
 									<!--end::Title-->
 								</div>
 								<!--end::Info-->
 								<!--begin::Actions-->
-								<div style="display: flex; align-items: center;">
-									<input type="text" class="form-control form-control-solid" placeholder="내용을 입력하세요." style="width:200px; height:30px; "/>
-									<button type="button" class="btn btn-primary" style="margin: 5px;">검색</button>
+								<div style="display: flex; align-items: center; height: 30px;">
+									<!--begin::Col 드롭박스 >> 회원 상태-->
+									<div class="col-lg-8 fv-row" style="width: 150px; height: 30px; display: flex; margin: 10px;">
+										<select name="" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;"> 
+											<option  value="incus">등록된 회원</option>																	
+											<option  value="outcus">탈퇴한 회원</option>
+										</select>
+									</div>
+									<!--end::Col-->
+									<input type="text" class="form-control form-control-solid" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
+									<button type="button" class="btn btn-primary" style="margin: 10px;">검색</button>
 								</div>
 								<!--end::Actions-->
 							</div>
@@ -163,7 +168,7 @@
 										<!--begin::Table-->
 										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
 											<thead>
-												<tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+												<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
 													<th class="w-10px pe-2">														
 													</th>
 													<th class="min-w-125px">회원 번호</th>
@@ -180,7 +185,7 @@
 													<td>
 													</td>
 													<td>
-														<a href="customerdetail?idx=#{}" class="text-gray-800 text-hover-primary mb-1">201548</a>
+														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
 													</td>
 													<td>
 														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
@@ -194,7 +199,7 @@
 													<td>
 													</td>
 													<td>
-														<a href="customerdetail?idx=#{}" class="text-gray-800 text-hover-primary mb-1">201548</a>
+														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
 													</td>
 													<td>
 														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
@@ -208,7 +213,7 @@
 													<td>
 													</td>
 													<td>
-														<a href="customerdetail?idx=#{}" class="text-gray-800 text-hover-primary mb-1">201548</a>
+														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
 													</td>
 													<td>
 														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
@@ -222,7 +227,7 @@
 													<td>
 													</td>
 													<td>
-														<a href="customerdetail?idx=#{}" class="text-gray-800 text-hover-primary mb-1">201548</a>
+														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
 													</td>
 													<td>
 														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
@@ -236,7 +241,7 @@
 													<td>
 													</td>
 													<td>
-														<a href="customerdetail?idx=#{}" class="text-gray-800 text-hover-primary mb-1">201548</a>
+														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
 													</td>
 													<td>
 														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
@@ -250,7 +255,7 @@
 													<td>
 													</td>
 													<td>
-														<a href="customerdetail?idx=#{}" class="text-gray-800 text-hover-primary mb-1">201548</a>
+														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
 													</td>
 													<td>
 														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
@@ -302,6 +307,7 @@
 
 
 						
+						
 					</div>
 					<!--end::Content-->					
 					
@@ -315,65 +321,30 @@
 		<!--begin::Javascript-->
 		<script>var hostUrl = "assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="assets/plugins/global/plugins.bundle.js"></script>
-		<script src="assets/js/scripts.bundle.js"></script>
+		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		begin::Vendors Javascript(used for this page only)-->
-		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="assets/js/widgets.bundle.js"></script>
-		<script src="assets/js/custom/widgets.js"></script>
-		<script src="assets/js/custom/apps/chat/chat.js"></script>
-		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/type.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/budget.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/settings.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/team.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/targets.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/files.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/complete.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/main.js"></script>
-		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
-		<script src="assets/plugins/custom/jstree/jstree.bundle.js"></script>
+		<script src="resource/assets/js/widgets.bundle.js"></script>
+		<script src="resource/assets/js/custom/widgets.js"></script>
+		<script src="resource/assets/js/custom/apps/chat/chat.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/type.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/budget.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/settings.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/team.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/targets.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/files.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/complete.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/create-project/main.js"></script>
+		<script src="resource/assets/js/custom/utilities/modals/users-search.js"></script>
+		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
-	<script>
-		$('#kt_docs_jstree_basic').jstree({
-			"core" : {
-				"themes" : {
-					"responsive": false
-				}
-			},
-			"types" : {
-				"default" : {
-					"icon" : "ki-outline ki-folder"
-				},
-				"file" : {
-					"icon" : "ki-outline ki-file"
-				}
-			},
-			"plugins": ["types"]
-		});
-
-		$('#kt_docs_jstree_basic2').jstree({
-			"core" : {
-				"themes" : {
-					"responsive": false
-				}
-			},
-			"types" : {
-				"default" : {
-					"icon" : "ki-outline ki-folder"
-				},
-				"file" : {
-					"icon" : "ki-outline ki-file"
-				}
-			},
-			"plugins": ["types"]
-		});
-	</script>
 
 </html>

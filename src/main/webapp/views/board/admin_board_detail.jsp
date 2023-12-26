@@ -24,8 +24,10 @@
 				<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 				<!--end::Vendor Stylesheets-->
 				<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+				<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
 				<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 				<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
+				
 				
 				<!--end::Global Stylesheets Bundle-->
 				<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
@@ -107,8 +109,8 @@
 <div style="text-align: left;">조회수 : 1 </div>
 <div style="margin-right:150px;"><p>file:&nbsp; img.jpg&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (0.1mb)&nbsp;&nbsp;
 	<button type="button"  style="background-color: #C6DA52; position: absolute; width:60px; height: 20px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
-    다운로드</p></div>
-</button>
+    다운로드</button></p></div>
+
 <hr color="black" width="100%">
 
 

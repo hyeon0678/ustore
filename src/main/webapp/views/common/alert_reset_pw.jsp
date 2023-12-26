@@ -157,17 +157,9 @@ License: For each use you must have a valid license purchased only from above li
 			</div>
 			<!--end::Authentication - New password-->
 		</div>
-		<!--end::Main-->
-		<!--begin::Javascript-->
 		<script>var hostUrl = "/";</script>
-		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="/plugins/global/plugins.bundle.js"></script>
 		<script src="/js/scripts.bundle.js"></script>
-		<!--end::Global Javascript Bundle-->
-		<!--begin::Custom Javascript(used for this page only)-->
-
-		<!--end::Custom Javascript-->
-		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
 </html>

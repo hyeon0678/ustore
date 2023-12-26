@@ -2,31 +2,15 @@
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
-<!--
-Author: Keenthemes
-Product Name: Craft 
-Product Version: 1.1.4
-Purchase: https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme
-Website: http://www.keenthemes.com
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-License: For each use you must have a valid license purchased only from above link in order to legally use the theme for your project.
--->
-<html lang="en">
+<html lang="ko">
 	<!--begin::Head-->
+	<base href="../../" />
 	<head>
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+		<title></title>
 		<meta charset="utf-8" />
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta property="og:locale" content="en_US" />
-		<meta property="og:type" content="article" />
-		<meta property="og:title" content="Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes" />
-		<meta property="og:url" content="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" />
-		<meta property="og:site_name" content="Craft by Keenthemes" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
 		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
 		<!--begin::Fonts(mandatory for all pages)-->
@@ -78,7 +62,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--====================프로필 페이지 링크 달기===== 활성화 코드>> class="menu-link active"=========================-->
 									<a class="menu-link" href="index.html">
 										<span class="menu-icon">
-											<img src="resource/assets/media/icons/duotune/general/gen001.svg" class="ki-duotone ki-calendar-8 fs-2 " style="opacity:.3"/>
+											<img src="resource/assets/media/icon/side_home.svg" class="ki-duotone ki-calendar-8 fs-2 " style="opacity:.3"/>
 										</span>
 										<span class="menu-title">HOME</span>
 									</a>
@@ -91,9 +75,9 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<img src="resource/assets/media/icons/duotune/ecommerce/ecm009.svg" class="ki-duotone ki-element-11 fs-2" style="opacity:.3" />
+											<img src="resource/assets/media/icon/side_approval.svg" class="ki-duotone ki-element-11 fs-2" style="opacity:.3" />
 										</span>
-										<span class="menu-title">전자</span>
+										<span class="menu-title">전자결재</span>
 										<span class="menu-arrow"></span>
 									</span>
 									<!--end:Menu link-->
@@ -169,7 +153,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<img src="resource/assets/media/icons/duotune/communication/com002.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"/>
+											<img src="resource/assets/media/icon/side_mail.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"/>
 										</span>
 										<span class="menu-title">메일</span>
 										<span class="menu-arrow"></span>
@@ -222,7 +206,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<img src="resource/assets/media/icons/duotune/communication/com013.svg" class="ki-duotone ki-user fs-2" style="opacity:.3"/>
+											<img src="resource/assets/media/icon/side_board.svg" class="ki-duotone ki-user fs-2" style="opacity:.3"/>
 										</span>
 										<span class="menu-title">커뮤니티</span>
 										<span class="menu-arrow"></span>
@@ -264,7 +248,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin:Menu link-->
 									<a class="menu-link" href="index.html">
 										<span class="menu-icon">
-											<img src="resource/assets/media/icons/duotune/communication/com007.svg" class="ki-duotone ki-fingerprint-scanning fs-2" style="opacity:.3"/>
+											<img src="resource/assets/media/icon/side_chat.svg" class="ki-duotone ki-fingerprint-scanning fs-2" style="opacity:.3"/>
 										</span>
 										<span class="menu-title">메신저</span>
 									</a>
@@ -276,7 +260,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<img src="resource/assets/media/icons/duotune/communication/com009.svg" class="ki-duotone ki-user fs-2" style="opacity:.3"/>
+											<img src="resource/assets/media/icon/side_RM.svg" class="ki-duotone ki-user fs-2" style="opacity:.3"/>
 										</span>
 										<span class="menu-title">자원관리</span>
 										<span class="menu-arrow"></span>
@@ -318,7 +302,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<img src="resource/assets/media/icons/duotune/ecommerce/ecm001.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"/>
+											<img src="resource/assets/media/icon/side_products.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"/>
 										</span>
 										<span class="menu-title">재고/발주관리</span>
 										<span class="menu-arrow"></span>
@@ -371,7 +355,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<img src="resource/assets/media/icons/duotune/communication/com005.svg" class="ki-duotone ki-user fs-2" style="opacity:.3"/>
+											<img src="resource/assets/media/icon/side_employee.svg" class="ki-duotone ki-user fs-2" style="opacity:.3"/>
 										</span>
 										<span class="menu-title">인사관리</span>
 										<span class="menu-arrow"></span>
@@ -413,7 +397,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<img src="resource/assets/media/icons/duotune/graphs/gra010.svg" class="ki-duotone ki-user fs-2" style="opacity:.3"/>
+											<img src="resource/assets/media/icon/side_muney.svg" class="ki-duotone ki-user fs-2" style="opacity:.3"/>
 										</span>
 										<span class="menu-title">회계관리</span>
 										<span class="menu-arrow"></span>
@@ -455,7 +439,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin:Menu link-->
 									<span class="menu-link">
 										<span class="menu-icon">
-											<img src="resource/assets/media/icons/duotune/finance/fin002.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"/>										</span>
+											<img src="resource/assets/media/icon/side_customer.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"/>										</span>
 										<span class="menu-title">멤버쉽</span>
 										<span class="menu-arrow"></span>
 									</span>
