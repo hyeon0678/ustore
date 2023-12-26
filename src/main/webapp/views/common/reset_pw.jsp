@@ -29,13 +29,13 @@ License: For each use you must have a valid license purchased only from above li
 		<meta property="og:url" content="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" />
 		<meta property="og:site_name" content="Craft by Keenthemes" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
@@ -57,7 +57,7 @@ License: For each use you must have a valid license purchased only from above li
 						<div class="d-flex flex-row-fluid flex-column text-center p-5 p-lg-10 pt-lg-20">
 							<!--begin::Logo-->
 							<a href="index.html" class="py-2 py-lg-20">
-								<img alt="Logo" src="/media/logos/logo-ellipse.svg" class="h-60px h-lg-70px" />
+								<img alt="Logo" src="resource/assets/media/logos/logo-ellipse.svg" class="h-60px h-lg-70px" />
 							</a>
 							<!--end::Logo-->
 							<!--begin::Title-->
@@ -70,7 +70,7 @@ License: For each use you must have a valid license purchased only from above li
 						</div>
 						<!--end::Header-->
 						<!--begin::Illustration-->
-						<div class="d-none d-lg-block d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url(/media/illustrations/sigma-1/17.png)"></div>
+						<div class="d-none d-lg-block d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url(resource/assets/media/illustrations/sigma-1/17.png)"></div>
 						<!--end::Illustration-->
 					</div>
 					<!--end::Wrapper-->
@@ -123,12 +123,7 @@ License: For each use you must have a valid license purchased only from above li
 								<!--end::Input group=-->
 								<!--begin::Action-->
 								<div class="text-center">
-									<button type="button" id="kt_new_password_submit2" class="btn btn-lg btn-primary fw-bold">
-										<span class="indicator-label">3개월 후에 다시 알림</span>
-										<span class="indicator-progress">Please wait... 
-										<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-									</button>
-									<button type="button" id="kt_new_password_submit1" class="btn btn-lg btn-primary fw-bold">
+									<button type="button" id="kt_new_password_submit" class="btn btn-lg btn-primary fw-bold">
 										<span class="indicator-label">재설정</span>
 										<span class="indicator-progress">Please wait... 
 										<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -157,9 +152,10 @@ License: For each use you must have a valid license purchased only from above li
 			</div>
 			<!--end::Authentication - New password-->
 		</div>
-		<script>var hostUrl = "/";</script>
-		<script src="/plugins/global/plugins.bundle.js"></script>
-		<script src="/js/scripts.bundle.js"></script>
+		<script>var hostUrl = "resource/assets/";</script>
+		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
+		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="resource/assets/js/scripts.bundle.js"></script>
 	</body>
 	<!--end::Body-->
 </html>
