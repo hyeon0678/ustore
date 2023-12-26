@@ -71,7 +71,7 @@
 							<!--begin::Container-->
 							<div class="container-xxl">
 								<!--begin::Category-->
-								<div class="card card-flush">
+								<div class="card card-flush"><form action="/order/orderCart/insert" method="post" id="addOrder">
 									<!--begin::Card header-->
 									<div class="card-header align-items-center py-5 gap-2 gap-md-5">
 										<!--begin::Card title-->
@@ -87,6 +87,7 @@
 											
 											<!--end::Search-->
 										</div>
+										
 										<div class="mb-0">
     <label class="form-label">입고 희망 날짜</label>
     <input type="date" id="birthdate" name="birthdate">
@@ -113,17 +114,31 @@
 												</tr>
 											</thead>
 											<tbody class="fw-semibold text-gray-600">
+											<c:forEach items="${list}" var="order">
 												<tr>
 													<td>
-														다우니 섬유유연제(라벤더)
-													
+														 ${order.productName}
+													<input type="hidden" name="productId" value="${order.productId}">
 													</td>
 													<td>
-														1358112
+														${order.productId}
 													</td>
 													<td>
-														생필품>생활잡화
-													</td>
+    <c:choose>
+        <c:when test="${order.categoryName eq '주류' or order.categoryName eq '가공' or order.categoryName eq '신선'}">
+            식품 > ${order.categoryName}
+        </c:when>
+        <c:when test="${order.categoryName eq '주방' or order.categoryName eq '청소' or order.categoryName eq '생활잡화'}">
+            생필품 > ${order.categoryName}
+        </c:when>
+        <c:when test="${order.categoryName eq '가전' or order.categoryName eq '컴퓨터' or order.categoryName eq '디지털'}">
+            전자제품 > ${order.categoryName}
+        </c:when>
+        <c:otherwise>
+            기타 > ${order.categoryName}
+        </c:otherwise>
+    </c:choose>
+</td>
 													
 													<td style="text-align: center;">
     <div class="input-group w-md-200px"
@@ -141,237 +156,36 @@
         <!-- end::Decrease control -->
 
         <!-- begin::Input control -->
-        <input type="text" class="form-control" placeholder="Amount" value="0" data-kt-dialer-control="input"/>
+        <input type="text" class="form-control" placeholder="Amount" value="0" data-kt-dialer-control="input" name = "count"/>
         <!-- end::Input control -->
 
         <!-- begin::Increase control -->
         <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="increase">
             <i class="ki-duotone ki-plus fs-2"></i>
-        </button><button type="button" class="btn btn-primary">추가</button>
+        </button><button type="button" onclick="submitForm()">추가</button>
         <!-- end::Increase control -->
-    
+     
     </div>
-    
+  
 </td>
 												</tr>
-												<tr>
-													<td>
-														다우니 섬유유연제(라벤더)
-													
-													</td>
-													<td>
-														1358112
-													</td>
-													<td>
-														생필품>생활잡화
-													</td>
-													
-													<td style="text-align: center;">
-    <div class="input-group w-md-200px"
-        data-kt-dialer="true"
-        data-kt-dialer-currency="true"
-        data-kt-dialer-min="0"
-        data-kt-dialer-max="9999999999999999999"
-        data-kt-dialer-step="1"
-        data-kt-dialer-prefix="">
-
-        <!-- begin::Decrease control -->
-        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="decrease">
-            <i class="ki-duotone ki-minus fs-2"></i>
-        </button>
-        <!-- end::Decrease control -->
-
-        <!-- begin::Input control -->
-        <input type="text" class="form-control" placeholder="Amount" value="0" data-kt-dialer-control="input"/>
-        <!-- end::Input control -->
-
-        <!-- begin::Increase control -->
-        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="increase">
-            <i class="ki-duotone ki-plus fs-2"></i>
-        </button><button type="button" class="btn btn-primary">추가</button>
-        <!-- end::Increase control -->
-    
-    </div>
-    
-</td>
-												</tr>
-												<tr>
-													<td>
-														다우니 섬유유연제(라벤더)
-													
-													</td>
-													<td>
-														1358112
-													</td>
-													<td>
-														생필품>생활잡화
-													</td>
-													
-													<td style="text-align: center;">
-    <div class="input-group w-md-200px"
-        data-kt-dialer="true"
-        data-kt-dialer-currency="true"
-        data-kt-dialer-min="0"
-        data-kt-dialer-max="9999999999999999999"
-        data-kt-dialer-step="1"
-        data-kt-dialer-prefix="">
-
-        <!-- begin::Decrease control -->
-        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="decrease">
-            <i class="ki-duotone ki-minus fs-2"></i>
-        </button>
-        <!-- end::Decrease control -->
-
-        <!-- begin::Input control -->
-        <input type="text" class="form-control" placeholder="Amount" value="0" data-kt-dialer-control="input"/>
-        <!-- end::Input control -->
-
-        <!-- begin::Increase control -->
-        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="increase">
-            <i class="ki-duotone ki-plus fs-2"></i>
-        </button><button type="button" class="btn btn-primary">추가</button>
-        <!-- end::Increase control -->
-    
-    </div>
-    
-</td>
-												</tr>
-												<tr>
-													<td>
-														다우니 섬유유연제(라벤더)
-													
-													</td>
-													<td>
-														1358112
-													</td>
-													<td>
-														생필품>생활잡화
-													</td>
-													
-													<td style="text-align: center;">
-    <div class="input-group w-md-200px"
-        data-kt-dialer="true"
-        data-kt-dialer-currency="true"
-        data-kt-dialer-min="0"
-        data-kt-dialer-max="9999999999999999999"
-        data-kt-dialer-step="1"
-        data-kt-dialer-prefix="">
-
-        <!-- begin::Decrease control -->
-        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="decrease">
-            <i class="ki-duotone ki-minus fs-2"></i>
-        </button>
-        <!-- end::Decrease control -->
-
-        <!-- begin::Input control -->
-        <input type="text" class="form-control" placeholder="Amount" value="0" data-kt-dialer-control="input"/>
-        <!-- end::Input control -->
-
-        <!-- begin::Increase control -->
-        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="increase">
-            <i class="ki-duotone ki-plus fs-2"></i>
-        </button><button type="button" class="btn btn-primary">추가</button>
-        <!-- end::Increase control -->
-    
-    </div>
-    
-</td>
-												</tr>
-												<tr>
-													<td>
-														다우니 섬유유연제(라벤더)
-													
-													</td>
-													<td>
-														1358112
-													</td>
-													<td>
-														생필품>생활잡화
-													</td>
-													
-													<td style="text-align: center;">
-    <div class="input-group w-md-200px"
-        data-kt-dialer="true"
-        data-kt-dialer-currency="true"
-        data-kt-dialer-min="0"
-        data-kt-dialer-max="9999999999999999999"
-        data-kt-dialer-step="1"
-        data-kt-dialer-prefix="">
-
-        <!-- begin::Decrease control -->
-        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="decrease">
-            <i class="ki-duotone ki-minus fs-2"></i>
-        </button>
-        <!-- end::Decrease control -->
-
-        <!-- begin::Input control -->
-        <input type="text" class="form-control" placeholder="Amount" value="0" data-kt-dialer-control="input"/>
-        <!-- end::Input control -->
-
-        <!-- begin::Increase control -->
-        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="increase">
-            <i class="ki-duotone ki-plus fs-2"></i>
-        </button><button type="button" class="btn btn-primary">추가</button>
-        <!-- end::Increase control -->
-    
-    </div>
-    
-</td>
-												</tr>
-												<tr>
-													<td>
-														다우니 섬유유연제(라벤더)
-													
-													</td>
-													<td>
-														1358112
-													</td>
-													<td>
-														생필품>생활잡화
-													</td>
-													
-													<td style="text-align: center;">
-    <div class="input-group w-md-200px"
-        data-kt-dialer="true"
-        data-kt-dialer-currency="true"
-        data-kt-dialer-min="0"
-        data-kt-dialer-max="9999999999999999999"
-        data-kt-dialer-step="1"
-        data-kt-dialer-prefix="">
-
-        <!-- begin::Decrease control -->
-        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="decrease">
-            <i class="ki-duotone ki-minus fs-2"></i>
-        </button>
-        <!-- end::Decrease control -->
-
-        <!-- begin::Input control -->
-        <input type="text" class="form-control" placeholder="Amount" value="0" data-kt-dialer-control="input"/>
-        <!-- end::Input control -->
-
-        <!-- begin::Increase control -->
-        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="increase">
-            <i class="ki-duotone ki-plus fs-2"></i>
-        </button><button type="button" class="btn btn-primary">추가</button>
-        <!-- end::Increase control -->
-        
-    </div>
-    
-</td>
-												</tr>
+												</c:forEach>
 												
-											</tbody>
+
+				
+				
+			</tbody>
 											<!--end::Table body-->
 											
 										</table>
 										<!--end::Table-->
 										
 									</div>
-									<!--end::Card body-->
-									<button type="button" class="btn btn-primary" 
+									 </form>
+<button type="button" class="btn btn-primary" 
             data-bs-toggle="modal" data-bs-target="#kt_modal_scrollable_2"
             style="position: absolute; bottom: 0; right: 0;">
-        발주할 물품 담기
+        발주할 물품목록
     </button>
 								</div>
 							
@@ -676,6 +490,11 @@
         var searchContainer = document.getElementById('searchContainer');
         searchContainer.style.display = this.value.trim() === '' ? 'none' : 'flex';
     });
+    
+    function submitForm() {
+        // 폼 ID를 사용하여 폼을 가져오고 제출
+        document.getElementById("addOrder").submit();
+    }
 </script>
 	</body>
 	<!--end::Body-->

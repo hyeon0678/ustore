@@ -11,6 +11,8 @@ public interface StockDao {
 
 	ArrayList<StockDto> list();
 
-	void stock_insert(StockDto dto);
+	Object stock_insert(String proNum);
+
+	void stock_insert2(StockDto dto);
 
 }

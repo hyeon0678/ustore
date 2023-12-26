@@ -133,7 +133,7 @@
 			<tr class="fw-semibold fs-6 text-gray-800 border	-bottom-2 border-gray-200">
 			
 				<td>물품명</td>
-				<td colspan="2"><Input type = "text" name="product_name"/></td>
+				<td colspan="2"><Input type = "text" name="productName"/></td>
 		
 			</tr>
 		</thead>
@@ -149,7 +149,7 @@
     </select>
 </td>
 <td>중분류
-    <select class="form-select form-select-solid" data-control="select2" data-placeholder="생활 잡화" data-hide-search="true" name="category_id" id="Sselect">
+    <select class="form-select form-select-solid" data-control="select2" data-placeholder="생활 잡화" data-hide-search="true" name="categoryId" id="Sselect">
         <option></option>
     </select>
 </td>
@@ -159,20 +159,14 @@
 
 				<tr>
 				<td>단위(파렛트)</td>
-				<td colspan="2"><input type  ="text" name="unit_quantity"/></td>
+				<td colspan="2"><input type  ="text" name="unitQuantity"/></td>
 			</tr>
 				<tr>
 				<td>단가(낱개)</td>
-				<td colspan="2"><input type  ="text" name="purchase_price"/></td>
+				<td colspan="2"><input type  ="text" name="purchasePrice"/></td>
 		
 			
-			
-			<tr>
-				<td>판매가</td>
-				<td colspan="2"><input type  ="text"  name="selling_price"/></td>
-				
-			
-			</tr>
+		
 			
 		</tbody>
 		
@@ -214,12 +208,12 @@
 											<c:forEach items="${list}" var="stock">
 												<tr>
 													<td>
-														${stock.product_id}
+														${stock.productId}
 													</td>
 													<td>
 														<div class="d-flex">
 															
-															<a href="views/products/stock_detail.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">${stock.product_name}</a>
+															<a href="views/products/stock_detail.jsp" class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1" data-kt-ecommerce-category-filter="category_name">${stock.productName}</a>
 												
 														</div>
 													</div>
