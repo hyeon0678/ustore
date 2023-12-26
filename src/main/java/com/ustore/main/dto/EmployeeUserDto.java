@@ -1,4 +1,4 @@
-package com.ustore.main.service.security;
+package com.ustore.main.dto;
 
 public class EmployeeUserDto {
 	private String empIdx;
