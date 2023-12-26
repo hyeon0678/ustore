@@ -13,13 +13,19 @@
 		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Global Stylesheets Bundle-->
-		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+		<style type="text/css">
+			.global-validation{
+				color: red;
+				visibility: hidden;
+			}
+			.field-validation{
+				color: red;
+				visibility: hidden;
+			}
+		</style>
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
@@ -51,7 +57,7 @@
 				<div class="d-flex flex-column flex-lg-row-fluid py-10">
 					<div class="d-flex flex-center flex-column flex-column-fluid">
 						<div class="w-lg-500px p-10 p-lg-15 mx-auto">
-							<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" action="/login">
+							<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" action="/login" method="post">
 								<div class="text-center mb-10">
 									<h1 class="text-gray-900 mb-3">로그인</h1>
 									<p class="global-validation">아이디 혹은 비밀번호를 확인해주세요</p>
@@ -60,12 +66,13 @@
 									<label class="form-label fs-6 fw-bold text-gray-900">사원번호</label>
 									<input class="form-control form-control-lg form-control-solid" type="text" name="empIdx" autocomplete="off" />
 									<p class="field-validation">아이디를 입력해주세요</p>
+									<p class="field-validation id_validation_de">아이디는 숫자만 입력 가능합니다</p>
 								</div>
 								<div class="fv-row mb-10">
 									<!--begin::Wrapper-->
 									<div class="d-flex flex-stack mb-2">
 										<label class="form-label fw-bold text-gray-900 fs-6 mb-0">비밀번호</label>
-										<a href="authentication/sign-in/password-reset.go" class="link-primary fs-6 fw-bold"> 비밀번호 찾기 </a>
+										<a href="/resetPw" class="link-primary fs-6 fw-bold"> 비밀번호 찾기 </a>
 									</div>
 									<input class="form-control form-control-lg form-control-solid" type="password" name="empPw" autocomplete="off" />
 									<p class="field-validation">비밀번호를 입력해주세요</p>
@@ -95,8 +102,43 @@
 	</body>
 	<script>
 		let msg = '${msg}'
+		const regex = /[^0-9]/g;
+		
 		if(msg == 'fail'){
-			alert('로그인 실패');
+			$('.global-validation').css('visibility', 'visible');
 		}
+		
+		$('#kt_sign_in_submit').on('click', function(){
+			if(validation() == true){
+				console.log('login')
+				$('form').submit();					
+			}
+		})
+		
+		function validation(){
+			let id = $('input[name=empIdx]').val();
+			let pw = $('input[name=empPw]').val();
+			
+			if(id == '' && pw ==''){
+				$('input[name=empPw]').next().css('visibility', 'visible');
+				console.log($('input[name=empId]').next());
+				$('input[name=empIdx]').next().css('visibility', 'visible');
+				return false;
+			}
+			
+			if(id == ''){
+				$('input[name=empIdx]').next().css('visibility', 'visible');
+				return false;
+			}
+			
+			if(pw == ''){
+				$('input[name=empPw]').next().css('visibility', 'visible');
+				return false;
+			}
+			
+			return true;
+		}
+		
+		
 	</script>
 </html>

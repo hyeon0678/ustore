@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html lang="kr">
 	<!--begin::Head-->
@@ -65,14 +66,14 @@
 					<!--================================메인 내용들어가는부분================================================-->
 						<div class="container flex-column flex-lg-row ">
 							<div class="comm-head">
-								<h2>받은 메일함</h2>
+								<h2>보낸 메일함</h2>
 							</div>
 							<div class="mail-comm">
 								<div class="comm-left">
 									<button type="button" class="btn btn-primary span-pay">메일작성</button>
 								</div>	
 								<div class="comm-right">
-									<input type="text" class="form-control" placeholder="이름을 입력해주세요" style="width: 200px; height: 40px;">
+									<input type="text" class="form-control" placeholder="이름혹은 내용을 검색해주세요" style="width: 200px; height: 40px;">
 									<button type="button" class="btn btn-primary span-search-button" style="margin-left: 10px;">검색</button>
 									<button class="img-button" style="margin-left: 10px;"><img src="assets/media/icons/duotune/general/gen027.svg" onclick=""/></button>
 								</div>
@@ -80,13 +81,13 @@
 						</div>
 						<div class="container d-flex flex-column flex-lg-row comm-content-body" id="kt_docs_content_container">
 							<div class="card card-docs flex-row-fluid mb-2" id="kt_docs_content_card"> 
-								<table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5 ">
+								<table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5 database_table">
 									<thead>
 										<tr class="fw-semibold fs-6 text-center">
 											<th><input type="checkbox"/></th>
 											<th>제목</th>
-											<th>발신자(팀명)</th>
-											<th>발신일</th>
+											<th>수신자(팀명)</th>
+											<th>수신일</th>
 											<th>읽음/안읽음</th>
 										</tr>
 									</thead>
@@ -133,7 +134,7 @@
 		var content ='';
 		
 		obj.list.forEach(function(item, idx){
-			// content그리는 곳
+			// content 그리는 곳
 		});
 		$('#list').empty();
 		$('#list').append(content);

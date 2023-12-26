@@ -61,20 +61,21 @@
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 95px;">
 					<!--================================메인 내용들어가는부분================================================-->
 						<div class="container flex-column flex-lg-row ">
 							<div class="comm-head">
-								<h2>받은 메일함</h2>
+								<h2>보낸 메일함</h2>
 							</div>
 							<div class="mail-comm">
 								<div class="comm-left">
 									<button type="button" class="btn btn-primary span-pay">메일작성</button>
 								</div>	
 								<div class="comm-right">
-									<input type="text" class="form-control" placeholder="이름을 입력해주세요" style="width: 200px; height: 40px;">
+									<input type="text" class="form-control" placeholder="이름혹은 내용을 검색해주세요" style="width: 250px; height: 40px;">
 									<button type="button" class="btn btn-primary span-search-button" style="margin-left: 10px;">검색</button>
-									<button class="img-button" style="margin-left: 10px;"><img src="assets/media/icons/duotune/general/gen027.svg" onclick=""/></button>
+									<button class="img-button" style="margin-left: 10px;"><img src="assets/media/icons/duotune/arrows/arr059.svg" onclick=""/>복원</button>
+									<button class="img-button" style="margin-left: 10px;"><img src="assets/media/icons/duotune/general/gen027.svg" onclick=""/>삭제</button>
 								</div>
 							</div>
 						</div>
@@ -85,8 +86,8 @@
 										<tr class="fw-semibold fs-6 text-center">
 											<th><input type="checkbox"/></th>
 											<th>제목</th>
-											<th>발신자(팀명)</th>
-											<th>발신일</th>
+											<th>수신자(팀명)</th>
+											<th>수신일</th>
 											<th>읽음/안읽음</th>
 										</tr>
 									</thead>
@@ -114,32 +115,28 @@
 		<!--end::Javascript-->
 	</body>
 	<script>
-		$('#searchButton').on('click', function () {
-		$.ajax({
-	        type: 'get',
-	        url: 'list',
-	        dataType: 'json',
-	        success: function (data) {
-	        	console.log(data);
-	        	 drawList(data); 
-	        },
-	        error: function (e) {
-	            console.log(e);
-	        }
-	    });
-	});
-	
-	function drawList(obj){
-		var content ='';
-		
-		obj.list.forEach(function(item, idx){
-			// content그리는 곳
+		var ajax = true;
+		$('#kt_datatable_zero_configuration').DataTable({
+			ordering:false,
+			"lengthChange": false,
+			alax:{
+				url:"/mailtest"
+				,type:'get'
+				,dataSrc:function(res){
+					var data = res.data;
+					return data;
+				}
+			},
+			columns: [
+				{ data: '<input type="checkbox" id="checkAll"/>' },
+				{ data: '제목' },
+				{ data: '발신자(팀명)' },
+				{ data: '발신일' },
+				{ data: '읽음/안읽음' }
+			],
+			processing: true,
+			serverSide: true
 		});
-		$('#list').empty();
-		$('#list').append(content);
-
-		$("#kt_datatable_zero_configuration").DataTable();
-	}
 
 	</script>
 	<!--end::Body-->

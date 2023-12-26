@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/main")
 public class LoginController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@GetMapping("/loginform")
+	@GetMapping("/")
 	public String loginForm() {
 		logger.info("loginForm");
 		return "main/login";
@@ -23,9 +22,14 @@ public class LoginController {
 	
 	@GetMapping("/loginerror")
 	public String loginError(@RequestParam("login_error") String loginError, RedirectAttributes rattr) {
-		rattr.addFlashAttribute("msg", "fail");
 		logger.info("login error : "+loginError);
-		return "redirect:/main/loginform";
+		rattr.addFlashAttribute("msg", "fail");
+		return "redirect:/";
+	}
+	
+	@GetMapping("/resetPw")
+	public String resetPw() {
+		return "common/reset_pw";
 	}
 	
 	
