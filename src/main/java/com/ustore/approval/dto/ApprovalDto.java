@@ -4,18 +4,18 @@ import java.sql.Date;
 
 public class ApprovalDto {
 
-	private int appr_idx; // 기안번호
-	private String approver; // 결재자
+	private int appr_idx;
+	private String approver;
 	private int appr_order; // 결재순번
 	private String appr_confirm; // 결재여부
-	private Date appr_date; // 결재날짜
-	private String appr_subject; // 제목
-	private String appr_content; // 내용
-	private Date appr_submitdate; // 기안일자
-	private String fn_approver; // 최종결재자
-	private int doc_id; // 문서번호
-	private String bd_html; // html저장
-	private String bd_comment; // 결재의견
+	private Date appr_date; // 결재날자
+	private String appr_subject;
+	private String appr_content;
+	private Date appr_submitdate;
+	private String fn_approver;
+	private int doc_id;
+	private String bd_html;
+	private String bd_comment;
 	
 	public int getAppr_idx() {
 		return appr_idx;

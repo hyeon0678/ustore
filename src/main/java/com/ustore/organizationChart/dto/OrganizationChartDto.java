@@ -1,8 +1,5 @@
 package com.ustore.organizationChart.dto;
 
-import org.apache.ibatis.type.Alias;
-
-@Alias("OrganizationChartDto")
 public class OrganizationChartDto {
 	
 	private String id;

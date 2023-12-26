@@ -1,8 +1,7 @@
 package com.ustore.fileSystem.dto;
 
-import org.apache.ibatis.type.Alias;
 import org.springframework.web.multipart.MultipartFile;
-@Alias("FileDto")
+
 public class FileDto {
 	private String fileIdx;
 	private String fileType;
