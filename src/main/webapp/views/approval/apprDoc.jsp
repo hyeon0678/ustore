@@ -19,12 +19,10 @@
 		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		
+		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />		
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<link href="resource/assets/plugins/custom/jstree/jstree.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/custom/jstree/jstree.bundle.css" rel="stylesheet" type="text/css" />		
 		<style>
 			#kt_modal_1 .modal-content {
 				height: 800px; /* 원하는 높이로 조절하세요 */
@@ -140,6 +138,9 @@
 						<!--end::Toolbar-->
 						<!-- 결재 양식 들어오는 곳 -->		
 						<div class="loadApprDoc">
+						
+						
+						
 						</div>				
 					</div>
 				<!--end::Content--> 
@@ -242,12 +243,12 @@
 
 								
 		<!--begin::Javascript-->
-		<script>var hostUrl = "resource/assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>		
 		<!--end::Global Javascript Bundle-->
 		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
+		
 
 		
 		<!--end::Javascript-->
@@ -305,64 +306,52 @@
 	}
 
 	
-
 	$(document).ready(function(){
-
 		$('#kt_modal_1').on('shown.bs.modal', function(){
+			getTreeData();
+		});
+	});
 	
-			$('#kt_docs_jstree_basic').jstree({
-				"core" : {
-					"themes" : {
-						"responsive": true
-					},
-					"data":[
-						{ "id" : "S1", "parent" : "#", "text" : "SI 사업부", "icon" : "glyphicon glyphicon-home" },
-						{ "id" : "S2", "parent" : "#", "text" : "솔루션 사업부","alias":"ㅋㅋㅋ" , "icon" : "glyphicon glyphicon-home"  },
-						{ "id" : "S3", "parent" : "#", "text" : "AI 사업부", "icon" : "glyphicon glyphicon-home"  },
-						{ "id" : "S11", "parent" : "S1", "text" : "공공SI" , "icon" : "glyphicon glyphicon-picture"},
-						{ "id" : "S12", "parent" : "S1", "text" : "일반SI", "icon" : "glyphicon glyphicon-picture" },
-						{ "id" : "S21", "parent" : "S2", "text" : "그룹웨어" ,"icon" : "glyphicon glyphicon-picture" },
-						{ "id" : "S22", "parent" : "S2", "text" : "MES" , "icon" : "glyphicon glyphicon-picture"},
-						{ "id" : "S23", "parent" : "S2", "text" : "ERP", "icon" : "glyphicon glyphicon-picture" },
-						{ "id" : "S31", "parent" : "S3", "text" : "이미지처리" , "icon" : "glyphicon glyphicon-picture"},
-						{ "id" : "S32", "parent" : "S3", "text" : "음성처리" , "icon" : "glyphicon glyphicon-picture"},
-						{ "id" : "S33", "parent" : "S3", "text" : "자연어처리" , "icon" : "glyphicon glyphicon-picture"},
-						{ "id" : "J01", "parent" : "S11", "text" : "송불곰" , "icon": "glyphicon glyphicon-user" },
-						{ "id" : "J02", "parent" : "S31", "text" : "강사자" , "icon": "glyphicon glyphicon-user"},
-						{ "id" : "J03", "parent" : "S22", "text" : "송호랑", "icon": "glyphicon glyphicon-user" },
-						{ "id" : "J04", "parent" : "S32", "text" : "이늑대" , "icon": "glyphicon glyphicon-user"},
-						{ "id" : "J05", "parent" : "S33", "text" : "감여우", "icon": "glyphicon glyphicon-user" },
-						{ "id" : "J06", "parent" : "S33", "text" : "김발발", "icon": "glyphicon glyphicon-user" },
-						{ "id" : "J07", "parent" : "S12", "text" : "공수달" , "icon": "glyphicon glyphicon-user"},
-						{ "id" : "J08", "parent" : "S23", "text" : "황악어" , "icon": "glyphicon glyphicon-user"},
-						{ "id" : "J09", "parent" : "S22", "text" : "홍문어" , "icon": "glyphicon glyphicon-user"}
-					],
+	function getTreeData(){
+		$.ajax({
+			url:'/organizationChart.ajax',
+			method:'GET',
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				jsTreeData = data.treeData;
+				jsTree(data.treeData);
+			},error: function(error){
+				console.log(error);
+			}
+		})
+	}
+	
+	function jsTree(treeData){
+		$('#kt_docs_jstree_basic').jstree({
+			"core" : {
+				"data" : treeData,
+				"themes" : {
+					"responsive": true
+				}
+			},
+			"types" : {
+				"default" : {
+					"icon" : "ki-outline ki-folder"
 				},
-				/* 'data':
-					'url': '/your-data-url',
-					'dataType': 'json'
-					*/
-				"types" : {
-					"default" : {
-						"icon" : "ki-outline ki-folder"
-					},
-					"file" : {
-						"icon" : "ki-outline ki-file"
-					}
-				},
-				"plugins": ["types","search"]
-				,
-				"search":{
-					/* "show_only_matches" : true,  */
-					"show_only_matches_children" : true
-				}				
-			});
-			
-		});	
-		
-	})
+				"file" : {
+					"icon" : "ki-outline ki-file"
+				}
+			},
+			"plugins": ["types","search"]
+			,
+			"search":{
+				/* "show_only_matches" : true,  */
+				"show_only_matches_children" : true
+			}
+		});
+	}
 
-	
 
 
 	//이벤트

@@ -19,11 +19,11 @@
 		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		
+		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />		
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Global Stylesheets Bundle-->
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<!--end::Global Stylesheets Bundle-->		
+		<link href="resource/assets/plugins/custom/jstree/jstree.bundle.css" rel="stylesheet" type="text/css" />		
+		
 		<style>
 			.chart-div{
 				display: flex;
@@ -69,35 +69,27 @@
 									<!--begin::Title-->
 									<h1 class="text-gray-900 fw-bold my-1 fs-2">기안문 작성</h1>
 									<!--end::Title-->
-									<!--begin::Breadcrumb-->
-									<ul class="breadcrumb fw-semibold fs-base my-1">
-										<li class="breadcrumb-item text-muted">
-											<a href="index.jsp" class="text-muted text-hover-primary">Home</a>
-										</li>
-										<li class="breadcrumb-item text-muted">전자결재</li>
-									</ul>
-									<!--end::Breadcrumb-->
 								</div>
 								<!--end::Info-->
 								<!--begin::Toolbaricon-->
 								<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
 									<!--begin::Filter-->
-									<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+									<button type="button" class="btn btn-light-primary me-3" id="btnSendApproval" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
 									<i class="ki-duotone ki-filter fs-2">
 										<span class="path1"></span>
 										<span class="path2"></span>
 									</i>결재상신</button>
-									<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+									<button type="button" class="btn btn-light-primary me-3" id="btnApprovalInfo" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
 									<i class="ki-duotone ki-filter fs-2">
 										<span class="path1"></span>
 										<span class="path2"></span>
 									</i>결재정보</button>
-									<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+									<button type="button" class="btn btn-light-primary me-3" id="btnSaveTemp" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
 									<i class="ki-duotone ki-filter fs-2">
 										<span class="path1"></span>
 										<span class="path2"></span>
 									</i>임시저장</button>
-									<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+									<button type="button" class="btn btn-light-primary me-3" id="btnGoBack" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
 									<i class="ki-duotone ki-filter fs-2">
 										<span class="path1"></span>
 										<span class="path2"></span>
@@ -107,9 +99,14 @@
 							</div>
 						</div>
 						<!--end::Toolbar-->	
-						<!-- 결재 양식 들어오는 곳 -->		
-						<div class="loadApprDoc">
-						</div>						
+						<!-- 결재 양식 들어오는 곳 -->	
+						<form id="docFormContainer" action="/saveDocument" method="post">	
+							<p>Selected Form: <%= request.getParameter("common_idx") %></p>
+							<div class="loadApprDoc">
+							
+							
+							</div>	
+						</form>					
 					</div>
 				<!--end::Content--> 
     			</div>
@@ -118,24 +115,350 @@
 			<!--end::Page-->
 		</div>
 		<!--end::Root-->
+		
+		<!--begin::modal-->
+		<div class="modal fade" tabindex="-1" id="kt_modal_1" role="dialog">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title">결재정보</h3>
+						<!--begin::Close-->
+						<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+							<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+						</div>
+						<!--end::Close-->
+					</div>
+
+					<div class="modal-body">
+						<div class="d-flex flex-row h-600px border">
+							<!-- 왼쪽 div -->
+							<div class="emptree border" style="max-height: 600px; overflow-y: auto; overflow-x: hidden; margin: 5px;" >
+								<div class="d-flex flex-column flex-row-fluid w-350px justify-content-between" style="align-items: center; margin: 5px;">
+									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 5px 0px; width: 100%;">
+										<span class="text-center">조 직 도</span>						
+									</div>
+								</div>
+								<div style="margin: 10px;">
+									<input type="text" id="empName" placeholder="사원명을 입력하세요"/>
+									<button onclick="empSearch()">검색</button>	
+								</div>
+								<div class="d-flex flex-column-fluid scroll px-5" style="max-height: 400px; overflow-y: auto;">
+									<div class="text-black" id="kt_docs_jstree_basic"></div>
+								</div>
+								<div style="position: absolute; bottom: 40px; text-align: center; left: 15%;">
+									<button id="addline" onclick="addApprovalLine()">결재선 추가</button>
+									<button id="addrecv" onclick="addReceiver()">수신자 추가</button>
+								</div>
+							</div>		
+
+							<!-- 오른쪽 div -->
+							<div class="d-flex flex-column flex-row-fluid w-350px justify-content-between">
+								<div class="apprlineSec border" style="align-items: center; margin: 5px;">
+									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
+										<span class="text-center">결 재 선</span>
+									</div>
+									<div class="apprline d-flex flex-column scroll" id="apprline" style="height: 250px;">
+										<div style="overflow: auto;">
+											<table class="w-100">
+												<thead>
+													<tr>
+														<th>결재타입</th>
+														<th>이름</th>
+														<th>직책</th>
+														<th>부서</th>
+													</tr>
+												</thead>
+												<tbody>											
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+
+								<div class="apprreceiver border"  style="align-items: center; margin: 5px;">
+									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
+										<span class="text-center">수 신 자</span>
+									</div>										
+									<div class="d-flex flex-column receiver scroll" id="receiver" style="height: 200px;">
+										<div style="overflow: auto;">
+											<table class="w-100">
+												<thead>
+													<tr>
+														<th>이름</th>
+														<th>직책</th>
+														<th>부서</th>
+													</tr>
+												</thead>
+												<tbody>														
+												</tbody>
+											</table>
+										</div>										
+									</div>
+								</div>
+							</div>
+						</div>											
+					</div>
+
+					<div class="modal-footer" style="display: flex; justify-content: center;">
+						<button type="button" class="btn btn-primary" id="saveApprLine">저장</button>
+					</div>
+				</div>
+			</div>
+		</div>
 								
 		<!--begin::Javascript-->
-		<script>var hostUrl = "resource/assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
-		<!--CKEditor Build Bundles:: Only include the relevant bundles accordingly-->
-		<script src="resource/assets/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/ckeditor/ckeditor-inline.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/ckeditor/ckeditor-balloon.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/ckeditor/ckeditor-balloon-block.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/ckeditor/ckeditor-document.bundle.js"></script>
-		
+		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
 	<script>
+	
 
+    
+	
+    // 동적으로 HTML 파일 로드하는 함수
+    function loadFormPage(formPage) {
+        $.ajax({
+            type: 'GET',
+            url: formPage,
+            success: function (response) {
+                // 로드한 HTML을 동적으로 추가
+                $('.loadApprDoc').html(response);
+            },
+            error: function (error) {
+                console.error('페이지 로드 중 오류가 발생했습니다.');
+            }
+        });
+    }
+    
+
+    var myModal = new bootstrap.Modal(document.getElementById('kt_modal_1'), {
+        backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
+        keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
+    });
+    
+    $(document).ready(function () {
+    	// 초기에 선택된 양식에 대한 HTML 파일 로드
+        var formPage = '<%= request.getAttribute("formPage") %>';
+        if (formPage) {
+            loadFormPage(formPage);
+        }
+        
+        
+    	 // 결재상신 버튼 클릭 시의 동작
+        $('#btnApproval').on('click', function () {
+            // 여기에 결재상신 버튼 클릭 시 수행할 동작 추가
+            console.log('결재상신 버튼 클릭');
+        });
+
+        // 결재정보 버튼 클릭 시의 동작
+        $('#btnApprovalInfo').on('click', function () {
+            // 여기에 결재정보 버튼 클릭 시 수행할 동작 추가
+            console.log('결재정보 버튼 클릭');
+            
+            myModal.show();
+        });
+
+        // 임시저장 버튼 클릭 시의 동작
+        $('#btnSaveTemp').on('click', function () {
+            // 여기에 임시저장 버튼 클릭 시 수행할 동작 추가
+            console.log('임시저장 버튼 클릭');
+        });
+
+        // 뒤로가기 버튼 클릭 시의 동작
+        $('#btnGoBack').on('click', function () {
+        	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
+                // 사용자가 Yes를 클릭한 경우 /newapproval 페이지로 이동
+                window.location.href = '/newapproval';
+            } else {
+                // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
+                console.log('뒤로가기 버튼 클릭 - 취소');
+            }            
+        });
+        
+        $('#kt_modal_1').on('shown.bs.modal', function(){
+			getTreeData();
+		})
+        
+    });
+	
+	
+
+	
+	
+	function getTreeData(){
+		$.ajax({
+			url:'/organizationChart.ajax',
+			method:'GET',
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				jsTreeData = data.treeData;
+				jsTree(data.treeData);
+			},error: function(error){
+				console.log(error);
+			}
+		})
+	}
+	
+	function jsTree(treeData){
+		$('#kt_docs_jstree_basic').jstree({
+			"core" : {
+				"data" : treeData,
+				"themes" : {
+					"responsive": true
+				}
+			},
+			"types" : {
+				"default" : {
+					"icon" : "ki-outline ki-folder"
+				},
+				"file" : {
+					"icon" : "ki-outline ki-file"
+				}
+			},
+			"plugins": ["types","search"]
+			,
+			"search":{
+				/* "show_only_matches" : true,  */
+				"show_only_matches_children" : true
+			}
+		});
+	}
+
+	function empSearch() {
+		console.log("검색");
+		$('#kt_docs_jstree_basic').jstree(true).search($('#empName').val());
+	}
+
+	//이벤트
+	$('#kt_docs_jstree_basic').on("changed.jstree", function (e, data) {
+		console.log("changed 했을 때", data.selected);
+	});
+
+	// Node 열렸을 때
+	let isAdded = false;
+	$('#kt_docs_jstree_basic').on("open_node.jstree", function (e, data) {
+		console.log("open되었을때", data.node);
+	});
+
+	// Node 선택했을 때
+	$('#kt_docs_jstree_basic').on("select_node.jstree", function (e, data) {
+		console.log("select했을때", data.node);
+	});
+	
+	
+	// 결재선 정보 및 수신자 정보 설정(결재정보 저장)
+	var approvalLines = [];
+	var receivers = [];	
+	
+	function addApprovalLine(){
+		var approvalData = {
+        type: '결재자',
+        name: 'John Doe',
+        position: '직책',
+        department: '부서'
+    	};
+
+		// 테이블의 tbody에 맨 위에 데이터를 추가
+		var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
+		var newRow = tbody.insertRow(0); // 첫 번째 위치에 새로운 행 추가
+
+		// 각 셀에 데이터 추가
+		var cell1 = newRow.insertCell(0);
+		var cell2 = newRow.insertCell(1);
+		var cell3 = newRow.insertCell(2);
+		var cell4 = newRow.insertCell(3);
+
+		cell1.innerHTML = approvalData.type;
+		cell2.innerHTML = approvalData.name;
+		cell3.innerHTML = approvalData.position;
+		cell4.innerHTML = approvalData.department;
+		
+		approvalLine.push(approvalData);
+	}
+
+	function addReceiver(){
+		var receiverData = {
+        name: 'John Doe',
+        position: '직책',
+        department: '부서'
+    	};
+
+		// 테이블의 tbody에 맨 위에 데이터를 추가
+		var tbody = document.getElementById('receiver').getElementsByTagName('tbody')[0];
+		var newRow = tbody.insertRow(0); // 첫 번째 위치에 새로운 행 추가
+
+		// 각 셀에 데이터 추가
+		var cell1 = newRow.insertCell(0);
+		var cell2 = newRow.insertCell(1);
+		var cell3 = newRow.insertCell(2);
+		
+		cell1.innerHTML = approvalData.name;
+		cell2.innerHTML = approvalData.position;
+		cell3.innerHTML = approvalData.department;
+		
+		receivers.push(receiverData);
+	}
+	
+	$('#saveApprLine').on('click', function () {
+        // 서버로 결재선과 수신자 정보 전송 (AJAX 사용)
+        $.ajax({
+            url: '/saveApprovalData', // 서버의 엔드포인트
+            method: 'POST',
+            data: {
+                approvalLines: JSON.stringify(approvalLines),
+                receivers: JSON.stringify(receivers)
+            },
+            success: function (response) {
+                // 성공적으로 저장되었을 때의 동작
+                console.log('결재정보가 성공적으로 저장되었습니다.');
+            },
+            error: function (error) {
+                // 저장 중 오류가 발생했을 때의 동작
+                console.error('결재정보 저장 중 오류가 발생했습니다.');
+            }
+        });
+    });
+	
+	
+	// 결재상신
+
+	$('#btnSendApproval').on('click', function () {
+	    // HTML 양식을 문자열로 변환
+	    var htmlFormData = $('#docFormContainer').html();
+
+	    // 필요한 다른 데이터도 수집
+	    var title = $('#docTitle').val(); // 예시: 제목을 입력하는 input 필드
+
+	    // 서버로 데이터 전송 (AJAX 사용)
+	    $.ajax({
+	        url: '/saveDocument', // 저장을 처리할 서버의 엔드포인트
+	        method: 'POST',
+	        data: {
+	            htmlFormData: htmlFormData,
+	            title: title,
+	            approvalLines: JSON.stringify(approvalLines),
+                receivers: JSON.stringify(receivers)
+	            // 여기에 필요한 다른 데이터 추가
+	        },
+	        success: function (response) {
+	            // 성공적으로 저장되었을 때의 동작
+	            console.log('문서가 성공적으로 저장되었습니다.');
+	        },
+	        error: function (error) {
+	            // 저장 중 오류가 발생했을 때의 동작
+	            console.error('문서 저장 중 오류가 발생했습니다.');
+	        }
+	    });
+	});
+	
+	
+	
+	
 	</script>
 </html>
