@@ -31,6 +31,8 @@ License: For each use you must have a valid license purchased only from above li
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
+
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
@@ -72,7 +74,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin::Content-->
 											<div id="kt_account_settings_profile_details" class="collapse show">
 												<!--begin::Form-->
-												<form id="kt_account_profile_details_form" class="form">
+												
 													<!--begin::Card body-->
 													<div class="card-body border-top p-9">
 														<!--begin::Input group-->
@@ -82,41 +84,35 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<!--begin::Image input-->
-																<div class="image-input image-input-outline" data-kt-image-input="true">
-																	<!--begin::Preview existing avatar-->
-																	<div class="image-input-wrapper w-125px h-125px" style="background-image: url(/media/avatars/300-1.jpg)"></div>
-																	<!--end::Preview existing avatar-->
-																	<!--begin::Label-->
-																	<label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-																		<i class="ki-duotone ki-pencil fs-7">
-																			<span class="path1"></span>
-																			<span class="path2"></span>
-																		</i>
-																		<!--begin::Inputs-->
-																		<input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
-																		<input type="hidden" name="avatar_remove" />
-																		<!--end::Inputs-->
-																	</label>
-																	<!--end::Label-->
-																	<!--begin::Cancel-->
-																	<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-																		<i class="ki-duotone ki-cross fs-2">
-																			<span class="path1"></span>
-																			<span class="path2"></span>
-																		</i>
-																	</span>
-																	<!--end::Cancel-->
-																	<!--begin::Remove-->
-																	<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-																		<i class="ki-duotone ki-cross fs-2">
-																			<span class="path1"></span>
-																			<span class="path2"></span>
-																		</i>
-																	</span>
-																	<!--end::Remove-->
-																</div>
-																<!--end::Image input-->
+																
+																
+																
+																
+																
+																
+																
+															<!--end::Image input placeholder-->
+															
+															<!--begin::Image input-->
+															<!-- 이미지 파일 -->
+
+															<form id="uploadForm" action="employee/empImg" method="post" enctype="multipart/form-data">
+															    <input type="file" name="uploadFile"/>
+															    <input type="hidden" name="idx" id="idx" value="${list.get(0).empIdx}"/>
+															</form>
+															<!--end::Image input-->
+															<!-- 이미지 파일 끝 -->
+															
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
 																<!--begin::Hint-->
 																<div class="form-text">file types: png, jpg, jpeg.</div>
 																<!--end::Hint-->
@@ -166,6 +162,7 @@ License: For each use you must have a valid license purchased only from above li
 														<div class="row mb-6">
 															<!--begin::Label-->
 															<label class="col-lg-4 col-form-label fw-semibold fs-6">
+
 																<span>직책</span>
 															</label>
 															<!--end::Label-->
@@ -256,7 +253,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="fname" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="leave_incdec" value="${list.get(0).leave_incdec}" />
+																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="leave_incdec" value="${list.get(0).leave_incdec}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -279,7 +276,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_ext_no" value="${list.get(0).empExtNo}" />
+																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_ext_no" value="${list.get(0).empExtNo}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -305,7 +302,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_emergency_phone" value="${list.get(0).empEmergencyPhone}" />
+																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_emergency_phone" value="${list.get(0).empEmergencyPhone}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -327,7 +324,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="fname" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_phone" value="${list.get(0).empPhone}" />
+																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_phone" value="${list.get(0).empPhone}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -353,11 +350,11 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="col-lg-8 fv-row">
 																	<!-- 시작::입력 -->
 																	<div class="form-check form-check-custom form-check-solid" id="emp_gender">
-																	    <input class="form-check-input" type="radio" value="남자" id="maleRadio" name="gender" ${list.get(0).empGender eq '남자' ? 'checked' : ''}/>
+																	    <input class="form-check-input" type="radio" value="M" id="maleRadio" name="gender" ${list.get(0).empGender eq '남자' ? 'checked' : ''}/>
 																	    <label class="form-check-label" for="maleRadio">
 																	        남자
 																	    </label>
-																	    <input class="form-check-input" type="radio" value="여자" id="femaleRadio" name="gender" ${list.get(0).empGender eq '여자' ? 'checked' : ''} style="margin-left: 30px;"/>
+																	    <input class="form-check-input" type="radio" value="W" id="femaleRadio" name="gender" ${list.get(0).empGender eq '여자' ? 'checked' : ''} style="margin-left: 30px;"/>
 																	    <label class="form-check-label" for="femaleRadio">
 																	        여자
 																	    </label>
@@ -420,10 +417,11 @@ License: For each use you must have a valid license purchased only from above li
 															<div class="col-lg-8 fv-row">
 																<!-- 셀렉트 박스 -->
 																<select class="form-select w-50" aria-label="Select option" id="education">
-																	<option value="대학교 4년제 졸업" ${list.get(0).education eq '대학교 4년제 졸업' ? 'selected' : ''}>대학교 4년제 졸업</option>
-																	<option value="대학교 2년제 졸업" ${list.get(0).education eq '대학교 2년제 졸업' ? 'selected' : ''}>대학교 2년제 졸업</option>
-																	<option value="대학교 초졸" ${list.get(0).education eq '대학교 초졸' ? 'selected' : ''}>대학교 초졸</option>
-																	<option value="고졸" ${list.get(0).education eq '고졸' ? 'selected' : ''}>고졸</option>
+																	<option value="초등학교 졸업" ${list.get(0).education eq '초등학교 졸업' ? 'selected' : ''}>초등학교 졸업</option>
+																	<option value="중학교 졸업" ${list.get(0).education eq '중학교 졸업' ? 'selected' : ''}>중학교 졸업</option>
+																	<option value="고등학교 졸업" ${list.get(0).education eq '고등학교 졸업' ? 'selected' : ''}>고등학교 졸업</option>
+																	<option value="대학교 졸업" ${list.get(0).education eq '대학교 졸업' ? 'selected' : ''}>대학교 졸업</option>
+																	<option value="직업전문학원·학교 및 기타학력 졸업" ${list.get(0).education eq '직업전문학원·학교 및 기타학력 졸업' ? 'selected' : ''}>직업전문학원·학교 및 기타학력 졸업</option>
 																	<option value="" ${list.get(0).education eq null ? 'selected' : ''}></option>
 																	<!-- 추가적인 옵션들을 필요에 따라 추가할 수 있습니다 -->
 																</select>
@@ -432,7 +430,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="school_name" value="${list.get(0).schoolName}" />
+																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="school_name" value="${list.get(0).schoolName}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -442,7 +440,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" name="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="major" value="${list.get(0).major}" />
+																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="major" value="${list.get(0).major}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -456,15 +454,15 @@ License: For each use you must have a valid license purchased only from above li
 													<!--end::Card body-->
 													<!--begin::Actions-->
 													<div class="card-footer d-flex justify-content-between">
-														<button class="btn btn-primary">삭제하기</button>
+														<a href="#" class="btn btn-primary" id=delete>삭제하기</a>
 														<div>
 															<button class="btn btn-light btn-active-light-primary me-2">돌아가기</button>
-															<button class="btn btn-primary" id="modify">저장</button>
+															<a href="#" class="btn btn-primary" id="modify">프로필 수정</a>
 														</div>
+														
 													</div>
 													<!--end::Actions-->
-												</form>
-												<!--end::Form-->
+
 											</div>
 											<!--end::Content-->
 										</div>
@@ -526,6 +524,7 @@ License: For each use you must have a valid license purchased only from above li
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
+		
 		<!--begin::Vendors Javascript(used for this page only)-->
 		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Vendors Javascript-->
@@ -539,91 +538,60 @@ License: For each use you must have a valid license purchased only from above li
 		<!-- 생년월일 데이트 피커-->
 		$("#kt_datepicker_2").flatpickr();	
 		
-		
+
 		
 		<!-- 수정하기 -->
-		$(document).ready(function() {
-		    $("#modify").on("click", function() {
-		        var education = $("#education").val();
-		        var school_name = $("#school_name").val();
-		        var major = $("#major").val();
-		        var emp_birth = $("#kt_datepicker_2").val();
-		        var emp_gender = $("input[name='gender']:checked").val();
-		        var emp_phone = $("#emp_phone").val();
-		        var emp_emergency_phone = $("#emp_emergency_phone").val();
-		        var emp_ext_no = $("#emp_ext_no").val();
-		        var leave_incdec = $("#leave_incdec").val();
-		        var common_type = $("#common_type").val();
-		        var dept_name = $("#dept_name").val();
-		        var emp_idx = document.getElementById('emp_idx').innerText;
-		        var emp_name = document.getElementById('emp_name').innerText;
+	
+		$(document).ready(function () {
+		       $("#delete").on("click",function(e){
+					e.preventDefault();
+					var emp_idx = $("#emp_idx").text();
+					var url = "employee/delete?emp_idx="+emp_idx;
+					window.location.href = url;
+				});
+		       
+		       
+	        $("#modify").on("click", function (e) {
+	            e.preventDefault(); 
+	     
+	            
+	            $("#uploadForm").submit();
+	            
+	      /*
+	            var emp_idx = $("#emp_idx").text();
+	            var education = $("#education").val();
+	            var school_name = $("#school_name").val();
+	            var major = $("#major").val();
+	            var emp_birth = $("#kt_datepicker_2").val();
+	            var emp_gender = $("input[name='gender']:checked").val() || "";
+	            var emp_phone = $("#emp_phone").val();
+	            var emp_emergency_phone = $("#emp_emergency_phone").val();
+	            var emp_ext_no = $("#emp_ext_no").val();
+	            var leave_incdec = $("#leave_incdec").val();
+	            var common_type = $("#common_type").val();
+	            var dept_name = $("#dept_name").val();
+	            
+	            var emp_name = $("#emp_name").text();
 
+	            var url = "employee/modify?education=" + education +
+	                "&school_name=" + school_name +
+	                "&major=" + major +
+	                "&emp_birth=" + emp_birth +
+	                "&emp_gender=" + emp_gender +
+	                "&emp_phone=" + emp_phone +
+	                "&emp_emergency_phone=" + emp_emergency_phone +
+	                "&emp_ext_no=" + emp_ext_no +
+	                "&leave_incdec=" + leave_incdec +
+	                "&common_type=" + common_type +
+	                "&dept_name=" + dept_name +
+	                "&emp_idx=" + emp_idx +
+	                "&emp_name=" + emp_name;
 
-		        var url = "employee/modify.ajax?education=" + education +
-		                  "&school_name=" + school_name +
-		                  "&major=" + major +
-		                  "&emp_birth=" + emp_birth +
-		                  "&emp_gender=" + emp_gender +
-		                  "&emp_phone=" + emp_phone +
-		                  "&emp_emergency_phone=" + emp_emergency_phone +
-		                  "&emp_ext_no=" + emp_ext_no +
-		                  "&leave_incdec=" + leave_incdec +
-		                  "&common_type=" + common_type +
-		                  "&dept_name=" + dept_name +
-		                  "&emp_idx=" + emp_idx +
-		                  "&emp_name=" + emp_name;
-
-
-		        window.location.href = url;
-		    });
-		});
-		
-		
-		
-		/*
-		$(document).ready(function() {
-	        $("#modify").on("click", function() {
-				var education = $("#education").val();
-				var school_name = $("#school_name").val();
-				var major = $("#major").val();
-	        	var emp_birth = $("#kt_datepicker_2").val();
-	        	var emp_gender = $("input[name='gender']:checked").val();
-	        	var emp_phone = $("#emp_phone").val();
-	        	var emp_emergency_phone = $("#emp_emergency_phone").val();
-	        	var emp_ext_no = $("#emp_ext_no").val();
-	        	var leave_incdec = $("#leave_incdec").val();
-	        	var common_type = $("#common_type").val();
-	        	var dept_name = $("#dept_name").val();
-				var emp_idx = document.getElementById('emp_idx').innerText;
-	        	var emp_name=document.getElementById('emp_name').innerText;
-	        	$.ajax({
-	                type: "get",
-	                url: "employee/modify.ajax",
-	                data: {
-	                    education: education,
-	                    school_name: school_name,
-	                    major: major,
-	                    emp_birth: emp_birth,
-	                    emp_gender: emp_gender,
-	                    emp_phone: emp_phone,
-	                    emp_emergency_phone: emp_emergency_phone,
-	                    emp_ext_no: emp_ext_no,
-	                    leave_incdec: leave_incdec,
-	                    common_type: common_type,
-	                    dept_name: dept_name,
-	                    emp_idx: emp_idx,
-	                    emp_name: emp_name
-	                },
-	                dataType: 'json',
-	                success: function(data) {
-	                    console.log(data);
-	                },
-	                error: function(e) {
-						console.log(e);
-	                }
-	            });
+	            window.location.href = url;
+	            */
 	        });
 	    });
-		*/
+		
+
 	</script>
 </html>
