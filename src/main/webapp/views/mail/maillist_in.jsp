@@ -74,7 +74,7 @@
 								<div class="comm-right">
 									<input type="text" class="form-control" placeholder="이름을 입력해주세요" style="width: 200px; height: 40px;">
 									<button type="button" class="btn btn-primary span-search-button" style="margin-left: 10px;">검색</button>
-									<button class="img-button" style="margin-left: 10px;"><img src="assets/media/icons/duotune/general/gen027.svg" onclick=""/></button>
+									<button class="img-button" style="margin-left: 10px;"><img src="assets/media/iconl/gen027.svg" onclick=""/></button>
 								</div>
 							</div>
 						</div>

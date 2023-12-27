@@ -13,20 +13,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.ustore.employee.dto.DeptDto;
 import com.ustore.main.dao.EmployeeUserDao;
-import com.ustore.main.dto.EmployeeRoleDto;
 import com.ustore.main.dto.EmployeeUserDto;
 
 @Service
 public class CustomUserdetailsService implements UserDetailsService{
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
-	EmployeeUserDao userDbService;
+	EmployeeUserDao employeeUserDao;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		logger.info("스프링 시큐리티 로그인");
-		EmployeeUserDto customUser = userDbService.getUser(username);
+		EmployeeUserDto customUser = employeeUserDao.getUser(username);
 		if(customUser == null)
 			throw new UsernameNotFoundException("아이디에 해당하는 사용자를 찾을 수 없습니다");
 		
@@ -34,15 +34,14 @@ public class CustomUserdetailsService implements UserDetailsService{
 		customUserDetails.setUsername(customUser.getEmpIdx());
 		customUserDetails.setPassword(customUser.getEmpPw());
 		
-//		List<EmployeeRoleDto> customRoles = userDbService.getUserRoles(username);
-//		
-//		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-//		if(customRoles != null) {
-//			for(EmployeeRoleDto role : customRoles) {
-//				authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-//			}
-//		}
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();	
+		List<String> customRoles = findRoles(username, customUser.getDeptName(), customUser.getParentDeptId());
+		customRoles.add(customUser.getPositionName());
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		if(customRoles != null) {
+			for(String role : customRoles) {
+				authorities.add(new SimpleGrantedAuthority(role));
+			}
+		}
 		
 		// CustomUserDetails객체에 권한 목록 (authorities)를 설정한다.
         customUserDetails.setAuthorities(authorities);
@@ -51,6 +50,22 @@ public class CustomUserdetailsService implements UserDetailsService{
         customUserDetails.setAccountNonLocked(true);
         customUserDetails.setCredentialsNonExpired(true);
         return customUserDetails;
+	}
+	
+	public List<String> findRoles(String empIdx, String deptName, int parentDeptId) {
+		
+		List<String> roleList = new ArrayList<>();
+		roleList.add(deptName);
+		
+		int currentParentRoleNum = parentDeptId;//자신의 상위 부서 넣기
+		List<DeptDto> roles = employeeUserDao.getDeptList(empIdx);
+		for(DeptDto dto : roles) { // 
+			if(dto.getDeptId() == currentParentRoleNum && dto.getParentDeptId() != 0) {
+				roleList.add(dto.getDeptName());
+				currentParentRoleNum = dto.getParentDeptId();
+			}
+		}
+		return roleList;
 	}
 	
 }
