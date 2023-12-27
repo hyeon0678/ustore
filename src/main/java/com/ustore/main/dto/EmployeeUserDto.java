@@ -6,9 +6,18 @@ public class EmployeeUserDto {
 	private String positionName;
 	private String deptName;
 	private int parentDeptId;
+	private int deptId;
 	
 	
 	
+	public int getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(int deptId) {
+		this.deptId = deptId;
+	}
+
 	public String getPositionName() {
 		return positionName;
 	}

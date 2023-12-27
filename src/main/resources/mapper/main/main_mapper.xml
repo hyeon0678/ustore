@@ -13,9 +13,10 @@
 		ON e.`position` = c.common_idx 
 		WHERE e.emp_idx=#{param1}
 	</select>
-	<select id="getUserRoles" resultType="DeptDto">
+	<select id="getDeptList" resultType="DeptDto">
 	SELECT d.dept_id, d.parent_dept_id , CONCAT('ROLE_', d.dept_name) AS dept_name 
 	FROM department d
-	WHERE d.parent_dept_id is not null;
+	WHERE d.parent_dept_id is not null
+	AND d.dept_id != #{param1};
 	</select>
 </mapper>

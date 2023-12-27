@@ -34,7 +34,7 @@ public class CustomUserdetailsService implements UserDetailsService{
 		customUserDetails.setUsername(customUser.getEmpIdx());
 		customUserDetails.setPassword(customUser.getEmpPw());
 		
-		List<String> customRoles = findRoles(username, customUser.getDeptName(), customUser.getParentDeptId());
+		List<String> customRoles = findRoles(customUser.getDeptName(), customUser.getParentDeptId(), customUser.getDeptId());
 		customRoles.add(customUser.getPositionName());
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		if(customRoles != null) {
@@ -52,14 +52,15 @@ public class CustomUserdetailsService implements UserDetailsService{
         return customUserDetails;
 	}
 	
-	public List<String> findRoles(String empIdx, String deptName, int parentDeptId) {
+	public List<String> findRoles(String deptName, int parentDeptId, int deptId) {
 		
 		List<String> roleList = new ArrayList<>();
 		roleList.add(deptName);
 		
 		int currentParentRoleNum = parentDeptId;//자신의 상위 부서 넣기
-		List<DeptDto> roles = employeeUserDao.getDeptList(empIdx);
-		for(DeptDto dto : roles) { // 
+		List<DeptDto> roles = employeeUserDao.getDeptList(deptId);
+		
+		for(DeptDto dto : roles) { 
 			if(dto.getDeptId() == currentParentRoleNum && dto.getParentDeptId() != 0) {
 				roleList.add(dto.getDeptName());
 				currentParentRoleNum = dto.getParentDeptId();
