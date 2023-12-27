@@ -22,10 +22,22 @@ public class OrganizationChartService {
 		List<OrganizationChartDto> departments = chartDao.selectDepartments();
 		List<OrganizationChartDto> employees = chartDao.selectEmployees();
 		
-		result.addAll(departments);	        
+		result.addAll(departments);	  
+		
+		/*
+		 * for (OrganizationChartDto employee : employees) { OrganizationChartDto
+		 * departmentNode = findNodeById(result, employee.getParent()); if
+		 * (departmentNode != null) { departmentNode.getChildren().add(employee); } }
+		 */
 		result.addAll(employees);	 
 	    
 		return result;
 	}
+
+	/*
+	 * private OrganizationChartDto findNodeById(List<OrganizationChartDto> nodes,
+	 * String id) { for (OrganizationChartDto node : nodes) { if
+	 * (node.getId().equals(id)) { return node; } } return null; }
+	 */
 
 }

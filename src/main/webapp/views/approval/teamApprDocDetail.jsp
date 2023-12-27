@@ -117,7 +117,7 @@
 					<div class="modal-body">
 						<div class="d-flex flex-row h-600px border">
 							<!-- 왼쪽 div -->
-							<div class="emptree border" style="max-height: 600px; overflow-y: auto; overflow-x: hidden; margin: 5px;" >
+							<div class="emptree border" style="max-height: 600px; overflow-y: auto; overflow-x: hidden; margin: 5px; position: relative;" >
 								<div class="d-flex flex-column flex-row-fluid w-350px justify-content-between" style="align-items: center; margin: 5px;">
 									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 5px 0px; width: 100%;">
 										<span class="text-center">조 직 도</span>						
@@ -130,7 +130,7 @@
 								<div class="d-flex flex-column-fluid scroll px-5" style="max-height: 400px; overflow-y: auto;">
 									<div class="text-black" id="kt_docs_jstree_basic"></div>
 								</div>
-								<div style="position: absolute; bottom: 40px; text-align: center; left: 15%;">
+								<div style="position: absolute; bottom: 20px; text-align: center; left: 25%;">
 									<button id="addline" onclick="addApprovalLine()">결재선 추가</button>
 									<button id="addrecv" onclick="addReceiver()">수신자 추가</button>
 								</div>
@@ -181,7 +181,35 @@
 									</div>
 								</div>
 							</div>
-						</div>											
+						</div>
+						<!-- 아래쪽 div -->
+						<c:if test="${commentsExist}">
+							<div>
+								<div class="apprreceiver border"  style="align-items: center; margin: 5px;">
+									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
+										<span class="text-center">결재의견(반려, 수정)</span>
+									</div>										
+									<div class="d-flex flex-column receiver scroll" id="receiver" style="height: 100px;">
+										<div style="overflow: auto;">
+											<table class="w-100">
+												<thead>
+													<tr>
+														<th>결재자명</th>
+														<th>일시</th>
+														<th>의견</th>
+													</tr>
+												</thead>
+												<tbody>	
+													<tr>
+														<td colspan="3" style="text-align: center;">의견이 없습니다.</td>
+													</tr>													
+												</tbody>
+											</table>
+										</div>										
+									</div>
+								</div>
+							</div>	
+						</c:if>										
 					</div>
 
 					<div class="modal-footer" style="display: flex; justify-content: center;">
