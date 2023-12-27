@@ -47,7 +47,8 @@
 	        e.emp_idx AS id,
 	        e.dept_id AS parent,
 	        CONCAT(e.emp_name, ' (', c.common_type, ')') AS text,
-	        'employee' AS type
+	        'employee' AS type,
+	        c.common_type as position
 	    FROM
 	        employee e
 	    JOIN
@@ -55,7 +56,7 @@
 	    JOIN
 	        common c ON e.position = c.common_idx
 	    ORDER BY
-	        e.dept_id, position, e.emp_idx
+	        e.dept_id, e.emp_idx
 	</select>
 	
 	<resultMap id="organizationChartResultMap" type="OrganizationChartDto">

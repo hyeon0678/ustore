@@ -2,6 +2,7 @@ package com.ustore.employee.controller;
 
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,13 +43,13 @@ public class GroupManageController {
 	}
 	
 	@PostMapping("/registration")
-	//@ModelAttribute EmployeeDto employee
-	public String insertEmp(@ModelAttribute EmployeeDto params, RedirectAttributes rattr) {
+	public String insertEmp(@ModelAttribute EmployeeDto params, 
+			RedirectAttributes rattr, Principal principal) {
 		logger.info("params : " + params.getEmpBirth());
-		boolean success = groupManageService.insertEmp(params);
+		logger.info(principal.getName());
+		boolean success = groupManageService.insertEmp(params, principal.getName());
 		if(success) {
 			return "redirect:/registration";
-			//회원 상세 페이지로 이동...
 		}
 		rattr.addFlashAttribute("msg","사원등록에 실패했습니다");
 		return "redirect:/employee/registration";
