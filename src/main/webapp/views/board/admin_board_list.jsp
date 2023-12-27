@@ -52,10 +52,12 @@
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
+				<jsp:include page="/views/common/header.jsp"></jsp:include>
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 					<!--================================메인 내용들어가는부분================================================-->
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
@@ -81,25 +83,35 @@
 								
 								<!--end::Actions-->
 							</div>
+							
+							<div style="float: left;">
+							<div class="d-flex align-items-center position-relative my-1">
+								<i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+									<span class="path1"></span>
+									<span class="path2"></span>
+								</i>
+								<input type="text" data-kt-ecommerce-category-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="내용을 입력해주세요." />
+							</div>
+						</div>
+										
+										<div style="float: right;">
+											<button onclick="location.href='#'" class="btn btn-primary">글작성</button>
+										</div>
+							
 						</div>
 						<!--end::Toolbar-->
 						<!--begin::Post-->
 						
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
+						
+						
+						
 							<!--begin::Container-->
 							<div class="container-xxl" style="background-color: white;margin: 20px;">
 								<div class="py-5">
 									<div class="table-responsive">
-										<div style="float: left;">
-											<button onclick="location.href='#'" class="btn btn-primary">글작성</button>
-										</div>
 										
-										<div style="float: right;">
-											<form action="" method="get">
-            									<input type="text" name="" placeholder="검색어를 입력 하세요" class="form-control" style="width: auto;display: inline;"/>
-            									<button class="btn btn-primary">검색</button>
-											</form>
-										</div>
+										
 										
 										<table class="table table-row-bordered table-row-gray-400 gy-7" style="padding: 0px;">
 											<tbody>
@@ -124,7 +136,7 @@
 												</tr>
 												
 												<tr class="fw-bold fs-6 text-gray-800">
-													<th colspan="5" style="font-size: larger; color: red">공지사항1</th>
+													<th colspan="5" style="font-size: larger; color: red">공지사항2</th>
 													<th style="text-align: center;">조회수</th>
 												</tr>
 												<tr style="border-top: hidden;">
@@ -143,7 +155,7 @@
 												</tr>
 												
 												<tr class="fw-bold fs-6 text-gray-800">
-													<th colspan="5" style="font-size: larger; color: red">공지사항1</th>
+													<th colspan="5" style="font-size: larger; color: red">공지사항3</th>
 													<th style="text-align: center;">조회수</th>
 												</tr>
 												<tr style="border-top: hidden;">
@@ -183,39 +195,8 @@
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
-		<!--end::Global Javascript Bundle-->
-		<!--begin::Vendors Javascript(used for this page only)-->
-		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/vis-timeline/vis-timeline.bundle.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
-		<!--end::Vendors Javascript-->
-		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="resource/assets/js/widgets.bundle.js"></script>
-		<script src="resource/assets/js/custom/widgets.js"></script>
-		<script src="resource/assets/js/custom/apps/chat/chat.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/type.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/budget.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/settings.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/team.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/targets.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/files.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/complete.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/main.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-app.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/users-search.js"></script>
-		<!--end::Custom Javascript-->
-		<!--end::Javascript-->
+		
+		
 	</body>
 	<!--end::Body-->
 </html>

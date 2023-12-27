@@ -18,8 +18,7 @@
 		<!--begin::Vendor Stylesheets(used for this page only)-->
 		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="resource/assets/plugins/custom/vis-timeline/vis-timeline.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Vendor Stylesheets-->
-		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+		
 		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
@@ -48,10 +47,12 @@
 			<!--begin::Page-->
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
+				<jsp:include page="/views/common/header.jsp"></jsp:include>
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 					<!--================================메인 내용들어가는부분================================================-->
 						
 						<!--begin::Toolbar-->
