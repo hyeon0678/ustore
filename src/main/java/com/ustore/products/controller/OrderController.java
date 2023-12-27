@@ -39,8 +39,10 @@ public class OrderController {
 		
 		service.orderCartInsert(params);
 		
-		
 		return "redirect:/order/list";
+		
+		
+		
 	}
 	@RequestMapping(value = "/order/ordercart/list", method = {RequestMethod.GET, RequestMethod.POST})
 	public String ordercartList() {
@@ -51,6 +53,8 @@ public class OrderController {
 		
 		return "";
 	}
+	
+	
 		
 	
 	

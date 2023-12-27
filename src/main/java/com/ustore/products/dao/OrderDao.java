@@ -13,4 +13,6 @@ public interface OrderDao {
 
 	void orderCartInsert(OrderDto dto);
 
+	ArrayList<OrderDto> cartList();
+
 }

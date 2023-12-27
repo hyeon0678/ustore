@@ -48,30 +48,39 @@
 				</style>
 			
 			</head>
+			
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
+			<!--begin::Header 헤더 시작 -->
+					<jsp:include page="/views/common/header.jsp"></jsp:include>
+					<!--end::Header 헤더 닫기-->
 		<!--begin::Main-->
 		<!--begin::Root-->
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
+			
 			<div class="page d-flex flex-row flex-column-fluid">
 				<!--begin::Wrapper-->
+			
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
+					
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
 					<!--================================메인 내용들어가는부분================================================-->
-						
-
+					<!--사이드바 넣는곳  -->	
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
+					
+<!-- 사이드바 닫는곳 -->
 					<!--begin::Post-->
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
 							<!--begin::Container-->
 							<div class="container-xxl">
 								<!--begin::Category-->
-								<div class="card card-flush"><form action="/order/ordercart/insert" method="post" id="addOrder">
+								<div class="card card-flush">
 									<!--begin::Card header-->
 									<div class="card-header align-items-center py-5 gap-2 gap-md-5">
 										<!--begin::Card title-->
@@ -162,7 +171,7 @@
         <!-- begin::Increase control -->
         <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="increase">
             <i class="ki-duotone ki-plus fs-2"></i>
-        </button><button type="button" onclick="submitForm()">추가</button>
+        </button> <button type="button" onclick="submitForm(this)" id="kt_docs_sweetalert_basic" class="btn btn-primary">추가</button>
         <!-- end::Increase control -->
      
     </div>
@@ -181,7 +190,7 @@
 										<!--end::Table-->
 										
 									</div>
-									 </form>
+									
 <button type="button" class="btn btn-primary" 
             data-bs-toggle="modal" data-bs-target="#kt_modal_scrollable_2"
             style="position: absolute; bottom: 0; right: 0;">
@@ -482,18 +491,53 @@
     });
 </script>
 <script>
-    
     document.getElementById('searchContainer').style.display = 'none';
 
-    
     document.querySelector('[data-kt-ecommerce-category-filter="search"]').addEventListener('input', function() {
         var searchContainer = document.getElementById('searchContainer');
         searchContainer.style.display = this.value.trim() === '' ? 'none' : 'flex';
     });
-    
-    function submitForm() {
-        // 폼 ID를 사용하여 폼을 가져오고 제출
-        document.getElementById("addOrder").submit();
+
+    function submitForm(button) {
+        var row = button.closest('tr'); // 현재 버튼이 속한 행 선택
+
+        // SweetAlert 추가 - 확인 버튼 클릭 시 폼 제출
+        Swal.fire({
+            title: '확인',
+            text: '물품을 추가하시겠습니까?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '확인',
+            cancelButtonText: '취소',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // 폼 생성
+                var form = document.createElement('form');
+                form.action = '/order/ordercart/insert';
+                form.method = 'POST';
+
+                // hidden input 추가 (productId)
+                var productIdInput = document.createElement('input');
+                productIdInput.type = 'hidden';
+                productIdInput.name = 'productId';
+                productIdInput.value = row.querySelector('input[name="productId"]').value.trim();
+                form.appendChild(productIdInput);
+
+                // hidden input 추가 (count)
+                var countInput = document.createElement('input');
+                countInput.type = 'hidden';
+                countInput.name = 'count';
+                countInput.value = row.querySelector('input[name="count"]').value.trim();
+                form.appendChild(countInput);
+
+                // 폼을 body에 추가하고 submit
+                document.body.appendChild(form);
+                form.submit();
+
+                // 폼을 body에서 제거
+                document.body.removeChild(form);
+            }
+        });
     }
 </script>
 	</body>

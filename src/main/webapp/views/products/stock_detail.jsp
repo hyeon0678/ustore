@@ -73,11 +73,17 @@
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
 				<!--begin::Wrapper-->
+				<!--begin::Header 헤더 시작 -->
+					<jsp:include page="/views/common/header.jsp"></jsp:include>
+					<!--end::Header 헤더 닫기-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
 					<!--================================메인 내용들어가는부분================================================-->
+					<!--사이드바 넣는곳  -->	
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 					
+<!-- 사이드바 닫는곳 -->
 					
 					<!--begin::Post-->
 						<div class="container"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1" style="background-color: #C6DA52;">
