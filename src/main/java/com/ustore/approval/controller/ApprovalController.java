@@ -15,8 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.ustore.approval.dto.ApprovalDto;
 import com.ustore.approval.service.ApprovalService;
 
 @Controller
@@ -98,16 +101,25 @@ public class ApprovalController {
 	
 	// HTML 파일을 저장할 폴더 경로
     private static final String HTML_FOLDER_PATH = "C:\\ustoreUpload\\html";
-	
-   
-	
-    @PostMapping("/approval/saveHtml")
+	   	
+    @PostMapping(value="/approval/saveHtml")
     public void saveHtmlByCommonIdx(@RequestParam String html, @RequestParam int common_idx) {
         service.saveHtmlByCommonIdx(html, common_idx);
     }
 
-    
+    @PostMapping(value="/approval/saveapprlinedata")
+    public ModelAndView saveApprLineData(@RequestBody ApprovalDto dto) {
+    	ModelAndView mav = new ModelAndView();
+    	service.saveApprLineData(dto.getApprovalLines(), dto.getReceivers());
+    	
+    	return mav;
+    }
 
-	 
+    @PostMapping(value="/approval/sendappr")
+    public ModelAndView sendAppr(@RequestBody ApprovalDto dto) {
+    	ModelAndView mav = new ModelAndView();
+    	
+    	return mav;
+    } 
 	
 }

@@ -15,7 +15,6 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 	<!--end::Fonts-->
 	<!--begin::Vendor Stylesheets(used for this page only)-->
-	<link href="<c:url value='/resource/assets/plugins/custom/leaflet/leaflet.bundle.css' />" rel="stylesheet" type="text/css" />
 	<link href="<c:url value='/resource/assets/plugins/custom/datatables/datatables.bundle.css' />" rel="stylesheet" type="text/css" />
 	<!--end::Vendor Stylesheets-->
 	<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
@@ -288,8 +287,7 @@
         // 뒤로가기 버튼 클릭 시의 동작
         $('#btnGoBack').on('click', function () {
         	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
-                // 사용자가 Yes를 클릭한 경우 /newapproval 페이지로 이동
-                window.location.href = '/approval/newapproval';
+                location.href = '/approval/newapproval';
             } else {
                 // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
                 console.log('뒤로가기 버튼 클릭 - 취소');
@@ -341,7 +339,6 @@
 			"plugins": ["types","search"]
 			,
 			"search":{
-				/* "show_only_matches" : true,  */
 				"show_only_matches_children" : true
 			}
 		});
@@ -374,58 +371,84 @@
 	var receivers = [];	
 	
 	function addApprovalLine(){
-		var approvalData = {
-        type: '결재자',
-        name: 'John Doe',
-        position: '직책',
-        department: '부서'
-    	};
-
-		// 테이블의 tbody에 맨 위에 데이터를 추가
-		var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
-		var newRow = tbody.insertRow(0); // 첫 번째 위치에 새로운 행 추가
-
-		// 각 셀에 데이터 추가
-		var cell1 = newRow.insertCell(0);
-		var cell2 = newRow.insertCell(1);
-		var cell3 = newRow.insertCell(2);
-		var cell4 = newRow.insertCell(3);
-
-		cell1.innerHTML = approvalData.type;
-		cell2.innerHTML = approvalData.name;
-		cell3.innerHTML = approvalData.position;
-		cell4.innerHTML = approvalData.department;
 		
-		approvalLine.push(approvalData);
+		var seletedNode = $('#kt_docs_jstree_basic').jstree(true).get_selected(true)[0];
+		
+		if(selectedNode){
+			var approvalData = {
+	        type: '결재자',
+	        name: selectedNode.text,
+	        position: selectedNode.data.position,
+	        department: selectedNode.data.dept_name
+	    	};
+			
+			// 테이블의 tbody에 맨 위에 데이터를 추가
+			var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
+			var newRow = tbody.insertRow(0); // 첫 번째 위치에 새로운 행 추가
+	
+			// 각 셀에 데이터 추가
+			var cell1 = newRow.insertCell(0);
+			var cell2 = newRow.insertCell(1);
+			var cell3 = newRow.insertCell(2);
+			var cell4 = newRow.insertCell(3);
+			var cell5 = newRow.insertCell(4);
+	
+			cell1.innerHTML = approvalData.type;
+			cell2.innerHTML = approvalData.name;
+			cell3.innerHTML = approvalData.position;
+			cell4.innerHTML = approvalData.department;
+			
+			approvalLine.push(approvalData);
+			
+			var deleteIcon = document.createElement('i');
+			deleteIcon.className = 'fa fa-trash';
+			deleteIcon.onclick = function () {
+				newRow.remove();
+			};
+			cell5.appendChild(deleteIcon);
+		}
+
 	}
 
 	function addReceiver(){
-		var receiverData = {
-        name: 'John Doe',
-        position: '직책',
-        department: '부서'
-    	};
-
-		// 테이블의 tbody에 맨 위에 데이터를 추가
-		var tbody = document.getElementById('receiver').getElementsByTagName('tbody')[0];
-		var newRow = tbody.insertRow(0); // 첫 번째 위치에 새로운 행 추가
-
-		// 각 셀에 데이터 추가
-		var cell1 = newRow.insertCell(0);
-		var cell2 = newRow.insertCell(1);
-		var cell3 = newRow.insertCell(2);
+		var seletedNode = $('#kt_docs_jstree_basic').jstree(true).get_selected(true)[0];
 		
-		cell1.innerHTML = approvalData.name;
-		cell2.innerHTML = approvalData.position;
-		cell3.innerHTML = approvalData.department;
-		
-		receivers.push(receiverData);
+		if(selectedNode){
+			var approvalData = {
+	        name: selectedNode.text,
+	        position: selectedNode.data.position,
+	        department: selectedNode.data.dept_name
+			};
+			
+			// 테이블의 tbody에 맨 위에 데이터를 추가
+			var tbody = document.getElementById('receiver').getElementsByTagName('tbody')[0];
+			var newRow = tbody.insertRow(0); // 첫 번째 위치에 새로운 행 추가
+	
+			// 각 셀에 데이터 추가
+			var cell1 = newRow.insertCell(0);
+			var cell2 = newRow.insertCell(1);
+			var cell3 = newRow.insertCell(2);
+			var cell4 = newRow.insertCell(3);
+			
+			cell1.innerHTML = approvalData.name;
+			cell2.innerHTML = approvalData.position;
+			cell3.innerHTML = approvalData.department;
+			
+			var deleteIcon = document.createElement('i');
+			deleteIcon.className = 'fa fa-trash';
+			deleteIcon.onclick = function () {
+				newRow.remove();
+			};
+			cell4.appendChild(deleteIcon);
+			
+			receivers.push(receiverData);
+	    }
 	}
 	
 	$('#saveApprLine').on('click', function () {
         // 서버로 결재선과 수신자 정보 전송 (AJAX 사용)
         $.ajax({
-            url: '/saveApprovalData', // 서버의 엔드포인트
+            url: '/saveapprlinedata', // 서버의 엔드포인트
             method: 'POST',
             data: {
                 approvalLines: JSON.stringify(approvalLines),
@@ -454,7 +477,7 @@
 
 	    // 서버로 데이터 전송 (AJAX 사용)
 	    $.ajax({
-	        url: '/saveDocument', // 저장을 처리할 서버의 엔드포인트
+	        url: '/sendappr', // 저장을 처리할 서버의 엔드포인트
 	        method: 'POST',
 	        data: {
 	            htmlFormData: htmlFormData,
@@ -474,6 +497,55 @@
 	    });
 	});
 	
+	
+	/* function addRow(optionIndex, userno, usernm, userpos) {
+		var tr = $("<tr id='tr" + userno +"'>");
+		$("#seletedUsers > tbody").append(tr);
+
+		var td = $("<TD>");
+		tr.append(td);
+		
+		var typearr = ["기안", "합의", "결재"];
+		var select = $("<select>");
+		td.append(select);
+		for (var i=0; i<typearr.length;i++) {
+			var option = $("<option value='"+ i + "'>" + typearr[i] + "</option>");
+			select.append(option);
+			select.val(optionIndex);
+		}
+
+		var td = $("<TD>");
+		tr.append(td);
+		td.text(usernm);
+		
+		td = $("<TD>");
+		tr.append(td);
+		td.html("<a href='javascript:fn_UserDelete(" + userno +")'><i class='fa fa-times fa-fw'></i></a>");
+		
+		if (userpos==="") userpos = typearr[optionIndex];
+		td = $("<TD>");
+		tr.append(td);
+		td.html(userpos);
+		td.css({"display": "none"});
+	}
+
+	function fn_UserDelete(userno) {
+		$("#tr"+userno).remove();
+	}
+
+	function fn_closeUsers() {
+		var ret = "";
+		$("#seletedUsers > tbody  > tr").each(function() {
+			if (!this.id) return; 
+			var userno = this.id.replace("tr","");
+			var usernm = $(this).find('td:eq(1)').text();
+			var select = $(this).find('td:eq(0) > select').val();
+			var userpos = $(this).find('td:eq(3)').text();
+			ret += userno + "," +usernm + "," + select + "," + userpos + "||";
+		});
+		
+		fn_selectUsers(ret)
+	} */
 	
 	
 	
