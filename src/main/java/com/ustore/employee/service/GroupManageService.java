@@ -28,11 +28,14 @@ public class GroupManageService {
 	PasswordEncoder encoder;
 	
 	@Transactional
-	public boolean insertEmp(EmployeeDto employee) {
+	public boolean insertEmp(EmployeeDto employee, String empIdx) {
+		employee.setRegBy(empIdx);
+		
 		LocalDate now = LocalDate.now();
 		String enterYear = Integer.toString(now.getYear());
 		logger.info("current year : "+enterYear);
 		
+		employee.setEmpPhone(employee.getEmpPhone().replace("-", ""));
 		String newPw = encoder.encode(employee.getEmpPhone().substring(3));
 		logger.info(employee.getEmpPhone().substring(3));
 		employee.setEmpPw(newPw);
@@ -61,7 +64,7 @@ public class GroupManageService {
 		int row = groupManageDao.insertEmp(employee);
 		row += groupManageDao.insertEducation(employee);
 		
-		employee.setEmpPhone(employee.getEmpPhone().replace("-", ""));
+		
 		
 		if(row>1) {
 			return true;
