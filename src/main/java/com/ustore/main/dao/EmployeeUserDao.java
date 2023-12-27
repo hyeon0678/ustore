@@ -12,5 +12,5 @@ import com.ustore.main.dto.EmployeeUserDto;
 @Mapper
 public interface EmployeeUserDao {
 	public EmployeeUserDto getUser(String loginUserId);
-	public List<DeptDto> getDeptList(String empIdx);
+	public List<DeptDto> getDeptList(int deptId);
 }

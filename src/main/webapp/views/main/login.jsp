@@ -115,6 +115,7 @@
 			}
 		})
 		
+		
 		function validation(){
 			let id = $('input[name=empIdx]').val();
 			let pw = $('input[name=empPw]').val();

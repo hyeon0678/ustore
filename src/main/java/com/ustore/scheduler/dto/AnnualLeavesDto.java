@@ -9,7 +9,7 @@ public class AnnualLeavesDto {
 	private int leaveType;
 	private int leaveIncdec;
 	private String regBy;
-	private int currentAnnualLeavesCnt;
+	
 	
 	public String getEmpIdx() {
 		return empIdx;
@@ -41,13 +41,6 @@ public class AnnualLeavesDto {
 	public void setRegBy(String regBy) {
 		this.regBy = regBy;
 	}
-	public int getCurrentAnnualLeavesCnt() {
-		return currentAnnualLeavesCnt;
-	}
-	public void setCurrentAnnualLeavesCnt(int currentAnnualLeavesCnt) {
-		this.currentAnnualLeavesCnt = currentAnnualLeavesCnt;
-	}
-	
 	
 
 }
