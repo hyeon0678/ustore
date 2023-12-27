@@ -16,17 +16,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.ustore.utils.FileDefine;
+
 @Controller
 public class FileController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@Value("${spring.servlet.multipart.location}")
-	private String root;
-	
-	@GetMapping(value = "/photo/{file}")
+	@GetMapping(value = "/ustore/photo/{file}")
 	public ResponseEntity<Resource> showImage(@PathVariable String file) throws IOException {
-		String path = root+"/" +file;
-		logger.info(root+"/" +file);
+		String path = FileDefine.FILEPATH+"/" +file;
+		logger.info(FileDefine.FILEPATH+"/" +file);
 		
 		//본문(파일)
 		Resource resource = new FileSystemResource(path); //파일시스템의 특정 파일을 읽어오는 기능
