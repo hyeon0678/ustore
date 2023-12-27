@@ -25,12 +25,18 @@ public class OrderDto {
 	private String driverName;
 	private String carNum;
 	private String phoneNum;
-	private String delivery_date;
+	private String deliveryDate;
 	
 	
 	
 	
 	
+	public String getDeliveryDate() {
+		return deliveryDate;
+	}
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
 	public int getOrderIdx() {
 		return orderIdx;
 	}
@@ -73,12 +79,7 @@ public class OrderDto {
 	public void setPhoneNum(String phoneNum) {
 		this.phoneNum = phoneNum;
 	}
-	public String getDelivery_date() {
-		return delivery_date;
-	}
-	public void setDelivery_date(String delivery_date) {
-		this.delivery_date = delivery_date;
-	}
+
 	public String getEmpIdx() {
 		return empIdx;
 	}

@@ -20,6 +20,14 @@ FROM order_cart oc
 JOIN products p ON oc.product_id = p.product_id
 JOIN category c ON p.category_id = c.category_id;
 </select>
+<select id="driveList" resultType="OrderDto">
+
+SELECT delivery_driver.*
+FROM delivery_driver
+LEFT JOIN driver_schedule ON delivery_driver.driver_idx = driver_schedule.driver_idx
+WHERE driver_schedule.driver_idx IS NULL OR driver_schedule.delivery_date != #{expArrivalDate};
+
+</select>
 
 
 <insert id="orderCartInsert" parameterType="OrderDto">

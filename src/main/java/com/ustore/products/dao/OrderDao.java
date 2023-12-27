@@ -16,6 +16,8 @@ public interface OrderDao {
 
 	ArrayList<OrderDto> orderList();
 
+	ArrayList<OrderDto> driveList();
+
 	
 
 }
