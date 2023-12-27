@@ -17,14 +17,16 @@ public interface GroupManageDao {
 
 	int insertEducation(EmployeeDto employee);
 
-	ArrayList<EmployeeDto> employeeInfo(HashMap<String, String> params);
+	ArrayList<EmployeeDto> employeeInfo(String emp_idx);
 
-	void empModifyEmp(HashMap<String, String> params);
+	int empModifyEmp(HashMap<String, String> params);
 
 	Map<String, Object> selectEdu(HashMap<String, String> params);
 
 	void empModEduInsert(HashMap<String, String> params);
 
 	void empModEduUpdate(HashMap<String, String> params);
+
+	void delete(String emp_idx);
 
 }

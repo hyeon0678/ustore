@@ -22,7 +22,7 @@
 		VALUES(#{empIdx}, #{education}, #{schoolName}, #{major}, '관리자1')
 	</insert>
 	
-	<select id="employeeInfo" resultType="com.ustore.employee.dto.EmployeeDto">
+	<select id="employeeInfo" resultType="EmployeeDto">
 		SELECT 
 		    e.emp_idx,
 		    e.emp_email,
@@ -56,9 +56,7 @@
 		LEFT JOIN 
 		annual_leave al ON e.emp_idx = al.emp_idx
 		WHERE
-		    d.dept_name = #{dept_name}
-		    AND c.common_type = #{common_type}
-		    AND e.emp_name = #{emp_name}
+		  e.emp_idx = #{param1}
 		   GROUP BY
 		    e.emp_idx, 
 		    e.emp_email, 
@@ -111,7 +109,17 @@
 	</update>
 	<!-- 직원 학력 추가 -->
 	<insert id="empModEduInsert">
-	    INSERT INTO education (emp_idx, education, school_name, major)
-	    VALUES (#{emp_idx}, #{education}, #{school_name}, #{major})
+	    INSERT INTO education (emp_idx, education, school_name, major, reg_by)
+	    VALUES (#{emp_idx}, #{education}, #{school_name}, #{major},'관리자1')
 	</insert>
+	
+	<!-- 직원 퇴사 처리 -->
+		<update id="empDelete">
+			UPDATE employee 
+			   SET
+			   emp_quit ='Y',
+			   emp_quit_date =now()
+			   WHERE 
+			   emp_idx =#{param1};
+		</update>
 </mapper>

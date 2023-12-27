@@ -148,7 +148,7 @@ License: For each use you must have a valid license purchased only from above li
 													<!--end::User-->
 													<!--begin::Actions-->
 													<div class="d-flex my-4 mx-20">
-														<a href="#" id="update" class="btn btn-sm btn-primary me-2">프로필 수정</a>
+													<button class="btn btn-primary" id="update">프로필 수정</button>
 													</div>
 													<!--end::Actions-->
 												</div>
@@ -495,39 +495,29 @@ License: For each use you must have a valid license purchased only from above li
 				url:'/organizationChart.ajax',
 				method:'GET',
 				dataType:'JSON',
-				success:function(data){
-					console.log(data);
-					jsTreeData = data.treeData;
-					jsTree(data.treeData);
-				},error: function(error){
-					console.log(error);
-				}
+					success:function(data){
+						console.log(data);
+						jsTreeData = data.treeData;
+						jsTree(data.treeData);
+					},error: function(error){
+						console.log(error);
+					}
 			})
 		}
 		
 		function jsTree(treeData){
 			$('#kt_docs_jstree_basic').jstree({
 				"core" : {
-					"data" : treeData,
-					"themes" : {
-						"responsive": false
-					}
-				},
-				"types" : {
-					"default" : {
-						"icon" : "ki-outline ki-folder"
-					},
-					"file" : {
-						"icon" : "ki-outline ki-file"
-					}
-				},
-				"plugins": ["types"]
+					"data" : treeData
+			
+				}
 			});
 		}
 		
 		
 		$('#kt_docs_jstree_basic').bind("dblclick.jstree", function (e, data) {
-		    // 더블클릭한 엘리먼트의 텍스트 가져오기
+		    /*
+			// 더블클릭한 엘리먼트의 텍스트 가져오기
 		    var selectedNodeText = e.target.textContent || e.target.innerText;
 
 		    // 선택된 노드 텍스트를 출력하거나 다른 작업 수행
@@ -542,23 +532,23 @@ License: For each use you must have a valid license purchased only from above li
 		    var emp_name = nodes[0];
 		    var dept_name = nodes[1];
 		    var common_type = nodes[2];
-
 		    console.log("emp_name = ", emp_name);
 			console.log("dept_name = ", dept_name);
 			console.log("common_type = ", common_type);
 		    // 예시: 다른 요소에 값을 설정하기
 		    $('#selectedNodeInput').val("선택된 노드: " + selectedNodeText);
-			drawEmployeeDetail(emp_name,dept_name,common_type);
+		    */
+			console.log("emp_idx =",e.target.id.replace("_anchor",""));
+		    var emp_idx = e.target.id.replace("_anchor","");
+			drawEmployeeDetail(emp_idx);
 		});
 		
-		function drawEmployeeDetail(emp_name,dept_name,common_type){
+		function drawEmployeeDetail(emp_idx){
 			$.ajax({
 		        type: 'get',
 		        url: 'employee/employeeInfo.ajax',
 		        data: {
-		            'emp_name': emp_name,
-		            'dept_name': dept_name,
-		            'common_type': common_type
+		            'emp_idx': emp_idx
 		        },
 		        dataType: 'json',
 		        success: function (data) {
@@ -583,12 +573,12 @@ License: For each use you must have a valid license purchased only from above li
 		            
 		            
 		            $(document).ready(function() {
-		                var emp_name = data.list[0].empName;
-		                var dept_name = data.list[0].deptName;
-		                var common_type = data.list[0].positionType;
-
-		                // href 속성에 값을 동적으로 추가
-		                $('#update').attr("href", "employee/update?emp_name=" + emp_name + "&dept_name=" + dept_name + "&common_type=" + common_type);
+		            	$("#update").on("click", function() {
+		                var emp_idx = data.list[0].empIdx;
+		                console.log(data.list[0].empIdx);
+		                var url = "employee/update?emp_idx="+emp_idx;
+		                window.location.href = url;
+		            	});
 		            });
 
 		            
@@ -599,7 +589,7 @@ License: For each use you must have a valid license purchased only from above li
 		    });
 		}
 		
-
+		
 
 	</script>
 </html>
