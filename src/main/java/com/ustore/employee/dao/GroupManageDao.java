@@ -29,4 +29,8 @@ public interface GroupManageDao {
 
 	void delete(String emp_idx);
 
+	String imgInfo(String idx);
+
+	void delImgInfo(String file_idx);
+
 }
