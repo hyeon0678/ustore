@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 	<!--begin::Head-->
+	<base href="../../" />
 	<head>
 		<title>USstore</title>
 		<meta charset="utf-8" />
@@ -10,26 +11,23 @@
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
 		<!-- jstree 링크  -->
-		<link href="assets/plugins/custom/jstree/jstree.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="src/sass/components/_variables.scss" rel="stylesheet" type="text/css" />
-		<link href="src/sass/components/buttons" rel="stylesheet" type="text/css" />
-
-		
-		
+		<link href="resource/assets/plugins/custom/jstree/jstree.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/src/sass/components/_variables.scss" rel="stylesheet" type="text/css" />
+		<link href="resource/src/sass/components/buttons" rel="stylesheet" type="text/css" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Vendor Stylesheets(used for this page only)-->
-		<link href="assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
-		<script src="assets/plugins/global/plugins.bundle.js"></script>
+		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<style>
 			.chart-div{
 				display: flex;
@@ -57,20 +55,21 @@
 		<!--begin::Root-->
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
-			<div class="page d-flex flex-row flex-column-fluid">
+			<div class="page d-flex flex-row flex-column-fluid" style="background-color: white;">
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;">
+						<!--<h1 class="text-gray-900 fw-bold my-1 fs-2">채팅</h1>-->
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
-							<div class="" style="display: flex; margin-left: 9%;">
+							<div class="" style="display: flex; margin-left: 40px; margin-bottom: 5px; ">
 								<!--begin::Info-->
-								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
+								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2" style="margin-top: 10px; ">
 									<!--begin::Title-->
-									<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin: 0px 20px;" >채팅</h1>
+									
 									<!--end::Title-->
 								</div>
 								<!--end::Info-->
@@ -489,28 +488,11 @@
 		<!--begin::Javascript-->
 		<script>var hostUrl = "assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="assets/plugins/global/plugins.bundle.js"></script>
-		<script src="assets/js/scripts.bundle.js"></script>
+		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
-		begin::Vendors Javascript(used for this page only)-->
-		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Vendors Javascript-->
-		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="assets/js/widgets.bundle.js"></script>
-		<script src="assets/js/custom/widgets.js"></script>
-		<script src="assets/js/custom/apps/chat/chat.js"></script>
-		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/type.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/budget.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/settings.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/team.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/targets.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/files.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/complete.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-project/main.js"></script>
-		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
-		<script src="assets/plugins/custom/jstree/jstree.bundle.js"></script>
-		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->

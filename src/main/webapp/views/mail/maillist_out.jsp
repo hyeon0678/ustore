@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="kr">
 	<!--begin::Head-->
+	<base href="../../" />
 	<head>
 		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
 		<meta charset="utf-8" />
