@@ -4,13 +4,18 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ustore.main.dao.EmployeeUserDao">
 	<select id="getUser" resultType="EmployeeUserDto">
-		SELECT emp_idx, emp_pw 
-		FROM employee
-		WHERE emp_idx=#{param1};
+		SELECT e.emp_idx, e.emp_pw, e.dept_id, 
+		d.parent_dept_id, CONCAT('ROLE_',  d.dept_name) AS dept_name, CONCAT('ROLE_', c.common_type) AS position_name
+		FROM employee e
+		LEFT OUTER JOIN department d
+		ON e.dept_id = d.dept_id 
+		LEFT OUTER JOIN common c
+		ON e.`position` = c.common_idx 
+		WHERE e.emp_idx=#{param1}
 	</select>
-	<select id="getUserRoles" resultType="EmployeeRoleDto">
-		SELECT emp_idx, emp_pw 
-		FROM employee
-		WHERE emp_idx=#{param1};
+	<select id="getUserRoles" resultType="DeptDto">
+	SELECT d.dept_id, d.parent_dept_id , CONCAT('ROLE_', d.dept_name) AS dept_name 
+	FROM department d
+	WHERE d.parent_dept_id is not null;
 	</select>
 </mapper>
