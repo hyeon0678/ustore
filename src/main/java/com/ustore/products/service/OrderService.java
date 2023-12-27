@@ -34,9 +34,14 @@ public class OrderService {
 	}
 
 
-	public ArrayList<OrderDto> cartList() {
+	public ArrayList<OrderDto> orderList() {
 		
-		return dao.cartList();
+		
+		
+		return dao.orderList();
 	}
+
+
+	
 
 }

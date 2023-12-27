@@ -34,24 +34,28 @@ public class OrderController {
 		return "products/order";
 	}
 	@RequestMapping(value = "/order/ordercart/insert", method = {RequestMethod.GET, RequestMethod.POST})
-	public String ordercartInsert(@RequestParam Map<String, String>params) {
+	public String ordercartInsert(@RequestParam Map<String, String>params, Model model) {
 		logger.info("params :"+params);
 		
 		service.orderCartInsert(params);
+		ArrayList<OrderDto> orderList = service.orderList();
+		model.addAttribute("orderList"+orderList);
+		logger.info("orderList : "+orderList);
 		
+			
 		return "redirect:/order/list";
 		
 		
 		
 	}
 	@RequestMapping(value = "/order/ordercart/list", method = {RequestMethod.GET, RequestMethod.POST})
-	public String ordercartList() {
-		ArrayList<OrderDto> cartList = service.cartList();
+	public void ordercartList() {
+		
+		
+	logger.info("컨트롤러 들어옴");
 		
 		
 		
-		
-		return "";
 	}
 	
 	
