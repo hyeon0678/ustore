@@ -83,13 +83,29 @@
 	<!-- 직원 업데이트 Emp 테이블 -->
 	<update id="empModifyEmp">
 		UPDATE employee e 
-	  	SET 
+	  	<set>
+	  	<if test="emp_birth != null">	  	
 		   	e.emp_birth = #{emp_birth},
+	  	</if>
+	  	<if test="emp_phone != null">
 		   	e.emp_phone = #{emp_phone},
+		</if>
+		<if test="emp_emergency_phone != null">
 		   	e.emp_emergency_phone = #{emp_emergency_phone},
+		</if>
+		<if test="emp_ext_no != null">
 		  	e.emp_ext_no =#{emp_ext_no},
+		</if>
+		<if test="gender != null">
+			e.emp_gender=#{gender},
+		</if>
+		<if test="common_type != null">
 		  	e.`position` = (SELECT common_idx FROM common WHERE common_type= #{common_type}),
-		   	e.dept_id = (SELECT dept_id FROM department WHERE dept_name=#{dept_name})
+		</if>
+		<if test="dept_name != null">
+		   	e.dept_id = (SELECT dept_id FROM department WHERE dept_name=#{dept_name}),
+		 </if>
+		 </set>
 	   	WHERE 
 	   		e.emp_idx =#{emp_idx}
 	</update>
@@ -122,4 +138,13 @@
 			   WHERE 
 			   emp_idx =#{param1};
 		</update>
+		
+		<!-- 프로필 이미지 보유 여부 -->
+		<select id="imgInfo" resultType="String">
+			SELECT file_idx FROM file WHERE conn_idx =#{param1} AND file_type =74
+		</select>
+		<!-- 파일 보유 여부에 맞춰 삭제 -->
+		<delete id="delImgInfo">
+			DELETE FROM file WHERE file_idx =#{param1}
+		</delete>
 </mapper>

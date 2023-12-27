@@ -32,12 +32,12 @@ public class AnnualScheduler {
 	private final String REG_BY = "scheduler";
 	DateCalculator dateCalculator = new DateCalculator();
 	
-	
+	// 사람 가지고 오는것  얼마나 출근했는지 + 회원번호 들고온다. 그런데 emp_idx가 null이 떨어진다.
 	@Scheduled(cron="0/10 * * * * *")
 	public void grantInitialLeaves() {
 		logger.info("----------------------- grantInitialLeaves() -----------------------");
 		
-		List<EmpAnnualDto> list = annualDao.getInitalAnnualCnt();
+		List<EmpAnnualDto> list = annualDao.getInitalAnnualCnt();   // 반환값 emp_idx, length_of_service(한달간 근무 일수)
 		int fullAttendanceDay = getFullAttendanceDay();
 		if(list != null) {
 			for(EmpAnnualDto employee: list) {
@@ -58,8 +58,8 @@ public class AnnualScheduler {
 		List<EmpAnnualDto> list = annualDao.getLongService();
 		if(list != null) {
 			for(EmpAnnualDto employee: list) {
-				int lengthOfService = employee.getLengthOfService();
-				int currentAnnualLeaves = employee.getAnnualLeavesCtn()*(-1);
+				int lengthOfService = employee.getLengthOfService();  // 근무일수 찍히는곳
+				int currentAnnualLeaves = employee.getAnnualLeavesCtn()*(-1);  // 보유 연차 갯수
 				int threeYearIncrements = lengthOfService/THREE_YEARS;
 				int oneYearIncrements = lengthOfService%ONE_YEAR;
 				
@@ -113,7 +113,7 @@ public class AnnualScheduler {
 	 */
 	public int getFullAttendanceDay() {
 		
-		DayOfWeek excludedDayOfWeek = DayOfWeek.THURSDAY;
+		DayOfWeek excludedDayOfWeek = DayOfWeek.MONDAY;
 		LocalDate lastMonth = LocalDate.now().minusMonths(1);
 		
 		int lastDayOfMonth = dateCalculator.lastOfMonth(lastMonth);

@@ -86,8 +86,9 @@ public class SaveFile {
 			int extPosition = file.getOriginalFilename().indexOf(".");
 			String oriFileName = file.getOriginalFilename().substring(0, extPosition);
 			String ext = file.getOriginalFilename().substring(extPosition);
-			String newFileName = System.currentTimeMillis() + RandomStringUtils.random(8);
+			String newFileName = System.currentTimeMillis() + RandomStringUtils.random(8, true, true);
 			
+			fileDto.setFile(file);
 			fileDto.setFileName(oriFileName);
 			fileDto.setNewFileName(newFileName);
 			fileDto.setExtension(ext);
