@@ -2,11 +2,12 @@ package com.ustore.scheduler.dto;
 
 import java.sql.Date;
 
-public class AnnualDto {
+public class EmpAnnualDto {
 	
 	private int annualLeavesCtn;
 	private String empIdx;
 	private Date regDate;
+	private int lengthOfService;
 	
 	public int getAnnualLeavesCtn() {
 		return annualLeavesCtn;
@@ -25,6 +26,12 @@ public class AnnualDto {
 	}
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
+	}
+	public int getLengthOfService() {
+		return lengthOfService;
+	}
+	public void setLengthOfService(int lengthOfService) {
+		this.lengthOfService = lengthOfService;
 	}
 	
 	

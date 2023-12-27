@@ -1,15 +1,20 @@
 package com.ustore.scheduler.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ustore.scheduler.dto.AnnualDto;
+import com.ustore.scheduler.dto.AnnualLeavesDto;
+import com.ustore.scheduler.dto.EmpAnnualDto;
 
 @Mapper
 public interface AnnualDao {
 	
-	AnnualDto getInitalAnnualCnt();
+	List<EmpAnnualDto> getInitalAnnualCnt();
 	
-	AnnualDto getLongService();
+	List<EmpAnnualDto> getLongService();
+
+	void insertAnnual(AnnualLeavesDto dto);
 	
 
 }

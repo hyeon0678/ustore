@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,11 +21,7 @@ import com.ustore.fileSystem.dao.FileDao;
 import com.ustore.fileSystem.dto.FileDto;
 
 public class SaveFile {
-	@Value("${filePath}")
-	private String filePath;
-	
-	@Value("${imgExtensions}")
-	private List<String> imgExtList;
+	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	/**
 	 * 클라이언트에서 넘어온 파일의 새로운 이름과 확장자,
@@ -59,7 +57,7 @@ public class SaveFile {
 				file.setExtension(ext);
 				file.setConnIdx(Integer.parseInt(connIdx));
 				file.setFileType(fileType);
-				file.setFilePath(filePath);
+				file.setFilePath(FileDefine.FILEPATH);
 				
 				fileList.add(file);
 			}
@@ -95,7 +93,7 @@ public class SaveFile {
 			fileDto.setExtension(ext);
 			fileDto.setConnIdx(Integer.parseInt(connIdx));
 			fileDto.setFileType(fileType);
-			fileDto.setFilePath(filePath);
+			fileDto.setFilePath(FileDefine.FILEPATH);
 		}
 		
 		return fileDto;
