@@ -8,13 +8,13 @@ import com.ustore.scheduler.dto.AnnualLeavesDto;
 import com.ustore.scheduler.dto.EmpAnnualDto;
 
 @Mapper
-public interface AnnualDao {
+public interface AnnualSchedulerDao {
 	
 	List<EmpAnnualDto> getInitalAnnualCnt();
 	
 	List<EmpAnnualDto> getLongService();
 
-	void insertAnnual(AnnualLeavesDto dto);
+	int insertAnnual(AnnualLeavesDto dto);
 	
 
 }

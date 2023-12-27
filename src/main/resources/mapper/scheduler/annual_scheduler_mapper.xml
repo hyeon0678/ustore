@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ustore.scheduler.dao.AnnualDao">
+<mapper namespace="com.ustore.scheduler.dao.AnnualSchedulerDao">
 
 <select id="getInitalAnnualCnt" resultType="EmpAnnualDto">
 <![CDATA[
@@ -17,7 +17,7 @@ AND s.reg_date BETWEEN last_day(NOW()) and LAST_DAY(NOW() - interval 2 month) + 
 </select>
 
 <select id="getLongService" resultType="EmpAnnualDto">
-	SELECT e.reg_date , e.emp_idx, DATEDIFF(NOW(), e.reg_date) as length_of_Service
+	SELECT e.emp_idx, DATEDIFF(NOW(), e.reg_date) as length_of_Service
 	from employee e 
 	left outer join schedule s 
 	on e.emp_idx = s.emp_idx 
@@ -25,5 +25,9 @@ AND s.reg_date BETWEEN last_day(NOW()) and LAST_DAY(NOW() - interval 2 month) + 
 	AND DATEDIFF(NOW(), e.reg_date) >= 365;
 </select>
 
+<insert id="insertAnnual" parameterType="AnnualLeavesDto">
+	INSERT INTO annual_leave (emp_idx, leave_type, leave_incdec, reg_by)
+	VALUES(#{empIdx}, #{leaveType}, #{leaveIncdec}, #{regBy})
+</insert>
 
 </mapper>
