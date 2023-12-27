@@ -18,7 +18,68 @@ public class OrderDto {
 	private String parentCategory;
 	private String empIdx;
 	private int orderQuantity;
+	private int orderIdx;
+	private String expArrivalDate;
+	private int driverIdx;
+	private String orderDate;
+	private String driverName;
+	private String carNum;
+	private String phoneNum;
+	private String deliveryDate;
 	
+	
+	
+	
+	
+	public String getDeliveryDate() {
+		return deliveryDate;
+	}
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+	public int getOrderIdx() {
+		return orderIdx;
+	}
+	public void setOrderIdx(int orderIdx) {
+		this.orderIdx = orderIdx;
+	}
+	public String getExpArrivalDate() {
+		return expArrivalDate;
+	}
+	public void setExpArrivalDate(String expArrivalDate) {
+		this.expArrivalDate = expArrivalDate;
+	}
+	public int getDriverIdx() {
+		return driverIdx;
+	}
+	public void setDriverIdx(int driverIdx) {
+		this.driverIdx = driverIdx;
+	}
+	public String getOrderDate() {
+		return orderDate;
+	}
+	public void setOrderDate(String orderDate) {
+		this.orderDate = orderDate;
+	}
+	public String getDriverName() {
+		return driverName;
+	}
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
+	}
+	public String getCarNum() {
+		return carNum;
+	}
+	public void setCarNum(String carNum) {
+		this.carNum = carNum;
+	}
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
+	}
+
 	public String getEmpIdx() {
 		return empIdx;
 	}

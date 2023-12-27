@@ -6,17 +6,31 @@
 
 
 <select id="list" resultType="OrderDto">
+
 SELECT products.*, category.category_name
 FROM products
 JOIN category ON products.category_id = category.category_id
 order by product_id asc;
 
+</select>
 
+<select id="orderList" resultType="OrderDto">
+SELECT oc.*, p.product_name, p.unit_quantity, c.category_name
+FROM order_cart oc
+JOIN products p ON oc.product_id = p.product_id
+JOIN category c ON p.category_id = c.category_id;
+</select>
+<select id="driveList" resultType="OrderDto">
+
+SELECT delivery_driver.*
+FROM delivery_driver
+LEFT JOIN driver_schedule ON delivery_driver.driver_idx = driver_schedule.driver_idx
+WHERE driver_schedule.driver_idx IS NULL OR driver_schedule.delivery_date != #{expArrivalDate};
 
 </select>
 
-<insert id="orderCartInsert" parameterType="OrderDto">
 
+<insert id="orderCartInsert" parameterType="OrderDto">
 
 insert into order_cart (product_id,emp_idx,order_quantity)
 values(#{productId},"20060001",#{orderQuantity});

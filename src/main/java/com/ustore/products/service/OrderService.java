@@ -14,29 +14,35 @@ import com.ustore.products.dto.OrderDto;
 @Service
 public class OrderService {
 	Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired OrderDao dao;
-			
+	@Autowired
+	OrderDao dao;
 
 	public ArrayList<OrderDto> list() {
-		
+
 		return dao.list();
 	}
 
-
 	public void orderCartInsert(Map<String, String> params) {
-		
+
 		OrderDto dto = new OrderDto();
 		dto.setProductId(params.get("productId"));
 		dto.setOrderQuantity(Integer.parseInt(params.get("count")));
-		
+
 		dao.orderCartInsert(dto);
-		
+
 	}
 
+	public ArrayList<OrderDto> orderList() {
 
-	public ArrayList<OrderDto> cartList() {
+		return dao.orderList();
+	}
+
+	public ArrayList<OrderDto> driveList() {
 		
-		return dao.cartList();
+		OrderDto dto = new OrderDto();
+		
+	
+		return dao.driveList();
 	}
 
 }

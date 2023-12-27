@@ -1,6 +1,7 @@
 package com.ustore.products.dao;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,6 +14,10 @@ public interface OrderDao {
 
 	void orderCartInsert(OrderDto dto);
 
-	ArrayList<OrderDto> cartList();
+	ArrayList<OrderDto> orderList();
+
+	ArrayList<OrderDto> driveList();
+
+	
 
 }
