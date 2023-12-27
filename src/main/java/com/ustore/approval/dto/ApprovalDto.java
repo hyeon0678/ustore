@@ -1,6 +1,9 @@
 package com.ustore.approval.dto;
 
 import java.sql.Date;
+import java.util.List;
+
+import com.ustore.member.dto.MemberDto;
 
 public class ApprovalDto {
 
@@ -14,8 +17,26 @@ public class ApprovalDto {
 	private Date apprSubmitdate; // 기안일자
 	private String fnApprover; // 최종결재자
 	private int docId; // 문서번호
-	private String bdHtml; // html저장
-	private String bdComment; // 결재의견
+	private String Html; // html저장
+	private String Comment; // 결재의견
+	private List<MemberDto> approvalLines;
+	private List<MemberDto> receivers;
+	
+	
+	
+	public List<MemberDto> getApprovalLines() {
+		return approvalLines;
+	}
+	public void setApprovalLines(List<MemberDto> approvalLines) {
+		this.approvalLines = approvalLines;
+	}
+	public List<MemberDto> getReceivers() {
+		return receivers;
+	}
+	public void setReceivers(List<MemberDto> receivers) {
+		this.receivers = receivers;
+	}
+	
 	public int getApprIdx() {
 		return apprIdx;
 	}
@@ -76,17 +97,17 @@ public class ApprovalDto {
 	public void setDocId(int docId) {
 		this.docId = docId;
 	}
-	public String getBdHtml() {
-		return bdHtml;
+	public String getHtml() {
+		return Html;
 	}
-	public void setBdHtml(String bdHtml) {
-		this.bdHtml = bdHtml;
+	public void setHtml(String Html) {
+		this.Html = Html;
 	}
-	public String getBdComment() {
-		return bdComment;
+	public String getComment() {
+		return Comment;
 	}
-	public void setBdComment(String bdComment) {
-		this.bdComment = bdComment;
+	public void setComment(String Comment) {
+		this.Comment = Comment;
 	}
 	
 	
