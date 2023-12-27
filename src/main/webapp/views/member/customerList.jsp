@@ -119,9 +119,9 @@
 														</div>
 														<!--end::Menu item-->
 														<!--begin::Menu item-->
-														<div class="menu-item mb-3">
-															<!--begin::Inbox-->
-															<span class="menu-link">
+														<div class="menu-item mb-3" onclick="location.href='/customer/general';">
+															<!--begin::Inbox  href="/customer/general" -->
+															<span class="menu-link" >
 																<span class="menu-icon">
 																	<i class="ki-duotone ki-sms fs-2 me-3">
 																		<span class="path1"></span>
@@ -134,9 +134,9 @@
 														</div>
 														<!--end::Menu item-->
 														<!--begin::Menu item-->
-														<div class="menu-item mb-3">
-															<!--begin::Inbox-->
-															<span class="menu-link">
+														<div class="menu-item mb-3" onclick="location.href='/customer/businessperson';">
+															<!--begin::Inbox   href="/customer/businessperson"   -->
+															<span class="menu-link" >
 																<span class="menu-icon">
 																	<i class="ki-duotone ki-sms fs-2 me-3">
 																		<span class="path1"></span>
