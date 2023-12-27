@@ -69,19 +69,26 @@ public class GroupManageService {
 		return false;
 	}
 
-	public ArrayList<EmployeeDto> employeeInfo(HashMap<String, String> params) {
-		ArrayList<EmployeeDto> list = groupManageDao.employeeInfo(params);
+	public ArrayList<EmployeeDto> employeeInfo(String emp_idx) {
+		ArrayList<EmployeeDto> list = groupManageDao.employeeInfo(emp_idx);
 		return list;
 	}
 
-	public void empModify(HashMap<String, String> params) {
-		groupManageDao.empModifyEmp(params);
-		//Map<String, Object>map = groupManageDao.selectEdu(params);
-		//if(map != null) {
-			//groupManageDao.empModEduUpdate(params);
-		//}else {
-			//groupManageDao.empModEduInsert(params);
-		//}
+	public int empModify(HashMap<String, String> params) {
+		int success = groupManageDao.empModifyEmp(params);
+		logger.info("수정 성공 확인"+success);
+		Map<String, Object>map = groupManageDao.selectEdu(params);
+		if(map != null) {
+			groupManageDao.empModEduUpdate(params);
+		}else {
+			groupManageDao.empModEduInsert(params);
+		}
+		return success;
+	}
+
+	public void delete(String emp_idx) {
+		groupManageDao.delete(emp_idx);
+		
 	}
 	
 }
