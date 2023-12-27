@@ -57,15 +57,7 @@
 							<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
 								<!--begin::Title-->
 								<h1 class="text-gray-900 fw-bold my-1 fs-2">새결재진행</h1>
-								<!--end::Title-->	
-								<!--begin::Breadcrumb-->
-								<ul class="breadcrumb fw-semibold fs-base my-1">
-									<li class="breadcrumb-item text-muted">
-										<a href="index.jsp" class="text-muted text-hover-primary">Home</a>
-									</li>
-									<li class="breadcrumb-item text-muted">전자결재</li>
-								</ul>
-								<!--end::Breadcrumb-->					
+								<!--end::Title-->				
 							</div>
 							<!--end::Info-->					
 						</div>
@@ -172,7 +164,7 @@
    
     function loadFormPage(common_idx) {
         // URL을 변경하여 페이지 이동
-        window.location.href = '/newapproval/write?common_idx=' + common_idx;
+        location.href = '/approval/newapproval/write?common_idx=' + common_idx;
     }
 </script>
 </html>

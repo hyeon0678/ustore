@@ -10,7 +10,7 @@
 	<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-	<link rel="shortcut icon" href="<c:url value='/resource/assets/media/logos/favicon.ico' />" />
+	<link rel="shortcut icon" href="<c:url value='/resource/assets/media/logos/mainLogo.svg' />" />
 	<!--begin::Fonts(mandatory for all pages)-->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 	<!--end::Fonts-->
@@ -121,7 +121,7 @@
 					<div class="modal-body">
 						<div class="d-flex flex-row h-600px border">
 							<!-- 왼쪽 div -->
-							<div class="emptree border" style="max-height: 600px; overflow-y: auto; overflow-x: hidden; margin: 5px;" >
+							<div class="emptree border" style="max-height: 600px; overflow-y: auto; overflow-x: hidden; margin: 5px; position: relative;" >
 								<div class="d-flex flex-column flex-row-fluid w-350px justify-content-between" style="align-items: center; margin: 5px;">
 									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 5px 0px; width: 100%;">
 										<span class="text-center">조 직 도</span>						
@@ -134,7 +134,7 @@
 								<div class="d-flex flex-column-fluid scroll px-5" style="max-height: 400px; overflow-y: auto;">
 									<div class="text-black" id="kt_docs_jstree_basic"></div>
 								</div>
-								<div style="position: absolute; bottom: 40px; text-align: center; left: 15%;">
+								<div style="position: absolute; bottom: 20px; text-align: center; left: 25%;">
 									<button id="addline" onclick="addApprovalLine()">결재선 추가</button>
 									<button id="addrecv" onclick="addReceiver()">수신자 추가</button>
 								</div>
@@ -185,7 +185,35 @@
 									</div>
 								</div>
 							</div>
-						</div>											
+						</div>
+						<!-- 아래쪽 div -->
+						<c:if test="${commentsExist}">
+							<div>
+								<div class="apprreceiver border"  style="align-items: center; margin: 5px;">
+									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
+										<span class="text-center">결재의견(반려, 수정)</span>
+									</div>										
+									<div class="d-flex flex-column receiver scroll" id="receiver" style="height: 100px;">
+										<div style="overflow: auto;">
+											<table class="w-100">
+												<thead>
+													<tr>
+														<th>결재자명</th>
+														<th>일시</th>
+														<th>의견</th>
+													</tr>
+												</thead>
+												<tbody>	
+													<tr>
+														<td colspan="3" style="text-align: center;">의견이 없습니다.</td>
+													</tr>													
+												</tbody>
+											</table>
+										</div>										
+									</div>
+								</div>
+							</div>	
+						</c:if>										
 					</div>
 
 					<div class="modal-footer" style="display: flex; justify-content: center;">
@@ -229,7 +257,7 @@
     });
     
     $(document).ready(function () {
-    	var common_idx=${common_idx};
+		var common_idx=${common_idx};
     	// 초기에 선택된 양식에 대한 HTML 파일 로드
         var formPage = '<%= request.getAttribute("formPage") %>';
         if (formPage) {
@@ -261,7 +289,7 @@
         $('#btnGoBack').on('click', function () {
         	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
                 // 사용자가 Yes를 클릭한 경우 /newapproval 페이지로 이동
-                window.location.href = '/newapproval';
+                window.location.href = '/approval/newapproval';
             } else {
                 // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
                 console.log('뒤로가기 버튼 클릭 - 취소');
