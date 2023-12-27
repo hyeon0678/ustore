@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 
+import com.ustore.member.dto.MemberDto;
+
 @Alias("OrganizationChartDto")
 public class OrganizationChartDto {
 	
@@ -11,9 +13,9 @@ public class OrganizationChartDto {
 	private String parent;
 	private String text;
 	private List<OrganizationChartDto> children;
-	private int position;
+	private String position;
 	private String type;
-
+	
 	public String getType() {
 		return type;
 	}
@@ -44,12 +46,13 @@ public class OrganizationChartDto {
 	public void setChildren(List<OrganizationChartDto> children) {
 		this.children = children;
 	}
-	public int getPosition() {
+	public String getPosition() {
 		return position;
 	}
-	public void setPosition(int position) {
+	public void setPosition(String position) {
 		this.position = position;
 	}
+	
 	
 	
 

@@ -261,15 +261,15 @@
         var formPage = '<%= request.getAttribute("formPage") %>';
         if (formPage) {
             loadFormPage(formPage, common_idx);
-        }
-        
+        }        
         
     	 // 결재상신 버튼 클릭 시의 동작
         $('#btnApproval').on('click', function () {
             // 여기에 결재상신 버튼 클릭 시 수행할 동작 추가
             console.log('결재상신 버튼 클릭');
-        });
-
+            sendApproval();
+        });    	
+    	 
         // 결재정보 버튼 클릭 시의 동작
         $('#btnApprovalInfo').on('click', function () {
             // 여기에 결재정보 버튼 클릭 시 수행할 동작 추가
@@ -300,7 +300,9 @@
         
     });
 	
-	
+    function sendApproval(){
+		
+	}
 
 	
 	
@@ -362,7 +364,9 @@
 
 	// Node 선택했을 때
 	$('#kt_docs_jstree_basic').on("select_node.jstree", function (e, data) {
-		console.log("select했을때", data.node);
+		console.log("select했을때", data.node);		
+		console.log("emp_idx =",data.node.id.replace("_anchor",""));
+		var emp_idx = data.node.id.replace("_anchor","");
 	});
 	
 	
@@ -372,14 +376,24 @@
 	
 	function addApprovalLine(){
 		
-		var seletedNode = $('#kt_docs_jstree_basic').jstree(true).get_selected(true)[0];
+		var selectedNode = $('#kt_docs_jstree_basic').jstree(true).get_selected(true)[0];
+		var apprlineTable = $('#apprline');
+
+		// 이미 선택된 노드가 존재하는지 확인
+		var existingRows = apprlineTable.find('tbody tr');
+		var isAlreadySelected = existingRows.toArray().some(function(row) {
+			var rowData = $(row).data('node'); // 데이터 속성에 저장된 노드 정보 가져오기 (data-node 필요)
+			return rowData && rowData.id === selectedNode.id;
+		});
 		
-		if(selectedNode){
+		if(selectedNode && !isAlreadySelected){
 			var approvalData = {
-	        type: '결재자',
+	        type: '결재',
 	        name: selectedNode.text,
-	        position: selectedNode.data.position,
-	        department: selectedNode.data.dept_name
+	        position: selectedNode.position,
+	        /* position: selectedNode.data.position, */
+	        department: selectedNode.dept_name
+	        /* department: selectedNode.data.dept_name */
 	    	};
 			
 			// 테이블의 tbody에 맨 위에 데이터를 추가
@@ -398,26 +412,38 @@
 			cell3.innerHTML = approvalData.position;
 			cell4.innerHTML = approvalData.department;
 			
-			approvalLine.push(approvalData);
-			
 			var deleteIcon = document.createElement('i');
 			deleteIcon.className = 'fa fa-trash';
 			deleteIcon.onclick = function () {
 				newRow.remove();
 			};
 			cell5.appendChild(deleteIcon);
+			
+			// 선택한 노드 정보를 행에 저장 (data-node 필요)
+			$(newRow).data('node', selectedNode);
+			
+			approvalLines.push(approvalData);
+			
+		}else{
+			alert("이미 선택된 직원입니다.");
 		}
-
 	}
 
 	function addReceiver(){
-		var seletedNode = $('#kt_docs_jstree_basic').jstree(true).get_selected(true)[0];
+		var selectedNode = $('#kt_docs_jstree_basic').jstree(true).get_selected(true)[0];
+		var apprlineTable = $('#apprline');
 		
-		if(selectedNode){
+		var existingRows = apprlineTable.find('tbody tr');
+		var isAlreadySelected = existingRows.toArray().some(function(row) {
+			var rowData = $(row).data('node'); // 데이터 속성에 저장된 노드 정보 가져오기 (data-node 필요)
+			return rowData && rowData.id === selectedNode.id;
+		});
+		
+		if(selectedNode && !isAlreadySelected){
 			var approvalData = {
-	        name: selectedNode.text,
-	        position: selectedNode.data.position,
-	        department: selectedNode.data.dept_name
+		        name: selectedNode.text,
+		        position: selectedNode.position,
+		        department: selectedNode.dept_name
 			};
 			
 			// 테이블의 tbody에 맨 위에 데이터를 추가
@@ -441,8 +467,12 @@
 			};
 			cell4.appendChild(deleteIcon);
 			
+			$(newRow).data('node', selectedNode);
+			
 			receivers.push(receiverData);
-	    }
+	    }else{
+	    	alert("이미 선택된 직원입니다.");
+	    };
 	}
 	
 	$('#saveApprLine').on('click', function () {

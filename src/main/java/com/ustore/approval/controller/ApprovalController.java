@@ -2,6 +2,8 @@ package com.ustore.approval.controller;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ustore.approval.dto.ApprovalDto;
@@ -61,7 +65,7 @@ public class ApprovalController {
         return "approval/writeApprDoc";
 	}
 	
-	@GetMapping("/getHtml")
+	@GetMapping(value="/getHtml")
 	public ResponseEntity<byte[]> getHtml(@RequestParam int common_idx) throws IOException {
 	    String filePath = getFormPageByCommonIdx(common_idx);
 	    ClassPathResource classPathResource = new ClassPathResource(filePath);
@@ -102,20 +106,31 @@ public class ApprovalController {
 	// HTML 파일을 저장할 폴더 경로
     private static final String HTML_FOLDER_PATH = "C:\\ustoreUpload\\html";
 	   	
-    @PostMapping(value="/approval/saveHtml")
+    @RequestMapping("/addapprline.ajax")
+	@ResponseBody
+	public Map<String, Object>addApprLine(@RequestParam String emp_idx) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("empInfo", service.addApprLine(emp_idx));
+		return map;
+	}
+    
+    
+    @PostMapping(value="/newapproval/saveHtml")
     public void saveHtmlByCommonIdx(@RequestParam String html, @RequestParam int common_idx) {
         service.saveHtmlByCommonIdx(html, common_idx);
     }
-
-    @PostMapping(value="/approval/saveapprlinedata")
+/*
+    @PostMapping(value="/newapproval/saveapprlinedata")
     public ModelAndView saveApprLineData(@RequestBody ApprovalDto dto) {
     	ModelAndView mav = new ModelAndView();
+    	dto.setApprovalLines(null);
+    	dto.setReceivers(null);
     	service.saveApprLineData(dto.getApprovalLines(), dto.getReceivers());
     	
     	return mav;
     }
-
-    @PostMapping(value="/approval/sendappr")
+*/
+    @PostMapping(value="/newapproval/sendappr")
     public ModelAndView sendAppr(@RequestBody ApprovalDto dto) {
     	ModelAndView mav = new ModelAndView();
     	
