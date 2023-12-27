@@ -31,7 +31,7 @@ License: For each use you must have a valid license purchased only from above li
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
+		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
 
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
@@ -64,7 +64,7 @@ License: For each use you must have a valid license purchased only from above li
 										<!--begin::Basic info-->
 										<div class="card mb-5 mb-xl-10">
 											<!--begin::Card header-->
-											<div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
+											<div class="card-header border-0 cursor-pointer"data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
 												<!--begin::Card title-->
 												<div class="card-title m-0">
 												</div>
@@ -74,7 +74,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin::Content-->
 											<div id="kt_account_settings_profile_details" class="collapse show">
 												<!--begin::Form-->
-												
+												<form id="uploadForm" action="employee/modify" method="post" enctype="multipart/form-data">
 													<!--begin::Card body-->
 													<div class="card-body border-top p-9">
 														<!--begin::Input group-->
@@ -96,10 +96,10 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin::Image input-->
 															<!-- 이미지 파일 -->
 
-															<form id="uploadForm" action="employee/empImg" method="post" enctype="multipart/form-data">
+															
 															    <input type="file" name="uploadFile"/>
-															    <input type="hidden" name="idx" id="idx" value="${list.get(0).empIdx}"/>
-															</form>
+															    <input type="hidden" name="emp_idx" id="emp_idx" value="${list.get(0).empIdx}"/>
+														
 															<!--end::Image input-->
 															<!-- 이미지 파일 끝 -->
 															
@@ -131,7 +131,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4" id="emp_name">${list.get(0).empName}</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4" value="${list.get(0).empName}">${list.get(0).empName}</span>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -148,7 +148,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
 																<!-- 셀렉트 박스 -->
-																<select class="form-select w-50" aria-label="Select option" id="dept_name">
+																<select class="form-select w-50" aria-label="Select option"  name = "dept_name" id="dept_name">
 																	<option value="매장관리팀" ${list.get(0).deptName eq '매장관리팀' ? 'selected' : ''}>매장관리팀</option>
 																    <option value="고객관리팀" ${list.get(0).deptName eq '고객관리팀' ? 'selected' : ''}>고객관리팀</option>
 																    <option value="회계팀" ${list.get(0).deptName eq '회계팀' ? 'selected' : ''}>회계팀</option>
@@ -168,7 +168,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<select class="form-select w-50" aria-label="Select option" id="common_type">
+																<select class="form-select w-50" aria-label="Select option" name = "common_type" id="common_type">
 																	<option value="팀장" ${list.get(0).positionType eq '팀장' ? 'selected' : ''}>팀장</option>
 																	<option value="매니저" ${list.get(0).positionType eq '매니저' ? 'selected' : ''}>매니저</option>
 																	<option value="사원" ${list.get(0).positionType eq '사원' ? 'selected' : ''}>사원</option>
@@ -188,7 +188,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4">${list.get(0).empEmail}</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4" value="${list.get(0).empEmail}">${list.get(0).empEmail}</span>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -208,7 +208,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4" id="emp_idx">${list.get(0).empIdx}</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4" id="emp_idx" value="${list.get(0).empIdx}">${list.get(0).empIdx}</span>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -229,7 +229,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4">${list.get(0).empJoinDate}</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4" value="${list.get(0).empJoinDate}">${list.get(0).empJoinDate}</span>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -253,7 +253,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="leave_incdec" value="${list.get(0).leave_incdec}" />
+																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" name ="leave_incdec" id="leave_incdec" value="${list.get(0).leave_incdec}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -276,7 +276,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_ext_no" value="${list.get(0).empExtNo}" />
+																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" name="emp_ext_no" id="emp_ext_no" value="${list.get(0).empExtNo}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -302,7 +302,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_emergency_phone" value="${list.get(0).empEmergencyPhone}" />
+																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"  name="emp_emergency_phone" id="emp_emergency_phone" value="${list.get(0).empEmergencyPhone}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -324,7 +324,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="emp_phone" value="${list.get(0).empPhone}" />
+																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" name ="emp_phone" id="emp_phone" value="${list.get(0).empPhone}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -376,7 +376,7 @@ License: For each use you must have a valid license purchased only from above li
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
 																		<div class="mb-0">
-																			<input class="form-control form-control-solid" value="${list.get(0).empBirth}" id="kt_datepicker_2"/>
+																			<input class="form-control form-control-solid"  name ="emp_birth" value="${list.get(0).empBirth}" id="kt_datepicker_2"/>
 																		</div>
 																	</div>
 																	<!--end::Col-->
@@ -397,9 +397,9 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4" id="emp_roadAddr">${list.get(0).empRoadAddr}</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4" id="emp_roadAddr" >${list.get(0).empRoadAddr}</span>
 																		</br>
-																		<span class="col-lg-4 col-form-label fw-semibold fs-4" id="emp_detailAddr">${list.get(0).empDetailAddr}</span>
+																		<span class="col-lg-4 col-form-label fw-semibold fs-4" id="emp_detailAddr" >${list.get(0).empDetailAddr}</span>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -416,7 +416,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
 																<!-- 셀렉트 박스 -->
-																<select class="form-select w-50" aria-label="Select option" id="education">
+																<select class="form-select w-50" aria-label="Select option" name ="education" id="education">
 																	<option value="초등학교 졸업" ${list.get(0).education eq '초등학교 졸업' ? 'selected' : ''}>초등학교 졸업</option>
 																	<option value="중학교 졸업" ${list.get(0).education eq '중학교 졸업' ? 'selected' : ''}>중학교 졸업</option>
 																	<option value="고등학교 졸업" ${list.get(0).education eq '고등학교 졸업' ? 'selected' : ''}>고등학교 졸업</option>
@@ -430,7 +430,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="school_name" value="${list.get(0).schoolName}" />
+																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"  name="school_name" id="school_name" value="${list.get(0).schoolName}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -440,7 +440,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" id="major" value="${list.get(0).major}" />
+																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"  name="major"  id="major" value="${list.get(0).major}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -452,6 +452,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--end::Input group-->
 													</div>
 													<!--end::Card body-->
+														</form>
 													<!--begin::Actions-->
 													<div class="card-footer d-flex justify-content-between">
 														<a href="#" class="btn btn-primary" id=delete>삭제하기</a>
@@ -557,7 +558,7 @@ License: For each use you must have a valid license purchased only from above li
 	            
 	            $("#uploadForm").submit();
 	            
-	      /*
+				/*
 	            var emp_idx = $("#emp_idx").text();
 	            var education = $("#education").val();
 	            var school_name = $("#school_name").val();
@@ -588,7 +589,7 @@ License: For each use you must have a valid license purchased only from above li
 	                "&emp_name=" + emp_name;
 
 	            window.location.href = url;
-	            */
+*/
 	        });
 	    });
 		

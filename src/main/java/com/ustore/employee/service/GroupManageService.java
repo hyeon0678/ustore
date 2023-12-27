@@ -90,5 +90,12 @@ public class GroupManageService {
 		groupManageDao.delete(emp_idx);
 		
 	}
+
+	public void imgInfo(String idx) {
+		String file_idx = groupManageDao.imgInfo(idx);
+		if (file_idx != null) {
+			groupManageDao.delImgInfo(file_idx);
+		}
+	}
 	
 }

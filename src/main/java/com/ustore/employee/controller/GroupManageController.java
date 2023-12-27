@@ -75,40 +75,35 @@ public class GroupManageController {
 	}
 
 	@RequestMapping("/modify")
-	public ModelAndView empModify(@RequestParam HashMap<String, String>params) {
+	public ModelAndView empModify(MultipartFile uploadFile, @RequestParam HashMap<String, String>params) throws IOException {
 		logger.info("수정 파람값 도착 확인"+params);
+
+		if(uploadFile != null) {			
+			// 파일 저장 코드
+			groupManageService.imgInfo(params.get("emp_idx"));
+			SaveFile saveFile = new SaveFile();
+			
+			FileDto file = new FileDto();
+			file = saveFile.returnFileList(uploadFile, 74, params.get("emp_idx"));
+			
+			logger.info("파일 저장 리턴 값 확인용"+file.getFile());
+			
+			saveFile.saveFile(file);
+			
+			
+			FileDao.saveFile(file);
+		}
+		
+
 		int success = groupManageService.empModify(params);
 		logger.info("수정성공 컨트롤러까지 도착"+success);
 		ModelAndView mav = new ModelAndView("redirect:/employee/management");
-		return null;
+		return mav;
 	}
 	
-	@RequestMapping("/empImg")
-	 public String handleFileUpload(MultipartFile uploadFile,@RequestParam String idx) throws IOException {
-        // 파일 처리 로직 작성
-
-		logger.info("파일 요청 도착 확인 : "+uploadFile);
-		logger.info("파일 요청 idx 도착 확인 : "+idx);
-		
-		
-		SaveFile saveFile = new SaveFile();
-		
-		FileDto file = new FileDto();
-		file = saveFile.returnFileList(uploadFile, 74, idx);
-		
-		logger.info(file.getFileIdx());
-
-		saveFile.saveFile(file);
-		
-		
-		FileDao.saveFile(file);
-		return null;
-    }
-	
 	@RequestMapping("/delete")
-	public String empDelete(@RequestParam String emp_idx) {
+	public void empDelete(@RequestParam String emp_idx) {
 		logger.info("퇴사처리 요청 확인 : "+emp_idx);
 		groupManageService.delete(emp_idx);
-		return null;
 	}
 }	
