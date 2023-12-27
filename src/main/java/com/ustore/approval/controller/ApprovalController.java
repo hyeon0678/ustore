@@ -25,28 +25,28 @@ public class ApprovalController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired ApprovalService service;
 	
-	@GetMapping(value="/newapproval")
+	@GetMapping(value="/approval/newapproval")
 	public String newApproval() {
-		return "board/admin_board_detail";
+		return "approval/selectDoc";
 	}
-	@GetMapping(value="/approvalreq")
+	@GetMapping(value="/approval/approvalreq")
 	public String getApprReqList() {
 		return "approval/reqApprDocList";
 	}
-	@GetMapping(value="/myapproval")
+	@GetMapping(value="/approval/myapproval")
 	public String getMyApprList() {
 		return "approval/myApprDocList";
 	}
-	@GetMapping(value="/tempapproval")
+	@GetMapping(value="/approval/tempapproval")
 	public String getTempApprList() {
 		return "approval/tempSaveApprDocList";
 	}
-	@GetMapping(value="/teamapproval")
+	@GetMapping(value="/approval/teamapproval")
 	public String getTeamDocList() {
 		return "approval/teamApprDocList";
 	}
 	
-	@GetMapping(value="/newapproval/write")
+	@GetMapping(value="/approval/newapproval/write")
 	public String write(@RequestParam int common_idx, Model model) {
 		// common_idx에 따라 다른 JSP 페이지 경로 설정
         String formPage = getFormPageByCommonIdx(common_idx);
@@ -107,16 +107,7 @@ public class ApprovalController {
     }
 
     
-	
-	@GetMapping(value="/approval/approvalReq") 
-	public String datatable() {
-		return "approval/apprDoc";
-	}
-	
-	@GetMapping(value="/apprtree")
-	public String apprtree() {
-		return "employee/personnel_management";
-	}
+
 	 
 	
 }

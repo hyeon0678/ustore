@@ -60,15 +60,6 @@
 									<!--begin::Title-->
 									<h1 class="text-gray-900 fw-bold my-1 fs-2">내결재문서</h1>
 									<!--end::Title-->
-									<!--begin::Breadcrumb-->
-									<ul class="breadcrumb fw-semibold fs-base my-1">
-										<li class="breadcrumb-item text-muted">
-											<a href="index.jsp" class="text-muted text-hover-primary">Home</a>
-										</li>
-										<li class="breadcrumb-item text-muted">전자결재</li>
-										<li class="breadcrumb-item text-muted">내결재문서</li>
-									</ul>
-									<!--end::Breadcrumb-->
 								</div>
 								<!--end::Info-->
 							</div>
