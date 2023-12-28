@@ -12,22 +12,23 @@ SELECT COUNT(s.sch_idx) as annual_leaves_ctn, e.emp_idx
 FROM employee e 
 LEFT OUTER JOIN schedule s ON e.emp_idx = s.emp_idx 
 WHERE s.sch_type IN (14, 12) 
-  AND e.emp_join_date > DATE_ADD(NOW(), INTERVAL -1 YEAR)
-  AND s.sch_start_date BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW();
+  AND e.emp_join_date >= DATE_ADD(LAST_DAY(NOW() - INTERVAL 1 MONTH) + INTERVAL 1 DAY, INTERVAL -1 YEAR)
+  AND s.reg_date BETWEEN DATE_FORMAT(LAST_DAY(NOW() - INTERVAL 2 MONTH) + INTERVAL 1 DAY, '%Y-%m-01') 
+  AND LAST_DAY(LAST_DAY(NOW() - INTERVAL 1 MONTH));
 ]]>  
 </select>
 
 <select id="getLongService" resultType="EmpAnnualDto">
-	SELECT DISTINCT e.emp_idx, DATEDIFF(NOW(), e.emp_join_date) as length_of_Service
-	FROM employee e 
-	LEFT OUTER JOIN schedule s ON e.emp_idx = s.emp_idx 
-	WHERE s.sch_type IN (14, 12) 
-	AND DATEDIFF(NOW(), e.emp_join_date) >= 365;
+SELECT e.emp_idx, DATEDIFF(NOW(), e.emp_join_date) as length_of_Service, SUM(al.leave_incdec) AS annualLeavesCtn
+FROM employee e 
+LEFT OUTER JOIN annual_leave al ON e.emp_idx = al.emp_idx 
+AND DATEDIFF(NOW(), e.emp_join_date) >= 365
+GROUP BY e.emp_idx , length_of_Service;
 </select>
 
 <insert id="insertAnnual" parameterType="AnnualLeavesDto">
-	INSERT INTO annual_leave (emp_idx, leave_type, leave_incdec, reg_by)
-	VALUES(#{empIdx}, #{leaveType}, #{leaveIncdec}, #{regBy})
+	INSERT INTO annual_leave (emp_idx, leave_date , leave_type, leave_incdec, reg_by)
+	VALUES(#{empIdx}, #{leaveDate},#{leaveType}, #{leaveIncdec}, #{regBy})
 </insert>
 
 </mapper>

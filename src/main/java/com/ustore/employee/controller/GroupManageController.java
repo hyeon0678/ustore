@@ -78,8 +78,7 @@ public class GroupManageController {
 	@RequestMapping("/modify")
 	public ModelAndView empModify(MultipartFile uploadFile, @RequestParam HashMap<String, String>params) throws IOException {
 		logger.info("수정 파람값 도착 확인"+params);
-
-		if(uploadFile != null) {			
+		if(uploadFile != null && !uploadFile.isEmpty()) {			
 			// 파일 저장 코드
 			groupManageService.imgInfo(params.get("emp_idx"));
 			SaveFile saveFile = new SaveFile();
@@ -87,7 +86,6 @@ public class GroupManageController {
 			FileDto file = new FileDto();
 			file = saveFile.returnFileList(uploadFile, 74, params.get("emp_idx"));
 			
-			logger.info("파일 저장 리턴 값 확인용"+file.getFile());
 			
 			saveFile.saveFile(file);
 			
@@ -98,7 +96,7 @@ public class GroupManageController {
 
 		int success = groupManageService.empModify(params);
 		logger.info("수정성공 컨트롤러까지 도착"+success);
-		ModelAndView mav = new ModelAndView("redirect:/employee/management");
+		ModelAndView mav = new ModelAndView("employee/personnel_management");
 		return mav;
 	}
 	
