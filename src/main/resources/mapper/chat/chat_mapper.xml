@@ -6,13 +6,32 @@
 <insert id="insertChatRoom" 
 	useGeneratedKeys="true"
 	keyProperty="chatRoomIdx" keyColumn="chat_room_idx">
-	INSERT INTO chat_rooms (chat_room_name, is_individual)
-	VALUES(#{param1}, #{param2});
+	INSERT INTO chat_rooms (chat_room_name, is_individual, reg_by)
+	VALUES(#{chatRoomName}, #{isIndividual}, #{regBy});
 </insert>
 
 <insert id="insertChatParticipants">
 	INSERT INTO chat_participants (chat_room_idx, emp_idx)
 	VALUES(#{param1}, #{param2});
 </insert>
+
+<select id="" resultType="ChatDto">
+SELECT cr.chat_room_idx, cr.chat_room_name, 
+(SELECT MAX(csh.chat_date) 
+	FROM chat_sent_history csh
+	WHERE csh.chat_room_idx = cp.chat_room_idx) max_sent_date,
+(SELECT MAX(csh.chat_date)
+FROM chat_sent_history csh 
+LEFT OUTER JOIN chat_received_history crh 
+ON crh.chat_room_idx = csh.chat_room_idx  
+WHERE crh.chat_room_idx = cp.chat_room_idx) max_received_date,
+(SELECT COUNT(crh.`read`) 
+	FROM chat_received_history crh
+	WHERE crh.chat_room_idx = cp.chat_room_idx and crh.`read` like 'N') read_cnt
+FROM  chat_participants cp 
+LEFT OUTER JOIN chat_rooms cr
+ON cp.chat_room_idx = cr.chat_room_idx 
+WHERE cp.emp_idx = #{param1}
+</select>
 	
 </mapper>
