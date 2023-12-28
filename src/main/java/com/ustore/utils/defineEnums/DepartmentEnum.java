@@ -16,8 +16,10 @@ public enum DepartmentEnum {
 	NECESSARIES_TEAM("생필품팀", 7),
 	ELECTRONICS_TEAM("전자제품팀", 8);
 
-    private static final Map<String, String> DEPARTMENT = Collections.unmodifiableMap(
+    private static final Map<String, String> DEPARTMENT_TYPE = Collections.unmodifiableMap(
     			Stream.of(values()).collect(Collectors.toMap(DepartmentEnum::getPositionType, DepartmentEnum::name)));
+    private static final Map<Integer, String> DEPARTMENT_CODE = Collections.unmodifiableMap(
+			Stream.of(values()).collect(Collectors.toMap(DepartmentEnum::getDefineCode, DepartmentEnum::name)));
 	
 	private final String departmentType;
     private final int defindCode;
@@ -44,11 +46,21 @@ public enum DepartmentEnum {
 	 * @return 정의 코드
 	 */
 	public static int findDefindCode(String department) {
-		DepartmentEnum departmentEnum = DepartmentEnum.valueOf(DEPARTMENT.get(department));
+		DepartmentEnum departmentEnum = DepartmentEnum.valueOf(DEPARTMENT_TYPE.get(department));
 		if(departmentEnum == null) {
 			throw new NullPointerException();
 		}else {
 			return departmentEnum.getDefineCode();
+		}
+		
+	}
+	
+	public static String findDefindType(String department) {
+		DepartmentEnum departmentEnum = DepartmentEnum.valueOf(DEPARTMENT_CODE.get(department));
+		if(departmentEnum == null) {
+			throw new NullPointerException();
+		}else {
+			return departmentEnum.getPositionType();
 		}
 		
 	}
