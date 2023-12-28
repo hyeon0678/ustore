@@ -1,5 +1,6 @@
 package com.ustore.products.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -37,12 +38,71 @@ public class OrderService {
 		return dao.orderList();
 	}
 
-	public ArrayList<OrderDto> driveList() {
+	public ArrayList<OrderDto> driveList(String formattedBirthdate) {
+
+		if (formattedBirthdate == null) {
+			formattedBirthdate = "2100-01-01";
+		}
+
+		OrderDto dto = new OrderDto();
+		dto.setExpArrivalDate(formattedBirthdate);
+
+		return dao.driveList(dto);
+	}
+
+	public void ordercartDelete(String productName) {
+		dao.ordercartDelete(productName);
+
+	}
+
+	public boolean checkProduct(Map<String, String> params) {
+		boolean msg;
+		OrderDto dto = new OrderDto();
+		dto.setProductId(params.get("productId"));
+
+		ArrayList<OrderDto> CheckDto = (ArrayList<OrderDto>) dao.checkProduct(dto);
+
+		logger.info("체크에 값 담겼나?:" + CheckDto);
+
+		if (CheckDto.isEmpty()) { 
+			msg = true;
+		} else {
+			msg = false;
+		}
+		return msg;
+	}
+
+	public void orderInsert(String formattedBirthdate, String driverIdx) {
 		
 		OrderDto dto = new OrderDto();
 		
-	
-		return dao.driveList();
+		dto.setDriverIdx(Integer.parseInt(driverIdx));
+		dto.setExpArrivalDate(formattedBirthdate);
+		
+		
+		
+		dao.orderInsert(dto);
+		dao.driverSchedule(dto);
+
 	}
+
+	public ArrayList<OrderDto> orderCartSelect() {
+	
+		return dao.orderCartSelect();
+	}
+
+	public void orderHistoryInsert(String productId) {
+		
+		
+		dao.orderHistoryInsert(productId);
+		
+	}
+
+	public void orderDelete() {
+		dao.orderDelete();
+		
+	}
+
+	
 
 }
