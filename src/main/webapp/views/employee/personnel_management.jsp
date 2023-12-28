@@ -114,7 +114,7 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="me-7 mb-4">
 												<!-- 프로필 사진 -->
 												<div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-													<img src="resource/assets/media/avatars/300-1.jpg" alt="image" />
+													<img src="resource/assets/media/icon/blank.svg" id=empImg />
 												</div>
 											</div>
 											<!--end::Pic-->
@@ -570,7 +570,11 @@ License: For each use you must have a valid license purchased only from above li
 		            $('#education').text(data.list[0].education);
 		            $('#schoolName').text(data.list[0].schoolName);
 		            $('#major').text(data.list[0].major);
-		            
+		            if(data.list[0].newFileName != null && data.list[0].extension!= null){		            	
+		            $('#empImg').attr('src',"/ustore/photo/" + data.list[0].newFileName + data.list[0].extension);
+		            }else{
+		            	$('#empImg').attr('src', 'resource/assets/media/icon/blank.svg');
+		            }
 		            
 		            $(document).ready(function() {
 		            	$("#update").on("click", function() {
