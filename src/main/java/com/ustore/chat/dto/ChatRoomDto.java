@@ -1,5 +1,6 @@
 package com.ustore.chat.dto;
 
+import java.sql.Date;
 import java.util.List;
 
 public class ChatRoomDto {
@@ -7,6 +8,18 @@ public class ChatRoomDto {
 	private String chatRoomName;
 	private String isIndividual;
 	private List<String> participaintList;
+	private String regBy;
+	private Date maxSentDate;
+	private Date maxReceivedDate;
+	private int readCnt;
+	
+	
+	public String getRegBy() {
+		return regBy;
+	}
+	public void setRegBy(String regBy) {
+		this.regBy = regBy;
+	}
 	public int getChatRoomIdx() {
 		return chatRoomIdx;
 	}
