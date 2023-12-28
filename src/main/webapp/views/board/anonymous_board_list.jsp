@@ -52,32 +52,29 @@
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
-				<jsp:include page="/views/common/header.jsp"></jsp:include>
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
-					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
+					<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">익명게시판</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
 								<!--begin::Info-->
 								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
-									<!--begin::Title-->
-									<h1 class="text-gray-900 fw-bold my-1 fs-2">익명 게시판
-									<small class="text-muted fs-6 fw-normal ms-1"></small></h1>
-									<!--end::Title-->
-									<!--begin::Breadcrumb-->
-									<ul class="breadcrumb fw-semibold fs-base my-1">
-										<li class="breadcrumb-item text-muted">
-											<a href="index.go" class="text-muted text-hover-primary">Home</a>
-										</li>
-										<li class="breadcrumb-item text-muted">커뮤니티</li>
-										<li class="breadcrumb-item text-gray-900">익명 게시판</li>
-									</ul>
-									<!--end::Breadcrumb-->
+								
 								</div>
+								<!--end::Info-->
+								<!--begin::Actions-->
+								<div style="display: flex; align-items: center; height: 30px;">
+									<!--begin::Col 드롭박스 >> 회원 상태-->
+									<!--end::Col-->
+									<input type="text" class="form-control form-control-solid" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
+									<button type="button" class="btn btn-primary" style="margin: 10px;">검색</button>
+									<button onclick="location.href='#'" class="btn btn-primary">글작성</button>
+								</div>
+								<!--end::Actions-->
 							</div>
 						</div>
 						<!--end::Toolbar-->
@@ -85,70 +82,81 @@
 						
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
 							<!--begin::Container-->
-							<div class="container-xxl" style="background-color: white;margin: 20px;">
-								<div class="py-5">
-									<div class="table-responsive">
-										<div style="float: left;">
-											<button onclick="location.href='#'" class="btn btn-primary">글작성</button>
-										</div>
-										
-										<div style="float: right;">
-											<form action="" method="get">
-            									<input type="text" name="" placeholder="검색어를 입력 하세요" class="form-control" style="width: auto;display: inline;"/>
-            									<button class="btn btn-primary">검색</button>
-											</form>
-										</div>
-										
-										<table class="table table-row-bordered table-row-gray-400 gy-7" >
-											<tbody>
-												<tr class="fw-bold fs-6 text-gray-800">
-													<th colspan="5" style="font-size: larger;padding-left: 5px">가전제품 직원의 이름이 궁금합니다</th>
-													<th style="text-align: center;">조회수</th>
+							<div class="container-xxl">
+								<!--begin::Inbox App - Messages -->
+								<div class="d-flex flex-column flex-lg-row">
+									<!--begin::Sidebar-->
+										<!--begin::Sticky aside-->
+											<!--begin::Aside content-->
+											<div class="flex-lg-row-fluid ms-lg-7 ms-xl-10">
+										<!--begin::Card-->
+										<div class="card">
+									<!--===============================================^ 카드의 시작===============================================================-->
+									<!--begin::Card body-->
+									<div class="card-body pt-0">
+										<!--begin::Table-->
+										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
+											<thead>
+												<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
+													<th class="min-w-125px">제목</th>
+													<th class="min-w-125px">조회수</th>
+													<th class="min-w-125px">작성일</th>
 												</tr>
-												<tr style="border-top: hidden;">
-													<th colspan="5" style="padding: 5px;">등록일시 : 2023-12-08</th>
-													<td style="text-align: center;padding: 5px;">0</td>
+											</thead>
+											<tbody class="fw-semibold text-gray-600">
+												<tr>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">익명글1</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
 												</tr>
-												<tr class="fw-bold fs-6 text-gray-800">
-													<th colspan="5" style="font-size: larger;padding-left: 5px">가전제품 직원의 이름이 궁금합니다</th>
-													<th style="text-align: center;">조회수</th>
+												<tr>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">익명글2</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
 												</tr>
-												<tr style="border-top: hidden;">
-													<th colspan="5" style="padding: 5px;">등록일시 : 2023-12-08</th>
-													<td style="text-align: center;padding: 5px;">0</td>
+												<tr>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">익명글3</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
 												</tr>
-												<tr class="fw-bold fs-6 text-gray-800">
-													<th colspan="5" style="font-size: larger;padding-left: 5px">가전제품 직원의 이름이 궁금합니다</th>
-													<th style="text-align: center;">조회수</th>
+												<tr>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">익명글4</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
 												</tr>
-												<tr style="border-top: hidden;">
-													<th colspan="5" style="padding: 5px;">등록일시 : 2023-12-08</th>
-													<td style="text-align: center;padding: 5px;">0</td>
-												</tr>
-												<tr class="fw-bold fs-6 text-gray-800">
-													<th colspan="5" style="font-size: larger;padding-left: 5px">가전제품 직원의 이름이 궁금합니다</th>
-													<th style="text-align: center;">조회수</th>
-												</tr>
-												<tr style="border-top: hidden;">
-													<th colspan="5" style="padding: 5px;">등록일시 : 2023-12-08</th>
-													<td style="text-align: center;padding: 5px;">0</td>
+												<tr>
+													<td>
+														<a href="#" class="text-danger text-hover-primary mb-1">익명글5</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
 												</tr>
 											</tbody>
 										</table>
+										<!--end::Table-->
+									</div>
+									<!--end::Card body-->
+									
+
+										</div>
+										<!--end::Card-->
+									</div>
+											
 									</div>
 								</div>
-
-								
-								
 							</div>
 							<!--end::Container-->
 						</div>
-						
 						<!--end::Post-->
-					
 					</div>
-				<!--end::Content--> 
-    			</div>
 				<!--end::Wrapper-->
 			</div>
 			<!--end::Page-->
@@ -160,39 +168,6 @@
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
-		<!--end::Global Javascript Bundle-->
-		<!--begin::Vendors Javascript(used for this page only)-->
 		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/vis-timeline/vis-timeline.bundle.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
-		<!--end::Vendors Javascript-->
-		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="resource/assets/js/widgets.bundle.js"></script>
-		<script src="resource/assets/js/custom/widgets.js"></script>
-		<script src="resource/assets/js/custom/apps/chat/chat.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/type.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/budget.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/settings.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/team.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/targets.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/files.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/complete.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/main.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-app.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/users-search.js"></script>
-		<!--end::Custom Javascript-->
-		<!--end::Javascript-->
 	</body>
-	<!--end::Body-->
 </html>

@@ -52,129 +52,121 @@
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
-				<jsp:include page="/views/common/header.jsp"></jsp:include>
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
-					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
+					<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">공지사항</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
 								<!--begin::Info-->
 								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
-									<!--begin::Title-->
-									<h1 class="text-gray-900 fw-bold my-1 fs-2">공지사항
-									<small class="text-muted fs-6 fw-normal ms-1"></small></h1>
-									<!--end::Title-->
-									<!--begin::Breadcrumb-->
-									<ul class="breadcrumb fw-semibold fs-base my-1">
-										<li class="breadcrumb-item text-muted">
-											<a href="index.go" class="text-muted text-hover-primary">Home</a>
-										</li>
-										<li class="breadcrumb-item text-muted">커뮤니티</li>
-										<li class="breadcrumb-item text-gray-900">공지사항</li>
-									</ul>
-									<!--end::Breadcrumb-->
+								
 								</div>
 								<!--end::Info-->
 								<!--begin::Actions-->
-								
+								<div style="display: flex; align-items: center; height: 30px;">
+									<!--begin::Col 드롭박스 >> 회원 상태-->
+									<!--end::Col-->
+									<input type="text" class="form-control form-control-solid" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
+									<button type="button" class="btn btn-primary" style="margin: 10px;">검색</button>
+									<button onclick="location.href='#'" class="btn btn-primary">글작성</button>
+								</div>
 								<!--end::Actions-->
 							</div>
-							
-							<div style="float: left;">
-							<div class="d-flex align-items-center position-relative my-1">
-								<i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
-									<span class="path1"></span>
-									<span class="path2"></span>
-								</i>
-								<input type="text" data-kt-ecommerce-category-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="내용을 입력해주세요." />
-							</div>
-						</div>
-										
-										<div style="float: right;">
-											<button onclick="location.href='#'" class="btn btn-primary">글작성</button>
-										</div>
-							
 						</div>
 						<!--end::Toolbar-->
 						<!--begin::Post-->
 						
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
-						
-						
-						
 							<!--begin::Container-->
-							<div class="container-xxl" style="background-color: white;margin: 20px;">
-								<div class="py-5">
-									<div class="table-responsive">
-										
-										
-										
-										<table class="table table-row-bordered table-row-gray-400 gy-7" style="padding: 0px;">
-											<tbody>
-											
-												<tr class="fw-bold fs-6 text-gray-800">
-													<th colspan="5" style="font-size: larger; color: red">공지사항1</th>
-													<th style="text-align: center;">조회수</th>
+							<div class="container-xxl">
+								<!--begin::Inbox App - Messages -->
+								<div class="d-flex flex-column flex-lg-row">
+									<!--begin::Sidebar-->
+										<!--begin::Sticky aside-->
+											<!--begin::Aside content-->
+											<div class="flex-lg-row-fluid ms-lg-7 ms-xl-10">
+										<!--begin::Card-->
+										<div class="card">
+									<!--===============================================^ 카드의 시작===============================================================-->
+									<!--begin::Card body-->
+									<div class="card-body pt-0">
+										<!--begin::Table-->
+										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
+											<thead>
+												<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
+													<th class="min-w-125px">제목</th>
+													<th class="min-w-125px">작성자</th>
+													<th class="min-w-125px">조회수</th>
+													<th class="min-w-125px">작성일</th>
 												</tr>
-												<tr style="border-top: hidden;">
-													<th colspan="5" style="padding: 5px;">
-														<i class="ki-duotone ki-profile-circle">
- 															<span class="path1"></span>
- 															<span class="path2"></span>
- 															<span class="path3"></span>
-														</i>
-														json
-													</th>
-													<td style="text-align: center;padding: 5px;">0</td>
+											</thead>
+											<tbody class="fw-semibold text-gray-600">
+												<tr>
+													<td>
+														<a href="#" class="text-danger text-hover-primary mb-1">공지사항1</a>
+													</td>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
 												</tr>
-												<tr style="border-top: hidden;">
-													<th colspan="6" style="padding: 5px;">등록일시 : 2023-12-08</th>
+												<tr>
+													<td>
+														<a href="#" class="text-danger text-hover-primary mb-1">공지사항2</a>
+													</td>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
 												</tr>
-												
-												<tr class="fw-bold fs-6 text-gray-800">
-													<th colspan="5" style="font-size: larger; color: red">공지사항2</th>
-													<th style="text-align: center;">조회수</th>
+												<tr>
+													<td>
+														<a href="#" class="text-danger text-hover-primary mb-1">공지사항3</a>
+													</td>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
 												</tr>
-												<tr style="border-top: hidden;">
-													<th colspan="5" style="padding: 5px;">
-														<i class="ki-duotone ki-profile-circle">
- 															<span class="path1"></span>
- 															<span class="path2"></span>
- 															<span class="path3"></span>
-														</i>
-														json
-													</th>
-													<td style="text-align: center;padding: 5px;">0</td>
+												<tr>
+													<td>
+														<a href="#" class="text-danger text-hover-primary mb-1">공지사항4</a>
+													</td>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
 												</tr>
-												<tr style="border-top: hidden;">
-													<th colspan="6" style="padding: 5px;">등록일시 : 2023-12-08</th>
+												<tr>
+													<td>
+														<a href="#" class="text-danger text-hover-primary mb-1">공지사항5</a>
+													</td>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
 												</tr>
-												
-												<tr class="fw-bold fs-6 text-gray-800">
-													<th colspan="5" style="font-size: larger; color: red">공지사항3</th>
-													<th style="text-align: center;">조회수</th>
-												</tr>
-												<tr style="border-top: hidden;">
-													<th colspan="5" style="padding: 5px;">
-														<i class="ki-duotone ki-profile-circle">
- 															<span class="path1"></span>
- 															<span class="path2"></span>
- 															<span class="path3"></span>
-														</i>
-														json
-													</th>
-													<td style="text-align: center;padding: 5px;">0</td>
-												</tr>
-												<tr style="border-top: hidden;">
-													<th colspan="6" style="padding: 5px;">등록일시 : 2023-12-08</th>
-												</tr>
-												
 											</tbody>
 										</table>
+										<!--end::Table-->
+									</div>
+									<!--end::Card body-->
+									
+
+									<!--===============================================V 카드의 끝===============================================================-->
+										</div>
+										<!--end::Card-->
+									</div>
+											
 									</div>
 								</div>
 							</div>
@@ -187,7 +179,6 @@
 				<!--end::Wrapper-->
 			</div>
 			<!--end::Page-->
-		</div>
 		<!--end::Root-->
 								
 		<!--begin::Javascript-->

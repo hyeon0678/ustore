@@ -319,7 +319,7 @@ License: For each use you must have a valid license purchased only from above li
 										<!--begin::Modal content-->
 										<div class="modal-content">
 											<!--begin::Form-->
-											<form class="form" action="#" id="kt_modal_add_event_form">
+											<form action="employee/addevent" id="kt_modal_add_event_form" method="post">
 												<!--begin::Modal header-->
 												<div class="modal-header">
 													<!--begin::Modal title-->
@@ -340,23 +340,36 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin::Input group-->
 													<div class="fv-row mb-9">
 														<!-- 시작::라벨 -->
-														<label class="fs-6 fw-semibold required mb-2">일정 종류</label>
-														<!-- 끝::라벨 -->
+														<div class="form-check form-check-custom form-check-solid">									
+															<input class="form-check-input" type="radio" value="notuse" name="schedule_type" checked="checked" hidden="true"/>
+															<label class="form-check-label" hidden="true">
+																notuse!!!
+															</label>
+														</div>
 														
+														<label class="fs-6 fw-semibold required mb-2">일정 종류</label>
+														
+														<!-- 끝::라벨 -->
+														<!-- id="flexRadioDefault"  -->
+														<!-- for="flexRadioDefault" -->
 														<!-- 시작::입력 -->
-														<div class="form-check form-check-custom form-check-solid">
-															<input class="form-check-input" type="radio" value="" id="flexRadioDefault" name="scheduleType" checked/>
-															<label class="form-check-label" for="flexRadioDefault">
+														
+														
+														
+														<div class="form-check form-check-custom form-check-solid">									
+															<input class="form-check-input" type="radio" value="10" name="schedule_type" checked="checked"/>
+															<label class="form-check-label">
 																개인 일정
 															</label>
 														</div>
-
+														
 														<div class="form-check form-check-custom form-check-solid">
-															<input class="form-check-input" type="radio" value="" name="scheduleType"/>
+															<input class="form-check-input" type="radio" value="11" name="schedule_type" />
 															<label class="form-check-label">
 																팀 일정
 															</label>
 														</div>
+														
 														<!-- 끝::입력 -->
 													</div>
 													<!--end::Input group-->
@@ -366,7 +379,7 @@ License: For each use you must have a valid license purchased only from above li
 														<label class="fs-6 fw-semibold mb-2">일정</label>
 														<!--end::Label-->
 														<!--begin::Input-->
-														<input type="text" class="form-control form-control-solid" placeholder="" name="calendar_event_description" />
+														<input type="text" class="form-control form-control-solid" placeholder="" name="calendar_event_name" />
 														<!--end::Input-->
 													</div>
 													<!--end::Input group-->
@@ -376,7 +389,7 @@ License: For each use you must have a valid license purchased only from above li
 														<label class="fs-6 fw-semibold mb-2">일정 내용</label>
 														<!--end::Label-->
 														<!--begin::Input-->
-														<input type="text" class="form-control form-control-solid" placeholder="" name="calendar_event_location" />
+														<input type="text" class="form-control form-control-solid" placeholder="" name="calendar_event_description" />
 														<!--end::Input-->
 													</div>
 													<!--end::Input group-->
@@ -404,7 +417,7 @@ License: For each use you must have a valid license purchased only from above li
 																<label class="fs-6 fw-semibold mb-2 required">일정 시작 일</label>
 																<!--end::Label-->
 																<!--begin::Input-->
-																<input class="form-control form-control-solid" name="calendar_event_start_date" placeholder="Pick a start date" id="kt_calendar_datepicker_start_date" value="선택 일수 기입"/>
+																<input class="form-control form-control-solid" name="event_start_date" placeholder="Pick a start date" id="kt_calendar_datepicker_start_date"/>
 																<!--end::Input-->
 															</div>
 														</div>
@@ -414,7 +427,7 @@ License: For each use you must have a valid license purchased only from above li
 																<label class="fs-6 fw-semibold mb-2">일정 시작 시간</label>
 																<!--end::Label-->
 																<!--begin::Input-->
-																<input class="form-control form-control-solid" name="calendar_event_start_time" placeholder="Pick a start time" id="kt_calendar_datepicker_start_time" />
+																<input class="form-control form-control-solid" name="event_start_time" placeholder="Pick a start time" id="kt_calendar_datepicker_start_time" />
 																<!--end::Input-->
 															</div>
 														</div>
@@ -428,7 +441,7 @@ License: For each use you must have a valid license purchased only from above li
 																<label class="fs-6 fw-semibold mb-2 required">일정 종료 일</label>
 																<!--end::Label-->
 																<!--begin::Input-->
-																<input class="form-control form-control-solid" name="calendar_event_end_date" placeholder="Pick a end date" id="kt_calendar_datepicker_end_date" />
+																<input class="form-control form-control-solid" name="event_end_date" placeholder="Pick a end date" id="kt_calendar_datepicker_end_date" />
 																<!--end::Input-->
 															</div>
 														</div>
@@ -438,7 +451,7 @@ License: For each use you must have a valid license purchased only from above li
 																<label class="fs-6 fw-semibold mb-2">일정 종료 시간</label>
 																<!--end::Label-->
 																<!--begin::Input-->
-																<input class="form-control form-control-solid" name="calendar_event_end_time" placeholder="Pick a end time" id="kt_calendar_datepicker_end_time" />
+																<input class="form-control form-control-solid" name="event_end_time" placeholder="Pick a end time" id="kt_calendar_datepicker_end_time" />
 																<!--end::Input-->
 															</div>
 														</div>
@@ -452,11 +465,12 @@ License: For each use you must have a valid license purchased only from above li
 													<button type="reset" id="kt_modal_add_event_cancel" class="btn btn-light">취소</button>
 													<!--end::Button-->
 													<!--begin::Button-->
-													<button type="button" id="kt_modal_add_event_submit" class="btn btn-primary">
+													<button id="kt_modal_add_event_submit" class="btn btn-primary">
 														<span class="indicator-label">추가</span>
 														<span class="indicator-progress">Please wait... 
-														<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-													</button>
+															<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+														</span>
+													 </button>
 													<!--end::Button-->
 												</div>
 												<!--end::Modal footer-->
@@ -466,6 +480,9 @@ License: For each use you must have a valid license purchased only from above li
 									</div>
 								</div>
 								<!--end::Modal - New Product-->
+								
+								
+								
 								<!--begin::Modal - New Product-->
 								<div class="modal fade" id="kt_modal_view_event" tabindex="-1" data-bs-focus="false" aria-hidden="true">
 									<!--begin::Modal dialog-->
@@ -519,10 +536,10 @@ License: For each use you must have a valid license purchased only from above li
 													<!--end::Icon-->
 													<div class="mb-9">
 														<!--begin::Event name-->
-														<div class="d-flex align-items-center mb-2">
+														<!-- <div class="d-flex align-items-center mb-2">
 															<span class="fs-3 fw-bold me-3" data-kt-calendar="event_name"></span>
 															<span class="badge badge-light-success" data-kt-calendar="all_day"></span>
-														</div>
+														</div> -->
 														<!--end::Event name-->
 														<!--begin::Event description-->
 														<div class="fs-6" data-kt-calendar="event_description"></div>
@@ -568,6 +585,14 @@ License: For each use you must have a valid license purchased only from above li
 													<div class="fs-6" data-kt-calendar="event_location"></div>
 													<!--end::Event location-->
 												</div>
+												<div class="d-flex align-items-center">
+													<!--begin::Icon-->
+													
+													<!--end::Icon-->
+													<!--begin::Event location-->
+													<div class="fs-6" data-kt-calendar="schedule_type"></div>
+													<!--end::Event location-->
+												</div>
 												<!--end::Row-->
 											</div>
 											<!--end::Modal body-->
@@ -596,27 +621,7 @@ License: For each use you must have a valid license purchased only from above li
 					<!--begin::Footer-->
 					<div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
 						<!--begin::Container-->
-						<div class="container-fluid d-flex flex-column flex-md-row flex-stack">
-							<!--begin::Copyright-->
-							<div class="text-gray-900 order-2 order-md-1">
-								<span class="text-muted fw-semibold me-2">2023&copy;</span>
-								<a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">Keenthemes</a>
-							</div>
-							<!--end::Copyright-->
-							<!--begin::Menu-->
-							<ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-								<li class="menu-item">
-									<a href="https://keenthemes.com" target="_blank" class="menu-link px-2">About</a>
-								</li>
-								<li class="menu-item">
-									<a href="https://devs.keenthemes.com" target="_blank" class="menu-link px-2">Support</a>
-								</li>
-								<li class="menu-item">
-									<a href="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" target="_blank" class="menu-link px-2">Purchase</a>
-								</li>
-							</ul>
-							<!--end::Menu-->
-						</div>
+						
 						<!--end::Container-->
 					</div>
 					<!--end::Footer-->
@@ -629,12 +634,7 @@ License: For each use you must have a valid license purchased only from above li
 		
 		<!--end::Main-->
 		<!--begin::Scrolltop-->
-		<div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
-			<i class="ki-duotone ki-arrow-up">
-				<span class="path1"></span>
-				<span class="path2"></span>
-			</i>
-		</div>
+		
 		<!--end::Scrolltop-->
 		
 		
@@ -651,7 +651,8 @@ License: For each use you must have a valid license purchased only from above li
 		<!--begin::Vendors Javascript(used for this page only)-->
 		<script src="resource/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="resource/src/js/custom/apps/calendar/calendar.js"></script>
+		<!-- <script src="resource/src/js/custom/apps/calendar/calendar.js"></script> -->
+		<script src="resource/src/js/custom/apps/calendar/profile_calendar.js"></script>
 		<script src="resource/assets/js/custom/pages/user-profile/general.js"></script>
 
 		<!--end::Custom Javascript-->

@@ -19,7 +19,6 @@
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
 		<link rel="shortcut icon" href="/media/logos/favicon.ico" />
 
-
     	<link rel="stylesheet" type="text/css" href="resource/scheduler/dist/css/style.min.css" />
 		<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 
@@ -81,21 +80,13 @@
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<div class="d-flex flex-column flex-root">
 			<div class="page d-flex flex-row flex-column-fluid">
-				<jsp:include page="/views/common/header.jsp"></jsp:include>
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
-						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
+					<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">회의실 예약</h1>
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
 								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
-									<h1 class="text-gray-900 fw-bold my-1 fs-2">자원 예약</h1>
-									<ul class="breadcrumb fw-semibold fs-base my-1">
-										<li class="breadcrumb-item text-muted">
-											<a href="index.html" class="text-muted text-hover-primary">Home</a>
-										</li>
-										<li class="breadcrumb-item text-muted">자원 관리</li>
-										<li class="breadcrumb-item text-gray-900">회의실 예약</li>
-									</ul>
+								
 								</div>
 								<div class="card-toolbar">
 									<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">자원 추가하기</button>
@@ -154,23 +145,12 @@
 													<div class="fv-row mb-9">
 														<!--begin::Label-->
 														<label class="fs-6 fw-semibold mb-2">예약 내용</label>
-														<!--end::Label-->
-														<!--begin::Input-->
-														<input type="text" class="form-control" placeholder="" name="event_description" />
-														<!--end::Input-->
-													</div>
-													<!--end::Input group-->
-													<!--begin::Input group-->
-													
-													<!--end::Input group-->
-													<!--begin::Input group-->
-													<div class="fv-row mb-9">
-														<!--begin::Label-->
-														<!--end::Label-->
-														<!--begin::Input-->
 														
-
-														<!--end::Input-->
+														<input type="text" class="form-control" placeholder="" name="event_description" />
+													</div>
+													
+													<div class="fv-row mb-9">
+														
 													</div>
 													<!--end::Input group-->
 													<!--begin::Input group-->
@@ -201,7 +181,7 @@
 													<!--begin::Input group-->
 													
 												</div>
-												<div class="modal-footer flex-center">
+												<div class="modal-footer">
 													<button type="button" class="btn btn-primary submit_btn">예약</button>
 												</div>
 											</form>
@@ -223,15 +203,6 @@
 											<!--begin::Modal header-->
 											<div class="modal-header border-0 justify-content-end">
 												
-												<div class="btn btn-icon btn-sm btn-color-gray-500 btn-active-icon-danger me-2" data-bs-toggle="tooltip" data-bs-dismiss="click" title="Delete Event" id="event_resetData">
-													<i class="ki-duotone ki-trash fs-2">
-														<span class="path1"></span>
-														<span class="path2"></span>
-														<span class="path3"></span>
-														<span class="path4"></span>
-														<span class="path5"></span>
-													</i>
-												</div>
 												<!--end::Edit-->
 												<!--begin::Close-->
 												<div class="btn btn-icon btn-sm btn-color-gray-500 btn-active-icon-primary" data-bs-toggle="tooltip" title="Hide Event" data-bs-dismiss="modal">
@@ -270,7 +241,6 @@
 													<span class="bullet bullet-dot h-10px w-10px bg-success ms-2 me-7"></span>
 													
 													<div class="fs-6">
-														일시
 														<span class="fw-bold">Starts</span>
 														<div>
 															<input type="text" name="" value="" readonly="readonly" style="border: 0px"/>
@@ -305,6 +275,10 @@
 													내선 번호 <div class="fs-6"><input type="text" name="" value="" readonly="readonly" style="border: 0px"/></div>
 												</div>
 											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary submit_btn">삭제</button>
+												<button type="button" class="btn btn-light">취소</button>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -314,7 +288,7 @@
 								
 								
 								<div class="modal fade" tabindex="-1" id="kt_modal_1">
-									<div class="modal-dialog">
+									<div class="modal-dialog modal-dialog-centered mw-650px">
 										<div class="modal-content">
 											<div class="modal-header">
 												<h3 class="modal-title">자원 추가</h3>
@@ -364,7 +338,7 @@
 								
 								
 								<div class="modal fade" tabindex="-1" id="kt_modal_2">
-									<div class="modal-dialog">
+									<div class="modal-dialog modal-dialog-centered mw-650px">
 										<div class="modal-content">
 											<div class="modal-header">
 												<h3 class="modal-title">자원 삭제</h3>

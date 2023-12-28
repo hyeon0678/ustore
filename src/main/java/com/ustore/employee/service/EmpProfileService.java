@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ustore.employee.dao.EmpProfileDao;
-import com.ustore.employee.dto.EmployeeDto;
 
 @Service
 public class EmpProfileService {
@@ -18,13 +17,8 @@ public class EmpProfileService {
 	@Autowired EmpProfileDao dao;
 
 	public void addevent(Map<String, String> params) {
-		
-		EmployeeDto dto = new EmployeeDto();
-		
-		dao.addevent(dto);
-		
+		dao.addevent(params);
+		logger.info("service_params : " + params);
 	}
-	
-	
 	
 }

@@ -4,6 +4,27 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ustore.employee.dao.EmpProfileDao">
 
+<insert id="addevent" parameterType="EmpProrileDto">
+insert into schedule(
+	, sch_start_date
+	, sch_end_date
+	, sch_content
+	, sch_subject
+	, sch_start_time 
+	, sch_end_time 
+	, sch_type 
+	,  
+	)
+	values(
+	, #{event_start_date}
+	, #{calendar_event_end_date}
+	, #{calendar_event_description}
+	, #{calendar_event_name}
+	, #{calendar_event_start_time}
+	, #{calendar_event_end_time}
+	, #{schedule_type}
+	)
+</insert>
 
 
 </mapper>

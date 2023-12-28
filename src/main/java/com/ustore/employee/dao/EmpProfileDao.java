@@ -1,13 +1,15 @@
 package com.ustore.employee.dao;
 
-import org.apache.ibatis.annotations.Mapper;
+import java.util.Map;
 
-import com.ustore.employee.dto.EmployeeDto;
+import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface EmpProfileDao {
 
-	void addevent(EmployeeDto dto);
+	void addevent(Map<String, String> params);
+	
+
 
 	
 	
