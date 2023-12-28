@@ -2,6 +2,7 @@ package com.ustore.utils;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -60,5 +61,10 @@ public class DateCalculator {
 
         return totalDays - excludedWeekdays;
     }
+    
+    public String currentDate() {
+    	LocalDate now = LocalDate.now();
+		return Integer.toString(now.getYear());
+	}
 
 }
