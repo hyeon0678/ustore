@@ -28,7 +28,21 @@ public class EmployeeDto {
 	private String schoolName;
 	private String major;
 	private int leave_incdec;  // 연차 갯수
+	private String newFileName;
+	private String extension;
 	
+	public String getExtension() {
+		return extension;
+	}
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+	public String getNewFileName() {
+		return newFileName;
+	}
+	public void setNewFileName(String newFileName) {
+		this.newFileName = newFileName;
+	}
 	public int getLeave_incdec() {
 		return leave_incdec;
 	}
