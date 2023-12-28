@@ -3,6 +3,7 @@ package com.ustore.utils;
 import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -64,6 +65,7 @@ public class DateCalculator {
         return totalDays - excludedWeekdays;
     }
     
+<<<<<<< HEAD
     
     /**
      * 현지 시간을 구하는 메서드이다.
@@ -75,6 +77,12 @@ public class DateCalculator {
     	
     	 // 현재 날짜를 java.sql.Date로 얻기
         Date currentDate = java.sql.Date.valueOf(LocalDate.now());
+=======
+    public String currentDate() {
+    	LocalDate now = LocalDate.now();
+		return Integer.toString(now.getYear());
+	}
+>>>>>>> origin/main
 
         // 결과 출력
         System.out.println("현재 날짜: " + currentDate);

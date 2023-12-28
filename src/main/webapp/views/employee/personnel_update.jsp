@@ -95,11 +95,82 @@ License: For each use you must have a valid license purchased only from above li
 															
 															<!--begin::Image input-->
 															<!-- 이미지 파일 -->
-
 															
-															    <input type="file" name="uploadFile"/>
+															
+															
+															<!--begin::Image input-->
+															<c:if test="${not empty list and not empty list[0].newFileName and list[0].newFileName ne null and not empty list[0].extension}">
+															<div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url(resource/assets/media/icon/blank.svg)">
+															    <!--begin::Image preview wrapper-->
+															    <div class="image-input-wrapper w-125px h-125px"></div>
+															</c:if>
+															<div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url(resource/assets/media/icon/blank.svg)">
+															    <!--begin::Image preview wrapper-->
+															    <div class="image-input-wrapper w-125px h-125px"></div>
+															    <!--end::Image preview wrapper-->
+															
+															    <!--begin::Edit button-->
+															    <label class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+															    data-kt-image-input-action="change"
+															    data-bs-toggle="tooltip"
+															    data-bs-dismiss="click"
+															    title="Change avatar">
+															        <i class="ki-duotone ki-pencil fs-6"><span class="path1"></span><span class="path2"></span></i>
+															
+															        <!--begin::Inputs-->
+															       <input type="file" name="uploadFile" id="file-input" accept=".png, .jpg, .jpeg" />
+															       <input type="hidden" name="avatar_remove" />
+															       
+															    	<input type="hidden" name="emp_idx" id="emp_idx" value="${list.get(0).empIdx}"/>
+															        <!--end::Inputs-->
+															    </label>
+															    <!--end::Edit button-->
+															
+															    <!--begin::Cancel button-->
+															    <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+															    data-kt-image-input-action="cancel"
+															    data-bs-toggle="tooltip"
+															    data-bs-dismiss="click"
+															    title="Cancel avatar">
+															        <i class="ki-outline ki-cross fs-3"></i>
+															    </span>
+															    <!--end::Cancel button-->
+															
+															    <!--begin::Remove button-->
+															    <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+															    data-kt-image-input-action="remove"
+															    data-bs-toggle="tooltip"
+															    data-bs-dismiss="click"
+															    title="Remove avatar">
+															        <i class="ki-outline ki-cross fs-3"></i>
+															    </span>
+															    <!--end::Remove button-->
+															</div>
+															<!--end::Image input-->
+																														
+															
+															
+															
+															
+															
+															
+															
+															<!-- 
+															<div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
+															<c:if test="${not empty list and not empty list[0].newFileName and list[0].newFileName ne null and not empty list[0].extension}">
+															   
+															    <img src="/ustore/photo/${list[0].newFileName}${list[0].extension}" id="empImg" />
+															</c:if>
+															<c:if test="${empty list or empty list[0].newFileName or list[0].newFileName eq null or empty list[0].extension}">
+															  
+															    <img src="resource/assets/media/icon/blank.svg" id="blankImg" />
+															</c:if>
+															</div>
+															</br>
+															    <input type="file" name="uploadFile" id="file-input" accept=".png, .jpg, .jpeg" />
 															    <input type="hidden" name="emp_idx" id="emp_idx" value="${list.get(0).empIdx}"/>
 														
+ -->
 															<!--end::Image input-->
 															<!-- 이미지 파일 끝 -->
 															
@@ -592,7 +663,23 @@ License: For each use you must have a valid license purchased only from above li
 */
 	        });
 	    });
-		
+/*
+	        document.getElementById('file-input').addEventListener('change', function(event) {
+	            var input = event.target;
+	            var preview = document.getElementById('blankImg');
+	            
+	            var reader = new FileReader();
+	            reader.onload = function() {
+	                preview.src = reader.result;
+	            };
+	            
+	            if (input.files && input.files[0]) {
+	                reader.readAsDataURL(input.files[0]);
+	            }
+	        });
+*/
+
+
 
 	</script>
 </html>
