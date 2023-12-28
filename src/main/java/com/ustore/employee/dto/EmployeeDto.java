@@ -27,14 +27,9 @@ public class EmployeeDto {
 	private String education;
 	private String schoolName;
 	private String major;
-<<<<<<< HEAD
 	private int leaveIncdec;  // 연차 갯수
-	
-	
-	public int getLeaveIncdec() {
-		return leaveIncdec;
-=======
-	private int leave_incdec;  // 연차 갯수
+
+
 	private String newFileName;
 	private String extension;
 	
@@ -50,9 +45,9 @@ public class EmployeeDto {
 	public void setNewFileName(String newFileName) {
 		this.newFileName = newFileName;
 	}
-	public int getLeave_incdec() {
-		return leave_incdec;
->>>>>>> origin/main
+
+	public int getLeaveIncdec() {
+		return leaveIncdec;
 	}
 	public void setLeaveIncdec(int leaveIncdec) {
 		this.leaveIncdec = leaveIncdec;
