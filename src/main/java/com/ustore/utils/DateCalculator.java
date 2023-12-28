@@ -65,8 +65,6 @@ public class DateCalculator {
         return totalDays - excludedWeekdays;
     }
     
-<<<<<<< HEAD
-    
     /**
      * 현지 시간을 구하는 메서드이다.
      * 호출시 Date 로 현재 날짜 YYYY-MM-DD로 반환한다
@@ -74,18 +72,14 @@ public class DateCalculator {
      * @return
      */
     public Date dateNow() {
-    	
     	 // 현재 날짜를 java.sql.Date로 얻기
         Date currentDate = java.sql.Date.valueOf(LocalDate.now());
-=======
-    public String currentDate() {
-    	LocalDate now = LocalDate.now();
-		return Integer.toString(now.getYear());
-	}
->>>>>>> origin/main
-
         // 결과 출력
         System.out.println("현재 날짜: " + currentDate);
          return currentDate;
     }
+	public String currentDate() {
+		LocalDate now = LocalDate.now();
+		return Integer.toString(now.getYear());
+	}
 }
