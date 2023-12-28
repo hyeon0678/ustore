@@ -39,7 +39,7 @@
 <link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css"
 	rel="stylesheet" type="text/css" />
 <!--end::Global Stylesheets Bundle-->
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 <style>
 .custom-input-group {
@@ -57,6 +57,15 @@
 .chart-body-div {
 	width: 45%;
 	margin: 10px 20px;
+}
+button {
+  background-color: white;
+  border: white;
+  box-shadow: none;
+}
+button i.bi {
+  font-size: 1.5rem; /* 원하는 크기로 조절하세요 */
+  
 }
 </style>
 
@@ -84,8 +93,8 @@
 				id="kt_wrapper">
 				<!--begin::Content-->
 
-				<div class="content fs-6 d-flex flex-column flex-column-fluid"
-					id="kt_content" style="margin-top: 90px;">
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;"> 
+				<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">발주</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--사이드바 넣는곳  -->
 					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
@@ -118,14 +127,10 @@
 
 									<div class="mb-0">
 										<label class="form-label">입고 희망 날짜</label> 
-									    	<form id="dateForm" action="/dateSelect" method="get">
-    <!-- Date Input -->
-    <input type="date" id="birthdate" name="birthdate">
-
-    <!-- Submit Button -->
-    <button type="button" onclick="submitForm()">선택</button>
-</form>
-									    	 		
+									       <!-- Date Input -->
+    <input class="form-control form-control-solid" placeholder="날짜를 선택 해주세요." id="kt_daterangepicker_3" name ="birthdate"/>
+ 
+							    	 		
 									    	
 									    	 	
 									</div>
@@ -142,9 +147,7 @@
 									<table class="table align-middle table-row-dashed fs-6 gy-5"
 										id="kt_ecommerce_category_table">
 										<thead>
-											<tr
-												class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0"
-												style="background-color: lightgrey">
+											<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
 												<th class="w-550px pe-2">제품 이름</th>
 												<th class="min-w-350px">제품 번호</th>
 												<th class="min-w-350px">분류(대분류>중분류)</th>
@@ -236,7 +239,7 @@
 								<div class="modal-dialog modal-dialog-scrollable modal-lg">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h1>발주할 물품</h1>
+											<h1 style=" color: #c6da52;">발주할 물품</h1>
 
 
 											<!--begin::Close-->
@@ -262,55 +265,24 @@
 																data-control="select2" data-dropdown-css-class="w-200px"
 																data-placeholder="배송기사를 선택 해주세요!" data-hide-search="true">
 														<c:forEach items="${list3}" var="order3">
-																<option value="1" selected>${order3.driverName}</option>
+																<option value="${order3.driverIdx}" selected>${order3.driverName}</option>
 												</c:forEach>
 															</select>
 														
 														</div>
 														
 														<table
-															class="table table-row-dashed table-row-gray-300 gy-7">
+															class="table table-row-dashed table-row-gray-300 gy-7" id="orderModal">
 															<thead>
+															<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
+															<th class="min-w-125px">삭제</th>
+															<th class="min-w-125px">물품 명</th>
+															<th class="min-w-125px">발주할 물품 개수(파레트)</th>
+															<th class="min-w-125px">낱개 개수(총합)</th>
+															</tr>
 															</thead>
-															<tbody>
-																<c:forEach items="${list2}" var="order2">
-																<tr class="fw-bold fs-6 text-gray-800">
-																	<th>X</th>
-																	<th>${order2.productName}</th>
-																	<th colspan="2"></th>
-																	<th><div class="input-group w-md-200px"
-																			data-kt-dialer="true" data-kt-dialer-currency="true"
-																			data-kt-dialer-min="0"
-																			data-kt-dialer-max="9999999999999999999"
-																			data-kt-dialer-step="1" data-kt-dialer-prefix="">
-	
-																			<!--begin::Decrease control-->
-																			<button
-																				class="btn btn-icon btn-outline btn-active-color-primary"
-																				type="button" data-kt-dialer-control="decrease">
-																				<i class="ki-duotone ki-minus fs-2"></i>
-																			</button>
-																			<!--end::Decrease control-->
-	
-																			<!--begin::Input control-->
-																			<input type="text" class="form-control"
-																				placeholder="Amount" value="0"
-																				data-kt-dialer-control="input" />
-																			<!--end::Input control-->
-	
-																			<!--begin::Increase control-->
-																			<button
-																				class="btn btn-icon btn-outline btn-active-color-primary"
-																				type="button" data-kt-dialer-control="increase">
-																				<i class="ki-duotone ki-plus fs-2"></i>
-																			</button>
-																			<!--end::Increase control-->
-																		</div> <!--end::Dialer--></th>
-																	<th>낱개 갯수:${order2.unitQuantity}</th>
-	
-																</tr>
-</c:forEach>
-															</tbody>
+															<tbody id="orderModalBody">
+</tbody>
 														</table>	
 	
 													</div>
@@ -319,7 +291,7 @@
 	
 											<div class="modal-footer">
 	
-												<button type="button" class="btn btn-primary">발주 하기</button>
+												<button type="button" class="btn btn-primary" id="orderBtn">발주 하기</button>
 	
 											</div>
 	
@@ -388,6 +360,9 @@
                 var form = document.createElement('form');
                 form.action = '/order/ordercart/insert';
                 form.method = 'POST';
+                
+                
+              
 
                 // hidden input 추가 (productId)
                 var productIdInput = document.createElement('input');
@@ -395,6 +370,7 @@
                 productIdInput.name = 'productId';
                 productIdInput.value = row.querySelector('input[name="productId"]').value.trim();
                 form.appendChild(productIdInput);
+               
 
                 // hidden input 추가 (count)
                 var countInput = document.createElement('input');
@@ -403,7 +379,11 @@
                 countInput.value = row.querySelector('input[name="count"]').value.trim();
                 form.appendChild(countInput);
                 
-             
+                var birthdateInput = document.createElement('input');
+                birthdateInput.type = 'hidden';
+                birthdateInput.name = 'birthdate';
+                birthdateInput.value = document.getElementById('kt_daterangepicker_3').value.trim(); // 여기서 'kt_daterangepicker_3'는 실제 날짜 입력란의 id여야 합니다.
+                form.appendChild(birthdateInput);
                 
 
                 // 폼을 body에 추가하고 submit
@@ -415,11 +395,98 @@
             }
         });
     }
-    
-    function submitForm() {
-       
-        document.getElementById("dateForm").submit();
+    $("#kt_daterangepicker_3").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        maxYear: parseInt(moment().format("YYYY"),12)
+       	
     }
+);
+    //--------------------------------------------------------------------
+    
+  $(document).ready(function() {
+    fetchData(); 
+
+    function fetchData() {
+        $.ajax({
+            url: '/order/ordercart/list',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                renderData(data);
+            },
+            error: function(error) {
+                console.error('에러....:', error);
+            }
+        });
+    }
+
+    function renderData(data) {
+        var tableBody = $('#orderModalBody'); 
+        tableBody.empty();
+
+        if (data.length === 0) {
+            tableBody.append('<tr><td colspan="5">검색 결과가 없습니다.</td></tr>');
+        } else {
+            $.each(data, function(index, order) {
+                var row = $('<tr>');
+                row.append('<td class="min-w-125px"><button class="delete-btn" data-product-name="' + order.productName + '"><i class="bi bi-x-circle"></i></button></td>');
+                row.append('<td class="min-w-125px">' + order.productName + '</td>');
+                row.append('<td class="min-w-125px">' + order.orderQuantity +'개(파레트 개수)'+ '</td>');
+                row.append('<td class="min-w-125px">' + order.orderQuantity*order.unitQuantity +'개'+'</td>');
+                tableBody.append(row);
+            });
+
+   
+            $('.delete-btn').click(function() {
+                var productName = $(this).data('product-name');
+             
+                $.ajax({
+                    url: '/order/ordercart/delete',
+                    method: 'POST',
+                    data: { productName: productName },
+                    success: function(response) {
+                        console.log('삭제 성공:', response);
+                   
+                        fetchData();
+                    },
+                    error: function(error) {
+                        console.error('삭제 에러:', error);
+                    }
+                });
+            });
+        }
+    }
+});
+    //-----------------------------------------------------발주하기-------------------------------------------
+  $("#orderBtn").on("click", function () {
+      // 선택된 배송기사
+      var selectedDriverIdx = $("select[data-control='select2']").val();
+
+   
+      $.ajax({
+          url: '/order/insert', 
+          method: 'POST',
+          data: {
+              driverIdx: selectedDriverIdx
+          },
+          success: function (response) {
+              // 성공 시 처리
+              console.log('발주 성공:', response);
+          },
+          error: function (error) {
+              // 실패 시 처리
+              console.error('발주 에러:', error);
+          }
+      });
+  });
+    //--------------------
+    var msg = "${msg}";
+if(msg != ""){
+	alert(msg);
+}
+        
 </script>
 </body>
 <!--end::Body-->

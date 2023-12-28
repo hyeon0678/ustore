@@ -106,18 +106,19 @@ h1 {
 	<!--end::Theme mode setup on page load-->
 	<!--begin::Main-->
 	<!--begin::Root-->
+	<!--begin::Header 헤더 시작 -->
+			<jsp:include page="/views/common/header.jsp"></jsp:include>
+			<!--end::Header 헤더 닫기-->
 	<div class="d-flex flex-column flex-root">
 		<!--begin::Page-->
 		<div class="page d-flex flex-row flex-column-fluid">
 			<!--begin::Wrapper-->
-			<!--begin::Header 헤더 시작 -->
-			<jsp:include page="/views/common/header.jsp"></jsp:include>
-			<!--end::Header 헤더 닫기-->
+			
 			<div class="wrapper d-flex flex-column flex-row-fluid"
 				id="kt_wrapper">
 				<!--begin::Content-->
-				<div class="content fs-6 d-flex flex-column flex-column-fluid"
-					id="kt_content" style="margin-top: 90px;">
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;"> 
+				<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">재고 상세보기</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--사이드바 넣는곳  -->
 					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
@@ -218,9 +219,7 @@ h1 {
 								class="table table-hover table-rounded table-striped border gy-7 gs-7"
 								style="text-align: center;">
 								<thead>
-									<tr
-										class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200"
-										style="background-color: rgb(235, 234, 234);">
+									<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
 										<th>입고 날짜</th>
 										<th>파렛트/전체</th>
 
@@ -324,9 +323,7 @@ h1 {
 							<table
 								class="table table-hover table-rounded table-striped border gy-7 gs-7">
 								<thead>
-									<tr
-										class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200"
-										style="background-color: rgb(235, 234, 234);">
+									<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
 										<th>파손/폐기/분실 일자</th>
 										<th>구분</th>
 										<th>수량(낱개)</th>
