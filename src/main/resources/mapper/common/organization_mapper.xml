@@ -29,12 +29,16 @@
 		WHERE e.position in (22, 23);
 	</select> -->
 	
-	<select id="selectDepartments" resultMap="organizationChartResultMap">
+	<select id="selectDepartments" resultType="OrganizationChartDto">
 	    SELECT
 	        d.dept_id AS id,
 	        COALESCE(d.parent_dept_id, '#') AS parent,
 	        d.dept_name AS text,
-	        'department' AS type
+	        'department' AS type,
+	        null AS dept_name,
+	        null AS position,
+	        null AS positionType,
+	        null AS empName
 	    FROM
 	        department d
 	    ORDER BY
@@ -42,13 +46,16 @@
 	</select>
 	
 	
-	<select id="selectEmployees" resultMap="organizationChartResultMap">
+	<select id="selectEmployees" resultType="OrganizationChartDto">
 	    SELECT
 	        e.emp_idx AS id,
 	        e.dept_id AS parent,
 	        CONCAT(e.emp_name, ' (', c.common_type, ')') AS text,
 	        'employee' AS type,
-	        c.common_type as position
+	        d.dept_name AS deptName,
+	        e.position AS position,
+	        c.common_type AS positionType,
+	        e.emp_name AS empName
 	    FROM
 	        employee e
 	    JOIN
@@ -58,13 +65,5 @@
 	    ORDER BY
 	        e.dept_id, e.emp_idx
 	</select>
-	
-	<resultMap id="organizationChartResultMap" type="OrganizationChartDto">
-	    <id property="id" column="id" />
-	    <result property="parent" column="parent" />
-	    <result property="text" column="text" />
-	    <result property="type" column="type" />
-	    <collection property="children" column="{id=id, parent=parent}" ofType="OrganizationChartDto" />
-	</resultMap>
 	
 </mapper>

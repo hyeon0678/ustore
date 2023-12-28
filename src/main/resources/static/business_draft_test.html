@@ -64,7 +64,7 @@
 			<div class="card-body py-4">
 				<div class="d-flex justify-content-end mb-4" style="margin-bottom: 30px;">
 					<!-- 결재자 테이블 -->
-					<table class="signature-table mr-3">
+					<table class="signature-table mr-3" id="apprListTable">
 						<tr>
 							<td>결재자1</td>
 							<td>결재자2</td>
@@ -82,13 +82,13 @@
 				<!--begin::Input group-->
 				<div class="input-group mb-5" style="margin-top: 20px;">
 					<span class="input-group-text flex-grow-1" id="inputGroup-sizing-default" style="width: 20%;">수신자</span>
-					<input type="text" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+					<input type="text" id="inputReceiver" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly="readonly" style="width: 80%;"/>
 				</div>
 				<!--end::Input group-->
 				<!--begin::Input group-->
 				<div class="input-group mb-5">
 					<span class="input-group-text flex-grow-1" id="inputGroup-sizing-default" style="width: 20%;">제목</span>
-					<input type="text" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+					<input type="text" id="inputSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
 				</div>
 				<!--end::Input group-->
 				

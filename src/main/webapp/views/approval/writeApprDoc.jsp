@@ -296,8 +296,8 @@
         
         $('#kt_modal_1').on('shown.bs.modal', function(){
 			getTreeData();
-		})
-        
+		})  	
+		
     });
 	
     function sendApproval(){
@@ -361,143 +361,327 @@
 	$('#kt_docs_jstree_basic').on("open_node.jstree", function (e, data) {
 		console.log("open되었을때", data.node);
 	});
-
-	// Node 선택했을 때
+	
+	// 노드를 선택했을 때의 이벤트 처리
 	$('#kt_docs_jstree_basic').on("select_node.jstree", function (e, data) {
-		console.log("select했을때", data.node);		
-		console.log("emp_idx =",data.node.id.replace("_anchor",""));
-		var emp_idx = data.node.id.replace("_anchor","");
+	    console.log("select했을때", data.node);
+	    var emp_idx = data.node.id.replace("_anchor", "");
 	});
 	
+
+	/* // 선택한 노드 정보를 행에 저장 (data-node 필요)
+    var newRow = $('#apprline tbody tr:first-child');
+    $(newRow).data('node', selectedNode);
+    
+    var existingRows = receiverTable.find('tbody tr');
+	var isAlreadySelected = existingRows.toArray().some(function(row) {
+		var rowData = $(row).data('node'); // 데이터 속성에 저장된 노드 정보 가져오기 (data-node 필요)
+		return rowData && rowData.id === selectedNode.id;
+	});
+	
+	if(selectedNode.type!='department'){
+		if(selectedNode && !isAlreadySelected){
+			
+		} */
 	
 	// 결재선 정보 및 수신자 정보 설정(결재정보 저장)
 	var approvalLines = [];
 	var receivers = [];	
 	
-	function addApprovalLine(){
-		
-		var selectedNode = $('#kt_docs_jstree_basic').jstree(true).get_selected(true)[0];
-		var apprlineTable = $('#apprline');
+	// 조직도에서 결재선에 추가하는 버튼 함수
+	function addApprovalLine() {
+	    var selectedNode = $('#kt_docs_jstree_basic').jstree(true).get_selected(true)[0];
+	    var emp_idx = selectedNode.id.replace("_anchor", "");
 
-		// 이미 선택된 노드가 존재하는지 확인
-		var existingRows = apprlineTable.find('tbody tr');
-		var isAlreadySelected = existingRows.toArray().some(function(row) {
-			var rowData = $(row).data('node'); // 데이터 속성에 저장된 노드 정보 가져오기 (data-node 필요)
-			return rowData && rowData.id === selectedNode.id;
-		});
-		
-		if(selectedNode && !isAlreadySelected){
-			var approvalData = {
-	        type: '결재',
-	        name: selectedNode.text,
-	        position: selectedNode.position,
-	        /* position: selectedNode.data.position, */
-	        department: selectedNode.dept_name
-	        /* department: selectedNode.data.dept_name */
-	    	};
-			
-			// 테이블의 tbody에 맨 위에 데이터를 추가
-			var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
-			var newRow = tbody.insertRow(0); // 첫 번째 위치에 새로운 행 추가
-	
-			// 각 셀에 데이터 추가
-			var cell1 = newRow.insertCell(0);
-			var cell2 = newRow.insertCell(1);
-			var cell3 = newRow.insertCell(2);
-			var cell4 = newRow.insertCell(3);
-			var cell5 = newRow.insertCell(4);
-	
-			cell1.innerHTML = approvalData.type;
-			cell2.innerHTML = approvalData.name;
-			cell3.innerHTML = approvalData.position;
-			cell4.innerHTML = approvalData.department;
-			
-			var deleteIcon = document.createElement('i');
-			deleteIcon.className = 'fa fa-trash';
-			deleteIcon.onclick = function () {
-				newRow.remove();
-			};
-			cell5.appendChild(deleteIcon);
-			
-			// 선택한 노드 정보를 행에 저장 (data-node 필요)
-			$(newRow).data('node', selectedNode);
-			
-			approvalLines.push(approvalData);
-			
-		}else{
-			alert("이미 선택된 직원입니다.");
-		}
+	    // 서버에서 사원 정보 조회
+	    $.ajax({
+	        type: 'GET',
+	        url: '/info/' + emp_idx, // 실제로는 서버의 엔드포인트에 맞게 수정해야 함
+	        success: function (employeeInfo) {
+	            // 성공적으로 정보를 받아왔을 때의 동작
+	            console.log(employeeInfo);
+
+	            // 생성할 approvalData 객체를 만들어서 데이터 채우기
+	            var approvalData = {
+	                type: '결재',
+	                name: employeeInfo.empName,
+	                position: employeeInfo.position,
+	                positionType: employeeInfo.positionType,
+	                department: employeeInfo.deptName
+	            };
+
+	            // 테이블에 데이터 추가
+	            addRowToApprLineTable(approvalData);  
+
+	            if(!isDuplicate(approvalData)){
+		            // approvalLines 배열에 데이터 추가
+		            approvalLines.push(approvalData);
+		            console.log("approval array:", approvalLines);
+	            }else{
+	         		console.log("중복된 데이터가 들어갔습니다.")
+	         	}
+	        },
+	        error: function (error) {
+	            // 오류가 발생했을 때의 동작
+	            console.error('Error fetching employee info:', error);
+	        }
+	    });
 	}
 
-	function addReceiver(){
-		var selectedNode = $('#kt_docs_jstree_basic').jstree(true).get_selected(true)[0];
-		var apprlineTable = $('#apprline');
-		
-		var existingRows = apprlineTable.find('tbody tr');
-		var isAlreadySelected = existingRows.toArray().some(function(row) {
-			var rowData = $(row).data('node'); // 데이터 속성에 저장된 노드 정보 가져오기 (data-node 필요)
-			return rowData && rowData.id === selectedNode.id;
-		});
-		
-		if(selectedNode && !isAlreadySelected){
-			var approvalData = {
-		        name: selectedNode.text,
-		        position: selectedNode.position,
-		        department: selectedNode.dept_name
-			};
-			
-			// 테이블의 tbody에 맨 위에 데이터를 추가
-			var tbody = document.getElementById('receiver').getElementsByTagName('tbody')[0];
-			var newRow = tbody.insertRow(0); // 첫 번째 위치에 새로운 행 추가
+	// 테이블에 행을 추가하는 함수
+	function addRowToApprLineTable(approvalData) {
+	    var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
+	    
+	    var isAlreadySelected = checkIfNodeExists(tbody, approvalData);
+	    
+	    if(!isAlreadySelected){
+		    var newRow = tbody.insertRow(0);
 	
-			// 각 셀에 데이터 추가
-			var cell1 = newRow.insertCell(0);
-			var cell2 = newRow.insertCell(1);
-			var cell3 = newRow.insertCell(2);
-			var cell4 = newRow.insertCell(3);
-			
-			cell1.innerHTML = approvalData.name;
-			cell2.innerHTML = approvalData.position;
-			cell3.innerHTML = approvalData.department;
-			
-			var deleteIcon = document.createElement('i');
-			deleteIcon.className = 'fa fa-trash';
-			deleteIcon.onclick = function () {
-				newRow.remove();
-			};
-			cell4.appendChild(deleteIcon);
-			
-			$(newRow).data('node', selectedNode);
-			
-			receivers.push(receiverData);
+		    var cell1 = newRow.insertCell(0);
+		    var cell2 = newRow.insertCell(1);
+		    var cell3 = newRow.insertCell(2);
+		    var cell4 = newRow.insertCell(3);
+		    var cell5 = newRow.insertCell(4);
+	
+		    cell1.innerHTML = approvalData.type;
+		    cell2.innerHTML = approvalData.name;
+		    cell3.innerHTML = approvalData.positionType;
+		    cell4.innerHTML = approvalData.department;
+	
+		    var deleteIcon = document.createElement('i');
+		    deleteIcon.className = 'fa fa-trash';
+		    deleteIcon.onclick = function () {
+		        newRow.remove();
+		    };
+		    cell5.appendChild(deleteIcon);	
+		    
+		 	// 선택한 노드 정보를 행에 저장 (data-node 필요)
+		    newRow.setAttribute('data-node', JSON.stringify(approvalData));
 	    }else{
 	    	alert("이미 선택된 직원입니다.");
-	    };
+	    }
+	}
+
+		
+	// 조직도에서 수신자 추가하는 버튼 함수
+	function addReceiver(){
+		var selectedNode = $('#kt_docs_jstree_basic').jstree(true).get_selected(true)[0];
+		var emp_idx = selectedNode.id.replace("_anchor", "");				
+	    
+	    // 서버에서 사원 정보 조회
+	    $.ajax({
+	        type: 'GET',
+	        url: '/info/' + emp_idx, // 실제로는 서버의 엔드포인트에 맞게 수정해야 함
+	        success: function (employeeInfo) {
+	            // 성공적으로 정보를 받아왔을 때의 동작
+	            console.log(employeeInfo);
+
+	            // 생성할 receiverData 객체를 만들어서 데이터 채우기
+	            var receiverData = {
+	                name: employeeInfo.empName,
+	                position: employeeInfo.position,
+	                positionType: employeeInfo.positionType,
+	                department: employeeInfo.deptName
+	            };
+	            
+	         	// 테이블에 데이터 추가
+	            addRowToReceiverTable(receiverData);  
+
+	         	if(!isDuplicate(receiverData)){
+		            // receivers 배열에 데이터 추가
+		            receivers.push(receiverData);   
+		         	// receivers 배열 내용 확인
+		            console.log("Receivers array:", receivers);	         		
+	         	}else{
+	         		console.log("중복된 데이터가 들어갔습니다.")
+	         	}
+	        },
+	        error : function(e){
+	        	console.log(e);	
+	        }
+		});		
 	}
 	
+	// 테이블에 행을 추가하는 함수
+	function addRowToReceiverTable(receiverData) {
+		var tbody = document.getElementById('receiver').getElementsByTagName('tbody')[0];
+		var isAlreadySelected = checkIfNodeExists(tbody, receiverData);
+		
+		if (!isAlreadySelected) {		
+			var newRow = tbody.insertRow(0); // 첫 번째 위치에 새로운 행 추가
+			// 각 셀에 데이터 추가
+			var cell1 = newRow.insertCell(0);
+			var cell2 = newRow.insertCell(1);
+			var cell3 = newRow.insertCell(2);
+			var cell4 = newRow.insertCell(3);
+			
+			cell1.innerHTML = receiverData.name;
+			cell2.innerHTML = receiverData.positionType;
+			cell3.innerHTML = receiverData.department;
+			
+			var deleteIcon = document.createElement('i');
+			deleteIcon.className = 'fa fa-trash';
+			deleteIcon.onclick = function () {
+				newRow.remove();
+			};
+			cell4.appendChild(deleteIcon);	
+			
+			// 선택한 노드 정보를 행에 저장 (data-node 필요)
+			newRow.setAttribute('data-node', JSON.stringify(receiverData));
+		}else{
+			alert("이미 선택된 직원입니다.");
+		}			
+	}    
+	
+	// 선택된 노드가 존재하는지 확인하는 함수
+	function checkIfNodeExists(tbody, rowData) {
+    var existingRows = tbody.getElementsByTagName('tr');
+
+	    for (var i = 0; i < existingRows.length; i++) {
+	        var row = existingRows[i];
+	        var rowNodeString = row.getAttribute('data-node');
+	
+	        if (rowNodeString) {
+	            var rowNode = JSON.parse(rowNodeString);
+	
+	            if (rowNode.name === rowData.name &&
+                    rowNode.position === rowData.position &&
+                    rowNode.department === rowData.department) {
+	                return true;
+	            }
+	        }
+	    }	
+	    return false;
+	}
+	
+	// 배열에 중복 데이터가 있는지 확인하는 함수
+	function isDuplicate(newData) {
+	    for (var i = 0; i < receivers.length; i++) {
+	        if (compareData(receivers[i], newData)) {
+	            return true; // 중복된 데이터가 있음
+	        }
+	    }
+	    return false; // 중복된 데이터가 없음
+	}
+
+	// 두 데이터 객체를 비교하는 함수
+	function compareData(data1, data2) {
+	    // 실제 데이터 구조에 맞게 비교 로직을 구현하세요
+	    return (
+	        data1.name === data2.name &&
+	        data1.position === data2.position &&
+	        data1.positionType === data2.positionType &&
+	        data1.department === data2.department
+	    );
+	}
+	    
+	    
+	// 결재선, 수신자 저장 함수 
 	$('#saveApprLine').on('click', function () {
-        // 서버로 결재선과 수신자 정보 전송 (AJAX 사용)
+		var approvalSuccess = false;
+	    var receiverSuccess = false;
+	    
+        // 서버로 결재선 정보 전송
         $.ajax({
+        	type: 'POST',
             url: '/saveapprlinedata', // 서버의 엔드포인트
-            method: 'POST',
-            data: {
-                approvalLines: JSON.stringify(approvalLines),
-                receivers: JSON.stringify(receivers)
-            },
-            success: function (response) {
+            data: JSON.stringify({
+                approvalLines: approvalLines
+            }),
+            contentType:'application/json; charset=utf-8',
+            success: function (data) {
                 // 성공적으로 저장되었을 때의 동작
-                console.log('결재정보가 성공적으로 저장되었습니다.');
+                console.log(data.approvalLines);
+                console.log('결재선 정보가 성공적으로 저장되었습니다.'); 
+                
+                // 결재선 설정에 따라 결재 양식의 우상단에 결재 표시 구역 그리기      	    
+                
+                
+                var table = document.getElementById('apprListTable');
+                var tbody = table.querySelector("tbody");
+                
+                /* approvalList.forEach(function(approver, index) {
+                    // 첫 번째 tr에 결재자 이름 추가
+                    var firstRow = tbody.insertRow(index * 2);
+                    var firstCell = firstRow.insertCell(0);
+                    firstCell.textContent = approver.name;
+
+                    // 두 번째 tr에 높이 70px를 가진 빈 행 추가
+                    var secondRow = tbody.insertRow(index * 2 + 1);
+                    var emptyCell = secondRow.insertCell(0);
+                    emptyCell.style.height = "70px";
+                }); */
+                
+                // 결재선 정보 저장 성공
+	            approvalSuccess = true;
+	
+	            // 모든 처리가 완료되었을 때 모달 닫기
+	            if (approvalSuccess && receiverSuccess) {
+	                $('#kt_modal_1').modal('hide');
+	            }
             },
             error: function (error) {
                 // 저장 중 오류가 발생했을 때의 동작
-                console.error('결재정보 저장 중 오류가 발생했습니다.');
+                console.error('결재선 정보 저장 중 오류가 발생했습니다.');
+                $('#kt_modal_1').modal('hide');
             }
         });
+        
+        
+     // 서버로 수신자 정보 전송 (AJAX 사용)
+        $.ajax({
+            type: 'POST',
+            url: '/savereceiverdata',
+            data: JSON.stringify({
+                receivers: receivers
+            }),
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                // 성공적으로 수신자 정보 저장되었을 때의 동작
+                console.log(data.receivers);
+                console.log('수신자 정보가 성공적으로 저장되었습니다.');
+
+                
+                if (data.receivers && data.receivers.length > 0) {
+                	 // 수신자 이름들을 담을 배열
+                    var receiverNames = [];
+
+                    // 각 수신자의 이름을 배열에 추가
+                    data.receivers.forEach(function(receiver) {
+                    	var receiver = receiver.name +'('+ receiver.department +' '+ receiver.positionType +')'; 
+                    
+                        receiverNames.push(receiver);
+                    });
+
+                    // 수신자 이름들을 쉼표로 구분하여 문자열로 변환
+                    var receiversString = receiverNames.join(', ');
+
+                    // input 태그에 수신자 이름 설정
+                    document.getElementById('inputReceiver').value = receiversString;
+                } else {
+                    document.getElementById('inputReceiver').value = '내부결재';
+                }
+                
+             	// 수신자 정보 저장 성공
+                receiverSuccess = true;
+
+                // 모든 처리가 완료되었을 때 모달 닫기
+                if (approvalSuccess && receiverSuccess) {
+                    $('#kt_modal_1').modal('hide');
+                }
+            },
+            error: function (error) {
+                // 수신자 정보 저장 중 오류가 발생했을 때의 동작
+                console.error('수신자 정보 저장 중 오류가 발생했습니다.');
+                $('#kt_modal_1').modal('hide');
+            }
+        });
+        
     });
 	
 	
+	
 	// 결재상신
-
 	$('#btnSendApproval').on('click', function () {
 	    // HTML 양식을 문자열로 변환
 	    var htmlFormData = $('#docFormContainer').html();

@@ -1,7 +1,5 @@
 package com.ustore.approval.dao;
 
-import java.util.ArrayList;
-
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ustore.approval.dto.ApprovalDto;
@@ -14,7 +12,7 @@ public interface ApprovalDao {
 
 	void saveHtmlByCommonIdx(String html, Integer common_idx);
 
-	ArrayList<EmployeeDto> addApprLine(String emp_idx);
+	EmployeeDto getEmployeeInfo(String emp_idx);
 
 	
 	

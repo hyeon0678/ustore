@@ -2,8 +2,13 @@ package com.ustore.approval.controller;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ustore.approval.dto.ApprovalDto;
 import com.ustore.approval.service.ApprovalService;
+import com.ustore.employee.dto.EmployeeDto;
 
 @Controller
 public class ApprovalController {
@@ -54,7 +61,7 @@ public class ApprovalController {
 	}
 	
 	@GetMapping(value="/approval/newapproval/write")
-	public String write(@RequestParam int common_idx, Model model) {
+	public String write(@RequestParam int common_idx, Model model, HttpSession session) {
 		// common_idx에 따라 다른 JSP 페이지 경로 설정
         String formPage = getFormPageByCommonIdx(common_idx);
 
@@ -105,31 +112,61 @@ public class ApprovalController {
 	
 	// HTML 파일을 저장할 폴더 경로
     private static final String HTML_FOLDER_PATH = "C:\\ustoreUpload\\html";
-	   	
-    @RequestMapping("/addapprline.ajax")
-	@ResponseBody
-	public Map<String, Object>addApprLine(@RequestParam String emp_idx) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("empInfo", service.addApprLine(emp_idx));
-		return map;
-	}
+
+    @GetMapping("/info/{emp_idx}")
+    public ResponseEntity<EmployeeDto> getEmployeeInfo(@PathVariable String emp_idx) {
+        try {
+            // emp_idx에 해당하는 사원 정보 조회
+            EmployeeDto empDto = service.getEmployeeInfo(emp_idx);
+            return ResponseEntity.ok(empDto);
+        } catch (Exception e) {
+            e.printStackTrace(); // 로그 출력
+            return ResponseEntity.status(500).body(null);
+        }
+    }
     
+
+    @PostMapping("/saveapprlinedata")
+    public ResponseEntity<Map<String, Object>> saveApprLineData(@RequestBody ApprovalDto dto, HttpSession session) {
+        try {
+            session.setAttribute("approvalLines", dto.getApprovalLines());
+
+            // 성공적으로 저장되었을 때의 응답
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "결재선 정보가 성공적으로 저장되었습니다.");
+            logger.info("line : "+dto.getApprovalLines());            
+            
+            response.put("approvalLines", dto.getApprovalLines());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace(); // 로그 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    } 
+    
+    @PostMapping("/savereceiverdata")
+    public ResponseEntity<Map<String, Object>> saveReceiverData(@RequestBody ApprovalDto dto, HttpSession session) {
+        try {    	
+            session.setAttribute("receivers", dto.getReceivers());
+
+            // 성공적으로 저장되었을 때의 응답
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "수신자 정보가 성공적으로 저장되었습니다.");
+            logger.info("receivers : "+dto.getReceivers());
+            response.put("receivers", dto.getReceivers());
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace(); // 로그 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    } 
     
     @PostMapping(value="/newapproval/saveHtml")
     public void saveHtmlByCommonIdx(@RequestParam String html, @RequestParam int common_idx) {
         service.saveHtmlByCommonIdx(html, common_idx);
     }
-/*
-    @PostMapping(value="/newapproval/saveapprlinedata")
-    public ModelAndView saveApprLineData(@RequestBody ApprovalDto dto) {
-    	ModelAndView mav = new ModelAndView();
-    	dto.setApprovalLines(null);
-    	dto.setReceivers(null);
-    	service.saveApprLineData(dto.getApprovalLines(), dto.getReceivers());
-    	
-    	return mav;
-    }
-*/
+    
     @PostMapping(value="/newapproval/sendappr")
     public ModelAndView sendAppr(@RequestBody ApprovalDto dto) {
     	ModelAndView mav = new ModelAndView();
