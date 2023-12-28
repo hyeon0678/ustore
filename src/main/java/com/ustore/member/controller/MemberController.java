@@ -84,21 +84,6 @@ public class MemberController {
 		// detail_address=x , brithdate=zx , gender=남}
 		
 		String msg = service.joinbis(params);
-		if(photos != null && !photos.isEmpty()) {         
-	         // 파일 저장 코드
-	         String num = Integer params.get("num");
-			
-	         SaveFile saveFile = new SaveFile();
-	         service.getcusnum(params.)
-	         FileDto file = new FileDto();
-	         file = saveFile.returnFileList(uploadFile, 74, params.get("emp_idx"));
-	         
-	         
-	         saveFile.saveFile(file);
-	         
-	         
-	         FileDao.saveFile(file);
-	      }
 		
 		
 		ModelAndView mav = new ModelAndView();
