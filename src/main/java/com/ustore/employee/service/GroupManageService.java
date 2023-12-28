@@ -15,13 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ustore.employee.dao.GroupManageDao;
 import com.ustore.employee.dto.EmployeeDto;
+import com.ustore.utils.DateCalculator;
 import com.ustore.utils.defineEnums.DepartmentEnum;
 import com.ustore.utils.defineEnums.PositionEnum;
 
 @Service
 public class GroupManageService {
 	Logger logger = LoggerFactory.getLogger(getClass());
-	
+	private DateCalculator dateCalc = new DateCalculator();
 	@Autowired
 	GroupManageDao groupManageDao;
 	@Autowired
@@ -31,8 +32,8 @@ public class GroupManageService {
 	public boolean insertEmp(EmployeeDto employee, String empIdx) {
 		employee.setRegBy(empIdx);
 		
-		LocalDate now = LocalDate.now();
-		String enterYear = Integer.toString(now.getYear());
+		
+		String enterYear = dateCalc.currentDate();
 		logger.info("current year : "+enterYear);
 		
 		employee.setEmpPhone(employee.getEmpPhone().replace("-", ""));
@@ -43,11 +44,15 @@ public class GroupManageService {
 		String maxEmpIdx = groupManageDao.selectMaxEmpIdx();
 		String nextIdx = "0001";
 		String empId = "";
-		String maxYear = maxEmpIdx.substring(0,4);
+		String maxYear = "";
+		if(maxEmpIdx != null) {
+			maxYear = maxEmpIdx.substring(0,4);
+		}
+		 
 		
 		if(!maxYear.equals(enterYear)) {
 			maxYear = enterYear;
-		}else if(maxYear.equals(enterYear)&&(maxEmpIdx!=null || maxEmpIdx!="")){
+		}else if((maxEmpIdx!=null || maxEmpIdx!="")&&maxYear.equals(enterYear)){
 			nextIdx = maxEmpIdx.substring(4);
 			nextIdx = String.format("%04d", Integer.parseInt(nextIdx)+1);			
 		}
