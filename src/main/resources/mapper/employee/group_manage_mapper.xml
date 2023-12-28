@@ -86,6 +86,11 @@
     		f.extension;
 	</select>
 	
+	<!-- 연차 검색 -->
+	<select id="empLeaveIncdec" resultType="int">
+		SELECT SUM(leave_incdec) FROM annual_leave WHERE emp_idx =#{param1}
+	</select>
+	
 	<!-- 직원 업데이트 Emp 테이블 -->
 	<update id="empModifyEmp">
 		UPDATE employee e 
@@ -111,6 +116,8 @@
 		<if test="dept_name != null">
 		   	e.dept_id = (SELECT dept_id FROM department WHERE dept_name=#{dept_name}),
 		 </if>
+		 e.update = #{update},
+		 e.update_by=#{principal}
 		 </set>
 	   	WHERE 
 	   		e.emp_idx =#{emp_idx}
@@ -125,14 +132,16 @@
 		SET
 			u.education =#{education},
 			u.school_name =#{school_name},
-			u.major =#{major}
+			u.major =#{major},
+			u.update = #{update},
+			u.update_by = #{principal}
 		WHERE 
 			u.emp_idx =#{emp_idx}
 	</update>
 	<!-- 직원 학력 추가 -->
 	<insert id="empModEduInsert">
 	    INSERT INTO education (emp_idx, education, school_name, major, reg_by)
-	    VALUES (#{emp_idx}, #{education}, #{school_name}, #{major},'관리자1')
+	    VALUES (#{emp_idx}, #{education}, #{school_name}, #{major},#{principal})
 	</insert>
 	
 	<!-- 직원 퇴사 처리 -->
@@ -140,9 +149,11 @@
 			UPDATE employee 
 			   SET
 			   emp_quit ='Y',
-			   emp_quit_date =now()
+			   emp_quit_date =CURDATE(),
+			   update = #{update},
+			   update_by = #{param2}
 			   WHERE 
-			   emp_idx =#{param1};
+			   emp_idx =#{param1}
 		</update>
 		
 		<!-- 프로필 이미지 보유 여부 -->

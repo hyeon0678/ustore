@@ -565,7 +565,7 @@ License: For each use you must have a valid license purchased only from above li
 		            $('#empJoinDate').text(data.list[0].empJoinDate);
 		            $('#empPhone').text(data.list[0].empPhone);
 		            $('#empRoadAddr').text(data.list[0].empRoadAddr);
-		            $('#leave_incdec').text(data.list[0].leave_incdec);
+		            $('#leave_incdec').text(data.list[0].leaveIncdec);
 		            $('#positionType').text(data.list[0].positionType);
 		            $('#education').text(data.list[0].education);
 		            $('#schoolName').text(data.list[0].schoolName);

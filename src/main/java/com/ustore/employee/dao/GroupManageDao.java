@@ -1,5 +1,6 @@
 package com.ustore.employee.dao;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +28,12 @@ public interface GroupManageDao {
 
 	void empModEduUpdate(HashMap<String, String> params);
 
-	void delete(String emp_idx);
+	void delete(String emp_idx, Principal principal);
 
 	String imgInfo(String idx);
 
 	void delImgInfo(String file_idx);
+
+	int empLeaveIncdec(String string);
 
 }

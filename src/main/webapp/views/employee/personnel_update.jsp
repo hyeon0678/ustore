@@ -35,6 +35,12 @@ License: For each use you must have a valid license purchased only from above li
 
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
+ <style>
+        .image-input-placeholder {
+            background-image: url('resource/assets/media/icon/blank.svg');
+            /* 다른 스타일 속성도 필요하다면 여기에 추가하세요 */
+        }
+    </style>
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
@@ -99,53 +105,56 @@ License: For each use you must have a valid license purchased only from above li
 															
 															
 															<!--begin::Image input-->
-															<c:if test="${not empty list and not empty list[0].newFileName and list[0].newFileName ne null and not empty list[0].extension}">
-															<div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url(resource/assets/media/icon/blank.svg)">
-															    <!--begin::Image preview wrapper-->
-															    <div class="image-input-wrapper w-125px h-125px"></div>
+															
+															<div class="image-input image-input-empty image-input-placeholder" data-kt-image-input="true">
+														    <!--begin::Image preview wrapper-->
+														    
+														    <c:if test="${not empty list and not empty list[0].newFileName and list[0].newFileName ne null and not empty list[0].extension}">														    
+														    <div class="image-input-wrapper w-125px h-125px" style="background-image: url(/ustore/photo/${list[0].newFileName}${list[0].extension})"></div>
+														    </c:if>
+														    
+														    <c:if test="${empty list or empty list[0].newFileName or list[0].newFileName eq null or empty list[0].extension}">
+															  <div class="image-input-wrapper w-125px h-125px"></div>
 															</c:if>
-															<div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url(resource/assets/media/icon/blank.svg)">
-															    <!--begin::Image preview wrapper-->
-															    <div class="image-input-wrapper w-125px h-125px"></div>
-															    <!--end::Image preview wrapper-->
 															
-															    <!--begin::Edit button-->
-															    <label class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
-															    data-kt-image-input-action="change"
-															    data-bs-toggle="tooltip"
-															    data-bs-dismiss="click"
-															    title="Change avatar">
-															        <i class="ki-duotone ki-pencil fs-6"><span class="path1"></span><span class="path2"></span></i>
-															
-															        <!--begin::Inputs-->
-															       <input type="file" name="uploadFile" id="file-input" accept=".png, .jpg, .jpeg" />
-															       <input type="hidden" name="avatar_remove" />
-															       
-															    	<input type="hidden" name="emp_idx" id="emp_idx" value="${list.get(0).empIdx}"/>
-															        <!--end::Inputs-->
-															    </label>
-															    <!--end::Edit button-->
-															
-															    <!--begin::Cancel button-->
-															    <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
-															    data-kt-image-input-action="cancel"
-															    data-bs-toggle="tooltip"
-															    data-bs-dismiss="click"
-															    title="Cancel avatar">
-															        <i class="ki-outline ki-cross fs-3"></i>
-															    </span>
-															    <!--end::Cancel button-->
-															
-															    <!--begin::Remove button-->
-															    <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
-															    data-kt-image-input-action="remove"
-															    data-bs-toggle="tooltip"
-															    data-bs-dismiss="click"
-															    title="Remove avatar">
-															        <i class="ki-outline ki-cross fs-3"></i>
-															    </span>
-															    <!--end::Remove button-->
-															</div>
+														    <!--end::Image preview wrapper-->
+														
+														    <!--begin::Edit button-->
+														    <label class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+														    data-kt-image-input-action="change"
+														    data-bs-toggle="tooltip"
+														    data-bs-dismiss="click"
+														    title="Change avatar">
+														        <i class="ki-duotone ki-pencil fs-6"><span class="path1"></span><span class="path2"></span></i>
+														
+														        <!--begin::Inputs-->
+														        <input type="file" name="uploadFile" id="file-input" accept=".png, .jpg, .jpeg" />
+															    <input type="hidden" name="emp_idx" id="emp_idx" value="${list.get(0).empIdx}"/>
+														        <input type="hidden" name="avatar_remove" />
+														        <!--end::Inputs-->
+														    </label>
+														    <!--end::Edit button-->
+														
+														    <!--begin::Cancel button-->
+														    <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+														    data-kt-image-input-action="cancel"
+														    data-bs-toggle="tooltip"
+														    data-bs-dismiss="click"
+														    title="Cancel avatar">
+														        <i class="ki-outline ki-cross fs-3"></i>
+														    </span>
+														    <!--end::Cancel button-->
+														
+														    <!--begin::Remove button-->
+														    <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+														    data-kt-image-input-action="remove"
+														    data-bs-toggle="tooltip"
+														    data-bs-dismiss="click"
+														    title="Remove avatar">
+														        <i class="ki-outline ki-cross fs-3"></i>
+														    </span>
+														    <!--end::Remove button-->
+														</div>
 															<!--end::Image input-->
 																														
 															
@@ -324,7 +333,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" name ="leave_incdec" id="leave_incdec" value="${list.get(0).leave_incdec}" />
+																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" name ="leave_incdec" id="leave_incdec" value="${list.get(0).leaveIncdec}" />
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -528,7 +537,7 @@ License: For each use you must have a valid license purchased only from above li
 													<div class="card-footer d-flex justify-content-between">
 														<a href="#" class="btn btn-primary" id=delete>삭제하기</a>
 														<div>
-															<button class="btn btn-light btn-active-light-primary me-2">돌아가기</button>
+															<a href="/employee/management" class="btn btn-light btn-active-light-primary me-2">돌아가기</a>
 															<a href="#" class="btn btn-primary" id="modify">프로필 수정</a>
 														</div>
 														

@@ -1,6 +1,8 @@
 package com.ustore.employee.service;
 
+import java.security.Principal;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ustore.employee.dao.GroupManageDao;
 import com.ustore.employee.dto.EmployeeDto;
+import com.ustore.scheduler.AnnualScheduler;
+import com.ustore.scheduler.dao.AnnualSchedulerDao;
+import com.ustore.scheduler.dto.AnnualLeavesDto;
 import com.ustore.utils.DateCalculator;
 import com.ustore.utils.defineEnums.DepartmentEnum;
 import com.ustore.utils.defineEnums.PositionEnum;
@@ -27,7 +32,9 @@ public class GroupManageService {
 	GroupManageDao groupManageDao;
 	@Autowired
 	PasswordEncoder encoder;
-	
+	@Autowired
+	AnnualSchedulerDao annualSchedulerDao;
+
 	@Transactional
 	public boolean insertEmp(EmployeeDto employee, String empIdx) {
 		employee.setRegBy(empIdx);
@@ -83,8 +90,26 @@ public class GroupManageService {
 	}
 
 	public int empModify(HashMap<String, String> params) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		params.put("update", dateFormat.format(dateCalc.dateNow()));
+
+		// 연차 비교 - 비교가 다를시 연차 업데이트
+		int leaveIncdec = groupManageDao.empLeaveIncdec(params.get("emp_idx"));
+		if (leaveIncdec != Integer.parseInt(params.get("leave_incdec"))) {
+			AnnualLeavesDto list = new AnnualLeavesDto();
+			list.setEmpIdx(params.get("emp_idx"));
+			list.setLeaveDate(dateCalc.dateNow());
+			if (leaveIncdec < Integer.parseInt(params.get("leave_incdec"))) {
+				list.setLeaveType(60);
+			} else {
+				list.setLeaveType(61);
+			}
+			list.setLeaveIncdec(Integer.parseInt(params.get("leave_incdec")) - leaveIncdec);
+			list.setRegBy(params.get("principal"));
+			annualSchedulerDao.insertAnnual(list);
+		}
+		
 		int success = groupManageDao.empModifyEmp(params);
-		logger.info("수정 성공 확인"+success);
 		Map<String, Object>map = groupManageDao.selectEdu(params);
 		if(map != null) {
 			groupManageDao.empModEduUpdate(params);
@@ -94,8 +119,8 @@ public class GroupManageService {
 		return success;
 	}
 
-	public void delete(String emp_idx) {
-		groupManageDao.delete(emp_idx);
+	public void delete(String emp_idx, Principal principal) {
+		groupManageDao.delete(emp_idx,principal);
 		
 	}
 

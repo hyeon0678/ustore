@@ -76,8 +76,9 @@ public class GroupManageController {
 	}
 
 	@RequestMapping("/modify")
-	public ModelAndView empModify(MultipartFile uploadFile, @RequestParam HashMap<String, String>params) throws IOException {
+	public ModelAndView empModify(MultipartFile uploadFile, @RequestParam HashMap<String, String>params, Principal principal) throws IOException {
 		logger.info("수정 파람값 도착 확인"+params);
+		params.put("principal", principal.getName());
 		if(uploadFile != null && !uploadFile.isEmpty()) {			
 			// 파일 저장 코드
 			groupManageService.imgInfo(params.get("emp_idx"));
@@ -101,8 +102,8 @@ public class GroupManageController {
 	}
 	
 	@RequestMapping("/delete")
-	public void empDelete(@RequestParam String emp_idx) {
+	public void empDelete(@RequestParam String emp_idx, Principal principal) {
 		logger.info("퇴사처리 요청 확인 : "+emp_idx);
-		groupManageService.delete(emp_idx);
+		groupManageService.delete(emp_idx,principal);
 	}
 }	
