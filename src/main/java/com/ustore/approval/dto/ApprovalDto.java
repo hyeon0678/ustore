@@ -2,7 +2,9 @@ package com.ustore.approval.dto;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.ustore.employee.dto.EmployeeDto;
 import com.ustore.member.dto.MemberDto;
 
 public class ApprovalDto {
@@ -19,24 +21,23 @@ public class ApprovalDto {
 	private int docId; // 문서번호
 	private String Html; // html저장
 	private String Comment; // 결재의견
-	private List<MemberDto> approvalLines;
-	private List<MemberDto> receivers;
+	private List<Map<String, Object>> approvalLines;
+	private List<Map<String, Object>> receivers;		
 	
 	
 	
-	public List<MemberDto> getApprovalLines() {
+	public List<Map<String, Object>> getApprovalLines() {
 		return approvalLines;
 	}
-	public void setApprovalLines(List<MemberDto> approvalLines) {
+	public void setApprovalLines(List<Map<String, Object>> approvalLines) {
 		this.approvalLines = approvalLines;
 	}
-	public List<MemberDto> getReceivers() {
+	public List<Map<String, Object>> getReceivers() {
 		return receivers;
 	}
-	public void setReceivers(List<MemberDto> receivers) {
+	public void setReceivers(List<Map<String, Object>> receivers) {
 		this.receivers = receivers;
 	}
-	
 	public int getApprIdx() {
 		return apprIdx;
 	}

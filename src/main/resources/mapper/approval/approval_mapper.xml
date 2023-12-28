@@ -3,5 +3,20 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ustore.approval.dao.ApprovalDao">
-	
+
+	<select id="getEmployeeInfo" resultType="EmployeeDto">
+		SELECT
+		    e.*,
+		    c.common_type AS positionType,
+		    d.dept_name AS deptName
+		FROM
+		    employee e
+		JOIN
+		    common c ON e.position = c.common_idx
+		JOIN
+		    department d ON e.dept_id = d.dept_id
+		WHERE
+		    e.emp_idx = #{param1};
+	</select>
+
 </mapper>

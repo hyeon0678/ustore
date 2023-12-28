@@ -1,12 +1,10 @@
 package com.ustore.organizationChart.dao;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ustore.fileSystem.dto.FileDto;
+import com.ustore.employee.dto.EmployeeDto;
 import com.ustore.organizationChart.dto.OrganizationChartDto;
 
 @Mapper
