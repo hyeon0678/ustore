@@ -23,7 +23,7 @@
 		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
-		<!-- <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> -->
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<style>
 			.chart-div{
@@ -68,18 +68,6 @@
 									
 								</div>
 								<!--end::Info-->
-								<!--begin::Actions-->
-								<div style="display: flex; align-items: center;">
-									<!--begin::Col 드롭박스 >> 회원 상태-->
-									<div class="col-lg-8 fv-row" style="width: 150px; height: 30px; margin-right: 160px;">
-										<select name="" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;"> 
-											<option  value="incus">스탠다드</option>																	
-											<option  value="outcus">프리미엄</option>
-										</select>
-									</div>
-									<!--end::Col-->
-								</div>
-								<!--end::Actions-->
 							</div>
 						</div>
 						<!--end::Toolbar-->
@@ -124,9 +112,25 @@
 										<div class="card">
 									<!--===============================================^ 카드의 시작===============================================================-->
 									<!--begin::Form-->
-												<form id="kt_account_profile_details_form" class="form">
+												<form id="kt_account_profile_details_form" class="form" action="customer/joinbis" method="post" enctype="multipart/form-data">
 													<!--begin::Card body-->
 													<div class="card-body border-top p-9">
+														<!--begin::Actions-->
+														<input type="hidden" name="member_type" value="83"/>
+														<input type="hidden" name="member_state" value="84"/>
+														<div style="display: flex; align-items: center; justify-content: flex-end;">
+															<!--begin::Col 드롭박스 >> 회원 상태-->
+															<input type="hidden" id="changeinput" value=""/>
+															<div class="col-lg-8 fv-row" style="width: 150px; height: 30px; margin-right: 20px; margin-bottom: 10px;   ">
+																<select name="grade_idx" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;" onchange="selectboxchage(this.value);"> 
+																	<option  value="80">스탠다드</option>																	
+																	<option  value="81">프리미엄</option>
+																</select>
+															</div>
+															<!--end::Col-->
+														</div>
+														<!--end::Actions-->
+													
 														<!--begin::Input group-->
 														<div class="row mb-6" >
 															<!--begin::Label-->
@@ -134,14 +138,26 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row" style="display: flex; align-items: center;">
-																<input type="text" name="company" class="form-control form-control-lg form-control-solid" placeholder="사업자 번호를 반드시 입력해 주세요." value="" style="width: 460px;"/>
-																<i class="ki-duotone ki-scroll fs-2qx" style="margin-right: 5px; margin-left: 10px;">
+																<input type="text" name="business_num" class="form-control form-control-lg form-control-solid" placeholder="사업자번호를 입력해 주세요." value="" style="width: 300px; margin-right: 10px"/>
+																<input type="file" name="photos" multiple="multiple" />
+																<!--
+																<i class="ki-duotone ki-scroll fs-2qx" id="bis_file" style="margin-right: 5px; margin-left: 10px;">
 																<span class="path1"></span>
 																<span class="path2"></span>
 																<span class="path3"></span>
 																</i>
-															</div>
-															<span style="color: red; font-size: small; float: right;">* 필수 요소를 입력하지않았습니다. *</span>
+																-->
+															</div> 
+															<span style="color: red; font-size: small; float: right;">
+															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+															* 필수 요소를 입력하지않았습니다. *
+															</span>
 															<!--end::Col-->
 														</div>
 														<!--end::Input group-->
@@ -152,7 +168,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="company" class="form-control form-control-lg form-control-solid" placeholder="이름을 입력해주세요." value="" />
+																<input type="text" name="name" class="form-control form-control-lg form-control-solid" placeholder="이름을 입력해주세요." value="" />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -164,7 +180,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="company" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
+																<input type="text" name="num" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -188,7 +204,7 @@
 															<label class="col-lg-4 col-form-label  fw-semibold fs-6" style="margin-right: 10px;">우편번호</label>
 															<!--end::Label-->
 															<!--begin::Col-->
-																<input type="text" name="company" class="form-control form-control-lg form-control-solid" placeholder="우편번호를 입력해주세요." value="" style="width: 400px;"/>
+																<input type="text" name="postal_code" id="post_num"  class="form-control form-control-lg form-control-solid" placeholder="우편번호를 입력해주세요." value="" style="width: 400px;"/>
 																<input type="button" onclick="findlocation()" class="btn btn-primary" id="kt_toolbar_primary_button" value="주소 찾기" style="width: 100px; height: 40px; margin-left: 5px;"/>
 															<!--end::Col-->
 														</div>
@@ -200,7 +216,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="company" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
+																<input type="text" id="roadaddress" name="street_address" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -212,7 +228,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="company" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
+																<input type="text" name="detail_address" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -224,7 +240,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="company" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
+																<input type="text" name="brithdate" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
 																<span style="color: red; font-size: small; float: right;">* 포맷을 yyyy.mm.dd 로 입력 해주세요 *</span>
 															</div>
 															<!--end::Col-->
@@ -241,13 +257,13 @@
 																<div class="d-flex align-items-center mt-3">
 																	<!--begin::Option-->
 																	<label class="form-check form-check-custom form-check-inline form-check-solid me-5">
-																		<input class="form-check-input" name="communication[]" type="radio" value="1" checked/>
+																		<input class="form-check-input" name="gender" type="radio" value="남" checked/>
 																		<span class="fw-semibold ps-2 fs-6">남자</span>
 																	</label>
 																	<!--end::Option-->
 																	<!--begin::Option-->
 																	<label class="form-check form-check-custom form-check-inline form-check-solid">
-																		<input class="form-check-input" name="communication[]" type="radio" value="2" />
+																		<input class="form-check-input" name="gender" type="radio" value="여" />
 																		<span class="fw-semibold ps-2 fs-6">여자</span>
 																	</label>
 																	<!--end::Option-->
@@ -312,6 +328,50 @@
 	<!--end::Body-->
 	<script>
 		
+	
+	
+	$('#join').on('click',function(){
+		
+		/*   var $id = $('input[name="id"]');    */
+		
+		
+		var grade_idx = $('input[name="grade_idx"]').val();
+		var member_type = $('input[name="member_type"]').val();
+		var name = $('input[name="name"]').val();
+		var contact_num = $('input[name="num"]').val();
+		var brithdate = $('input[name="brithdate"]').val();
+		var gender = $('input[name="gender"]').val();
+		var postal_code = $('input[name="postal_code"]').val();
+		var street_address = $('input[name="street_address"]').val();
+		var detail_address = $('input[name="detail_address"]').val();
+		var member_state = $('input[name="member_state"]').val();
+		var business_num = $('input[name="business_num"]').val();
+		
+		var param = {};
+        param.grade_idx = grade_idx;
+        param.member_type = member_type;
+        param.name = name;
+        param.content_num = content_num;
+        param.birthdate = birthdate;
+        param.gender = gender;
+        param.postal_code = postal_code;        
+        param.street_address = street_address;
+        param.detail_address = detail_address;
+        param.member_state = member_state;
+        param.business_num = business_num;        
+        console.log(param);
+		
+		
+		
+		
+		
+		
+		
+		
+	});
+	
+	
+	
 
 	function findlocation() {
 		new daum.Postcode({
@@ -328,6 +388,15 @@
             }
          }).open();
       }
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	</script>
 
 </html>

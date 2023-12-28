@@ -116,13 +116,15 @@
 													<!--begin::Card body-->
 													<div class="card-body border-top p-9">
 														<!--begin::Actions-->
+														<input type="hidden" name="member_type" value="82"/>
+														<input type="hidden" name="member_state" value="84"/>
 														<div style="display: flex; align-items: center; justify-content: flex-end;">
 															<!--begin::Col 드롭박스 >> 회원 상태-->
 															<input type="hidden" id="changeinput" value=""/>
 															<div class="col-lg-8 fv-row" style="width: 150px; height: 30px; margin-right: 20px; margin-bottom: 10px;   ">
-																<select name="memberstate" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;" onchange="selectboxchage(this.value);"> 
-																	<option  value="스탠다드">스탠다드</option>																	
-																	<option  value="프리미엄">프리미엄</option>
+																<select name="grade_idx" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;" onchange="selectboxchage(this.value);"> 
+																	<option  value="80">스탠다드</option>																	
+																	<option  value="81">프리미엄</option>
 																</select>
 															</div>
 															<!--end::Col-->
@@ -171,7 +173,7 @@
 															<label class="col-lg-4 col-form-label  fw-semibold fs-6" style="margin-right: 10px;">우편번호</label>
 															<!--end::Label-->
 															<!--begin::Col-->
-																<input type="text" name="postal_code" class="form-control form-control-lg form-control-solid" placeholder="우편번호를 입력해주세요." value="" style="width: 400px;"/>
+																<input type="text" id="post_num" name="postal_code" class="form-control form-control-lg form-control-solid" placeholder="우편번호를 입력해주세요." value="" style="width: 400px;"/>
 																<input type="button" onclick="findlocation()" class="btn btn-primary" id="kt_toolbar_primary_button" value="주소 찾기" style="width: 100px; height: 40px; margin-left: 5px;"/>
 															<!--end::Col-->
 														</div>
@@ -183,7 +185,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="street_address" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
+																<input type="text" id="roadaddress" name="street_address" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -224,13 +226,13 @@
 																<div class="d-flex align-items-center mt-3">
 																	<!--begin::Option-->
 																	<label class="form-check form-check-custom form-check-inline form-check-solid me-5">
-																		<input class="form-check-input" name="gender" type="radio" value="남자" checked/>
+																		<input class="form-check-input" name="gender" type="radio" value="남" checked/>
 																		<span class="fw-semibold ps-2 fs-6">남자</span>
 																	</label>
 																	<!--end::Option-->
 																	<!--begin::Option-->
 																	<label class="form-check form-check-custom form-check-inline form-check-solid">
-																		<input class="form-check-input" name="gender" type="radio" value="여자" />
+																		<input class="form-check-input" name="gender" type="radio" value="여" />
 																		<span class="fw-semibold ps-2 fs-6">여자</span>
 																	</label>
 																	<!--end::Option-->
@@ -300,12 +302,10 @@
 		$("#changeinput").val(value);
 	}
 	
-	
-	
-	
-	
-	
-	
+	var msg = "${msg}";
+	if(msg != ""){
+		alert(msg);
+	}	
 		
 
 	function findlocation() {

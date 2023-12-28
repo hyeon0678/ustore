@@ -20,11 +20,28 @@ public class MemberService {
 	
 
 	public String joinnum(HashMap<String, String> params) {
+		logger.info("서비스 진입");
+		logger.info("파람 : "+params);
 		
-		int row = dao.joinnum(params);
+		//int num= Integer.parseInt(params.get("num"));
+		//logger.info("num : "+num);
+		//params.put("num", num);
 		
 		
-		return row > 0 ? "회원등록이 성고 하였습니다.":"회원 등록에 실패하였습니다";
+		int row =dao.joinnum(params);
+		return row > 0 ? "회원등록이 성공 하였습니다.":"회원 등록에 실패하였습니다";
+	}
+
+
+
+
+
+	public String joinbis(HashMap<String, String> params) {
+		logger.info("서비스 진입");
+		logger.info("파람 : "+params);
+		
+		int row =dao.joinbis(params);
+		return row > 0 ? "회원등록이 성공 하였습니다.":"회원 등록에 실패하였습니다";
 	}
 	
 	

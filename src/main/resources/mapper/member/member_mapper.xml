@@ -5,10 +5,24 @@
 <mapper namespace="com.ustore.member.dao.MemberDao">
 
 		
-		<insert id="joinnum">
-			
+		<insert id="joinnum" parameterType="map">
+			INSERT into members 
+			( grade_idx ,member_type, name, contact_num, create_date, 
+			expiry_date, brithdate, gender, postal_code, street_address, detail_address, member_state, reg_by)
+			values
+			(#{grade_idx},#{member_type},#{name},#{num},curdate(),DATE_ADD(NOW(), INTERVAL 1 YEAR), #{brithdate},#{gender},
+			 #{ postal_code}, #{street_address}, #{detail_address},#{member_state}, 00990099)
 		</insert>
 
+
+		<insert id="joinbis" parameterType="map">
+			INSERT into members 
+			( grade_idx ,member_type, name, contact_num, create_date, 
+			expiry_date, brithdate, gender, postal_code, street_address, detail_address, member_state, reg_by, business_num)
+			values
+			(#{grade_idx},#{member_type},#{name},#{num},curdate(),DATE_ADD(NOW(), INTERVAL 1 YEAR), #{brithdate},#{gender},
+			 #{ postal_code}, #{street_address}, #{detail_address},#{member_state}, 00990099,#{business_num})
+		</insert>
 
 
 
