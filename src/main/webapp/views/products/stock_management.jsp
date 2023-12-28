@@ -86,18 +86,21 @@
 	<!--end::Theme mode setup on page load-->
 	<!--begin::Main-->
 	<!--begin::Root-->
+	<!--begin::Header 헤더 시작 -->
+			<jsp:include page="/views/common/header.jsp"></jsp:include>
+			<!--end::Header 헤더 닫기-->
 	<div class="d-flex flex-column flex-root">
 		<!--begin::Page-->
 		<div class="page d-flex flex-row flex-column-fluid">
 			<!--begin::Wrapper-->
-			<!--begin::Header 헤더 시작 -->
-			<jsp:include page="/views/common/header.jsp"></jsp:include>
-			<!--end::Header 헤더 닫기-->
+			
+		
 			<div class="wrapper d-flex flex-column flex-row-fluid"
 				id="kt_wrapper">
+					
 				<!--begin::Content-->
-				<div class="content fs-6 d-flex flex-column flex-column-fluid"
-					id="kt_content" style="margin-top: 90px;">
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;"> 
+				<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">재고 관리</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--사이드바 넣는곳  -->
 					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
@@ -151,7 +154,7 @@
 												</div>
 												<form action="stock/stock_management/insert" method="post">
 													<div class="modal-body">
-														<h2>물품 항목 추가</h2>
+														<h2 style=" color: #c6da52;">물품 항목 추가</h2>
 														<div class="table-responsive">
 
 															<table
@@ -228,9 +231,7 @@
 									<table class="table align-middle table-row-dashed fs-6 gy-5"
 										id="kt_ecommerce_category_table">
 										<thead>
-											<tr
-												class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0"
-												style="background-color: lightgrey">
+											<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
 												<th class="w-10px pe-2">상품번호</th>
 												<th class="min-w-150px">상품명</th>
 												<th class="min-w-650px">수량(파렛트/전체)</th>

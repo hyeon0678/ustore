@@ -16,7 +16,21 @@ public interface OrderDao {
 
 	ArrayList<OrderDto> orderList();
 
-	ArrayList<OrderDto> driveList();
+	ArrayList<OrderDto> driveList(OrderDto dto);
+
+	void ordercartDelete(String productName);
+
+	ArrayList<OrderDto> checkProduct(OrderDto dto);
+
+	void orderInsert(OrderDto dto);
+
+	ArrayList<OrderDto> orderCartSelect();
+
+	void orderHistoryInsert(String productId);
+
+	void driverSchedule(OrderDto dto);
+
+	void orderDelete();
 
 	
 

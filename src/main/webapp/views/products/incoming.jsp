@@ -86,18 +86,19 @@
 	<!--end::Theme mode setup on page load-->
 	<!--begin::Main-->
 	<!--begin::Root-->
+		<!--begin::Header 헤더 시작 -->
+			<jsp:include page="/views/common/header.jsp"></jsp:include>
+			<!--end::Header 헤더 닫기-->
 	<div class="d-flex flex-column flex-root">
 		<!--begin::Page-->
 		<div class="page d-flex flex-row flex-column-fluid">
 			<!--begin::Wrapper-->
-			<!--begin::Header 헤더 시작 -->
-			<jsp:include page="/views/common/header.jsp"></jsp:include>
-			<!--end::Header 헤더 닫기-->
+		
 			<div class="wrapper d-flex flex-column flex-row-fluid"
 				id="kt_wrapper">
 				<!--begin::Content-->
-				<div class="content fs-6 d-flex flex-column flex-column-fluid"
-					id="kt_content" style="margin-top: 90px;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;"> 
+				<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">입고 관리</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 
 					<!--사이드바 넣는곳  -->
@@ -145,9 +146,7 @@
 									<table class="table align-middle table-row-dashed fs-6 gy-5"
 										id="kt_ecommerce_category_table">
 										<thead>
-											<tr
-												class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0"
-												style="background-color: #ebe9e9">
+											<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
 												<th class="w-150px pe-2">입고 예정일</th>
 												<th class="min-w-150px">발주 번호</th>
 												<th class="min-w-450px">차량 번호</th>
@@ -166,7 +165,7 @@
 														<div class="modal-dialog">
 															<div class="modal-content">
 																<div class="modal-header">
-																	<h3 class="modal-title">배송 품목</h3>
+																	<h3 class="modal-title" style=" color: #c6da52;">배송 품목</h3>
 
 																	<!--begin::Close-->
 																	<div
@@ -201,7 +200,7 @@
 																							type="text" style="width: 70px;"
 																							placeholder="개수 입력" /></td>
 																						<td style="text-align: center;">
-																							<button style="background-color: #C6DA52">확인</button>
+																							<button type="button" class="btn btn-primary" style ="padding: 8px ">확인</button>
 
 
 
@@ -321,7 +320,7 @@
 																			<table
 																				class="table table-row-dashed table-row-gray-300 gy-7">
 																				<thead>
-																					<tr class="fw-bold fs-6 text-gray-800">
+																						<tr class="fw-bold fs-6 text-gray-800">
 																						<th>상품 번호</th>
 																						<th>상품 명</th>
 																						<th>수량(파렛트/전체)</th>

@@ -13,6 +13,12 @@ JOIN category ON products.category_id = category.category_id
 order by product_id asc;
 
 </select>
+<select id="checkProduct" resultType="OrderDto">
+select  oc.*
+FROM order_cart oc
+JOIN products p ON oc.product_id = p.product_id
+WHERE p.product_id=#{productId};
+</select>
 
 <select id="orderList" resultType="OrderDto">
 SELECT oc.*, p.product_name, p.unit_quantity, c.category_name
@@ -37,6 +43,51 @@ values(#{productId},"20060001",#{orderQuantity});
 
 </insert>
 
+<delete id="ordercartDelete" parameterType="java.lang.String">
+     DELETE  oc.*
+FROM order_cart oc
+JOIN products p ON oc.product_id = p.product_id
+WHERE p.product_name = #{productName};
+    </delete>
+    
+    <delete id="orderDelete">
+    delete from order_cart 
+    </delete>
+    
+    <insert id="orderInsert" parameterType="OrderDto">
+    insert into `order` (emp_idx,exp_arrival_date,driver_idx) values
+('20060001',#{expArrivalDate},#{driverIdx})
+    
+    </insert>
+    
+    <select id="orderCartSelect" resultType="OrderDto">
 
+select product_id from order_cart;    
+    
+    
+    
+    </select>
+    
+    <insert id="driverSchedule" parameterType="OrderDto">
+    insert into driver_schedule(driver_idx,delivery_date) values(#{driverIdx},#{expArrivalDate})
+    </insert>
+    
+    <insert id="orderHistoryInsert" parameterType="String">
+    
+    INSERT INTO order_detail (order_idx, product_id, purchase_price, return_quantity, quantity, receipt_date)
+VALUES (
+  (SELECT MAX(order_idx) FROM `order`),   
+  #{productId},                           
+  (SELECT purchase_price FROM products WHERE product_id = #{productId}),  
+  0,                                   
+  (SELECT order_quantity FROM order_cart WHERE product_id = #{productId}),  
+  (SELECT exp_arrival_date FROM `order` ORDER BY order_idx DESC LIMIT 1)   
+);
+    
+    </insert>
+    
+    
+    
+   
 
 </mapper>
