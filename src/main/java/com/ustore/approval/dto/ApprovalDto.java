@@ -14,16 +14,21 @@ public class ApprovalDto {
 	private int apprOrder; // 결재순번
 	private String apprConfirm; // 결재여부
 	private Date apprDate; // 결재날짜
-	private String apprSubject; // 제목
-	private String apprContent; // 내용
-	private Date apprSubmitdate; // 기안일자
+	private String subject; // 제목
+	private String content; // 내용
+	private Date submitDate; // 기안일자
 	private String fnApprover; // 최종결재자
 	private int docId; // 문서번호
-	private String Html; // html저장
 	private String Comment; // 결재의견
-	private List<Map<String, Object>> approvalLines;
-	private List<Map<String, Object>> receivers;		
-	
+	private List<Map<String, Object>> approvalLines; // 설정한 결재문서 결재선
+	private List<Map<String, Object>> receivers;  // 설정한 결재문서 수신자
+	// 휴가신청서
+	private int leaveType; // common_idx 50~52
+	private Date leaveStartDate; // 신청 휴가 시작일
+	private Date leaveEndDate; // 신청 휴가 종료일
+	private String leaveReason; // 신청 휴가 사유
+	// 대금지급결의서
+	private int orderNum; // 발주번호
 	
 	
 	public List<Map<String, Object>> getApprovalLines() {
@@ -67,24 +72,12 @@ public class ApprovalDto {
 	}
 	public void setApprDate(Date apprDate) {
 		this.apprDate = apprDate;
+	}		
+	public Date getSubmitDate() {
+		return submitDate;
 	}
-	public String getApprSubject() {
-		return apprSubject;
-	}
-	public void setApprSubject(String apprSubject) {
-		this.apprSubject = apprSubject;
-	}
-	public String getApprContent() {
-		return apprContent;
-	}
-	public void setApprContent(String apprContent) {
-		this.apprContent = apprContent;
-	}
-	public Date getApprSubmitdate() {
-		return apprSubmitdate;
-	}
-	public void setApprSubmitdate(Date apprSubmitdate) {
-		this.apprSubmitdate = apprSubmitdate;
+	public void setSubmitDate(Date submitDate) {
+		this.submitDate = submitDate;
 	}
 	public String getFnApprover() {
 		return fnApprover;
@@ -97,20 +90,60 @@ public class ApprovalDto {
 	}
 	public void setDocId(int docId) {
 		this.docId = docId;
-	}
-	public String getHtml() {
-		return Html;
-	}
-	public void setHtml(String Html) {
-		this.Html = Html;
-	}
+	}	
 	public String getComment() {
 		return Comment;
 	}
 	public void setComment(String Comment) {
 		this.Comment = Comment;
 	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
 	
+	// 휴가신청서 관련
+	
+	public int getLeaveType() {
+		return leaveType;
+	}
+	public void setLeaveType(int leaveType) {
+		this.leaveType = leaveType;
+	}
+	public Date getLeaveStartDate() {
+		return leaveStartDate;
+	}	
+	public void setLeaveStartDate(Date leaveStartDate) {
+		this.leaveStartDate = leaveStartDate;
+	}
+	public Date getLeaveEndDate() {
+		return leaveEndDate;
+	}
+	public void setLeaveEndDate(Date leaveEndDate) {
+		this.leaveEndDate = leaveEndDate;
+	}	
+	public String getLeaveReason() {
+		return leaveReason;
+	}
+	public void setLeaveReason(String leaveReason) {
+		this.leaveReason = leaveReason;
+	}
+	
+	// 대금지급결의서 관련
+	public int getOrderNum() {
+		return orderNum;
+	}
+	public void setOrderNum(int orderNum) {
+		this.orderNum = orderNum;
+	}
 	
 	
 	
