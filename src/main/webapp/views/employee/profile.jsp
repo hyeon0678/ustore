@@ -85,25 +85,32 @@ License: For each use you must have a valid license purchased only from above li
 														<div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
 															<a href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
 															<i class="ki-duotone ki-profile-circle fs-4 me-1">
-															</i>사원 번호</a>
+															</i>사원 번호 ${sessionScope.loginId}</a>
 														</div>
 														<!--end::Info-->
 													</div>
 													<!--end::User-->
 													<!--begin::Actions-->
+													
 													<div class="d-flex my-4">
-														<a href="#" class="btn btn-sm btn-light me-2" id="kt_user_follow_button">
-															<i class="ki-duotone ki-check fs-3 d-none"></i>
+													<form action="attendance" method="post">
+														<button class="btn btn-sm btn-light me-2" id="kt_user_follow_button">출근
+															<!-- <i class="ki-duotone ki-check fs-3 d-none"></i> -->
 															<!--begin::Indicator label-->
-															<span class="indicator-label">출근</span>
+															<!-- <span class="indicator-label">출근</span> -->
 															<!--end::Indicator label-->
 															<!--begin::Indicator progress-->
+															</button>
 															<span class="indicator-progress">Please wait... 
-															<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+																<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+															</span>
+															
 															<!--end::Indicator progress-->
+														</form>
 														</a>
 														<a href="#" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#kt_modal_offer_a_deal">퇴근</a>
 													</div>
+													
 													<!--end::Actions-->
 												</div>
 												<!--end::Title-->
@@ -340,6 +347,7 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin::Input group-->
 													<div class="fv-row mb-9">
 														<!-- 시작::라벨 -->
+														
 														<div class="form-check form-check-custom form-check-solid">									
 															<input class="form-check-input" type="radio" value="notuse" name="schedule_type" checked="checked" hidden="true"/>
 															<label class="form-check-label" hidden="true">
@@ -353,8 +361,6 @@ License: For each use you must have a valid license purchased only from above li
 														<!-- id="flexRadioDefault"  -->
 														<!-- for="flexRadioDefault" -->
 														<!-- 시작::입력 -->
-														
-														
 														
 														<div class="form-check form-check-custom form-check-solid">									
 															<input class="form-check-input" type="radio" value="10" name="schedule_type" checked="checked"/>
@@ -455,6 +461,10 @@ License: For each use you must have a valid license purchased only from above li
 																<!--end::Input-->
 															</div>
 														</div>
+													</div>
+													<div hidden="true">
+														<input type="text" value="${sessionScope.loginId}" name="emp_idx">
+														<input type="text" value="${sessionScope.loginId}" name="reg_by">
 													</div>
 													<!--end::Input group-->
 												</div>
@@ -580,10 +590,6 @@ License: For each use you must have a valid license purchased only from above li
 														<span class="path1"></span>
 														<span class="path2"></span>
 													</i>
-													<!--end::Icon-->
-													<!--begin::Event location-->
-													<div class="fs-6" data-kt-calendar="event_location"></div>
-													<!--end::Event location-->
 												</div>
 												<div class="d-flex align-items-center">
 													<!--begin::Icon-->
@@ -660,6 +666,34 @@ License: For each use you must have a valid license purchased only from above li
 	</body>
 	<!--end::Body-->	
 	<script>
-
+	$(function(){
+		var request = $.ajax({
+		  url: "/profilecalendar",
+		  method: "GET",
+		  dataType: "json"
+		});
+		 
+		request.done(function( data ) {
+			console.log(data);
+				
+				var calendarEl = document.getElementById('kt_calendar_app');
+				
+			    var calendar = new FullCalendar.Calendar(calendarEl, {
+			      initialView: 'dayGridMonth',
+			      headerToolbar: {
+			        left: 'prev,next today',
+			        center: 'title',
+			        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+			      },
+			      events: data
+			    });
+		
+			    calendar.render();								
+		});
+		 
+		request.fail(function( jqXHR, textStatus ) {
+		  alert( "Request failed: " + textStatus );
+		});
+});
 </script>
 </html>
