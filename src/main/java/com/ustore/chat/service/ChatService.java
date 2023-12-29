@@ -1,8 +1,6 @@
 package com.ustore.chat.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +20,18 @@ public class ChatService {
 	@Autowired
 	ChatDao chatDao;
 	
+	@Transactional
 	public void saveChat(ChatDto chat) {
 		// 발신 히스토리 쌓기
-		//chatDao.insertSendMsg();
+		int row = chatDao.insertSendMsg(chat);
 		// 수신 히스토리 쌓기
-		//chatDao.insertReMsg();
+		List<String> receiveMembers = chatDao.selectReceiveMember(chat.getRoomNum(), chat.getSender());
+		for(String member : receiveMembers) {
+			chat.setReceiver(member);
+			logger.info("room_num : "+chat.getRoomNum());
+			row += chatDao.insertReceivedMsg(chat);	
+		}
+		
 	}
 	
 	@Transactional
@@ -50,7 +55,6 @@ public class ChatService {
 		ChatRoomDto chatRoomDto = new ChatRoomDto();
 		chatRoomDto.setChatRoomName(roomName);
 		chatRoomDto.setRegBy(name);
-		chatRoomDto.setIsIndividual(list.size()>1 ? "Y":"N");
 		chatRoomDto.setIsIndividual(list.size()>1 ? "N":"Y");
 		//만든 후 채팅방 생성
 		chatDao.insertChatRoom(chatRoomDto);
@@ -62,8 +66,21 @@ public class ChatService {
 		
 	}
 	
-//	private List<ChatRoomDto> getChatList(String name) {
-//		return 
-//	}
+	public List<ChatRoomDto> getChatRoomList(String name) {
+//		List<ChatRoomDto> list = chatDao.selectChatRoomList(name);
+//		for(ChatRoomDto dto : list) {
+//			dto.getMaxReceivedDate();
+//			dto.getMaxSentDate();
+//		}
+//		for(ChatRoomDto dto : list) {
+//			//sorting
+//		}
+		return chatDao.selectChatRoomList(name);
+	}
+
+	public List<ChatDto> getChatData(int roomNum, String name) {
+		
+		return null;
+	}
 
 }
