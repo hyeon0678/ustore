@@ -39,7 +39,7 @@ WHERE driver_schedule.driver_idx IS NULL OR driver_schedule.delivery_date != #{e
 <insert id="orderCartInsert" parameterType="OrderDto">
 
 insert into order_cart (product_id,emp_idx,order_quantity)
-values(#{productId},"20060001",#{orderQuantity});
+values(#{productId},#{empIdx},#{orderQuantity});
 
 </insert>
 
@@ -56,7 +56,7 @@ WHERE p.product_name = #{productName};
     
     <insert id="orderInsert" parameterType="OrderDto">
     insert into `order` (emp_idx,exp_arrival_date,driver_idx) values
-('20060001',#{expArrivalDate},#{driverIdx})
+(#{empIdx},#{expArrivalDate},#{driverIdx})
     
     </insert>
     
@@ -85,6 +85,21 @@ VALUES (
 );
     
     </insert>
+    
+    <select id="orderCartCheck" resultType="OrderDto">
+    select * from order_cart
+    </select>
+    <select id="orderHistoryList" resultType="OrderDto">
+    SELECT
+    o.order_idx,
+    o.exp_arrival_date,
+    d.driver_name,
+    d.car_num
+FROM
+    `order` o
+JOIN
+    delivery_driver d ON o.driver_idx = d.driver_idx;
+    </select>
     
     
     

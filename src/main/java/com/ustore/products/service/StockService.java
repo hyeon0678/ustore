@@ -27,12 +27,12 @@ public class StockService {
 		StockDto dto = new StockDto();
 		String cateNum = params.get("categoryId");
 		String proNum = "";
-		if ("1".equals(cateNum) || "2".equals(cateNum) || "3".equals(cateNum)) {
-		    proNum = "A0" + cateNum;
-		} else if ("4".equals(cateNum) || "5".equals(cateNum) || "6".equals(cateNum)) {
-		    proNum = "B0" + cateNum;
-		} else if ("7".equals(cateNum) || "8".equals(cateNum) || "9".equals(cateNum)) {
-		    proNum = "C0" + cateNum;
+		if ("01".equals(cateNum) || "02".equals(cateNum) || "03".equals(cateNum)) {
+		    proNum = "A" + cateNum;
+		} else if ("04".equals(cateNum) || "05".equals(cateNum) || "06".equals(cateNum)) {
+		    proNum = "B" + cateNum;
+		} else if ("07".equals(cateNum) || "08".equals(cateNum) || "09".equals(cateNum)) {
+		    proNum = "C" + cateNum;
 		}
 		
 		

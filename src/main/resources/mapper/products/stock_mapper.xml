@@ -48,7 +48,7 @@ VALUES (
     0,
 #{categoryId},
     CASE
-	WHEN category_id = '1' THEN 'N'
+	WHEN category_id = '01' THEN 'N'
 	ELSE 'Y'
 END,
     NOW(),

@@ -28,6 +28,7 @@ public class OrderService {
 		OrderDto dto = new OrderDto();
 		dto.setProductId(params.get("productId"));
 		dto.setOrderQuantity(Integer.parseInt(params.get("count")));
+		dto.setEmpIdx(params.get("empIdx"));
 
 		dao.orderCartInsert(dto);
 
@@ -72,12 +73,13 @@ public class OrderService {
 		return msg;
 	}
 
-	public void orderInsert(String formattedBirthdate, String driverIdx) {
+	public void orderInsert(String formattedBirthdate, String driverIdx, String empIdx) {
 		
 		OrderDto dto = new OrderDto();
 		
 		dto.setDriverIdx(Integer.parseInt(driverIdx));
 		dto.setExpArrivalDate(formattedBirthdate);
+		dto.setEmpIdx(empIdx);
 		
 		
 		
@@ -101,6 +103,25 @@ public class OrderService {
 	public void orderDelete() {
 		dao.orderDelete();
 		
+	}
+
+	public boolean orderCartCheck() {
+	
+	ArrayList<OrderDto> dto = dao.orderCartCheck();	
+	boolean checked = true;
+	if(dto.isEmpty()) {
+		
+		checked = false;
+	}
+
+		
+		
+		return checked;
+	}
+
+	public ArrayList<OrderDto> orderHistoryList() {
+		
+		return dao.orderHistoryList();
 	}
 
 	
