@@ -2,44 +2,28 @@
 <html lang="ko">
 	<!--begin::Head-->
 	<head>
-		<title>UStore</title>
-		<meta charset="utf-8" />
-		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
-		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="/resource/assets/media/logos/favicon.ico" />
-		<!--begin::Fonts(mandatory for all pages)-->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Vendor Stylesheets(used for this page only)-->
-		<link href="/resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="/resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Vendor Stylesheets-->
-		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<!-- <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" /> -->
-		<!--end::Global Stylesheets Bundle-->
-		<style>
-			.chart-div{
-				display: flex;
-				height: 500px;
-				margin-bottom: 20px;	
-			}
-			.chart-body-div{
-				width: 45%;
-				margin: 10px 20px;
-			}
-			.signature-table {
-            float: right;
-            margin-left: 20px;
-			}
-			.signature-table td {
-				border: 1px solid #ddd;
-				padding: 10px;
-				text-align: center;
-			}
-		</style>
+	<title>UStore</title>
+	<meta charset="utf-8" />
+	<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
+	<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="canonical" href="https://preview.keenthemes.com/craft" />
+	<link rel="shortcut icon" href="/resource/assets/media/logos/mainLogo.svg" />
+	<!--begin::Fonts(mandatory for all pages)-->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+	
+	<style>
+		.signature-table {
+           float: right;
+           margin-left: 20px;
+		}
+		.signature-table td {
+			border: 1px solid #ddd;
+			padding: 10px;
+			text-align: center;
+			width: 80px;
+		}
+	</style>
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
@@ -64,19 +48,11 @@
 			<div class="card-body py-4">
 				<div class="d-flex justify-content-end mb-4" style="margin-bottom: 30px;">
 					<!-- 결재자 테이블 -->
-					<table class="signature-table mr-3">
-						<tr>
-							<td>결재자1</td>
-							<td>결재자2</td>
-							<td>결재자3</td>
-							<td>결재자4</td>
-						</tr>
-						<tr style="height: 70px;">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
+					<table class="signature-table mr-3" id="apprListTable">
+					  <tr id="approverRow">
+					  </tr>
+					  <tr style="height: 80px;">
+					  </tr>
 					</table>
 				</div>
 				<!--begin::Input group-->
@@ -88,7 +64,7 @@
 				<!--begin::Input group-->
 				<div class="input-group mb-5">
 					<span class="input-group-text flex-grow-1" id="inputGroup-sizing-default" style="width: 20%;">제목</span>
-					<input type="text" id="inputSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+					<input type="text" name="subject" id="inputSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
 				</div>
 				<!--end::Input group-->
 				<div class="table-responsive">
@@ -96,7 +72,7 @@
 						<tr class="fw-bold fs-6 text-gray-800">
 							<th style="width: 20%; background-color: #f8f9fa; font-size: inherit;">휴가종류</th>
 							<td>
-								<select name="kt_customers_table_length" aria-controls="kt_customers_table" class="form-select form-select-sm form-select-solid" style="width: 30%;">
+								<select name="leaveType" aria-controls="kt_customers_table" class="form-select form-select-sm form-select-solid" style="width: 30%;">
 									<option value="50">연가</option>
 									<option value="51">병가</option>
 									<option value="52">공가</option>
@@ -108,7 +84,7 @@
 							<td>
 								<div class="d-flex align-items-center">
 									<div class="mb-0" style="width: 50%;">
-										<input class="form-control form-control-solid" placeholder="Pick date rage" id="kt_daterangepicker_1"/>
+										<input name="selectLeaveDate" class="form-control form-control-solid" placeholder="Pick date rage" id="kt_daterangepicker_1"/>
 									</div>	
 									&nbsp;&nbsp;&nbsp;&nbsp;신청일수 : <div class="numberofday m1-2" style="width: 10%;"></div> 일
 								</div>
@@ -117,7 +93,7 @@
 						<tr>
 							<th style="width: 20%; background-color: #f8f9fa; font-size: inherit;">휴가사유</th>
 							<td>
-								<input type="text" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+								<input type="text" name="leaveReason" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
 							</td>
 						</tr>
 					</table>

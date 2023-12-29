@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<!--begin::Head-->
@@ -15,7 +16,8 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 	<!--end::Fonts-->
 	<!--begin::Vendor Stylesheets(used for this page only)-->
-	<link href="<c:url value='/resource/assets/plugins/custom/datatables/datatables.bundle.css' />" rel="stylesheet" type="text/css" />
+	<%-- <link href="<c:url value='/resource/assets/plugins/custom/datatables/datatables.bundle.css' />" rel="stylesheet" type="text/css" /> --%>
+	<link href="/resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 	<!--end::Vendor Stylesheets-->
 	<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 	<link href="<c:url value='/resource/assets/plugins/global/plugins.bundle.css'/>" rel="stylesheet" type="text/css" />
@@ -27,10 +29,13 @@
            float: right;
            margin-left: 20px;
 		}
-		.signature-table td {
+		.signature-table th, td {
 			border: 1px solid #ddd;
-			padding: 10px;
+			padding: 1px;
 			text-align: center;
+		}
+		.signature-table th{
+			height: 25px;
 		}
 	</style>
 	</head>
@@ -90,7 +95,6 @@
 						<!--end::Toolbar-->	
 						<!-- 결재 양식 들어오는 곳 -->	
 						<form id="docFormContainer" action="/saveDocument" method="post">	
-							<p>Selected Form: <%= request.getParameter("common_idx") %></p>
 							<div class="loadApprDoc">	
 							${htmlContent}				
 							</div>	
@@ -147,13 +151,14 @@
 									</div>
 									<div class="apprline d-flex flex-column scroll" id="apprline" style="height: 250px;">
 										<div style="overflow: auto;">
-											<table class="w-100">
+											<table class="signature-table mr-3 w-100">
 												<thead>
 													<tr>
 														<th>결재타입</th>
 														<th>이름</th>
 														<th>직책</th>
-														<th>부서</th>
+														<th style="width: 86.22222px;">부서</th>
+														<th style="width: 30px;"></th>
 													</tr>
 												</thead>
 												<tbody>											
@@ -169,12 +174,13 @@
 									</div>										
 									<div class="d-flex flex-column receiver scroll" id="receiver" style="height: 200px;">
 										<div style="overflow: auto;">
-											<table class="w-100">
+											<table class="signature-table mr-3 w-100">
 												<thead>
 													<tr>
 														<th>이름</th>
 														<th>직책</th>
 														<th>부서</th>
+														<th style="width: 30px;"></th>
 													</tr>
 												</thead>
 												<tbody>														
@@ -221,6 +227,10 @@
 				</div>
 			</div>
 		</div>
+		
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="principal"/>
+		</sec:authorize>				
 								
 		<!--begin::Javascript-->
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
@@ -263,6 +273,10 @@
             loadFormPage(formPage, common_idx);
         }        
         
+        var loggedInEmp_idx = ${principal.username};
+    	console.log(loggedInEmp_idx);
+        addLoggedInEmpToApprLine(loggedInEmp_idx);
+        
     	 // 결재상신 버튼 클릭 시의 동작
         $('#btnApproval').on('click', function () {
             // 여기에 결재상신 버튼 클릭 시 수행할 동작 추가
@@ -300,11 +314,6 @@
 		
     });
 	
-    function sendApproval(){
-		
-	}
-
-	
 	
 	function getTreeData(){
 		$.ajax({
@@ -313,7 +322,6 @@
 			dataType:'JSON',
 			success:function(data){
 				console.log(data);
-				jsTreeData = data.treeData;
 				jsTree(data.treeData);
 			},error: function(error){
 				console.log(error);
@@ -369,24 +377,35 @@
 	});
 	
 
-	/* // 선택한 노드 정보를 행에 저장 (data-node 필요)
-    var newRow = $('#apprline tbody tr:first-child');
-    $(newRow).data('node', selectedNode);
-    
-    var existingRows = receiverTable.find('tbody tr');
-	var isAlreadySelected = existingRows.toArray().some(function(row) {
-		var rowData = $(row).data('node'); // 데이터 속성에 저장된 노드 정보 가져오기 (data-node 필요)
-		return rowData && rowData.id === selectedNode.id;
-	});
-	
-	if(selectedNode.type!='department'){
-		if(selectedNode && !isAlreadySelected){
-			
-		} */
-	
 	// 결재선 정보 및 수신자 정보 설정(결재정보 저장)
 	var approvalLines = [];
-	var receivers = [];	
+	var receivers = [];		
+
+    function addLoggedInEmpToApprLine(loggedInEmp_idx){
+		$.ajax({
+	        type: 'GET',
+	        url: '/info/' + loggedInEmp_idx, 
+	        success: function (loggedInEmp) {
+	            console.log(loggedInEmp);
+
+	            // 생성할 approvalData 객체를 만들어서 데이터 채우기
+	            var approvalData = {
+	                type: '기안',
+	                name: loggedInEmp.empName,
+	                position: loggedInEmp.position,
+	                positionType: loggedInEmp.positionType,
+	                department: loggedInEmp.deptName
+	            };
+
+	            // 테이블에 데이터 추가
+	            addRowToApprLineTable(approvalData);  
+	            approvalLines.push(approvalData);
+	        },
+	        error : function(e){
+	        	console.log(e);
+	        }
+	   });
+	}
 	
 	// 조직도에서 결재선에 추가하는 버튼 함수
 	function addApprovalLine() {
@@ -411,9 +430,13 @@
 	            };
 
 	            // 테이블에 데이터 추가
-	            addRowToApprLineTable(approvalData);  
+	            if(selectedNode.type!='department'){
+		            addRowToApprLineTable(approvalData);              	
+	            }else{
+	            	alert('부서는 추가할 수 없습니다.');
+	            }
 
-	            if(!isDuplicate(approvalData)){
+	            if(!isApprDuplicate(approvalData)){
 		            // approvalLines 배열에 데이터 추가
 		            approvalLines.push(approvalData);
 		            console.log("approval array:", approvalLines);
@@ -428,7 +451,7 @@
 	    });
 	}
 
-	// 테이블에 행을 추가하는 함수
+	// 결재정보 모달창 결재선 추가 테이블에 행을 추가하는 함수
 	function addRowToApprLineTable(approvalData) {
 	    var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
 	    
@@ -452,8 +475,10 @@
 		    deleteIcon.className = 'fa fa-trash';
 		    deleteIcon.onclick = function () {
 		        newRow.remove();
+		        removeEmpFromApprLines(approvalData);
 		    };
 		    cell5.appendChild(deleteIcon);	
+		    cell5.style.width='30px';
 		    
 		 	// 선택한 노드 정보를 행에 저장 (data-node 필요)
 		    newRow.setAttribute('data-node', JSON.stringify(approvalData));
@@ -462,7 +487,22 @@
 	    }
 	}
 
-		
+	function removeEmpFromApprLines(empToRemove){
+		var index = -1;
+	    for (var i = 0; i < approvalLines.length; i++) {
+	        // employeeInfo 객체가 값으로 비교 가능하다고 가정합니다.
+	        if (JSON.stringify(approvalLines[i]) == JSON.stringify(empToRemove)) {
+	            index = i;
+	            break;
+	        }
+	    }
+	    if (index != -1) {
+	        approvalLines.splice(index, 1);
+	        console.log("삭제 후 결재선 :", approvalLines);
+	    }	
+	}
+	
+	
 	// 조직도에서 수신자 추가하는 버튼 함수
 	function addReceiver(){
 		var selectedNode = $('#kt_docs_jstree_basic').jstree(true).get_selected(true)[0];
@@ -485,9 +525,13 @@
 	            };
 	            
 	         	// 테이블에 데이터 추가
-	            addRowToReceiverTable(receiverData);  
+	            if(selectedNode.type!='department'){
+	            	addRowToReceiverTable(receiverData);           	
+	            }else{
+	            	alert('부서는 추가할 수 없습니다.');
+	            }	              
 
-	         	if(!isDuplicate(receiverData)){
+	         	if(!isRecvDuplicate(receiverData)){
 		            // receivers 배열에 데이터 추가
 		            receivers.push(receiverData);   
 		         	// receivers 배열 내용 확인
@@ -502,7 +546,7 @@
 		});		
 	}
 	
-	// 테이블에 행을 추가하는 함수
+	// 결재정보 모달창 수신자 추가 테이블에 행을 추가하는 함수
 	function addRowToReceiverTable(receiverData) {
 		var tbody = document.getElementById('receiver').getElementsByTagName('tbody')[0];
 		var isAlreadySelected = checkIfNodeExists(tbody, receiverData);
@@ -523,8 +567,10 @@
 			deleteIcon.className = 'fa fa-trash';
 			deleteIcon.onclick = function () {
 				newRow.remove();
+				removeEmpFromReceiver(receiverData);
 			};
-			cell4.appendChild(deleteIcon);	
+			cell4.appendChild(deleteIcon);
+			cell4.style.width='30px';
 			
 			// 선택한 노드 정보를 행에 저장 (data-node 필요)
 			newRow.setAttribute('data-node', JSON.stringify(receiverData));
@@ -532,6 +578,22 @@
 			alert("이미 선택된 직원입니다.");
 		}			
 	}    
+	
+	function removeEmpFromReceiver(empToRemove){
+		var index = -1;
+	    for (var i = 0; i < receivers.length; i++) {
+	        // employeeInfo 객체가 값으로 비교 가능하다고 가정합니다.
+	        if (JSON.stringify(receivers[i]) == JSON.stringify(empToRemove)) {
+	            index = i;
+	            break;
+	        }
+	    }
+
+	    if (index != -1) {
+	    	receivers.splice(index, 1);
+	        console.log("approval array after removal:", receivers);
+	    }	
+	}
 	
 	// 선택된 노드가 존재하는지 확인하는 함수
 	function checkIfNodeExists(tbody, rowData) {
@@ -554,8 +616,19 @@
 	    return false;
 	}
 	
-	// 배열에 중복 데이터가 있는지 확인하는 함수
-	function isDuplicate(newData) {
+	// addr 배열에 중복 데이터가 있는지 확인하는 함수
+	function isApprDuplicate(newData) {
+	    for (var i = 0; i < approvalLines.length; i++) {
+	        if (compareData(approvalLines[i], newData)) {
+	            return true; // 중복된 데이터가 있음
+	        }
+	    }
+	    return false; // 중복된 데이터가 없음
+	}
+	
+	
+	// receivers 배열에 중복 데이터가 있는지 확인하는 함수
+	function isRecvDuplicate(newData) {
 	    for (var i = 0; i < receivers.length; i++) {
 	        if (compareData(receivers[i], newData)) {
 	            return true; // 중복된 데이터가 있음
@@ -566,7 +639,6 @@
 
 	// 두 데이터 객체를 비교하는 함수
 	function compareData(data1, data2) {
-	    // 실제 데이터 구조에 맞게 비교 로직을 구현하세요
 	    return (
 	        data1.name === data2.name &&
 	        data1.position === data2.position &&
@@ -594,23 +666,26 @@
                 console.log(data.approvalLines);
                 console.log('결재선 정보가 성공적으로 저장되었습니다.'); 
                 
-                // 결재선 설정에 따라 결재 양식의 우상단에 결재 표시 구역 그리기      	    
-                
-                
-                var table = document.getElementById('apprListTable');
-                var tbody = table.querySelector("tbody");
-                
-                /* approvalList.forEach(function(approver, index) {
-                    // 첫 번째 tr에 결재자 이름 추가
-                    var firstRow = tbody.insertRow(index * 2);
-                    var firstCell = firstRow.insertCell(0);
-                    firstCell.textContent = approver.name;
-
-                    // 두 번째 tr에 높이 70px를 가진 빈 행 추가
-                    var secondRow = tbody.insertRow(index * 2 + 1);
-                    var emptyCell = secondRow.insertCell(0);
-                    emptyCell.style.height = "70px";
-                }); */
+                // 결재선 설정에 따라 결재 양식의 우상단에 결재 표시 구역 그리기
+                // 결재자명 위치할 행
+				function generateApproverRow() {
+				    var rowHtml = "";
+				    for (var i = 0; i < approvalLines.length; i++) {
+				      rowHtml += "<td>" + approvalLines[i].name + "</td>";
+				    }
+				    return rowHtml;
+				}
+				// 결재자 사인구역 위치할 행				  
+				function generateSignatureRow() {
+				    var rowHtml = "";
+				    for (var i = 0; i < approvalLines.length; i++) {
+				      rowHtml += "<td></td>";
+				    }
+				    return rowHtml;
+				}
+				
+				$("#apprListTable #approverRow").html(generateApproverRow());
+				$("#apprListTable tr:last").html(generateSignatureRow());
                 
                 // 결재선 정보 저장 성공
 	            approvalSuccess = true;
@@ -628,7 +703,7 @@
         });
         
         
-     // 서버로 수신자 정보 전송 (AJAX 사용)
+     	// 서버로 수신자 정보 전송 (AJAX 사용)
         $.ajax({
             type: 'POST',
             url: '/savereceiverdata',
@@ -683,84 +758,31 @@
 	
 	// 결재상신
 	$('#btnSendApproval').on('click', function () {
-	    // HTML 양식을 문자열로 변환
-	    var htmlFormData = $('#docFormContainer').html();
 
 	    // 필요한 다른 데이터도 수집
-	    var title = $('#docTitle').val(); // 예시: 제목을 입력하는 input 필드
-
+	    var subject = $('#subject').val(); // 예시: 제목을 입력하는 input 필드
+	    var content = $('#content').val();
 	    // 서버로 데이터 전송 (AJAX 사용)
 	    $.ajax({
 	        url: '/sendappr', // 저장을 처리할 서버의 엔드포인트
 	        method: 'POST',
 	        data: {
-	            htmlFormData: htmlFormData,
-	            title: title,
+	            subject: subject,
 	            approvalLines: JSON.stringify(approvalLines),
                 receivers: JSON.stringify(receivers)
 	            // 여기에 필요한 다른 데이터 추가
 	        },
 	        success: function (response) {
 	            // 성공적으로 저장되었을 때의 동작
-	            console.log('문서가 성공적으로 저장되었습니다.');
+	            console.log('문서가 결재상신 되었습니다.');
 	        },
 	        error: function (error) {
 	            // 저장 중 오류가 발생했을 때의 동작
-	            console.error('문서 저장 중 오류가 발생했습니다.');
+	            console.error('결재상신 중 오류가 발생했습니다.');
 	        }
 	    });
 	});
-	
-	
-	/* function addRow(optionIndex, userno, usernm, userpos) {
-		var tr = $("<tr id='tr" + userno +"'>");
-		$("#seletedUsers > tbody").append(tr);
 
-		var td = $("<TD>");
-		tr.append(td);
-		
-		var typearr = ["기안", "합의", "결재"];
-		var select = $("<select>");
-		td.append(select);
-		for (var i=0; i<typearr.length;i++) {
-			var option = $("<option value='"+ i + "'>" + typearr[i] + "</option>");
-			select.append(option);
-			select.val(optionIndex);
-		}
-
-		var td = $("<TD>");
-		tr.append(td);
-		td.text(usernm);
-		
-		td = $("<TD>");
-		tr.append(td);
-		td.html("<a href='javascript:fn_UserDelete(" + userno +")'><i class='fa fa-times fa-fw'></i></a>");
-		
-		if (userpos==="") userpos = typearr[optionIndex];
-		td = $("<TD>");
-		tr.append(td);
-		td.html(userpos);
-		td.css({"display": "none"});
-	}
-
-	function fn_UserDelete(userno) {
-		$("#tr"+userno).remove();
-	}
-
-	function fn_closeUsers() {
-		var ret = "";
-		$("#seletedUsers > tbody  > tr").each(function() {
-			if (!this.id) return; 
-			var userno = this.id.replace("tr","");
-			var usernm = $(this).find('td:eq(1)').text();
-			var select = $(this).find('td:eq(0) > select').val();
-			var userpos = $(this).find('td:eq(3)').text();
-			ret += userno + "," +usernm + "," + select + "," + userpos + "||";
-		});
-		
-		fn_selectUsers(ret)
-	} */
-	
 	
 	
 	</script>

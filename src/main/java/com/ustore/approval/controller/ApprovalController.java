@@ -64,11 +64,8 @@ public class ApprovalController {
 	public String write(@RequestParam int common_idx, Model model, HttpSession session) {
 		// common_idx에 따라 다른 JSP 페이지 경로 설정
         String formPage = getFormPageByCommonIdx(common_idx);
-
-        // 모델에 양식 페이지 경로를 추가
         model.addAttribute("formPage", formPage);
         model.addAttribute("common_idx", common_idx);
-        // 양식 작성 페이지로 이동
         return "approval/writeApprDoc";
 	}
 	
@@ -92,7 +89,7 @@ public class ApprovalController {
 	}
 	
 	
-	 // common_idx에 따라 다른 html을 가져오게 하기
+	// common_idx에 따라 다른 html을 가져오게 하기
     private String getFormPageByCommonIdx(int common_idx) {
         String formPage = null;
         switch (common_idx) {
@@ -107,12 +104,8 @@ public class ApprovalController {
                 break;
         }
         return formPage;
-    }
+    }	
 	
-	
-	// HTML 파일을 저장할 폴더 경로
-    private static final String HTML_FOLDER_PATH = "C:\\ustoreUpload\\html";
-
     @GetMapping("/info/{emp_idx}")
     public ResponseEntity<EmployeeDto> getEmployeeInfo(@PathVariable String emp_idx) {
         try {
@@ -162,16 +155,11 @@ public class ApprovalController {
         }
     } 
     
-    @PostMapping(value="/newapproval/saveHtml")
-    public void saveHtmlByCommonIdx(@RequestParam String html, @RequestParam int common_idx) {
-        service.saveHtmlByCommonIdx(html, common_idx);
-    }
-    
-    @PostMapping(value="/newapproval/sendappr")
-    public ModelAndView sendAppr(@RequestBody ApprovalDto dto) {
-    	ModelAndView mav = new ModelAndView();
-    	
-    	return mav;
-    } 
+       
+	/*
+	 * @PostMapping(value="/newapproval/sendappr") public ModelAndView
+	 * sendAppr(@RequestBody ApprovalDto dto) { ModelAndView mav = new
+	 * ModelAndView(); return service.sendAppr(dto); }
+	 */
 	
 }

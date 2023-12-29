@@ -21,15 +21,6 @@
 		<link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" /> -->
 		<!--end::Global Stylesheets Bundle-->
 		<style>
-			.chart-div{
-				display: flex;
-				height: 500px;
-				margin-bottom: 20px;	
-			}
-			.chart-body-div{
-				width: 45%;
-				margin: 10px 20px;
-			}
 			.signature-table {
             float: right;
             margin-left: 20px;
@@ -38,6 +29,7 @@
 				border: 1px solid #ddd;
 				padding: 10px;
 				text-align: center;
+				width: 80px;
 			}
 		</style>
 	</head>
@@ -64,19 +56,11 @@
 			<div class="card-body py-4">
 				<div class="d-flex justify-content-end mb-4" style="margin-bottom: 30px;">
 					<!-- 결재자 테이블 -->
-					<table class="signature-table mr-3">
-						<tr>
-							<td>결재자1</td>
-							<td>결재자2</td>
-							<td>결재자3</td>
-							<td>결재자4</td>
-						</tr>
-						<tr style="height: 70px;">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
+					<table class="signature-table mr-3" id="apprListTable">
+					  <tr id="approverRow">
+					  </tr>
+					  <tr style="height: 80px;">
+					  </tr>
 					</table>
 				</div>
 				<!--begin::Input group-->
@@ -88,7 +72,7 @@
 				<!--begin::Input group-->
 				<div class="input-group mb-5">
 					<span class="input-group-text flex-grow-1" id="inputGroup-sizing-default" style="width: 20%;">제목</span>
-					<input type="text" id="inputSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+					<input type="text" name="subject" id="inputSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
 				</div>
 				<!--end::Input group-->										
 
@@ -96,7 +80,7 @@
 					<span class="input-group-text" id="inputGroup-sizing-default" style="width: 20%;">발주번호&nbsp;&nbsp;
 						<button type="button" class="btn btn-light-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#kt_modal_2">검색</button>	
 					</span>											
-					<input type="text" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+					<input type="text" id="orderNum" name="orderNum" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
 				</div>
 				
 				<div class="table-responsive">											
