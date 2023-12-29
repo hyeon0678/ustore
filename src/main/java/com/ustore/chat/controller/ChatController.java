@@ -34,13 +34,11 @@ import com.ustore.utils.defineEnums.PositionEnum;
 @RequestMapping("/chat")
 public class ChatController {
 	Logger logger = LoggerFactory.getLogger(getClass());
-
-	private SimpMessageSendingOperations messageTemplete;
+	
 	private ChatService chatService;
 	
 	public ChatController(SimpMessageSendingOperations messageTemplete, ChatService chatService) {
 		this.chatService = chatService;
-		this.messageTemplete = messageTemplete;
 	}
 	
 	@GetMapping()
@@ -48,11 +46,13 @@ public class ChatController {
 		return "chat/chat";
 	}
 	
-	@GetMapping("/chatList.ajax")
+	@GetMapping("/chatRoomList.ajax")
 	@ResponseBody
-	public HashMap<String, String> chatList(Principal principal) {
+	public HashMap<String, Object> chatRoomList(Principal principal) {
 		logger.info(principal.getName());
-		return null;
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("list", chatService.getChatRoomList(principal.getName()));
+		return result;
 	}
 	
 	@PostMapping("/makeRoom.ajax")
@@ -65,8 +65,18 @@ public class ChatController {
 		
 		// 누가 만든건지 세션에서 가져와야함 
 		chatService.makeRoom(list, principal.getName());
-		
 		return null;
+	}
+	
+	@GetMapping("/chatList.ajax")
+	@ResponseBody
+	public HashMap<String, Object> chatList(@RequestParam Map param, Principal principal) {
+		logger.info(principal.getName());
+		logger.info(param.toString());
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		//List<ChatDto> chatList = chatService.getChatData(roomNum, principal.getName());
+		result.put("chatdata", null);
+		return result;
 	}
 	
 }

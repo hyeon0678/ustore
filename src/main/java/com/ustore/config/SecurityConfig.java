@@ -53,7 +53,8 @@ public class SecurityConfig {
 		.authorizeRequests()
 		.antMatchers("/", "/main/**").permitAll()
 		.antMatchers("/resource/**").permitAll()
-		.and()
+        .antMatchers("/ws/**").permitAll()
+        .and()
 		.formLogin()	
 			.loginPage("/") 	//로그인 페이지를 보여주는 url
 			.defaultSuccessUrl("/employee/home", true) //로그인 성공 후 이동 페이지

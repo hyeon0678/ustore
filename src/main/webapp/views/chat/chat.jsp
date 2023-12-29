@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <!--begin::Head-->
@@ -168,43 +170,13 @@
 												style="height: 700px; overflow-y: auto;">
 												<!--begin::List-->
 												<div class="scroll-y me-n5 pe-5 h-200px "
+													id = "chat_list_div"
 													data-kt-scroll="true"
 													data-kt-scroll-activate="{default: false, lg: true}"
 													data-kt-scroll-max-height="500px"
 													data-kt-scroll-dependencies="#kt_header, #kt_app_header, #kt_toolbar, #kt_app_toolbar, #kt_footer, #kt_app_footer, #kt_chat_contacts_header"
 													data-kt-scroll-wrappers="#kt_content, #kt_app_content, #kt_chat_contacts_body"
 													data-kt-scroll-offset="5px">
-													<!-- 여기가 체팅 방 리스트의 시작 -->
-													<!-- 체팅방 예시 -->
-
-													<!--begin::User-->
-													<div class="bg-hover-light-primary text-hover-primary"
-														style="border: 1px solid #ffffca; height: 80px; border-radius: 5px;">
-														<!--begin::Details-->
-														<div class="d-flex flex-column"
-															style="margin: 5px; height: 80px;">
-															<!--begin::Details-->
-															<div class="chatmain"
-																style="display: flex; justify-content: space-between; margin-top: 10px;">
-																<a href="#"
-																	class="fs-5 fw-bold text-gray-900 text-hover-primary "
-																	style="margin: 0px;">김지혜</a> <span
-																	class="text-muted fs-7 mb-1"
-																	style="text-align: right; margin: 0px;">YY.MM.dd.HH.mm</span>
-															</div>
-															<!--end::Details-->
-															<!--begin::Lat seen-->
-															<div class="d-flex flex-column align-items-end ms-2">
-																<span class="cachnum" style="color: #255000;">읽지않은메세지갯수</span>
-															</div>
-															<!--end::Lat seen-->
-														</div>
-														<!--end::Details-->
-													</div>
-
-													<!--end::User-->
-
-													<!-- ============================================================================================= -->
 												</div>
 												<!--end::List-->
 											</div>
@@ -222,10 +194,10 @@
 												style="display: flex; height: 50px; border-bottom: 1px solid #99A1B7; justify-content: space-between; align-items: center;">
 												<!--begin::Card toolbar-->
 												<div style="margin-left: 20px; margin-top: 10px;">
-													<h3>김지혜</h3>
+													<h3 class="chat-room-name"></h3>
 												</div>
-												<div
-													style="display: flex; align-items: center; width: 120px; justify-content: space-around; margin-right: 20px;">
+												<div class="chat-msg-tool-bar"
+													style="display: none; align-items: center; width: 120px; justify-content: space-around; margin-right: 20px;">
 													<div class="card-toolbar">
 														<!-- ===============================체팅 참가인원 확인 아이콘======================================== -->
 														<!--begin::Menu-->
@@ -234,16 +206,7 @@
 																data-kt-menu-trigger="click"
 																data-kt-menu-placement="bottom-end">
 																<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/craft/docs/core/html/src/media/icons/duotune/abstract/abs015.svg-->
-																<span class="ki-duotone ki-dots-square fs-2"><svg
-																		width="24" height="24" viewBox="0 0 24 24" fill="none"
-																		xmlns="http://www.w3.org/2000/svg">
-																<path
-																			d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z"
-																			fill="currentColor" />
-																<path opacity="0.3"
-																			d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z"
-																			fill="currentColor" />
-																</svg> </span>
+																<span class="ki-duotone ki-dots-square fs-2"><img src="resource/assets/media/icon/abs015.svg"/></span>
 																<!--end::Svg Icon-->
 
 															</button>
@@ -283,18 +246,7 @@
 																data-kt-menu-trigger="click"
 																data-kt-menu-placement="bottom-end"
 																style="margin-left: 5px; padding: 10px;">
-																<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/craft/docs/core/html/src/media/icons/duotune/general/gen035.svg-->
-																<span class="ki-duotone ki-dots-square fs-2"><svg
-																		width="24" height="24" viewBox="0 0 24 24" fill="none"
-																		xmlns="http://www.w3.org/2000/svg">
-															<rect opacity="0.3" x="2" y="2" width="20" height="20"
-																			rx="5" fill="currentColor" />
-															<rect x="10.8891" y="17.8033" width="12" height="2"
-																			rx="1" transform="rotate(-90 10.8891 17.8033)"
-																			fill="currentColor" />
-															<rect x="6.01041" y="10.9247" width="12" height="2"
-																			rx="1" fill="currentColor" />
-															</svg> </span>
+																<span class="ki-duotone ki-dots-square fs-2"><img src="resource/assets/media/icon/arr061.svg"/></span>
 																<!--end::Svg Icon-->
 															</button>
 															<!--begin::Menu 3-->
@@ -310,29 +262,7 @@
 
 																<!-- js트리 그리는 공간 -->
 																<div id="kt_docs_jstree_basic2">
-																	<ul>
-																		<li>Root node 1
-																			<ul>
-																				<li data-jstree='{ "selected" : true }'><a
-																					href="javascript:;"> Initially selected </a></li>
-																				<li
-																					data-jstree='{ "icon" : "ki-outline ki-geolocation text-success fs-4" }'>
-																					custom icon URL</li>
-																				<li data-jstree='{ "opened" : true }'>
-																					initially open
-																					<ul>
-																						<li data-jstree='{ "disabled" : true }'>
-																							Disabled Node</li>
-																						<li data-jstree='{ "type" : "file" }'>
-																							Another node</li>
-																					</ul>
-																				</li>
-																				<li
-																					data-jstree='{ "icon" : "ki-outline ki-message-text-2 text-danger fs-7" }'>
-																					홍대관(팀원)</li>
-																			</ul>
-																		</li>
-																	</ul>
+																	
 																</div>
 																<!-- js트리 끝나는 곳-->
 																<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1"></button> -->
@@ -350,11 +280,6 @@
 																		<div>
 																			<div class="content_tree"
 																				style="border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
-																				<span>홍길동(인사팀 팀장)</span><br /> <span>홍길동(인사팀
-																					팀장)</span><br /> <span>홍길동(인사팀 팀장)</span><br /> <span>홍길동(인사팀
-																					팀장)</span><br /> <span>홍길동(인사팀 팀장)</span><br /> <span>홍길동(인사팀
-																					팀장)</span><br /> <span>홍길동(인사팀 팀장)</span><br /> <span>홍길동(인사팀
-																					팀장)</span><br /> <span>홍길동(인사팀 팀장)</span>
 																			</div>
 																		</div>
 																		<div class="modal-footer">
@@ -379,19 +304,7 @@
 																data-kt-menu-placement="bottom-end"
 																style="margin-right: 30px; padding: 10px;">
 																<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/craft/docs/core/html/src/media/icons/duotune/arrows/arr076.svg-->
-																<span class="ki-duotone ki-dots-square fs-2"><svg
-																		width="24" height="24" viewBox="0 0 24 24" fill="none"
-																		xmlns="http://www.w3.org/2000/svg">
-																<rect opacity="0.3" width="12" height="2" rx="1"
-																			transform="matrix(-1 0 0 1 15.5 11)"
-																			fill="currentColor" />
-																<path
-																			d="M13.6313 11.6927L11.8756 10.2297C11.4054 9.83785 11.3732 9.12683 11.806 8.69401C12.1957 8.3043 12.8216 8.28591 13.2336 8.65206L16.1592 11.2526C16.6067 11.6504 16.6067 12.3496 16.1592 12.7474L13.2336 15.3479C12.8216 15.7141 12.1957 15.6957 11.806 15.306C11.3732 14.8732 11.4054 14.1621 11.8756 13.7703L13.6313 12.3073C13.8232 12.1474 13.8232 11.8526 13.6313 11.6927Z"
-																			fill="currentColor" />
-																<path
-																			d="M8 5V6C8 6.55228 8.44772 7 9 7C9.55228 7 10 6.55228 10 6C10 5.44772 10.4477 5 11 5H18C18.5523 5 19 5.44772 19 6V18C19 18.5523 18.5523 19 18 19H11C10.4477 19 10 18.5523 10 18C10 17.4477 9.55228 17 9 17C8.44772 17 8 17.4477 8 18V19C8 20.1046 8.89543 21 10 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3H10C8.89543 3 8 3.89543 8 5Z"
-																			fill="currentColor" />
-																</svg> </span>
+																<span class="ki-duotone ki-dots-square fs-2"><img src="resource/assets/media/icon/arr096.svg"/></span>
 																<!--end::Svg Icon-->
 															</button>
 														</div>
@@ -403,66 +316,18 @@
 											<!--end::Card header-->
 											<!-- =============================체팅의 내용 바디============================================================ -->
 											<!--begin::Card body-->
-											<div class="card-body" id="kt_chat_messenger_body"
+											<div class="card-body" id="chat_messenger_body"
 												style="height: 500px;">
-												<!-- <h3>하이 먹머머머머머머머</h3> -->
 												<!-- ========================상대방 메세지 예시=============================================================== -->
 												<!--begin::Messages-->
-												<div class="scroll-y me-n5 pe-5 h-300px h-lg-auto"
+												<div class="scroll-y me-n5 pe-5 h-300px h-lg-auto" id="msg-content"
 													data-kt-element="messages" data-kt-scroll="true"
 													data-kt-scroll-activate="{default: false, lg: true}"
 													data-kt-scroll-max-height="auto"
 													data-kt-scroll-dependencies="#kt_header, #kt_app_header, #kt_app_toolbar, #kt_toolbar, #kt_footer, #kt_app_footer, #kt_chat_messenger_header, #kt_chat_messenger_footer"
 													data-kt-scroll-wrappers="#kt_content, #kt_app_content, #kt_chat_messenger_body"
 													data-kt-scroll-offset="5px">
-													<!--begin::Message(in)-->
-													<div class="d-flex justify-content-start mb-10">
-														<!--begin::Wrapper-->
-														<div class="d-flex flex-column align-items-start">
-															<!--begin::User-->
-															<div class="d-flex align-items-center mb-2">
-																<!--begin::Details-->
-																<div class="ms-3">
-																	<a href="#"
-																		class="fs-5 fw-bold text-gray-900 text-hover-primary me-1">김지혜</a>
-																</div>
-																<!--end::Details-->
-															</div>
-															<!--end::User-->
-															<!--begin::Text-->
-															<div
-																class="p-5 rounded bg-light-info text-gray-900 fw-semibold mw-lg-400px text-start"
-																data-kt-element="message-text">How likely are you
-																to recommend our company to your friends and family ?</div>
-															<!--end::Text-->
-														</div>
-														<!--end::Wrapper-->
-													</div>
-													<!--end::Message(in)-->
-													<!--begin::Message(out)-->
-													<div class="d-flex justify-content-end mb-10">
-														<!--begin::Wrapper-->
-														<div class="d-flex flex-column align-items-end">
-															<!--begin::User-->
-															<div class="d-flex align-items-center mb-2">
-																<!--begin::Details-->
-																<div class="me-3">
-																	<a class="fs-5 fw-bold text-gray-900 ms-1">오현비</a>
-																</div>
-																<!--end::Details-->
-															</div>
-															<!--end::User-->
-															<!--begin::Text-->
-															<div
-																class="p-5 rounded bg-light-primary text-gray-900 fw-semibold mw-lg-400px text-end"
-																data-kt-element="message-text">Hey there, we’re
-																just writing to let you know that you’ve been subscribed
-																to a repository on GitHub.</div>
-															<!--end::Text-->
-														</div>
-														<!--end::Wrapper-->
-													</div>
-													<!--end::Message(out)-->
+													
 												</div>
 												<!--end::Messages-->
 											</div>
@@ -470,7 +335,7 @@
 											<!--begin::Card footer-->
 											<div class="card-footer pt-4" id="kt_chat_messenger_footer">
 												<!--begin::Input-->
-												<textarea class="form-control form-control-flush mb-3"
+												<textarea class="form-control form-control-flush mb-3" id="msg-box"
 													rows="1" data-kt-element="input" placeholder="메세지를 입력해주세요."
 													style="height: 50px; resize: none;" maxlength="200"></textarea>
 												<!--end::Input-->
@@ -480,8 +345,7 @@
 													<div class="d-flex align-items-center me-2"></div>
 													<!--end::Actions-->
 													<!--begin::Send-->
-													<button class="btn btn-primary" type="button"
-														data-kt-element="send">Send</button>
+													<button class="btn btn-primary" type="button" id="send-msg">Send</button>
 													<!--end::Send-->
 												</div>
 												<!--end::Toolbar-->
@@ -506,6 +370,9 @@
 			</div>
 			<!--end::Page-->
 		</div>
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="principal"/>
+		</sec:authorize>
 		<script>
 			var hostUrl = "assets/";
 		</script>
@@ -514,6 +381,8 @@
 		<script
 			src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+   	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </body>
 <!--end::Body-->
 <script>
@@ -523,23 +392,55 @@
 <script>
 	let makeRoomParticipantList = [];
 	let chatParticipantList = [];
-	// 처음 페이지 도착 -> 리스트 보여주기
-	// 
-	function callChatList(){
+	callChatRoomList();
+	let username = '${principal.username}'
+	let roomNum = '';
+    let subscription = null;
+    let socket = null;
+    let stompClient = null;
+    // 
+	$(document).ready(function(){
+		console.log("socket connection");
+		connect();
+	    if(stompClient.connected){
+	    	console.log("websocket connected");
+	    }
+	})
+	function callChatRoomList(){
 		$.ajax({
-			url:'/chat/chatList.ajax',
+			url:'/chat/chatRoomList.ajax',
 			method:'GET',
 			dataType:'JSON',
 			success:function(data){
-				drawChatList(data.chatList);
+				console.log("caht list:"+data.list);
+				drawChatRoomList(data.list);
 			},error: function(error){
 				console.log(error);
 			}
 		})		
 	}
 	
-	function drawChatList(){
-		
+	function drawChatRoomList(list){
+		$('chat_list_div').empty();
+		console.log(list.length);
+		if(list.length < 1){
+			$('chat_list_div').append("<p>참여한 채팅방이 없습니다.</p>");
+			return true;
+		}
+		for(let elem of list){
+			content ="<div class='chat-list-content-div bg-hover-light-primary text-hover-primary ' style='border: 1px solid #ffffca; height: 80px; border-radius: 5px;'>"
+			content +="<p style='display:none'>"+elem.chatRoomIdx+"</p>"
+			content +="<div class='d-flex flex-column' style='margin: 5px; height: 80px;'>"
+			content +="<div class='chatmain' style='display: flex; justify-content: space-between; margin-top: 10px;'>"
+			content +="<a class='fs-5 fw-bold text-gray-900 text-hover-primary room-name' style='margin: 0px;'>"+elem.chatRoomName+"</a>"
+			content +="<span class='text-muted fs-7 mb-1' style='text-align: right; margin: 0px;'>"+elem.lastMsgTime
+			content +="</span></div>"
+			content +="<div class='d-flex flex-column align-items-end ms-2'>"
+			content +="<span class='cachnum' style='color: #255000;'>"+elem.readCnt
+			content +="</span></div></div></div>"
+			$('#chat_list_div').append(content);
+		}
+		clickChatRoomListElem()
 	}
 	
 	$('#make_room_btn').on('click', function(){
@@ -549,7 +450,6 @@
 			dataType:'JSON',
 			success:function(data){
 				jsTreeData = data.treeData;
-				console.log(jsTreeData);
 				makeRoomJsTree(data.treeData);
 			},error: function(error){
 				console.log(error);
@@ -571,6 +471,7 @@
 				console.log(data);
 				$('#make_room_enter_emp').empty();
 				makeRoomParticipantList=[];
+				callChatRoomList();
 			},error:function(error){
 				console.log(error);				
 			}
@@ -579,53 +480,167 @@
 	
 	function makeRoomJsTree(treeData){
 		console.log("makeRoom"+treeData);
-		treeDbClick();
-		participantClick();
+		
 		$('#make_room_jstree').jstree('destroy');
 		$('#make_room_jstree').jstree({
 			"core" : {
 				"data" : treeData
-			}
-		});
+			},"Disable" : {
+					"label" : "Disable",
+					"action" : function(obj) {
+						$("#make_room_jstree").jstree("disable_node", username+'_anchor');
+					}
+				}
+			});
+		treeDbClick();
+		participantClick();
+		
 	}
-	function participantClick(){
-		$('div.participaint_emp').on('click', function(){
+	function participantClick() {
+		$('div.participaint_emp').on('click', function() {
 			$(this).remove();
 			let removeId = $(this).children('a').html();
 			let index = findEmp(removeId);
 			makeRoomParticipantList.splice(index);
 		});
 	}
-	
-	
-	function treeDbClick(){
-		$('#make_room_jstree').bind("dblclick.jstree", function (e, data) {
-			var selectedNode = e.target;
-			
-			let id = e.target.id;
-			let index = id.indexOf('_')
-			id = id.substr(0,index)
-			console.log(findEmp(id));
-			if(findEmp(id) < 0){
-				let participant = {}
-				participant.empIdx = id;
-				participant.name = selectedNode.text;
-				makeRoomParticipantList.push(participant);
-				content="<div class='participaint_emp'>"+selectedNode.text+"<a style='visibility:hidden'>"+id+"</a></div>"
-				$('#selectedNodeInput').val("선택된 노드 :"+selectedNode);
-				$('#make_room_enter_emp').append(content);
-				participantClick();
-			}
-		});
+
+	function treeDbClick() {
+		$('#make_room_jstree').bind(
+				"dblclick.jstree",
+				function(e, data) {
+					var selectedNode = e.target;
+
+					let id = e.target.id;
+					let index = id.indexOf('_')
+					console.log(id)
+					id = id.substr(0, index)
+					console.log(findEmp(id));
+					if (findEmp(id) < 0) {
+						let participant = {}
+						participant.empIdx = id;
+						participant.name = selectedNode.text;
+						makeRoomParticipantList.push(participant);
+						content = "<div class='participaint_emp'>"
+								+ selectedNode.text
+								+ "<a style='visibility:hidden'>" + id
+								+ "</a></div>"
+						$('#selectedNodeInput').val("선택된 노드 :" + selectedNode);
+						$('#make_room_enter_emp').append(content);
+						participantClick();
+					}
+				});
 	}
-	
-	function findEmp(empIdx){
-		for(let i=0; i<makeRoomParticipantList.length; i++){
-			if(makeRoomParticipantList[i].empIdx == empIdx){
+
+	function findEmp(empIdx) {
+		for (let i = 0; i < makeRoomParticipantList.length; i++) {
+			if (makeRoomParticipantList[i].empIdx == empIdx) {
 				return i
-			} 
+			}
 		}
 		return -1;
 	}
-	</script>
+	
+	$('#send-msg').on('click', function(){
+		console.log('msgclick')
+		var message = $('#msg-box').val().trim();
+		console.log(message)
+		sendMessage(message);
+	});
+	
+	function clickChatRoomListElem(){
+		$('.chat-list-content-div').on('click', function(){
+			let newRoomNum =  $(this).children('p').html();
+			let $roomName = $(this).children('div');
+			$roomName = $roomName.children('div');
+			let roomName = $roomName.children('a').text();
+			console.log("room : "+roomName)
+			if(roomNum != newRoomNum){
+				if(subscription != null){
+					subscription.unsubscribe();
+				}
+				roomNum = newRoomNum;
+				console.log(subscription);
+				subscripe();
+				drawChatList(roomName);
+			}
+			
+		});
+	}
+	function drawChatList(roomName){
+		
+		$('chat-room-name').html(roomName);
+		$('chat-msg-tool-bar').css('display:flex');
+		chatListCall(roomNum);
+	}
+	function chatListCall(roomNum){
+		$.ajax({
+			data:{
+				'roomNum':roomNum
+			},
+			url:'/chat/chatList.ajax',
+			type:'get',
+			dataType:'json',
+			success:function(data){
+				//console.log(data.chatdata);
+			}, error:function(){
+				
+			}
+		})
+	}
+	function connect() {
+		socket = new SockJS('http://localhost:80/ws');
+	    stompClient = Stomp.over(socket);
+	    stompClient.connect({}, function(frame){
+	    	console.log("connect")
+	    }, onError);
+	}
+	
+	function onError(error){
+		alert('서버와 연결할 수 없습니다. 다시 시도해 주세요');
+		console.log(error);
+	}
+	
+	function onMessageReceived(payload){
+		
+		var message = JSON.parse(payload.body);
+		console.log(message);
+		content = "<div class='d-flex justify-content-start mb-10'>"
+		content += "<div class='d-flex flex-column align-items-start'>"
+		content += "<div class='d-flex align-items-center mb-2'><div class='ms-3'>"
+		content += "<a class='fs-5 fw-bold text-gray-900 text-hover-primary me-1'>"
+		content += message.sender+"</a></div></div>"
+		content += "<div class='p-5 rounded bg-light-info text-gray-900 fw-semibold mw-lg-400px text-start'data-kt-element='message-text'>" 
+		content += message.data+"</div></div></div>"
+		$('#msg-content').append(content);
+	}
+
+	function subscripe(){
+		console.log("연결");
+		subscription = stompClient.subscribe('/topic/chat/'+roomNum, onMessageReceived);
+	}
+
+	function sendMessage(message){
+		console.log('sendMsg : '+message);
+		if(message && stompClient){
+			let chatMessage = {
+					sender : username,
+					data : message,
+					roomNum : roomNum,
+					type : 'CHAT'
+			}
+			stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
+		}
+		content="<div class='d-flex justify-content-end mb-10'>"
+		content+="<div class='d-flex flex-column align-items-end'>"
+		content+="<div class='d-flex align-items-center mb-2'>"
+		content+="<div class='me-3'><a class='fs-5 fw-bold text-gray-900 ms-1'>"
+		content+=username+"</a></div></div>"
+		content+="<div class='p-5 rounded bg-light-primary text-gray-900 fw-semibold mw-lg-400px text-end' data-kt-element='message-text'>" 
+		content+=message+"</div></div></div>"
+		
+		$('#msg-content').append(content);
+		$('#msg-box ').val('');
+	}
+</script>
 </html>

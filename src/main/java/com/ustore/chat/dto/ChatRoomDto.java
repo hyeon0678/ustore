@@ -1,6 +1,6 @@
 package com.ustore.chat.dto;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class ChatRoomDto {
@@ -9,11 +9,37 @@ public class ChatRoomDto {
 	private String isIndividual;
 	private List<String> participaintList;
 	private String regBy;
-	private Date maxSentDate;
-	private Date maxReceivedDate;
+	private Timestamp maxSentDate;
+	private Timestamp maxReceivedDate;
 	private int readCnt;
+	private String lastMsgTime;
 	
 	
+	
+	public String getLastMsgTime() {
+		return lastMsgTime;
+	}
+	public void setLastMsgTime(String lastMsgTime) {
+		this.lastMsgTime = lastMsgTime;
+	}
+	public Timestamp getMaxSentDate() {
+		return maxSentDate;
+	}
+	public void setMaxSentDate(Timestamp maxSentDate) {
+		this.maxSentDate = maxSentDate;
+	}
+	public Timestamp getMaxReceivedDate() {
+		return maxReceivedDate;
+	}
+	public void setMaxReceivedDate(Timestamp maxReceivedDate) {
+		this.maxReceivedDate = maxReceivedDate;
+	}
+	public int getReadCnt() {
+		return readCnt;
+	}
+	public void setReadCnt(int readCnt) {
+		this.readCnt = readCnt;
+	}
 	public String getRegBy() {
 		return regBy;
 	}
