@@ -98,155 +98,166 @@ var KTAppCalendar = function () {
 
             editable: true,
             dayMaxEvents: true, // allow "more" link when too many events
-            events: [
-                {
-                    id: uid(),
-                    title: 'All Day Event',
-                    start: YM + '-01',
-                    end: YM + '-02',
-                    description: 'Toto lorem ipsum dolor sit incid idunt ut',
-                    schedeule: 'Team',
-                    className: "border-success bg-success text-inverse-success",
-                    location: 'Federation Square'
-                },
-                {
-                    id: uid(),
-                    title: 'Reporting',
-                    start: YM + '-14T13:30:00',
-                    description: 'Lorem ipsum dolor incid idunt ut labore',
-                    schedeule: 'Team',
-                    end: YM + '-14T14:30:00',
-                    className: "border-warning bg-warning text-inverse-success",
-                    location: 'Meeting Room 7.03'
-                },
-                {
-                    id: uid(),
-                    title: 'Company Trip',
-                    start: YM + '-02',
-                    description: 'Lorem ipsum dolor sit tempor incid',
-                    schedeule: 'Team',
-                    end: YM + '-03',
-                    className: "border-info bg-info text-info-success",
-                    location: 'Seoul, Korea'
-                },
-                {
-                    id: uid(),
-                    title: 'ICT Expo 2021 - Product Release',
-                    start: YM + '-03',
-                    description: 'Lorem ipsum dolor sit tempor inci',
-                    schedeule: 'Team',
-                    end: YM + '-05',
-                    className: "fc-event-light fc-event-solid-primary",
-                    location: 'Melbourne Exhibition Hall'
-                },
-                {
-                    id: uid(),
-                    title: 'Dinner',
-                    start: YM + '-12',
-                    description: 'Lorem ipsum dolor sit amet, conse ctetur',
-                    schedeule: 'Team',
-                    end: YM + '-13',
-                    location: 'Squire\'s Loft'
-                },
-                {
-                    id: uid(),
-                    title: 'Repeating Event',
-                    start: YM + '-09T16:00:00',
-                    end: YM + '-09T17:00:00',
-                    description: 'Lorem ipsum dolor sit ncididunt ut labore',
-                    schedeule: 'personnal',
-                    className: "fc-event-danger",
-                    location: 'General Area'
-                },
-                {
-                    id: uid(),
-                    title: 'Repeating Event',
-                    description: 'Lorem ipsum dolor sit amet, labore',
-                    schedeule: 'personnal',
-                    start: YM + '-16T16:00:00',
-                    end: YM + '-16T17:00:00',
-                    location: 'General Area'
-                },
-                {
-                    id: uid(),
-                    title: 'Conference',
-                    start: YESTERDAY,
-                    end: TOMORROW,
-                    description: 'Lorem ipsum dolor eius mod tempor labore',
-                    schedeule: 'personnal',
-                    className: "fc-event-primary",
-                    location: 'Conference Hall A'
-                },
-                {
-                    id: uid(),
-                    title: 'Meeting',
-                    start: TODAY + 'T10:30:00',
-                    end: TODAY + 'T12:30:00',
-                    description: 'Lorem ipsum dolor eiu idunt ut labore',
-                    schedeule: 'personnal',
-                    location: 'Meeting Room 11.06'
-                },
-                {
-                    id: uid(),
-                    title: 'Lunch',
-                    start: TODAY + 'T12:00:00',
-                    end: TODAY + 'T14:00:00',
-                    className: "fc-event-info",
-                    description: 'Lorem ipsum dolor sit amet, ut labore',
-                    schedeule: 'personnal',
-                    location: 'Cafeteria'
-                },
-                {
-                    id: uid(),
-                    title: 'Meeting',
-                    start: TODAY + 'T14:30:00',
-                    end: TODAY + 'T15:30:00',
-                    className: "fc-event-warning",
-                    description: 'Lorem ipsum conse ctetur adipi scing',
-                    schedeule: 'personnal',
-                    location: 'Meeting Room 11.10'
-                },
-                {
-                    id: uid(),
-                    title: 'Happy Hour',
-                    start: TODAY + 'T17:30:00',
-                    end: TODAY + 'T21:30:00',
-                    className: "fc-event-info",
-                    description: 'Lorem ipsum dolor sit amet, conse ctetur',
-                    schedeule: 'personnal',
-                    location: 'The English Pub'
-                },
-                {
-                    id: uid(),
-                    title: 'Dinner',
-                    start: TOMORROW + 'T18:00:00',
-                    end: TOMORROW + 'T21:00:00',
-                    className: "fc-event-solid-danger fc-event-light",
-                    description: 'Lorem ipsum dolor sit ctetur adipi scing',
-                    schedeule: 'team',
-                    location: 'New York Steakhouse'
-                },
-                {
-                    id: uid(),
-                    title: 'Birthday Party',
-                    start: TOMORROW + 'T12:00:00',
-                    end: TOMORROW + 'T14:00:00',
-                    className: "fc-event-primary",
-                    description: 'Lorem ipsum dolor sit amet, scing',
-                    schedeule: 'team',
-                    location: 'The English Pub'
-                },
-                {
-                    id: uid(),
-                    title: 'Site visit',
-                    start: YM + '-28',
-                    end: YM + '-29',
-                    className: "fc-event-solid-info fc-event-light",
-                    description: 'Lorem ipsum dolor sit amet, labore',
-                    schedeule: 'team',
-                    location: '271, Spring Street'
-                }
-            ],
+            events: data,
+
+
+            // function(info, successCallback, failureCallback){
+            //     // ajax 처리로 데이터를 로딩 시킨다.
+            //     $.ajax({
+            //        type:"get",
+            //        url:"/profilecalendar",
+            //       dataType:"json"  
+            //     });
+            // },
+            // [
+            //     {
+            //         id: uid(),
+            //         title: 'All Day Event',
+            //         start: YM + '-01',
+            //         end: YM + '-02',
+            //         description: 'Toto lorem ipsum dolor sit incid idunt ut',
+            //         schedeule: 'Team',
+            //         className: "border-success bg-success text-inverse-success",
+            //         location: 'Federation Square'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Reporting',
+            //         start: YM + '-14T13:30:00',
+            //         description: 'Lorem ipsum dolor incid idunt ut labore',
+            //         schedeule: 'Team',
+            //         end: YM + '-14T14:30:00',
+            //         className: "border-warning bg-warning text-inverse-success",
+            //         location: 'Meeting Room 7.03'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Company Trip',
+            //         start: YM + '-02',
+            //         description: 'Lorem ipsum dolor sit tempor incid',
+            //         schedeule: 'Team',
+            //         end: YM + '-03',
+            //         className: "border-info bg-info text-info-success",
+            //         location: 'Seoul, Korea'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'ICT Expo 2021 - Product Release',
+            //         start: YM + '-03',
+            //         description: 'Lorem ipsum dolor sit tempor inci',
+            //         schedeule: 'Team',
+            //         end: YM + '-05',
+            //         className: "fc-event-light fc-event-solid-primary",
+            //         location: 'Melbourne Exhibition Hall'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Dinner',
+            //         start: YM + '-12',
+            //         description: 'Lorem ipsum dolor sit amet, conse ctetur',
+            //         schedeule: 'Team',
+            //         end: YM + '-13',
+            //         location: 'Squire\'s Loft'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Repeating Event',
+            //         start: YM + '-09T16:00:00',
+            //         end: YM + '-09T17:00:00',
+            //         description: 'Lorem ipsum dolor sit ncididunt ut labore',
+            //         schedeule: 'personnal',
+            //         className: "fc-event-danger",
+            //         location: 'General Area'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Repeating Event',
+            //         description: 'Lorem ipsum dolor sit amet, labore',
+            //         schedeule: 'personnal',
+            //         start: YM + '-16T16:00:00',
+            //         end: YM + '-16T17:00:00',
+            //         location: 'General Area'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Conference',
+            //         start: YESTERDAY,
+            //         end: TOMORROW,
+            //         description: 'Lorem ipsum dolor eius mod tempor labore',
+            //         schedeule: 'personnal',
+            //         className: "fc-event-primary",
+            //         location: 'Conference Hall A'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Meeting',
+            //         start: TODAY + 'T10:30:00',
+            //         end: TODAY + 'T12:30:00',
+            //         description: 'Lorem ipsum dolor eiu idunt ut labore',
+            //         schedeule: 'personnal',
+            //         location: 'Meeting Room 11.06'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Lunch',
+            //         start: TODAY + 'T12:00:00',
+            //         end: TODAY + 'T14:00:00',
+            //         className: "fc-event-info",
+            //         description: 'Lorem ipsum dolor sit amet, ut labore',
+            //         schedeule: 'personnal',
+            //         location: 'Cafeteria'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Meeting',
+            //         start: TODAY + 'T14:30:00',
+            //         end: TODAY + 'T15:30:00',
+            //         className: "fc-event-warning",
+            //         description: 'Lorem ipsum conse ctetur adipi scing',
+            //         schedeule: 'personnal',
+            //         location: 'Meeting Room 11.10'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Happy Hour',
+            //         start: TODAY + 'T17:30:00',
+            //         end: TODAY + 'T21:30:00',
+            //         className: "fc-event-info",
+            //         description: 'Lorem ipsum dolor sit amet, conse ctetur',
+            //         schedeule: 'personnal',
+            //         location: 'The English Pub'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Dinner',
+            //         start: TOMORROW + 'T18:00:00',
+            //         end: TOMORROW + 'T21:00:00',
+            //         className: "fc-event-solid-danger fc-event-light",
+            //         description: 'Lorem ipsum dolor sit ctetur adipi scing',
+            //         schedeule: 'team',
+            //         location: 'New York Steakhouse'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Birthday Party',
+            //         start: TOMORROW + 'T12:00:00',
+            //         end: TOMORROW + 'T14:00:00',
+            //         className: "fc-event-primary",
+            //         description: 'Lorem ipsum dolor sit amet, scing',
+            //         schedeule: 'team',
+            //         location: 'The English Pub'
+            //     },
+            //     {
+            //         id: uid(),
+            //         title: 'Site visit',
+            //         start: YM + '-28',
+            //         end: YM + '-29',
+            //         className: "fc-event-solid-info fc-event-light",
+            //         description: 'Lorem ipsum dolor sit amet, labore',
+            //         schedeule: 'team',
+            //         location: '271, Spring Street'
+            //     }
+            // ],
 
             // Handle changing calendar views --- more info: https://fullcalendar.io/docs/datesSet
             datesSet: function(){
@@ -359,10 +370,10 @@ var KTAppCalendar = function () {
         //             dw.classList.add('d-none');
         //         });
         //     } else {
-        //         endFlatpickr.setDate(data.startDate, true, 'Y-m-d');
-        //         datepickerWrappers.forEach(dw => {
-        //             dw.classList.remove('d-none');
-        //         });
+                endFlatpickr.setDate(data.startDate, true, 'Y-m-d');
+                datepickerWrappers.forEach(dw => {
+                    dw.classList.remove('d-none');
+                });
         //     }
         // });
 
@@ -413,15 +424,15 @@ var KTAppCalendar = function () {
 
                                     // Merge date & time
                                     var startDateTime = moment(startFlatpickr.selectedDates[0]).format();
-                                    var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length - 1]).format();
+                                    var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length /*- 1*/]).format();
                                     // if (!allDayEvent) {
-                                    //     const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
-                                    //     const endDate = startDate;
-                                    //     const startTime = moment(startTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
-                                    //     const endTime = moment(endTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
+                                        const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
+                                        const endDate = startDate;
+                                        const startTime = moment(startTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
+                                        const endTime = moment(endTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
 
-                                    //     startDateTime = startDate + 'T' + startTime;
-                                    //     endDateTime = endDate + 'T' + endTime;
+                                        startDateTime = startDate + 'T' + startTime;
+                                        endDateTime = endDate + 'T' + endTime;
                                     // }
 
                                     // Add new event to calendar
@@ -479,11 +490,11 @@ var KTAppCalendar = function () {
         //             dw.classList.add('d-none');
         //         });
         //     } else {
-        //         endFlatpickr.setDate(data.startDate, true, 'Y-m-d');
-        //         datepickerWrappers.forEach(dw => {
-        //             dw.classList.remove('d-none');
-        //         });
-        //     }
+                endFlatpickr.setDate(data.startDate, true, 'Y-m-d');
+                datepickerWrappers.forEach(dw => {
+                    dw.classList.remove('d-none');
+                });
+            // }
         // });
 
         populateForm(data);
@@ -536,15 +547,15 @@ var KTAppCalendar = function () {
 
                                     // Merge date & time
                                     var startDateTime = moment(startFlatpickr.selectedDates[0]).format();
-                                    var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length - 1]).format();
+                                    var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length /*- 1*/]).format();
                                     // if (!allDayEvent) {
-                                    //     const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
-                                    //     const endDate = startDate;
-                                    //     const startTime = moment(startTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
-                                    //     const endTime = moment(endTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
+                                        const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
+                                        const endDate = startDate;
+                                        const startTime = moment(startTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
+                                        const endTime = moment(endTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
 
-                                    //     startDateTime = startDate + 'T' + startTime;
-                                    //     endDateTime = endDate + 'T' + endTime;
+                                        startDateTime = startDate + 'T' + startTime;
+                                        endDateTime = endDate + 'T' + endTime;
                                     // }
 
                                     // Add new event to calendar
@@ -599,9 +610,9 @@ var KTAppCalendar = function () {
         //     startDateMod = moment(data.startDate).format('Do MMM, YYYY');
         //     endDateMod = moment(data.endDate).format('Do MMM, YYYY');
         // } else {
-        //     eventNameMod = '';
-        //     startDateMod = moment(data.startDate).format('Do MMM, YYYY - h:mm a');
-        //     endDateMod = moment(data.endDate).format('Do MMM, YYYY - h:mm a');
+            eventNameMod = '';
+            startDateMod = moment(data.startDate).format('Do MMM, YYYY - h:mm a');
+            endDateMod = moment(data.endDate).format('Do MMM, YYYY - h:mm a');
         // }
 
         // Populate view data
@@ -761,11 +772,11 @@ var KTAppCalendar = function () {
         eventName.value = data.eventName ? data.eventName : '';
         eventDescription.value = data.eventDescription ? data.eventDescription : '';
         scheduleType.value = data.scheduleType ? data.scheduleType : '';
-        eventLocation.value = data.eventLocation ? data.eventLocation : '';
+        // eventLocation.value = data.eventLocation ? data.eventLocation : '';
         startFlatpickr.setDate(data.startDate, true, 'Y-m-d');
 
         // Handle null end dates
-        const endDate = data.endDate ? data.endDate : moment(data.startDate).format();
+        // const endDate = data.endDate ? data.endDate : moment(data.startDate).format();
         endFlatpickr.setDate(endDate, true, 'Y-m-d');
 
         // const allDayToggle = form.querySelector('#kt_calendar_datepicker_allday');
@@ -776,13 +787,13 @@ var KTAppCalendar = function () {
         //         dw.classList.add('d-none');
         //     });
         // } else {
-        //     startTimeFlatpickr.setDate(data.startDate, true, 'Y-m-d H:i');
-        //     endTimeFlatpickr.setDate(data.endDate, true, 'Y-m-d H:i');
-        //     endFlatpickr.setDate(data.startDate, true, 'Y-m-d');
-        //     allDayToggle.checked = false;
-        //     datepickerWrappers.forEach(dw => {
-        //         dw.classList.remove('d-none');
-        //     });
+            startTimeFlatpickr.setDate(data.startDate, true, 'Y-m-d H:i');
+            endTimeFlatpickr.setDate(data.endDate, true, 'Y-m-d H:i');
+            endFlatpickr.setDate(data.startDate, true, 'Y-m-d H:i');
+            // allDayToggle.checked = false;
+            datepickerWrappers.forEach(dw => {
+                dw.classList.remove('d-none');
+            });
         // }
     }
 
