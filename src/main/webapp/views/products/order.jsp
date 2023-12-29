@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%><!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<!DOCTYPE html>
 <html lang="ko">
 <!--begin::Head-->
 <head>
@@ -75,6 +77,8 @@ button i.bi {
 <!--begin::Body-->
 <body id="kt_body"
 	class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+	<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal" var="principal"/>
 	<!--begin::Theme mode setup on page load-->
 	<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 	<!--end::Theme mode setup on page load-->
@@ -343,9 +347,25 @@ button i.bi {
     });
 
     function submitForm(button) {
-        var row = button.closest('tr'); 
+    
+        var row = button.closest('tr');
+        var countValue = row.querySelector('input[name="count"]').value.trim();
+        var emp = '${principal.username}';
+        if (countValue === '' || parseInt(countValue) === 0) {
+           
+            Swal.fire({
+                title: '알림',
+                text: '발주할 물품 개수를 입력해주세요.',
+                icon: 'info',
+                confirmButtonText: '확인',
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                }
+            });
+            return; 
+        }
 
-        
         Swal.fire({
             title: '확인',
             text: '물품을 추가하시겠습니까?',
@@ -355,46 +375,38 @@ button i.bi {
             cancelButtonText: '취소',
         }).then((result) => {
             if (result.isConfirmed) {
-            	
-                // 폼 생성
-                var form = document.createElement('form');
-                form.action = '/order/ordercart/insert';
-                form.method = 'POST';
-                
-                
-              
+                // count가 0이 아닌 경우에만 Ajax 요청 실행
+                $.ajax({
+                    url: '/order/ordercart/insert',
+                    method: 'POST',
+                    data: {
+                        productId: row.querySelector('input[name="productId"]').value.trim(),
+                        count: countValue,
+                        birthdate: document.getElementById('kt_daterangepicker_3').value.trim(),
+                        empIdx:emp
+                   
+                    },
+                    success: function (response) {
+                        console.log('물품 추가 결과:', response);
 
-                // hidden input 추가 (productId)
-                var productIdInput = document.createElement('input');
-                productIdInput.type = 'hidden';
-                productIdInput.name = 'productId';
-                productIdInput.value = row.querySelector('input[name="productId"]').value.trim();
-                form.appendChild(productIdInput);
-               
-
-                // hidden input 추가 (count)
-                var countInput = document.createElement('input');
-                countInput.type = 'hidden';
-                countInput.name = 'count';
-                countInput.value = row.querySelector('input[name="count"]').value.trim();
-                form.appendChild(countInput);
-                
-                var birthdateInput = document.createElement('input');
-                birthdateInput.type = 'hidden';
-                birthdateInput.name = 'birthdate';
-                birthdateInput.value = document.getElementById('kt_daterangepicker_3').value.trim(); // 여기서 'kt_daterangepicker_3'는 실제 날짜 입력란의 id여야 합니다.
-                form.appendChild(birthdateInput);
-                
-
-                // 폼을 body에 추가하고 submit
-                document.body.appendChild(form);
-                form.submit();
-
-                // 폼을 body에서 제거
-                document.body.removeChild(form);
+                        Swal.fire({
+                            title: response === 'success' ? '물품이 추가되었습니다.' : '이미 추가된 물품입니다.',
+                            icon: response === 'success' ? 'success' : 'error',
+                            confirmButtonText: '확인',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        console.error('물품 추가 에러:', e);
+                    }
+                });
             }
         });
     }
+    // -------------------------------------------------------------------
     $("#kt_daterangepicker_3").daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
@@ -403,21 +415,23 @@ button i.bi {
        	
     }
 );
-    //--------------------------------------------------------------------
+    //--------------------------------------------------------------------발주 모달 리스트
     
-  $(document).ready(function() {
-    fetchData(); 
+ $(document).ready(function() {
+    $('#kt_modal_scrollable_2').on('show.bs.modal', function (e) {
+        fetchData();
+    });
 
     function fetchData() {
         $.ajax({
             url: '/order/ordercart/list',
             method: 'GET',
             dataType: 'json',
-            success: function(data) {
-                renderData(data);
+            success: function(data, textStatus, xhr) {
+                    renderData(data);
             },
-            error: function(error) {
-                console.error('에러....:', error);
+            error: function(e) {
+                console.error('에러....:', e);
             }
         });
     }
@@ -427,7 +441,7 @@ button i.bi {
         tableBody.empty();
 
         if (data.length === 0) {
-            tableBody.append('<tr><td colspan="5">검색 결과가 없습니다.</td></tr>');
+            tableBody.append('<tr><td colspan="5">발주할 물품을 추가해주세요.</td></tr>');
         } else {
             $.each(data, function(index, order) {
                 var row = $('<tr>');
@@ -438,21 +452,18 @@ button i.bi {
                 tableBody.append(row);
             });
 
-   
             $('.delete-btn').click(function() {
                 var productName = $(this).data('product-name');
-             
                 $.ajax({
                     url: '/order/ordercart/delete',
                     method: 'POST',
                     data: { productName: productName },
                     success: function(response) {
                         console.log('삭제 성공:', response);
-                   
                         fetchData();
                     },
-                    error: function(error) {
-                        console.error('삭제 에러:', error);
+                    error: function(e) {
+                        console.error('삭제 에러:', e);
                     }
                 });
             });
@@ -460,34 +471,97 @@ button i.bi {
     }
 });
     //-----------------------------------------------------발주하기-------------------------------------------
-  $("#orderBtn").on("click", function () {
-      // 선택된 배송기사
-      var selectedDriverIdx = $("select[data-control='select2']").val();
+const orderButton = document.getElementById('orderBtn');
 
-   
-      $.ajax({
-          url: '/order/insert', 
-          method: 'POST',
-          data: {
-              driverIdx: selectedDriverIdx
-          },
-          success: function (response) {
-              // 성공 시 처리
-              console.log('발주 성공:', response);
-          },
-          error: function (error) {
-              // 실패 시 처리
-              console.error('발주 에러:', error);
-          }
-      });
-  });
-    //--------------------
+orderButton.addEventListener('click', async function () {
+    try {
+     
+        const response = await $.ajax({
+            url: '/order/ordercart/list',
+            method: 'GET',
+            dataType: 'json'
+        });
+
+        console.log('서버 응답:', response);
+        if (response.length === 0) {
+        // 따로 넣을 내용있으면 넣으려고 비워둠
+        } else {
+      
+            Swal.fire({
+                text: '물품을 발주 하시겠습니까?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: '확인',
+                cancelButtonText: '취소',
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                    cancelButton: 'btn btn-secondary'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                	var emp = '${principal.username}';
+                    const selectedDriverIdx = $("select[data-control='select2']").val();
+
+                    $.ajax({
+                        url: '/order/insert',
+                        method: 'POST',
+                        data: {
+                            driverIdx: selectedDriverIdx,
+                            empIdx : emp
+                        },
+                        success: function (response) {
+                          
+                            console.log('발주 성공:', response);
+
+                         
+                            Swal.fire({
+                                text: '발주가 성공적으로 완료되었습니다.',
+                                icon: 'success',
+                                buttonsStyling: false,
+                                confirmButtonText: '확인',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                }
+                            }).then(() => {
+                            
+                                $('.btn[data-bs-dismiss="modal"]').click();
+                            });
+                        },
+                        error: function (e) {
+                       
+                            console.error('발주 에러:', e);
+                        }
+                    });
+                }
+            });
+        }
+    } catch (error) {
+        console.error('에러....:', error);
+        Swal.fire({
+            text: '발주할 물품이 없습니다.',
+            icon: 'info',
+            buttonsStyling: false,
+            confirmButtonText: '확인',
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            }
+        });
+    }
+});
+
+    //-------------------------------------------------------------------
     var msg = "${msg}";
 if(msg != ""){
 	alert(msg);
 }
-        
+//--------------------------------------------------------------------
+
+
 </script>
+
+</sec:authorize>
+
 </body>
 <!--end::Body-->
 </html>

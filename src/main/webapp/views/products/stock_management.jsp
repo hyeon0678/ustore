@@ -333,17 +333,17 @@
 
 				// 선택한 대분류에 따라 중분류 옵션 추가
 				if (selectedCategory === "식품") {
-					$("#Sselect").append('<option value="1">주류</option>');
-					$("#Sselect").append('<option value="2">가공</option>');
-					$("#Sselect").append('<option value="3">신선</option>');
+					$("#Sselect").append('<option value="01">주류</option>');
+					$("#Sselect").append('<option value="02">가공</option>');
+					$("#Sselect").append('<option value="03">신선</option>');
 				} else if (selectedCategory === "생필품") {
-					$("#Sselect").append('<option value="4">주방</option>');
-					$("#Sselect").append('<option value="5">청소</option>');
-					$("#Sselect").append('<option value="6">생활잡화</option>');
+					$("#Sselect").append('<option value="04">주방</option>');
+					$("#Sselect").append('<option value="05">청소</option>');
+					$("#Sselect").append('<option value="06">생활잡화</option>');
 				} else if (selectedCategory === "전자제품") {
-					$("#Sselect").append('<option value="7">가전</option>');
-					$("#Sselect").append('<option value="8">컴퓨터</option>');
-					$("#Sselect").append('<option value="9">디지털</option>');
+					$("#Sselect").append('<option value="07">가전</option>');
+					$("#Sselect").append('<option value="08">컴퓨터</option>');
+					$("#Sselect").append('<option value="09">디지털</option>');
 				}
 			});
 		});

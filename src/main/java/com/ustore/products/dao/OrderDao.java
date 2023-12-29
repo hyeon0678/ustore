@@ -32,6 +32,11 @@ public interface OrderDao {
 
 	void orderDelete();
 
+	ArrayList<OrderDto> orderCartCheck();
+
+	ArrayList<OrderDto> orderHistoryList();
+	
+
 	
 
 }

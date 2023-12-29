@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,7 @@ public class OrderController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired OrderService service;
 
-	@GetMapping(value = "/order/list")
+	@GetMapping(value = "/order/list") //발주 화면 뿌려주는 컨트롤러 
 		public String order(Model model, HttpSession session) {
 		
 		
@@ -65,37 +66,42 @@ public class OrderController {
 		
 		return "products/order";
 	}
-	@RequestMapping(value = "/order/ordercart/insert", method = {RequestMethod.GET, RequestMethod.POST})
-	public String ordercartInsert(@RequestParam Map<String, String>params, Model model, HttpSession session) {
-		logger.info("params :"+params);
-	
-		
-		 String birthdate = params.get("birthdate");
-		    session.setAttribute("birthdate", birthdate);
-		     boolean checkPro = service.checkProduct(params);
-		     
-		     if(checkPro ==true) {
-		    	 service.orderCartInsert(params);
-		     }else if(checkPro==false){
-		    	 model.addAttribute("msg","이미 추가된 물품 입니다.");
-		     }
-		
-	
-		 			
-		return "redirect:/order/list";
-		
-		
-		
-	}
+	@PostMapping("/order/ordercart/insert") // 물품 장바구니에 추가하는 컨트롤러 
+    @ResponseBody
+    public String ordercartInsert(@RequestParam Map<String, String> params, HttpSession session) {
+        String birthdate = params.get("birthdate");
+        session.setAttribute("birthdate", birthdate);
+        
+        logger.info("birthdate :"+birthdate);
+        logger.info("params : "+params);
+
+        boolean checkPro = service.checkProduct(params);
+
+        if (checkPro) {
+            service.orderCartInsert(params);
+            return "success"; 
+        } else {
+            return "alreadyAdded"; 
+        }
+    }
 	
 	@GetMapping("/order/ordercart/list") // 발주 장바구니 리스트  ajax 요청
 	@ResponseBody
-	public ArrayList<OrderDto> getOrderList() {
-	    // 서비스 계층에서 필요한 데이터를 조회
+	public ResponseEntity<ArrayList<OrderDto>> getOrderList() {
+	   
+		boolean orderCheck = service.orderCartCheck();
+	    logger.info("장바구니에 값이 있나?  없으면 false : "+orderCheck);
+	    if (orderCheck==false) {
+	      
+	        return ResponseEntity.noContent().build();
+	    }
 		ArrayList<OrderDto> orderList = service.orderList();
 	    
+	    
+	    
+	    
 	    logger.info("장바구니 리스트:"+orderList);
-	    return orderList;
+	    return ResponseEntity.ok(orderList);
 	}
 	
 	
@@ -112,7 +118,12 @@ public class OrderController {
 	
 	@PostMapping("/order/insert") //발주자 (사원	id 필요 emp_idx)
 	@ResponseBody
-	public String orderInsert(@RequestParam String driverIdx, HttpSession session ) {
+	public String orderInsert(@RequestParam String driverIdx,@RequestParam String empIdx,HttpSession session ) {
+		
+		
+		boolean orderCheck = service.orderCartCheck();
+	    logger.info("장바구니에 값이 있나?  없으면 false : "+orderCheck);
+	    logger.info("empIdx 값 찍히는지 : "+empIdx);
 		
 		String birthdateString  = (String) session.getAttribute("birthdate");
 		
@@ -126,7 +137,7 @@ public class OrderController {
 		logger.info("선택한 날짜  : "+formattedBirthdate);
 		logger.info("선택한 배송기사 : "+ driverIdx);
 		
-		service.orderInsert(formattedBirthdate,driverIdx); // 여기에 emp_idx 필요 세션에서 가져오기
+		service.orderInsert(formattedBirthdate,driverIdx,empIdx); // 여기에 emp_idx 필요 세션에서 가져오기
 		ArrayList<OrderDto> ProductCount = service.orderCartSelect();
 		
 		logger.info("상품 개수: "+ProductCount);
@@ -144,6 +155,20 @@ public class OrderController {
 		
 		return "발주 성공!";
 	}
+	
+	//--------------------------------------order_list---------------------------------------
+	
+	
+	@GetMapping("/orderlist/list")
+	public String orderList() {
+		
+		ArrayList<OrderDto> orderlist = service.orderHistoryList();
+		
+		
+		
+		return "products/order_list";
+	}
+	
 	
 	
 }
