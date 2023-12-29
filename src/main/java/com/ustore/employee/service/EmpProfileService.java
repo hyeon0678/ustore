@@ -1,5 +1,6 @@
 package com.ustore.employee.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -17,8 +18,17 @@ public class EmpProfileService {
 	@Autowired EmpProfileDao dao;
 
 	public void addevent(Map<String, String> params) {
-		dao.addevent(params);
 		logger.info("service_params : " + params);
+		dao.addevent(params);
+	}
+
+	public List<Map<String, Object>> profilecalendar() {
+		return dao.profilecalendar();
+	}
+
+	public void attendance(Map<String, String> params) {
+		logger.info("service_attendance : " + params);
+		dao.attendance(params);
 	}
 	
 }
