@@ -19,7 +19,7 @@ License: For each use you must have a valid license purchased only from above li
 <base href="../" />
 		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
 		<meta charset="utf-8" />
-		
+		<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
@@ -28,7 +28,7 @@ License: For each use you must have a valid license purchased only from above li
 
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="resource/assets/plugins/globalresource/assets/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
@@ -59,13 +59,14 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="row d-flex">
 								        <div class="col-md-4 d-flex">
 								            <!-- 셀렉트 박스 -->
-								            <select class="form-select w-50" aria-label="Select option">
-								                <option value="1">회원명</option>
-								                <option value="2">전화번호</option>
+								            <select class="form-select w-50" aria-label="Select option" id="memberSearchOpt">
+								                <option value="name">회원명</option>
+								                <option value="contact_num">전화번호</option>
 								                <!-- 추가적인 옵션들을 필요에 따라 추가할 수 있습니다 -->
 								            </select>
-											<input type="text" class="form-control form-control-solid" placeholder="검색 정보를 입력해주세요">
-											<input type="button" class="btn btn-primary" value="검색">
+											<input type="text" class="form-control form-control-solid" placeholder="검색 정보를 입력해주세요"  id="memberSearchText">
+											<input type="button" class="btn btn-primary" value="검색"  id="memberSearchBtn">
+											
 								        </div>
 								        
 								    </div>
@@ -76,28 +77,22 @@ License: For each use you must have a valid license purchased only from above li
 														<th>회원번호</th>
 														<th>전화번호</th>
 														<th>회원명</th>
-														<th>멤버쉽 종류</th>
+														<th>회원 종류</th>
 														<th>멤버쉽 등급</th>
 														<th><p hidden>선택 버튼 칸</p></th>
 													</tr>
 												</thead>
-												<tbody>
+												<tbody id="memberBody">
+													<c:forEach var="list" items="${list}">													
 													<tr style="vertical-align: middle;">
-														<td>Tiger Nixon</td>
-														<td>System Architect</td>
-														<td>Edinburgh</td>
-														<td>61</td>
-														<td>2011/04/25</td>
-														<th><a href="#" class="btn btn-success">선택</a></th>
+														<td>${list.memberIdx}</td>
+														<td>${list.contactNum}</td>
+														<td>${list.name}</td>
+														<td>${list.commonType}</td>
+														<td>${list.grade}</td>
+														<th><a href="pos/item?memberIdx=${list.memberIdx}" class="btn btn-primary">선택</a></th>
 													</tr>
-													<tr style="vertical-align: middle;">
-														<td>Tiger Nixon</td>
-														<td>System Architect</td>
-														<td>Edinburgh</td>
-														<td>61</td>
-														<td>2011/04/25</td>
-														<th><a href="#" class="btn btn-success">선택</a></th>
-													</tr>
+													</c:forEach>
 												</tbody>
 											</table>
 										</div>
@@ -127,11 +122,11 @@ License: For each use you must have a valid license purchased only from above li
 		<!--begin::Javascript-->
 		<script>var hostUrl = "/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="resource/assets/plugins/globalresource/assets/plugins.bundle.js"></script>
+
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Vendors Javascript(used for this page only)-->
-		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+	
 		<!--end::Vendors Javascript-->
 		<!--begin::Vendors Javascript(used for this page only)-->
 
@@ -144,5 +139,69 @@ License: For each use you must have a valid license purchased only from above li
 	</body>
 	<!--end::Body-->
 	<script>
+	
+	$('#memberSearchBtn').on('click' ,function(){
+		// 선택된 옵션의 값을 가져오기
+        var selectedOption = document.getElementById("memberSearchOpt").value;
+        
+        // 입력된 텍스트 필드의 내용을 가져오기
+        var searchText = document.getElementById("memberSearchText").value;
+        if(selectedOption == 'contact_num'){
+        	if(searchText.length < 4){
+        		alert("전화번호는 뒷자리 4자리를 입력해 주세요.");
+        	}else{
+			memberSearch(selectedOption,searchText);	
+        	}
+        }else{
+        	memberSearch(selectedOption,searchText);
+        }	
+	});
+	
+	function memberSearch(selectedOption,searchText){
+		
+		$.ajax({
+	        type: 'get',
+	        url: 'pos/memberSearch.ajax',
+	        data: {
+	            'selectedOption': selectedOption,
+	            'searchText': searchText
+	        },
+	        dataType: 'json',
+	        success: function (data) {
+				console.log(data);
+				drawList(data);
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}
+	
+	
+	function drawList(data){
+		var content='';
+        
+		data.list.forEach(function(item,idx){
+			content += '<tr style="vertical-align: middle;">'
+			content += '<td>'+item.memberIdx+'</td>'
+			content += '<td>'+item.contactNum+'</td>'
+			content += '<td>'+item.name+'</td>'
+			content += '<td>'+item.commonType+'</td>'
+			content += '<td>'+item.grade+'</td>'
+			content += '<th><a href="pos/item?memberIdx=' + item.memberIdx + '" class="btn btn-primary">선택</a></th>';
+			content += '</tr>'
+		})
+		$('#memberBody').empty();
+		$('#memberBody').append(content);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </script>
 </html>

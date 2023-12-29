@@ -70,7 +70,7 @@ License: For each use you must have a valid license purchased only from above li
 										<div class="card h-xl-100">
 											<!--begin::Header-->
 											<div class="card-header align-items-center border-0 mt-5">
-												<h3 class="card-title align-items-start flex-column">
+												<h3 class="card-title align-items-start flex-column" style="width:100%;">
 													<span class="fw-bolder text-gray-900 fs-2 mb-5">상품</span>
 													<div class="d-flex">
 														<select class="form-select fs-6" aria-label="Select option" style="width: 110px; height: 40px;">
@@ -86,21 +86,23 @@ License: For each use you must have a valid license purchased only from above li
 												</h3>
 												<div class="card-toolbar">
 													<div class="table-responsive">
-											<table class="table table-row-dashed table-row-gray-300 gy-5">
+											<table class="table table-row-dashed table-row-gray-300 gy-5" style="white-space:nowrap;">
 												<thead>
 													<tr class="fw-bold fs-6 text-gray-800">
-														<th>보유 수량</th>
+														<th style="text-align: center; padding-left: 9.75px;">보유 수량</th>
 														<th>상품명</th>
 														<th>상품코드</th>
+														<th>가격</th>
 														<th></th>
 													</tr>
 												</thead>
 												<tbody>
 													<tr style="vertical-align: middle;">
-														<td>50</td>
+														<td style="text-align: center; padding-left: 9.75px;">50</td>
 														<td>바닐라 화장지</td>
 														<td>상품코드</td>
-														<th><a href="#" class="btn btn-success mx-12">결제하기</a></th>
+														<td>가격</td>
+														<th style="text-align: center;"><a href="#" class="btn btn-success mx-3">결제하기</a></th>
 													</tr>
 												</tbody>
 											</table>
