@@ -8,36 +8,20 @@
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="/resource/assets/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="/resource/assets/media/logos/mainLogo.svg" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Vendor Stylesheets(used for this page only)-->
-		<!--end::Vendor Stylesheets-->
-		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<!-- <link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		
-		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" /> -->
-		<!--end::Global Stylesheets Bundle-->
-
 		<style>
-			.chart-div{
-				display: flex;
-				height: 500px;
-				margin-bottom: 20px;	
-			}
-			.chart-body-div{
-				width: 45%;
-				margin: 10px 20px;
-			}
 			.signature-table {
-            float: right;
-            margin-left: 20px;
+	            float: right;
+	            margin-left: 20px;
 			}
 			.signature-table td {
 				border: 1px solid #ddd;
 				padding: 10px;
 				text-align: center;
+				width: 80px;
 			}
 		</style>
 	</head>
@@ -65,18 +49,10 @@
 				<div class="d-flex justify-content-end mb-4" style="margin-bottom: 30px;">
 					<!-- 결재자 테이블 -->
 					<table class="signature-table mr-3" id="apprListTable">
-						<tr>
-							<td>결재자1</td>
-							<td>결재자2</td>
-							<td>결재자3</td>
-							<td>결재자4</td>
-						</tr>
-						<tr style="height: 70px;">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
+					  <tr id="approverRow">
+					  </tr>
+					  <tr style="height: 80px;">
+					  </tr>
 					</table>
 				</div>
 				<!--begin::Input group-->
@@ -88,13 +64,13 @@
 				<!--begin::Input group-->
 				<div class="input-group mb-5">
 					<span class="input-group-text flex-grow-1" id="inputGroup-sizing-default" style="width: 20%;">제목</span>
-					<input type="text" id="inputSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+					<input type="text" name="subject" id="inputSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
 				</div>
 				<!--end::Input group-->
 				
 				<!--begin::editor-->
 				<div class="py-5" data-bs-theme="light">
-					<textarea name="kt_docs_ckeditor_classic" id="kt_docs_ckeditor_classic"></textarea>												
+					<textarea name="content" id="kt_docs_ckeditor_classic"></textarea>												
 				</div>	
 				<!--end::editor-->	
 					
