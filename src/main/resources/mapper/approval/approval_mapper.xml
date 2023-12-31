@@ -18,5 +18,78 @@
 		WHERE
 		    e.emp_idx = #{param1};
 	</select>
+	
+	<!-- <insert id="tempSaveDoc" parameterType="ApprovalDto">
+		<choose>
+	        <when test="commonIdx == 30">
+            INSERT INTO business_draft (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
+                                       appr_status, fn_approver, appr_type_idx)
+            VALUES (#{apprIdx}, #{empIdx}, #{apprSubject}, #{apprContent}, #{submitDate}, 43, #{fnApprover}, #{commonIdx});
+        </when>
+        <when test="commonIdx == 31">
+            INSERT INTO payment_resolution (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
+                                           appr_status, fn_approver, appr_type_idx)
+            VALUES (#{apprIdx}, #{empIdx}, #{subject}, #{content}, #{submitDate}, 43, #{fnApprover}, #{commonIdx});
+        </when>
+        <when test="commonIdx == 32">
+            INSERT INTO req_vacation (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
+                                       appr_status, fn_approver, appr_type_idx)
+            VALUES (#{apprIdx}, #{empIdx}, #{subject}, #{content}, #{submitDate}, 43, #{fnApprover}, #{commonIdx});
+        </when>
+	    </choose>
+	</insert>
+	   
+	<insert id="tempSaveLine" parameterType="ApprovalDto">
+		<foreach collection="approvalLines" item="approvalLine" separator=";">
+	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm, appr_date, appr_type_idx)
+	        VALUES (#{approvalLine.empIdx}, #{apprIdx}, #{approvalLine.approver}, #{approvalLine.apprOrder},
+	                #{approvalLine.apprConfirm}, #{approvalLine.apprDate}, #{approvalLine.apprTypeIdx})
+	    </foreach>
+	</insert>
+	
+	<insert id="tempSaveRecv" parameterType="ApprovalDto">
+	    <foreach collection="receivers" item="receiver" separator=";">
+	        INSERT INTO recipient (emp_idx, appr_idx, appr_type_idx)
+	        VALUES (#{receiver.empIdx}, #{apprIdx}, #{receiver.apprTypeIdx})
+	    </foreach>
+	</insert>
+	
+	<insert id="saveDoc" parameterType="ApprovalDto">
+		<choose>
+	        <when test="commonIdx == 30">
+	            INSERT INTO business_draft (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
+	                                       appr_status, fn_approver, appr_type_idx)
+	            VALUES (#{apprIdx}, #{empIdx}, #{subject}, #{content}, #{submitDate}, #{apprStatus},
+	                    #{fnApprover}, #{docId});
+	        </when>
+	        <when test="commonIdx == 31">
+	            INSERT INTO payment_resolution (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
+	                                           appr_status, fn_approver, appr_type_idx)
+	            VALUES (#{apprIdx}, #{empIdx}, #{subject}, #{content}, #{submitDate}, #{apprStatus},
+	                    #{fnApprover}, #{docId});
+	        </when>
+	        <when test="commonIdx == 32">
+	            INSERT INTO req_vacation (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
+	                                       appr_status, fn_approver, appr_type_idx)
+	            VALUES (#{apprIdx}, #{empIdx}, #{subject}, #{content}, #{submitDate}, #{apprStatus},
+	                    #{fnApprover}, #{docId});
+	        </when>
+	    </choose>
+	</insert>
+	    
+	<insert id="saveLine" parameterType="ApprovalDto">
+		<foreach collection="approvalLines" item="approvalLine" separator=";">
+	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm, appr_date, appr_type_idx)
+	        VALUES (#{approvalLine.empIdx}, #{apprIdx}, #{approvalLine.approver}, #{approvalLine.apprOrder},
+	                #{approvalLine.apprConfirm}, #{approvalLine.apprDate}, #{approvalLine.apprTypeIdx})
+	    </foreach>
+	</insert>
+	
+	<insert id="saveRecv" parameterType="ApprovalDto">
+	    <foreach collection="receivers" item="receiver" separator=";">
+	        INSERT INTO recipient (emp_idx, appr_idx, appr_type_idx)
+	        VALUES (#{receiver.empIdx}, #{apprIdx}, #{receiver.apprTypeIdx})
+	    </foreach>
+	</insert> -->
 
 </mapper>

@@ -276,38 +276,14 @@
         var loggedInEmp_idx = ${principal.username};
     	console.log(loggedInEmp_idx);
         addLoggedInEmpToApprLine(loggedInEmp_idx);
-        
-    	 // 결재상신 버튼 클릭 시의 동작
-        $('#btnApproval').on('click', function () {
-            // 여기에 결재상신 버튼 클릭 시 수행할 동작 추가
-            console.log('결재상신 버튼 클릭');
-            sendApproval();
-        });    	
+            	 	
     	 
         // 결재정보 버튼 클릭 시의 동작
         $('#btnApprovalInfo').on('click', function () {
-            // 여기에 결재정보 버튼 클릭 시 수행할 동작 추가
-            console.log('결재정보 버튼 클릭');
-            
+            console.log('결재정보 버튼 클릭');            
             myModal.show();
         });
-
-        // 임시저장 버튼 클릭 시의 동작
-        $('#btnSaveTemp').on('click', function () {
-            // 여기에 임시저장 버튼 클릭 시 수행할 동작 추가
-            console.log('임시저장 버튼 클릭');
-        });
-
-        // 뒤로가기 버튼 클릭 시의 동작
-        $('#btnGoBack').on('click', function () {
-        	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
-                location.href = '/approval/newapproval';
-            } else {
-                // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
-                console.log('뒤로가기 버튼 클릭 - 취소');
-            }            
-        });
-        
+                
         $('#kt_modal_1').on('shown.bs.modal', function(){
 			getTreeData();
 		})  	
@@ -415,12 +391,10 @@
 	    // 서버에서 사원 정보 조회
 	    $.ajax({
 	        type: 'GET',
-	        url: '/info/' + emp_idx, // 실제로는 서버의 엔드포인트에 맞게 수정해야 함
+	        url: '/info/' + emp_idx,
 	        success: function (employeeInfo) {
-	            // 성공적으로 정보를 받아왔을 때의 동작
 	            console.log(employeeInfo);
 
-	            // 생성할 approvalData 객체를 만들어서 데이터 채우기
 	            var approvalData = {
 	                type: '결재',
 	                name: employeeInfo.empName,
@@ -445,7 +419,6 @@
 	         	}
 	        },
 	        error: function (error) {
-	            // 오류가 발생했을 때의 동작
 	            console.error('Error fetching employee info:', error);
 	        }
 	    });
@@ -490,7 +463,6 @@
 	function removeEmpFromApprLines(empToRemove){
 		var index = -1;
 	    for (var i = 0; i < approvalLines.length; i++) {
-	        // employeeInfo 객체가 값으로 비교 가능하다고 가정합니다.
 	        if (JSON.stringify(approvalLines[i]) == JSON.stringify(empToRemove)) {
 	            index = i;
 	            break;
@@ -511,9 +483,8 @@
 	    // 서버에서 사원 정보 조회
 	    $.ajax({
 	        type: 'GET',
-	        url: '/info/' + emp_idx, // 실제로는 서버의 엔드포인트에 맞게 수정해야 함
+	        url: '/info/' + emp_idx,
 	        success: function (employeeInfo) {
-	            // 성공적으로 정보를 받아왔을 때의 동작
 	            console.log(employeeInfo);
 
 	            // 생성할 receiverData 객체를 만들어서 데이터 채우기
@@ -534,7 +505,6 @@
 	         	if(!isRecvDuplicate(receiverData)){
 		            // receivers 배열에 데이터 추가
 		            receivers.push(receiverData);   
-		         	// receivers 배열 내용 확인
 		            console.log("Receivers array:", receivers);	         		
 	         	}else{
 	         		console.log("중복된 데이터가 들어갔습니다.")
@@ -582,7 +552,6 @@
 	function removeEmpFromReceiver(empToRemove){
 		var index = -1;
 	    for (var i = 0; i < receivers.length; i++) {
-	        // employeeInfo 객체가 값으로 비교 가능하다고 가정합니다.
 	        if (JSON.stringify(receivers[i]) == JSON.stringify(empToRemove)) {
 	            index = i;
 	            break;
@@ -653,16 +622,14 @@
 		var approvalSuccess = false;
 	    var receiverSuccess = false;
 	    
-        // 서버로 결재선 정보 전송
         $.ajax({
         	type: 'POST',
-            url: '/saveapprlinedata', // 서버의 엔드포인트
+            url: '/saveapprlinedata',
             data: JSON.stringify({
                 approvalLines: approvalLines
             }),
             contentType:'application/json; charset=utf-8',
             success: function (data) {
-                // 성공적으로 저장되었을 때의 동작
                 console.log(data.approvalLines);
                 console.log('결재선 정보가 성공적으로 저장되었습니다.'); 
                 
@@ -696,7 +663,6 @@
 	            }
             },
             error: function (error) {
-                // 저장 중 오류가 발생했을 때의 동작
                 console.error('결재선 정보 저장 중 오류가 발생했습니다.');
                 $('#kt_modal_1').modal('hide');
             }
@@ -712,7 +678,6 @@
             }),
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
-                // 성공적으로 수신자 정보 저장되었을 때의 동작
                 console.log(data.receivers);
                 console.log('수신자 정보가 성공적으로 저장되었습니다.');
 
@@ -731,7 +696,7 @@
                     // 수신자 이름들을 쉼표로 구분하여 문자열로 변환
                     var receiversString = receiverNames.join(', ');
 
-                    // input 태그에 수신자 이름 설정
+                    // 결재양식의 수신자 input 태그에 수신자 이름 넣기
                     document.getElementById('inputReceiver').value = receiversString;
                 } else {
                     document.getElementById('inputReceiver').value = '내부결재';
@@ -754,36 +719,72 @@
         
     });
 	
-	
+	// 임시저장
+    $('#btnSaveTemp').on('click', function () {
+    	
+        console.log('임시저장 버튼 클릭');
+        var appr_subject = $('#appr_subject').val();
+	    var appr_content = $('#appr_content').val();
+	    
+        var approvalDto = {
+    		subject: appr_subject,
+            content: appr_content,
+            approverLines: approverLines,
+            receivers: receivers	
+        };
+
+        $.ajax({
+            url: '/tempsave', 
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(approvalDto),
+            success: function(response) {
+                alert('임시저장이 완료되었습니다.');
+            },
+            error: function(error) {
+                console.error('임시저장 중 오류가 발생했습니다.', error);
+            }
+        });
+        
+    });
+    
 	
 	// 결재상신
 	$('#btnSendApproval').on('click', function () {
 
+		console.log('결재상신 버튼 클릭');
 	    // 필요한 다른 데이터도 수집
-	    var subject = $('#subject').val(); // 예시: 제목을 입력하는 input 필드
-	    var content = $('#content').val();
-	    // 서버로 데이터 전송 (AJAX 사용)
+	    var appr_subject = $('#appr_subject').val();
+	    var appr_content = $('#appr_content').val();
+	    var approvalDto = {
+	    		subject: appr_subject,
+	            content: appr_content,
+	            approverLines: approverLines,
+	            receivers: receivers	
+	        };
+	    
 	    $.ajax({
-	        url: '/sendappr', // 저장을 처리할 서버의 엔드포인트
+	        url: '/sendappr',
 	        method: 'POST',
-	        data: {
-	            subject: subject,
-	            approvalLines: JSON.stringify(approvalLines),
-                receivers: JSON.stringify(receivers)
-	            // 여기에 필요한 다른 데이터 추가
-	        },
+	        data: JSON.stringify(approvalDto),
 	        success: function (response) {
-	            // 성공적으로 저장되었을 때의 동작
 	            console.log('문서가 결재상신 되었습니다.');
 	        },
 	        error: function (error) {
-	            // 저장 중 오류가 발생했을 때의 동작
 	            console.error('결재상신 중 오류가 발생했습니다.');
 	        }
 	    });
 	});
 
 	
+	// 뒤로가기 버튼 클릭 시의 동작
+    $('#btnGoBack').on('click', function () {
+    	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
+            location.href = '/approval/newapproval';
+        } else {
+            console.log('뒤로가기 버튼 클릭 - 취소');
+        }            
+    });
 	
 	</script>
 </html>

@@ -2,6 +2,7 @@ package com.ustore.approval.controller;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ustore.approval.dto.ApprDocDto;
 import com.ustore.approval.dto.ApprovalDto;
 import com.ustore.approval.service.ApprovalService;
 import com.ustore.employee.dto.EmployeeDto;
@@ -62,6 +65,8 @@ public class ApprovalController {
 	
 	@GetMapping(value="/approval/newapproval/write")
 	public String write(@RequestParam int common_idx, Model model, HttpSession session) {
+		ApprovalDto dto = new ApprovalDto();
+		dto.setCommonIdx(common_idx);
 		// common_idx에 따라 다른 JSP 페이지 경로 설정
         String formPage = getFormPageByCommonIdx(common_idx);
         model.addAttribute("formPage", formPage);
@@ -120,7 +125,7 @@ public class ApprovalController {
     
 
     @PostMapping("/saveapprlinedata")
-    public ResponseEntity<Map<String, Object>> saveApprLineData(@RequestBody ApprovalDto dto, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> saveApprLineData(@RequestBody ApprDocDto dto, HttpSession session) {
         try {
             session.setAttribute("approvalLines", dto.getApprovalLines());
 
@@ -138,7 +143,7 @@ public class ApprovalController {
     } 
     
     @PostMapping("/savereceiverdata")
-    public ResponseEntity<Map<String, Object>> saveReceiverData(@RequestBody ApprovalDto dto, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> saveReceiverData(@RequestBody ApprDocDto dto, HttpSession session) {
         try {    	
             session.setAttribute("receivers", dto.getReceivers());
 
@@ -154,12 +159,27 @@ public class ApprovalController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     } 
+/*    
+    @PostMapping(value="/saveappr") 
+	public String tempSave(Principal principal, @RequestBody ApprDocDto dto) {
+		 
+		String emp_idx = principal.getName(); 
+		dto.setEmpIdx(emp_idx);
+		service.tempSave(dto);
+		return "redirect:/approval/newapproval";  
+	}  
+ */   
     
-       
-	/*
-	 * @PostMapping(value="/newapproval/sendappr") public ModelAndView
-	 * sendAppr(@RequestBody ApprovalDto dto) { ModelAndView mav = new
-	 * ModelAndView(); return service.sendAppr(dto); }
+    
+/*
+	@PostMapping(value="/sendappr") 
+	public ModelAndView sendAppr(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
+		 ModelAndView mav = new ModelAndView("redirect:/approval/newapproval"); 
+		 String emp_idx = principal.getName(); 
+		 service.sendAppr(dto);
+		 rAttr.addFlashAttribute("msg",  "결재상신 되었습니다.");
+		 return mav;
+	}
 	 */
 	
 }
