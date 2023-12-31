@@ -3,7 +3,7 @@ package com.ustore.chat.dto;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class ChatRoomDto {
+public class ChatRoomDto implements Comparable<ChatRoomDto>{
 	private int chatRoomIdx;
 	private String chatRoomName;
 	private String isIndividual;
@@ -12,14 +12,14 @@ public class ChatRoomDto {
 	private Timestamp maxSentDate;
 	private Timestamp maxReceivedDate;
 	private int readCnt;
-	private String lastMsgTime;
+	private int lastMsgTime;
 	
 	
 	
-	public String getLastMsgTime() {
+	public int getLastMsgTime() {
 		return lastMsgTime;
 	}
-	public void setLastMsgTime(String lastMsgTime) {
+	public void setLastMsgTime(int lastMsgTime) {
 		this.lastMsgTime = lastMsgTime;
 	}
 	public Timestamp getMaxSentDate() {
@@ -69,6 +69,12 @@ public class ChatRoomDto {
 	}
 	public void setParticipaintList(List<String> participaintList) {
 		this.participaintList = participaintList;
+	}
+	
+	@Override
+	public int compareTo(ChatRoomDto o) {
+		//Integer.parseInt(o.getLastMsgTime()) - Integer.parseInt(getLastMsgTime());
+		return 1; 
 	}
 	
 	

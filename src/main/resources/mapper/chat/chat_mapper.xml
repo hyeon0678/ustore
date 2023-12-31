@@ -63,4 +63,24 @@
 	insert into chat_received_history (chat_idx,chat_room_idx,receiver)
 	values(#{chatIdx},#{roomNum},#{receiver});
 </insert>
+
+<select id="selectChatHistory" resultType="ChatDto">
+SELECT emp_name, data, send_date, sender
+FROM (
+	(SELECT e2.emp_name AS emp_name, csh.chat_content AS data, csh.chat_date AS send_date , csh.sender AS sender 
+		FROM chat_sent_history csh 
+		LEFT OUTER JOIN employee e2 
+		ON csh.sender = e2.emp_idx 
+		WHERE csh.chat_room_idx = #{param1} AND csh.sender like #{param2})
+		UNION 
+	(SELECT e.emp_name AS emp_name, csh.chat_content AS data, csh.chat_date AS send_date , csh.sender AS sender 
+		FROM chat_received_history crh 
+		LEFT OUTER JOIN chat_sent_history csh
+		ON crh.chat_room_idx = csh.chat_room_idx 
+		LEFT OUTER JOIN employee e
+		ON crh.receiver = e.emp_idx 
+		WHERE csh.chat_room_idx = #{param1} AND crh.receiver like #{param2})
+	) AS chatting
+ORDER BY chatting.send_date;
+</select>
 </mapper>
