@@ -1,5 +1,7 @@
 package com.ustore.chat.service;
 
+import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -25,6 +27,7 @@ public class ChatService {
 		// 발신 히스토리 쌓기
 		int row = chatDao.insertSendMsg(chat);
 		// 수신 히스토리 쌓기
+		//수신 잘 들어가는 지 확인//ㅈㄷ
 		List<String> receiveMembers = chatDao.selectReceiveMember(chat.getRoomNum(), chat.getSender());
 		for(String member : receiveMembers) {
 			chat.setReceiver(member);
@@ -67,20 +70,29 @@ public class ChatService {
 	}
 	
 	public List<ChatRoomDto> getChatRoomList(String name) {
-//		List<ChatRoomDto> list = chatDao.selectChatRoomList(name);
-//		for(ChatRoomDto dto : list) {
-//			dto.getMaxReceivedDate();
-//			dto.getMaxSentDate();
-//		}
-//		for(ChatRoomDto dto : list) {
-//			//sorting
-//		}
-		return chatDao.selectChatRoomList(name);
+// 채팅 룸 sorting하기 읽지 않은 개수 확인하기 또한 보내는건 읽음표시가 되어야한다또한 룸에 들어가있는 사라
+//사람들의 읽음표시는 Y여야한다.
+		List<ChatRoomDto> list = chatDao.selectChatRoomList(name);
+		for(ChatRoomDto dto : list) {
+			int i = dto.getMaxSentDate().compareTo(dto.getMaxReceivedDate());
+			System.out.println(dto.getMaxSentDate().getTime());
+			if(i>0) {
+				
+				//dto.setLastMsgTime(dto.getMaxSentDate().getNanos());
+			}else if(i<0) {
+				
+			}else {
+				
+			}
+		}
+		
+		//Collections.sort(list);
+		return list;
 	}
 
+	
 	public List<ChatDto> getChatData(int roomNum, String name) {
-		
-		return null;
+		return chatDao.selectChatHistory(roomNum,name);
 	}
 
 }

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+ <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -13,18 +13,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />		
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
 		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
-		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Vendor Stylesheets(used for this page only)-->
 		<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Vendor Stylesheets-->
-		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Global Stylesheets Bundle-->
-		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
@@ -160,7 +153,7 @@
 															href="#kt_topbar_notifications_1">Alerts</a>
 													</li>
 													<li class="nav-item">
-														<input type="button" value="전체삭제"
+														<input type="button" value="전체삭제" id="read-all"
 															style="color: white; background-color:#C6DA52; width: 70px; height: 30px; border: none;" />
 													</li>
 
@@ -174,7 +167,7 @@
 												<div class="tab-pane fade show active" id="kt_topbar_notifications_2"
 													role="tabpanel">
 													<!--begin::Items-->
-													<div class="scroll-y mh-325px my-5 px-8" style="height: 500px;">
+													<div class="scroll-y mh-325px my-5 px-8" style="height: 500px;" id="alarm-box">
 														<!--====================알림 리스트가 그려지는 시작 공간============================-->
 
 														<!--begin::Item >>> 리스트 예시 -->
@@ -196,14 +189,13 @@
 															<!--begin::Label-->
 															<div class="mb-0 me-2">
 																<span style="float: right; margin-bottom: 5px;"
-																	class="badge badge-light fs-8">X</span><br>
+																	class="badge badge-light fs-8 read-alarm">X</span><br>
+																<span style="display:none">알림 번호</span>
 																<span class="badge badge-light fs-8">YYYY.MM.DD.HH:mm</span>
 																<!--end::Label-->
 															</div>
 														</div>
 														<!--end::Item >>> 리스트 예시 끝-->
-
-
 													</div>
 													<!--end::Items-->
 
@@ -274,10 +266,48 @@
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
-		<!--end::Global Javascript Bundle-->
-		
-		
-		<!--end::Javascript-->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+   		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 	</body>
-	<!--end::Body-->
+	<script type="text/javascript">
+	let socket = null;
+    let stompClient = null;
+    
+    $(document).ready(function(){
+		socket = new SockJS('http://localhost:80/ws');
+	    stompClient = Stomp.over(socket);
+	    stompClient.connect({}, function(frame){
+	    	console.log("webSocket is connected");
+	    }, onError);
+	    stompClient.subscribe('/queue/alarm', onMessageReceived);
+	});
+    
+	$('#read-all').on('click', function(){
+		$.ajax({
+			data:{},
+			url:'/alarm/delete-all',
+			dataType:'JSON',
+			success:function(){
+				$('#alarm-box').empty();
+			},error:function(error){
+				console.log(error);
+			}
+		})
+	})
+	$('.read-alarm').on('click', function(){
+		// parent -> next -> parent
+		$(this)
+		$.ajax({
+			data:{},
+			url:'/alarm/delete-all',
+			dataType:'JSON',
+			success:function(){
+				$('#alarm-box').empty();
+			},error:function(error){
+				console.log(error);
+			}
+		})
+	})
+	
+	</script>
 </html>

@@ -33,6 +33,10 @@ public class CustomUserdetailsService implements UserDetailsService{
 		CustomUserDetails customUserDetails = new CustomUserDetails();
 		customUserDetails.setUsername(customUser.getEmpIdx());
 		customUserDetails.setPassword(customUser.getEmpPw());
+		customUserDetails.setDepertment(customUser.getDepartment());
+		customUserDetails.setPosition(customUser.getPosition());
+		customUserDetails.setName(customUser.getName());
+		
 		
 		List<String> customRoles = findRoles(customUser.getDeptName(), customUser.getParentDeptId(), customUser.getDeptId());
 		customRoles.add(customUser.getPositionName());
