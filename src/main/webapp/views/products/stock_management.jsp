@@ -53,7 +53,7 @@
 .chart-body-div {
 	width: 45%;
 	margin: 10px 20px;
-}
+} 
 </style>
 
 </head>
@@ -161,17 +161,17 @@
 																class="table table-hover table-rounded ta	ble-striped border gy-7 gs-7">
 																<thead>
 																	<tr
-																		class="fw-semibold fs-6 text-gray-800 border	-bottom-2 border-gray-200">
+																		class="fw-semibold fs-6 text-gray-800">
 
-																		<td>물품명</td>
-																		<td colspan="2"><Input type="text"
-																			name="productName" /></td>
+																		<td class="min-w-125px">물품명&emsp;</td>
+																		<td colspan="2"><input type="text" class="form-control" placeholder="물품 이름을 입력 해주세요." name="productName"/></td>
 
 																	</tr>
 																</thead>
 																<tbody>
-																	<tr>
-																		<td>분류</td>
+																	<tr
+																		class="fw-semibold fs-6 text-gray-800">
+																		<td class="min-w-125px" style="vertical-align: bottom;">분류</td>
 																		<td>대분류 <select
 																			class="form-select form-select-solid"
 																			data-control="select2" data-placeholder="생필품"
@@ -182,7 +182,7 @@
 																				<option value="전자제품">전자제품</option>
 																		</select>
 																		</td>
-																		<td>중분류 <select
+																		<td >중분류 <select
 																			class="form-select form-select-solid"
 																			data-control="select2" data-placeholder="생활 잡화"
 																			data-hide-search="true" name="categoryId"
@@ -194,15 +194,15 @@
 
 																	</tr>
 
-																	<tr>
-																		<td>단위(파렛트)</td>
-																		<td colspan="2"><input type="text"
-																			name="unitQuantity" /></td>
+																	<tr
+																		class="fw-semibold fs-6 text-gray-800">
+																		<td class="min-w-125px" style="vertical-align: bottom;">단위(파렛트)</td>
+																		<td colspan="2"><input type="text" class="form-control" placeholder="단위(파렛트)를 입력 해주세요." name="unitQuantity"/></td>
 																	</tr>
-																	<tr>
-																		<td>단가(낱개)</td>
-																		<td colspan="2"><input type="text"
-																			name="purchasePrice" /></td>
+																	<tr
+																		class="fw-semibold fs-6 text-gray-800">
+																		<td class="min-w-125px" style="vertical-align: bottom;">단가(낱개)</td>
+																		<td colspan="2"><input type="text" class="form-control" placeholder="단가(낱개)를 입력 해주세요." name="purchasePrice"/></td></tr>
 																</tbody>
 
 															</table>
@@ -215,7 +215,7 @@
 													</div>
 
 													<div class="modal-footer">
-														<button>항목 추가</button>
+														<button class="btn btn-primary">항목 추가</button>
 
 													</div>
 												</form>

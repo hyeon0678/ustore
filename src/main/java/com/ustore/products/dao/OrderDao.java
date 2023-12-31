@@ -35,6 +35,8 @@ public interface OrderDao {
 	ArrayList<OrderDto> orderCartCheck();
 
 	ArrayList<OrderDto> orderHistoryList();
+
+	ArrayList<OrderDto> orderListModal(OrderDto dto);
 	
 
 	

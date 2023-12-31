@@ -26,11 +26,18 @@ public class OrderDto {
 	private String carNum;
 	private String phoneNum;
 	private String deliveryDate;
+	private int quantity;
 	
 	
 	
 	
 	
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 	public String getDeliveryDate() {
 		return deliveryDate;
 	}

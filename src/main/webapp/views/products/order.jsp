@@ -509,7 +509,7 @@ orderButton.addEventListener('click', async function () {
                         data: {
                             driverIdx: selectedDriverIdx,
                             empIdx : emp
-                        },
+                        }
                         success: function (response) {
                           
                             console.log('발주 성공:', response);

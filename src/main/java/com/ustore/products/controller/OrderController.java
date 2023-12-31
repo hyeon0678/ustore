@@ -160,13 +160,28 @@ public class OrderController {
 	
 	
 	@GetMapping("/orderlist/list")
-	public String orderList() {
+	public String orderList(Model model) {
 		
 		ArrayList<OrderDto> orderlist = service.orderHistoryList();
+		model.addAttribute("orderlist",orderlist);
 		
 		
 		
 		return "products/order_list";
+	}
+	@PostMapping("/orderlist/modallist")
+	 @ResponseBody
+	 public ArrayList<OrderDto> orderListModal(@RequestParam String orderIdx) {
+		
+		logger.info("발주 번호 : "+orderIdx);
+		
+		
+		ArrayList<OrderDto> orderListModal= service.orderListModal(orderIdx);
+		logger.info("리스트에 값이 담기는지 확인 : "+orderListModal);
+		
+		
+		
+		return orderListModal;
 	}
 	
 	

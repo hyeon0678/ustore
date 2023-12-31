@@ -72,19 +72,23 @@
 	</script>
 	<!--end::Theme mode setup on page load-->
 	<!--begin::Main-->
-	<!--begin::Root-->	<!--begin::Header 헤더 시작 -->
-			<jsp:include page="/views/common/header.jsp"></jsp:include>
-			<!--end::Header 헤더 닫기-->
+	<!--begin::Root-->
+	<!--begin::Header 헤더 시작 -->
+	<jsp:include page="/views/common/header.jsp"></jsp:include>
+	<!--end::Header 헤더 닫기-->
 	<div class="d-flex flex-column flex-root">
 		<!--begin::Page-->
 		<div class="page d-flex flex-row flex-column-fluid">
 			<!--begin::Wrapper-->
-		
+
 			<div class="wrapper d-flex flex-column flex-row-fluid"
 				id="kt_wrapper">
 				<!--begin::Content-->
-				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;"> 
-				<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">발주 리스트</h1>
+				<div class="content fs-6 d-flex flex-column flex-column-fluid"
+					id="kt_content"
+					style="margin-top: 90px; background-color: #fffff8;">
+					<h1 class="text-gray-900 fw-bold my-1 fs-2"
+						style="margin-left: 50px;">발주 리스트</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--사이드바 넣는곳  -->
 					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
@@ -128,7 +132,8 @@
 									<table class="table align-middle table-row-dashed fs-6 gy-5"
 										id="kt_ecommerce_category_table">
 										<thead>
-											<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
+											<tr class="text-start fw-bold fs-7 text-uppercase gs-0"
+												style="color: #c6da52;">
 												<th class="w-150px pe-2">입고 예정일</th>
 												<th class="min-w-150px">발주 번호</th>
 												<th class="min-w-650px">차량 번호</th>
@@ -137,76 +142,19 @@
 											</tr>
 										</thead>
 										<tbody class="fw-semibold text-gray-600">
-											
-											<tr>
-												<td>12/20/2023</td>
-												<td><a href="#" class="btn btn-link text-primary"
-													data-bs-toggle="modal" data-bs-target="#kt_modal_1"> 1
-												</a>
-												
-													<div class="modal fade" tabindex="-1" id="kt_modal_1">
-														<div class="modal-dialog">
-															<div class="modal-content">
-																<div class="modal-header">
-																	<h3 class="modal-title">배송 품목</h3>
+											<c:forEach items="${orderlist}" var="List">
+												<tr>
+													<td>${List.expArrivalDate}</td>
+													<td><a href="#" class="btn btn-link text-primary"
+														data-bs-toggle="modal" data-bs-target="#kt_modal_1"
+														data-order-idx="${List.orderIdx}"> ${List.orderIdx} </a></td>
+													<td>${List.carNum}</td>
 
-																	<!--begin::Close-->
-																	<div
-																		class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-																		data-bs-dismiss="modal" aria-label="Close">
-																		<i class="ki-duotone ki-cross fs-1"><span
-																			class="path1"></span><span class="path2"></span></i>
-																	</div>
-																	<!--end::Close-->
-																</div>
+													<td class="text-end">${List.driverName}
+														&nbsp;&nbsp;&nbsp;&nbsp;</td>
 
-																<div class="modal-body">
-																	<div class="py-5">
-																		<div class="table-responsive">
-																			<table
-																				class="table table-row-dashed table-row-gray-300 gy-7">
-																				<thead>
-																					<tr class="fw-bold fs-6 text-gray-800">
-																						<th>상품 번호</th>
-																						<th>상품 명</th>
-																						<th>수량(파렛트/전체)</th>
-																						<th>파손/반송</th>
-																						<th>입고 확인</th>
-																					</tr>
-																				</thead>
-																				<tbody>
-																					<tr>
-																						<td style="text-align: center;">1</td>
-																						<td style="text-align: center;">코카콜라</td>
-																						<td style="text-align: center;">10/900</td>
-																						<td style="text-align: center;">6개</td>
-																						<td style="text-align: center;">
-																							<button style="background-color: #C6DA52">확인</button>
-
-
-
-
-																						</td>
-
-																					</tr>
-
-																				</tbody>
-																			</table>
-																		</div>
-																	</div>
-																</div>
-
-
-															</div>
-														</div>
-													</div>
-</td>
-												<td>80배 4298</td>
-
-												<td class="text-end">홍길동 &nbsp;&nbsp;&nbsp;&nbsp;</td>
-												
-											</tr>
-											
+												</tr>
+											</c:forEach>
 
 										</tbody>
 										<!--end::Table body-->
@@ -251,6 +199,113 @@
 	</script>
 	<!--end::Custom Javascript-->
 	<!--end::Javascript-->
+	<div class="modal fade" tabindex="-1" id="kt_modal_1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" style="color: #c6da52;">배송 품목</h3>
+
+					<!--begin::Close-->
+					<div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+						data-bs-dismiss="modal" aria-label="Close">
+						<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+							class="path2"></span></i>
+					</div>
+					<!--end::Close-->
+				</div>
+
+				<div class="modal-body">
+					<div class="py-5">
+						<div class="table-responsive">
+							<table class="table table-row-dashed table-row-gray-300 gy-7">
+								<thead>
+									<tr class="text-start fw-bold fs-7 text-uppercase gs-0"
+										style="color: #c6da52;">
+										<th style="text-align: center;">상품 번호</th>
+										<th style="text-align: center;">상품 명</th>
+										<th style="text-align: center;">수량(파렛트/전체)</th>
+
+									</tr>
+								</thead>
+								<tbody>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// 모달이 열릴 때 호출되는 이벤트 핸들러
+		$(document)
+				.ready(
+						function() {
+							var modalClicked = false;
+
+							// 모달이 열릴 때 호출되는 이벤트 핸들러
+							$('#kt_modal_1')
+									.on(
+											'show.bs.modal',
+											function(e) {
+												if (!modalClicked) {
+													modalClicked = true;
+
+													var orderIdx = $(
+															e.relatedTarget)
+															.data('order-idx');
+
+													$.ajax({
+																url : '/orderlist/modallist',
+																method : 'POST',
+																data : {
+																	orderIdx : orderIdx
+																},
+																success : function(
+																		response) {
+
+																	console
+																			.log(response);
+
+																	var modalTableBody = $('#kt_modal_1 .table tbody');
+																	modalTableBody
+																			.empty();
+
+																	for (var i = 0; i < response.length; i++) {
+																		var order = response[i];
+																		var html = '<tr>'
+																				+ '<td style="text-align: center;">'
+																				+ order.quantity
+																				+ '</td>'
+																				+ '<td style="text-align: center;">'
+																				+ order.productName
+																				+ '</td>'
+																				+ '<td style="text-align: center;">'
+																				+ order.unitQuantity
+																				+ '</td>'
+																				+ '</tr>';
+																		modalTableBody
+																				.append(html);
+																	}
+																},
+																error : function(
+																		e) {
+
+																	console
+																			.error(e);
+																},
+																complete : function() {
+																	modalClicked = false;
+																}
+															});
+												}
+											});
+						});
+	</script>
 </body>
 <!--end::Body-->
 </html>
