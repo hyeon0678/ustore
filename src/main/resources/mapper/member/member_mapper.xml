@@ -23,8 +23,14 @@
 			(#{grade_idx},#{member_type},#{name},#{num},curdate(),DATE_ADD(NOW(), INTERVAL 1 YEAR), #{brithdate},#{gender},
 			 #{ postal_code}, #{street_address}, #{detail_address},#{member_state}, 00990099,#{business_num})
 		</insert>
+		
+		<select id="cusnum" resultType="Integer">
+			SELECT member_idx FROM members m where name = #{name} and brithdate =#{brithdate} and create_date = CURDATE() ;
+		</select>
 
-
+		<select id="listall" resultType="map">
+			SELECT * FROM members where member_state = #{param1};
+		</select>
 
 
 

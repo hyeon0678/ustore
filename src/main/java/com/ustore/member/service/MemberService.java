@@ -1,5 +1,6 @@
 package com.ustore.member.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ustore.member.dao.MemberDao;
+import com.ustore.member.dto.MemberDto;
 
 @Service
 public class MemberService {
@@ -42,6 +44,22 @@ public class MemberService {
 		
 		int row =dao.joinbis(params);
 		return row > 0 ? "회원등록이 성공 하였습니다.":"회원 등록에 실패하였습니다";
+	}
+
+
+
+
+
+	public int cusnum(HashMap<String, String> params) {
+		return dao.cusnum(params);
+	}
+
+
+
+
+
+	public ArrayList<HashMap<String, String>> listall(int pageState) {
+		return dao.listall(pageState);
 	}
 	
 	

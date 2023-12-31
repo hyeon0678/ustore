@@ -75,9 +75,9 @@
 								<div style="display: flex; align-items: center; height: 30px;">
 									<!--begin::Col 드롭박스 >> 회원 상태-->
 									<div class="col-lg-8 fv-row" style="width: 150px; height: 30px; display: flex; margin: 10px;">
-										<select name="" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;"> 
-											<option  value="incus">등록된 회원</option>																	
-											<option  value="outcus">탈퇴한 회원</option>
+										<select id="pageState" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;"> 
+											<option  value="84">등록된 회원</option>																	
+											<option  value="85">탈퇴한 회원</option>
 										</select>
 									</div>
 									<!--end::Col-->
@@ -178,93 +178,10 @@
 													<th class="min-w-125px">연락처</th>
 													<th class="min-w-125px">만료날짜</th>
 												</tr>
+												
 											</thead>
-											<tbody class="fw-semibold text-gray-600">
-												<!-- 사람 하나 시작 -->
-												<tr>
-													<td>
-													</td>
-													<td>
-														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
-													</td>
-													<td>
-														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
-													</td>
-													<td>사업자</td>
-													<td>스탠다드</td>
-													<td>01026262626</td>
-													<td>2025.01.12</td>
-												</tr>
-												<tr>
-													<td>
-													</td>
-													<td>
-														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
-													</td>
-													<td>
-														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
-													</td>
-													<td>사업자</td>
-													<td>스탠다드</td>
-													<td>01026262626</td>
-													<td>2025.01.12</td>
-												</tr>
-												<tr>
-													<td>
-													</td>
-													<td>
-														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
-													</td>
-													<td>
-														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
-													</td>
-													<td>사업자</td>
-													<td>스탠다드</td>
-													<td>01026262626</td>
-													<td>2025.01.12</td>
-												</tr>
-												<tr>
-													<td>
-													</td>
-													<td>
-														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
-													</td>
-													<td>
-														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
-													</td>
-													<td>사업자</td>
-													<td>스탠다드</td>
-													<td>01026262626</td>
-													<td>2025.01.12</td>
-												</tr>
-												<tr>
-													<td>
-													</td>
-													<td>
-														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
-													</td>
-													<td>
-														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
-													</td>
-													<td>사업자</td>
-													<td>스탠다드</td>
-													<td>01026262626</td>
-													<td>2025.01.12</td>
-												</tr>
-												<tr>
-													<td>
-													</td>
-													<td>
-														<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
-													</td>
-													<td>
-														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
-													</td>
-													<td>사업자</td>
-													<td>스탠다드</td>
-													<td>01026262626</td>
-													<td>2025.01.12</td>
-												</tr>
+											<tbody class="fw-semibold text-gray-600" id="list">
+												
 											</tbody>
 										</table>
 										<!--end::Table-->
@@ -324,7 +241,6 @@
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
-		begin::Vendors Javascript(used for this page only)-->
 		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
@@ -346,5 +262,128 @@
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
+	
+	<script>
+	var showpage =1;
+	console.log("페이지 읽기 시작");
+	listcall(showpage);
+	console.log("페이지 읽기 끝");
+	
+	$('#pageState').change(function(){
+		//$('#pagination').twbsPagination('destroy');	
+		listcall(showpage);	
+	});
+	
+	
+	
+	function listcall(page){
+		console.log("리스트 호출");
+		$.ajax({
+			type:'get',
+			url:'customer/home.ajax/list', 
+			data:{'pageState':$('#pageState').val()},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				console.log("리스트 호출 뿌려주기");
+				/* if (data.success == -1) {
+					alert('이 페이지의 권한이 없습니다');
+					location.href='./';
+				}else {} */		
+				drawlist(data);			
+			},
+			error:function(e){
+				console.log(e);
+			}
+			});//	
+	}
+
+			/* 리스트 그리기 */
+			function drawlist(obj){
+				console.log(obj);
+				var content = '';
+				$('#list').empty();
+				for (var i = 0; i < obj.size; i++) {
+					 	 content = '<tr>';
+					 	content +='<td>';
+					 	content +='<a href="customer/detail?idx='+obj.list[i].member_idx+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].member_idx+'</a>';
+					 	content +='<td/>';
+					 	content +='<td><a href="customer/detail?idx='+obj.list[i].member_idx+'" class="text-gray-600 text-hover-primary mb-1">'+obj.list[i].name+'</a></td>';
+					 	if(obj.list[i].member_type == '82'){
+							 content += '<td>일반</td>'; 
+						 } else {
+							 content += '<td>사업자</td>'; 
+						}	
+						 if(obj.list[i].grade_idx == '80'){
+							 content += '<td>스탠다드</td>'; 
+						 } else {
+							 content += '<td>프리미엄</td>'; 
+						}
+					 	content +='<td>'+obj.list[i].contact_num+'</td>';
+					 	var date = new Date(obj.list[i].expiry_date);
+						 var dateStr = date.toLocaleDateString("ko-KR");
+						 content += '<td>' + dateStr + '</td>';
+						 content += '</tr>';				
+				         $('#list').append(content);
+				};
+				/*
+				$('#pagination').twbsPagination({
+					startPage:showpage // 보여줄페이지>> 
+					,totalPages:obj.pages // 총 페이지 수(총갯수 / 페이지당 보여줄 게시물수):서버에서 계산해서 가져오기
+					,visiblePages:5// 페이지 넘버 얼마나 보여 줄것인지 (이것은 거의 고정이다. ): 
+					,onPageClick:function(e,page){// 번호클릭시 실행할 내용
+						//console.log(e);
+						if(showpage != page){
+						  	console.log(page);
+						  	showpage = page; // 클릭해서 다른 페이지를 보여주게 되면  현재 보고 있는 페이지 번호도 바꿔준다. 
+						  	listcall(page);
+							
+						}		
+					}
+					
+				});//
+				*/
+			}
+		
+		
+			var msg = "${msg}";
+			if(msg != ""){
+				alert(msg);
+			}
+	
+	
+	
+	
+	
+	
+	
+	
+	/* <!-- 사람 하나 시작 -->
+	<tr>
+		<td>
+		</td>
+		<td>
+			<a href="customerdetail" class="text-gray-800 text-hover-primary mb-1">201548</a>
+		</td>
+		<td>
+			<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
+		</td>
+		<td>사업자</td>
+		<td>스탠다드</td>
+		<td>01026262626</td>
+		<td>2025.01.12</td>
+	</tr>
+	<!--  사람 끝났다 --> */
+	
+	
+	</script>
+	
+	
+	
+	
+	
+	
+	
+	
 
 </html>
