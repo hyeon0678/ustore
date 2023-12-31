@@ -1,9 +1,10 @@
 package com.ustore.member.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ustore.employee.service.GroupManageService;
+import com.ustore.fileSystem.dao.FileDao;
+import com.ustore.fileSystem.dto.FileDto;
+import com.ustore.member.dto.MemberDto;
 import com.ustore.member.service.MemberService;
 import com.ustore.utils.SaveFile;
 
@@ -26,13 +31,45 @@ public class MemberController {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired MemberService service;
+	@Autowired FileDao filedao;
 	
 	
 	@GetMapping(value = "/customer/home")
 	public String home() {
 		logger.info("멤버쉽 페이지 들어가기");
+		
 		return "member/customerlist";
 	}
+	
+	
+	@RequestMapping(value = "customer/home.ajax/list")
+	@ResponseBody
+	public HashMap<String, Object> customerhomelist(@RequestParam int pageState) {
+		logger.info("멤버쉽 리스트 호출하기");
+		logger.info("pagestate : "+pageState);
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		if (pageState == 84) {
+			logger.info("회원리스트 == 등록된 회원 리스트");
+			ArrayList<HashMap<String, String>> list = service.listall(pageState);
+			logger.info("num"+list.toString());
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+		}else {
+			logger.info("회원리스트 == 탈퇴한 회원 리스트");
+			ArrayList<HashMap<String, String>> list = service.listall(pageState);
+			logger.info("num"+list.toString());
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+		}
+		return result;
+	}
+	
+	
+	
 	
 	@GetMapping(value = "/customer/businessperson")
 	public String businessperson() {
@@ -44,6 +81,19 @@ public class MemberController {
 	public String general() {
 		logger.info("일반 회원 등록 페이지 들어가기");
 		return "member/cusjoin_num";
+	}
+	
+	@GetMapping(value = "/customer/detail")
+	public String cusdetail(@RequestParam int idx) {
+		logger.info("회원 상세 페이지 들어가기");
+		logger.info("idx : "+idx);
+		
+		
+		
+		
+		
+		
+		return "member/cusdetail";
 	}
 	
 	@GetMapping(value = "/customer/chat")
@@ -72,7 +122,7 @@ public class MemberController {
 
 	@PostMapping(value="/customer/joinbis")
 	public ModelAndView joinbis(MultipartFile photos,@RequestParam HashMap<String, String> params,
-			HttpSession session,  RedirectAttributes rAttr) {
+			HttpSession session,  RedirectAttributes rAttr) throws IOException {
 		
 		logger.info("=============멤버쉽 등록 요청 ");
 		logger.info("params : "+params);
@@ -84,6 +134,25 @@ public class MemberController {
 		// detail_address=x , brithdate=zx , gender=남}
 		
 		String msg = service.joinbis(params);
+		int cusnum = service.cusnum(params);
+		if(photos != null && !photos.isEmpty()) {		
+			
+			// 파일 저장 코드
+			//service.imgInfo(cusnum);
+			SaveFile saveFile = new SaveFile();
+			
+			FileDto file = new FileDto();
+			file = saveFile.returnFileList(photos, 76,Integer.toString(cusnum));
+			logger.info("file : "+file);
+			
+			saveFile.saveFile(file);
+			
+			filedao.saveFile(file);
+			
+		}
+		
+		
+		
 		
 		
 		ModelAndView mav = new ModelAndView();
