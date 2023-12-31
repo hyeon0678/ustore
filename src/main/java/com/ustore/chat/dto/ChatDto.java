@@ -2,7 +2,7 @@ package com.ustore.chat.dto;
 
 import java.sql.Timestamp;
 
-public class ChatDto {
+public class ChatDto{
 	
 	private int chatIdx;
 	private String sender;
@@ -11,8 +11,15 @@ public class ChatDto {
 	private String roomNum;
 	private String type;
 	private Timestamp sendDate;
+	private String emp_idx;
 	
 	
+	public String getEmp_idx() {
+		return emp_idx;
+	}
+	public void setEmp_idx(String emp_idx) {
+		this.emp_idx = emp_idx;
+	}
 	public int getChatIdx() {
 		return chatIdx;
 	}

@@ -323,7 +323,7 @@
 												<div class="scroll-y me-n5 pe-5 h-300px h-lg-auto" id="msg-content"
 													data-kt-element="messages" data-kt-scroll="true"
 													data-kt-scroll-activate="{default: false, lg: true}"
-													data-kt-scroll-max-height="auto"
+													data-kt-scroll-max-height="450px"
 													data-kt-scroll-dependencies="#kt_header, #kt_app_header, #kt_app_toolbar, #kt_toolbar, #kt_footer, #kt_app_footer, #kt_chat_messenger_header, #kt_chat_messenger_footer"
 													data-kt-scroll-wrappers="#kt_content, #kt_app_content, #kt_chat_messenger_body"
 													data-kt-scroll-offset="5px">
@@ -406,6 +406,7 @@
 	    	console.log("websocket connected");
 	    }
 	})
+	
 	function callChatRoomList(){
 		$.ajax({
 			url:'/chat/chatRoomList.ajax',
@@ -496,6 +497,7 @@
 		participantClick();
 		
 	}
+	
 	function participantClick() {
 		$('div.participaint_emp').on('click', function() {
 			$(this).remove();
@@ -554,7 +556,7 @@
 			let $roomName = $(this).children('div');
 			$roomName = $roomName.children('div');
 			let roomName = $roomName.children('a').text();
-			console.log("room : "+roomName)
+			
 			if(roomNum != newRoomNum){
 				if(subscription != null){
 					subscription.unsubscribe();
@@ -562,18 +564,15 @@
 				roomNum = newRoomNum;
 				console.log(subscription);
 				subscripe();
-				drawChatList(roomName);
+				callChatList(roomNum);
+				$('chat-room-name').html(roomName);
+				$('chat-msg-tool-bar').css('display:flex');
 			}
 			
 		});
 	}
-	function drawChatList(roomName){
-		
-		$('chat-room-name').html(roomName);
-		$('chat-msg-tool-bar').css('display:flex');
-		chatListCall(roomNum);
-	}
-	function chatListCall(roomNum){
+	
+	function callChatList(roomNum){
 		$.ajax({
 			data:{
 				'roomNum':roomNum
@@ -582,12 +581,39 @@
 			type:'get',
 			dataType:'json',
 			success:function(data){
-				//console.log(data.chatdata);
+				console.log(data.chatdata);
+				drawChatHistory(data.chatdata)
+				
 			}, error:function(){
 				
 			}
 		})
 	}
+	
+	function drawChatHistory(data){
+		for(let message of data){
+			content = ""
+			if(message.sender == username){
+				content+="<div class='d-flex justify-content-end mb-10'>"
+				content+="<div class='d-flex flex-column align-items-end'>"
+				content+="<div class='d-flex align-items-center mb-2'>"
+				content+="<div class='me-3'><a class='fs-5 fw-bold text-gray-900 ms-1'>"
+				content+=message.sender+"</a></div></div>"
+				content+="<div class='p-5 rounded bg-light-primary text-gray-900 fw-semibold mw-lg-400px text-end' data-kt-element='message-text'>" 
+				content+=message.data+"</div></div></div>"
+			}else{
+				content += "<div class='d-flex justify-content-start mb-10'>"
+				content += "<div class='d-flex flex-column align-items-start'>"
+				content += "<div class='d-flex align-items-center mb-2'><div class='ms-3'>"
+				content += "<a class='fs-5 fw-bold text-gray-900 text-hover-primary me-1'>"
+				content += message.sender+"</a></div></div>"
+				content += "<div class='p-5 rounded bg-light-info text-gray-900 fw-semibold mw-lg-400px text-start'data-kt-element='message-text'>" 
+				content += message.data+"</div></div></div>"
+			}
+			$('#msg-content').append(content);
+		}
+	}
+	
 	function connect() {
 		socket = new SockJS('http://localhost:80/ws');
 	    stompClient = Stomp.over(socket);
@@ -602,17 +628,11 @@
 	}
 	
 	function onMessageReceived(payload){
-		
 		var message = JSON.parse(payload.body);
 		console.log(message);
-		content = "<div class='d-flex justify-content-start mb-10'>"
-		content += "<div class='d-flex flex-column align-items-start'>"
-		content += "<div class='d-flex align-items-center mb-2'><div class='ms-3'>"
-		content += "<a class='fs-5 fw-bold text-gray-900 text-hover-primary me-1'>"
-		content += message.sender+"</a></div></div>"
-		content += "<div class='p-5 rounded bg-light-info text-gray-900 fw-semibold mw-lg-400px text-start'data-kt-element='message-text'>" 
-		content += message.data+"</div></div></div>"
-		$('#msg-content').append(content);
+		let data = [];
+		data.push(message);
+		drawChatHistory(data);
 	}
 
 	function subscripe(){
@@ -631,15 +651,6 @@
 			}
 			stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
 		}
-		content="<div class='d-flex justify-content-end mb-10'>"
-		content+="<div class='d-flex flex-column align-items-end'>"
-		content+="<div class='d-flex align-items-center mb-2'>"
-		content+="<div class='me-3'><a class='fs-5 fw-bold text-gray-900 ms-1'>"
-		content+=username+"</a></div></div>"
-		content+="<div class='p-5 rounded bg-light-primary text-gray-900 fw-semibold mw-lg-400px text-end' data-kt-element='message-text'>" 
-		content+=message+"</div></div></div>"
-		
-		$('#msg-content').append(content);
 		$('#msg-box ').val('');
 	}
 </script>

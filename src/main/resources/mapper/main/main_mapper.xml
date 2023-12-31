@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ustore.main.dao.EmployeeUserDao">
 	<select id="getUser" resultType="EmployeeUserDto">
-		SELECT e.emp_idx, e.emp_pw, e.dept_id, 
+		SELECT e.emp_idx, e.emp_pw, e.dept_id, c.common_type AS position, d.dept_name AS department, e.emp_name AS name,
 		d.parent_dept_id, CONCAT('ROLE_',  d.dept_name) AS dept_name, CONCAT('ROLE_', c.common_type) AS position_name
 		FROM employee e
 		LEFT OUTER JOIN department d

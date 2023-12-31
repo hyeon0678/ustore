@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class CustomUserDetails implements UserDetails{
 	private String username;
 	private String password;
+	private String name;
+	private String department;
+	private String position;
 	private boolean isEnabled;
 	private boolean isAccountNonExpired;
 	private boolean isAccountNonLocked;
@@ -17,6 +20,30 @@ public class CustomUserDetails implements UserDetails{
 	
 	
 	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDepertment() {
+		return department;
+	}
+
+	public void setDepertment(String depertment) {
+		this.department = depertment;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
 
 	public void setUsername(String username) {
 		this.username = username;

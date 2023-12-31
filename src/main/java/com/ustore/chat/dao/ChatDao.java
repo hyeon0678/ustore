@@ -16,5 +16,6 @@ public interface ChatDao {
 	List<String> selectReceiveMember(String roomNum, String sender);
 	int insertReceivedMsg(ChatDto chat);
 	int insertSendMsg(ChatDto chat);
+	List<ChatDto> selectChatHistory(int roomNum, String name);
 
 }
