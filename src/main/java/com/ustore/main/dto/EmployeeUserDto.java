@@ -7,9 +7,39 @@ public class EmployeeUserDto {
 	private String deptName;
 	private int parentDeptId;
 	private int deptId;
+	private String position;
+	private String department;
+	private String name;
 	
 	
-	
+	public EmployeeUserDto(String empIdx, String empPw) {
+		this.empIdx = empIdx;
+		this.empPw = empPw;
+	}
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
 	public int getDeptId() {
 		return deptId;
 	}
@@ -42,11 +72,6 @@ public class EmployeeUserDto {
 		this.parentDeptId = parentDeptId;
 	}
 
-	public EmployeeUserDto(String empIdx, String empPw) {
-		this.empIdx = empIdx;
-		this.empPw = empPw;
-	}
-	
 	public String getEmpIdx() {
 		return empIdx;
 	}
