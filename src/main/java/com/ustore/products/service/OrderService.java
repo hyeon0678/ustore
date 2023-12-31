@@ -124,6 +124,18 @@ public class OrderService {
 		return dao.orderHistoryList();
 	}
 
+	public ArrayList<OrderDto> orderListModal(String orderIdx) {
+		
+		OrderDto dto = new OrderDto();
+		dto.setOrderIdx(Integer.parseInt(orderIdx));
+		
+		
+		
+		
+	
+		return dao.orderListModal(dto);
+	}
+
 	
 
 }
