@@ -32,6 +32,38 @@ License: For each use you must have a valid license purchased only from above li
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
+	<style>
+  /* 다이얼러 너비 재정의 */
+  .mw-150px {
+    max-width: 100px; /* 필요한대로 너비를 조정하세요 */
+  }
+
+  /* 버튼 크기 재정의 */
+  .btn-outline.btn-active-color-primary {
+    padding: 5px; /* 필요한대로 여백을 조정하세요 */
+  }
+
+  /* 입력 필드 크기 재정의 */
+  .form-control {
+    width: 0px; /* 필요한대로 너비를 조정하세요 */
+    height: 43px; /* 필요한대로 높이를 조정하세요 */
+    font-size: 14px; /* 필요한대로 글꼴 크기를 조정하세요 */
+  }
+  
+    /* 첫 번째 테이블의 물품수량 셀 조정 */
+  #cartTable th[style="margin-left: 100px;"] {
+    padding-left: 55px; /* 필요한대로 여백을 조정하세요 */
+  }
+
+  /* 첫 번째 테이블의 물품수량 입력 필드 위치 조정 */
+  #cartTable .input-group.mw-150px {
+    margin-right: -150px; /* 필요한대로 여백을 조정하세요 */
+  }
+    /* 다이얼러 입력 상자 가운데 정렬 */
+  .form-control {
+    text-align: center; /* 텍스트를 가운데 정렬합니다. */
+  }
+</style>
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
@@ -73,13 +105,13 @@ License: For each use you must have a valid license purchased only from above li
 												<h3 class="card-title align-items-start flex-column" style="width:100%;">
 													<span class="fw-bolder text-gray-900 fs-2 mb-5">상품</span>
 													<div class="d-flex">
-														<select class="form-select fs-6" aria-label="Select option" style="width: 110px; height: 40px;">
-															<option value="1">상품명</option>
-															<option value="2">상품코드</option>
+														<select class="form-select fs-6" id="productOpt" aria-label="Select option" style="width: 110px; height: 40px;">
+															<option value="productName">상품명</option>
+															<option value="productId">상품코드</option>
 															<!-- 추가적인 옵션들을 필요에 따라 추가할 수 있습니다 -->
 														</select>
-														<input type="text" class="form-control form-control-solid" placeholder="이름 입력" style="width: 220px; height: 40px; margin-left: 10px;">
-            											<button type="button" class="btn btn-primary fs-7"  style="width: 100px; height: 40px; margin-left: 10px;">
+														<input type="text" class="form-control form-control-solid" id="productText" placeholder="이름 입력" style="width: 220px; height: 40px; margin-left: 10px;">
+            											<button type="button" class="btn btn-primary fs-7" id="produceBtn" style="white-space:nowrap;">
 															검색
 														</button>
 													</div>
@@ -97,13 +129,21 @@ License: For each use you must have a valid license purchased only from above li
 													</tr>
 												</thead>
 												<tbody>
+												<c:forEach var="itemList" items="${itemList}">
 													<tr style="vertical-align: middle;">
-														<td style="text-align: center; padding-left: 9.75px;">50</td>
-														<td>바닐라 화장지</td>
-														<td>상품코드</td>
-														<td>가격</td>
-														<th style="text-align: center;"><a href="#" class="btn btn-success mx-3">결제하기</a></th>
+														<td style="text-align: center; padding-left: 9.75px;">${itemList.stock}</td>
+														<td>${itemList.productName}</td>
+														<td class="productId">${itemList.productId}</td>
+												        <td>${itemList.sellingPrice}</td>
+												        <th style="text-align: center;">
+												            <button type="button" class="btn btn-primary fs-7 productButton" 
+												                    data-product-id="${itemList.productId}"
+												                    style="white-space:nowrap; margin-left: 20px;">
+												                선택
+												            </button>
+												        </th>
 													</tr>
+												</c:forEach>
 												</tbody>
 											</table>
 										</div>
@@ -130,65 +170,70 @@ License: For each use you must have a valid license purchased only from above li
 												</h3>
 												</div>
 												<div class="card-toolbar my-10">
-													<div class="table-responsive mx-12">
-											<table class="table table-row-dashed table-row-gray-300 gy-5">
+													<div class="table-responsive" style="margin-left: 30px;">
+											<table class="table table-row-dashed table-row-gray-300 gy-5" id="cartTable">
 												<thead>
 													<tr class="fw-bold fs-6 text-gray-800">
 														<th>삭제</th>
-														<th>결제수량</th>
+														<th  style="margin-left: 100px;">결제수량</th>
 														<th>단가</th>
 														<th>상품명</th>
 														<th>상품코드</th>
 														<th>상품가격</th>
 													</tr>
 												</thead>
-												<tbody>
-													<tr  style="vertical-align: middle;">
-														<td>
-															      X	
-														</td>
-														<!-- 결제수량 카운트 공간-->
-														<td>
-															<!--begin::Dialer-->
-															<div class="input-group mw-150px"
-																data-kt-dialer="true"
-																data-kt-dialer-currency="true"
-																data-kt-dialer-min="1"
-																data-kt-dialer-max="50000"
-																data-kt-dialer-step="1"
-															>
-																<!--begin::Decrease control-->
-																<button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="decrease" >
-																	<i class="ki-duotone ki-minus fs-2"></i>
-																</button>
-																<!--end::Decrease control-->
-
-																<!--begin::Input control-->
-																<input id="dialerInput" type="text" class="form-control" placeholder="금액" value="1" data-kt-dialer-control="input"/>
-																<!--end::Input control-->
-
-																<!--begin::Increase control-->
-																<button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="increase">
-																	<i class="ki-duotone ki-plus fs-2"></i>
-																</button>
-																<!--end::Increase control-->
-															</div>
-															<!--end::Dialer-->
-														</td>
-														<!-- 결제수량 카운트 끝-->
-														<td>5000원</td>
-														<td>다우니</td>
-														<td>00000</td>
-														<th>10000</th>
-													</tr>
+												<tbody id = "cartBody">
+												<c:forEach var="itemCart" items="${itemCart}">
+												  <tr style="vertical-align: middle;">
+												    <td>
+												       <button type="button" class="btn-close"></button>
+												    </td>
+												    <!-- 결제수량 카운트 공간-->
+												    <td>
+												      <!--begin::Dialer-->
+												      <div class="input-group mw-150px"
+												           data-kt-dialer="true"
+												           data-kt-dialer-currency="true"
+												           data-kt-dialer-min="1"
+												           data-kt-dialer-max="50000"
+												           data-kt-dialer-step="1"
+												      >
+												        <!--begin::Decrease control-->
+												        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="decrease">
+												          <i class="ki-duotone ki-minus fs-2"></i>
+												        </button>
+												        <!--end::Decrease control-->
+												
+												        <!--begin::Input control-->
+												        <input type="text" class="form-control" placeholder="금액" value="${itemCart.quantity}" id="${itemCart.productId}" data-kt-dialer-control="input" />
+												        <!--end::Input control-->
+												
+												        <!--begin::Increase control-->
+												        <button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="increase">
+												          <i class="ki-duotone ki-plus fs-2"></i>
+												        </button>
+												        <!--end::Increase control-->
+												      </div>
+												      <!--end::Dialer-->
+												    </td>
+												    <!-- 결제수량 카운트 끝-->
+												    <td>${itemCart.sellingPrice} 원</td>
+												    <td>${itemCart.productName}</td>
+												    <td>${itemCart.productId}</td>
+												    <td>${itemCart.sellingSum} 원</td>
+												  </tr>
+												</c:forEach>
+													
 												</tbody>
 											</table>
+												<div style="display: flex; align-items: center;">
+												    <h3 style="margin-left: 20px;" id="allSellingSum">총 결제 금액 : ${allSellingSum} 원</h3>
+												    <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+												        결제 하기
+												    </button>
+												</div>
 										</div>
 
-													<h3>총 결제 금액 : 얼마얼마 
-										<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
-															결제 하기
-														</button></h3>
 												</div>
 											</div>
 											<!--end::Header-->
@@ -201,7 +246,7 @@ License: For each use you must have a valid license purchased only from above li
 
 
 
-								<!-- 부서 관리 모달창 공간-->
+								<!-- 모달창 공간-->
 								<div class="modal fade" tabindex="-1" id="kt_modal_1">
 									<div class="modal-dialog">
 										<div class="modal-content">
@@ -308,7 +353,7 @@ License: For each use you must have a valid license purchased only from above li
 
 											<div class="modal-footer">
 												
-												<button type="button" class="btn btn-primary">부서 만들기</button>
+												<button type="button" class="btn btn-primary">결제하기</button>
 											</div>
 										</div>
 									</div>
@@ -414,19 +459,207 @@ License: For each use you must have a valid license purchased only from above li
 	<!--end::Body-->	
 	<script>
 
-		// 입력 요소 가져오기
-    var dialerInput = document.getElementById('dialerInput');
+    // 지정된 데이터 속성을 가진 모든 다이얼러 엘리먼트를 가져옵니다.
+    var dialerElements = document.querySelectorAll(".input-group[data-kt-dialer='true']");
+    console.log("다이얼러 엘리먼트 수:", dialerElements.length);
 
-    // Input 요소에 이벤트 리스너 추가
-    dialerInput.addEventListener('input', function() {
-        // 입력이 변경될 때마다 값을 업데이트
-        var newValue = parseInt(dialerInput.value) || 0; // 숫자로 변환, 만약 숫자가 아니면 0으로 설정
-        updateDialerValue(newValue);
+    // 각 다이얼러 엘리먼트를 순회하며 별도의 KTDialer 인스턴스를 초기화합니다.
+    dialerElements.forEach(function (dialerElement) {
+        console.log("다이얼러를 초기화합니다.");
+
+        var dialerObject = new KTDialer(dialerElement);
+        
+        dialerObject.on('kt.dialer.changed', function (value) {
+            // 다이얼러 값이 변경될 때 처리할 내용을 여기에 작성합니다.
+            updateCart(${memberIdx},value.inputElement.id,value.inputElement.value);
+        });
     });
+	
+    
+    function updateCart(memberId,productId,quantity){
+    	$.ajax({
+	        type: 'get',
+	        url: 'pos/updateCart.ajax',
+	        data: {
+	            'memberId': memberId,
+	            'productId':productId,
+	            'quantity':quantity
+	        },
+	        dataType: 'json',
+	        success: function (data) {
+				console.log(data);
+				if(!data.success){					
+				alert('재고가 없습니다.');
+				}
+				drawPosCart(data);
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}
+    
+    
+    
+    
+    
+    
+    
+	
+	
+	$('.productButton').on('click', function() {
+	    var productId = $(this).data('product-id');
+	    console.log(productId);
+	    console.log(${memberIdx});
+	    posCart(${memberIdx},productId,1);
+	});
+	
+	function posCart(memberIdx,productId,quantity){
+		$.ajax({
+	        type: 'get',
+	        url: 'pos/cart.ajax',
+	        data: {
+	            'memberId': memberIdx,
+	            'productId':productId,
+	            'quantity':quantity
+	        },
+	        dataType: 'json',
+	        success: function (data) {
+				console.log(data);
+				if(!data.success){					
+				alert('해당 제품이 이미 장바구니에 있습니다.');
+				}					
+				drawPosCart(data);
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}
+	
+	function drawPosCart(data){
+		var content = '';
+		console.log("data.allSellingSum",data.allSellingSum);
+		data.itemCart.forEach(function(itemCart,idx){
+			console.log('그려지는지 확인 : ',itemCart);
+			content += '<tr style="vertical-align: middle;">'
+			content += '<td>'
+			content += '<button type="button" class="btn-close"></button>'
+			content += '</td>'
+			content += '<td>'
+			content += '<div class="input-group mw-150px"'
+			content += 'data-kt-dialer="true"'
+			content += 'data-kt-dialer-currency="true"'
+			content += 'data-kt-dialer-min="1"'
+			content += 'data-kt-dialer-max="50000"'
+			content += 'data-kt-dialer-step="1"'
+			content += '>'
+			content += '<button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="decrease">'
+			content += '<i class="ki-duotone ki-minus fs-2"></i>'
+			content += '</button>'
+			content += '<input type="text" class="form-control" placeholder="금액" value="'+itemCart.quantity+'" id="'+itemCart.productId+'" data-kt-dialer-control="input" />'
+			content += '<button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="increase">'
+			content += '<i class="ki-duotone ki-plus fs-2"></i>'
+			content += '</button>'
+			content += '</div>'
+			content += '</td>' 
+			content += '<td>'+itemCart.sellingPrice+' 원</td>'
+			content += '<td>'+itemCart.productName+'</td>'
+			content += '<td>'+itemCart.productId+'</td>'
+			content += '<td class ="sum">'+itemCart.sellingSum+' 원</td>'
+			content += '</tr>'
+		});
+		$('#cartBody').empty();
+		$('#cartBody').append(content);
+		$('#allSellingSum').text("총 결제 금액 : " + data.allSellingSum + " 원");
+		
+		
+		dialerElements = document.querySelectorAll(".input-group[data-kt-dialer='true']");
+		// 각 다이얼러 엘리먼트를 순회하며 별도의 KTDialer 인스턴스를 초기화합니다.
+	    dialerElements.forEach(function (dialerElement) {
+	        var dialerObject = new KTDialer(dialerElement);
+	        
+	        dialerObject.on('kt.dialer.changed', function (value) {
+	            // 다이얼러 값이 변경될 때 처리할 내용을 여기에 작성합니다.
+	            updateCart(${memberIdx},value.inputElement.id,value.inputElement.value)
+	        });
+	    });
+		
 
-    // 다이얼러 입력 값을 업데이트하는 함수
-    function updateDialerValue(newValue) {
-        dialerInput.value = newValue;
-    }
+	    document.querySelectorAll('.btn-close').forEach(function(button) {
+		    button.addEventListener('click', function() {
+		        // 형제 엘리먼트 중에서 input 요소 찾기
+		        var inputElement = this.closest('tr').querySelector('[data-kt-dialer-control="input"]');
+		        
+		        // 가져온 input 요소의 ID 값 출력 또는 사용
+		        var productId = inputElement.id;
+		        deleteCart(${memberIdx},productId);
+		    });
+		});
+	}
+	
+	
+	document.querySelectorAll('.btn-close').forEach(function(button) {
+	    button.addEventListener('click', function() {
+	        // 형제 엘리먼트 중에서 input 요소 찾기
+	        var inputElement = this.closest('tr').querySelector('[data-kt-dialer-control="input"]');
+	        
+	        // 가져온 input 요소의 ID 값 출력 또는 사용
+	        var productId = inputElement.id;
+	        deleteCart(${memberIdx},productId);
+	    });
+	});
+	
+	function deleteCart(memberId,productId){
+		$.ajax({
+	        type: 'get',
+	        url: 'pos/deleteCart.ajax',
+	        data: {
+	            'memberId': memberId,
+	            'productId':productId
+	        },
+	        dataType: 'json',
+	        success: function (data) {
+				console.log(data);
+				drawPosCart(data);
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}
+	
+	$('#produceBtn').on('click',function(){
+		var selectedOption = document.getElementById("productOpt").value;
+		var searchText = document.getElementById("productText").value;
+		if(searchText != null){
+			productSearch(selectedOption, searchText);
+		}else{
+			alert('검색어를 입력해주세요.');
+		}
+	});
+	
+	function productSearch(selectedOption, searchText){
+		$.ajax({
+	        type: 'get',
+	        url: 'pos/productSearch.ajax',
+	        data: {
+	            'selectedOption': selectedOption,
+	            'searchText': searchText
+	        },
+	        dataType: 'json',
+	        success: function (data) {
+				console.log(data);
+				drawPosItem(data);
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}
+	
+	function drawPosItem(data){
+		var content = '';
+	}
 	</script>
 </html>
