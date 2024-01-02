@@ -65,11 +65,86 @@ public class StockService {
 		dto.setSellingPrice(sellingPrice);
 		dto.setCategoryId(data.get("categoryId"));
 		dto.setUnitQuantity(Integer.parseInt(data.get("unitQuantity")));
+		dto.setRegBy(data.get("empIdx"));
 		
 		dao.stock_insert2(dto);
 		
 		
 		
+	}
+
+	public ArrayList<StockDto> stockDetailList(String productId) {
+		
+		StockDto dto = new StockDto();
+		dto.setProductId(productId);
+		
+		
+		return dao.stockDetailList(dto);
+	}
+
+	public void stockManagementDelete(String productId) {
+		
+		dao.stockManagementDelete(productId);
+		
+	}
+
+	public void stockDetailpuUpdate(String purchasePrice, String empIdx, String productId) {
+		
+		StockDto dto = new StockDto();
+		dto.setPurchasePrice(Integer.parseInt(purchasePrice));
+		dto.setUpdateBy(empIdx);
+		dto.setProductId(productId);
+		
+		dao.stockDetailpuUpdate(dto);
+		
+		
+		
+		
+	}
+
+	public void stockDetailunUpdate(String unitQuantity, String empIdx, String productId) {
+		StockDto dto = new StockDto();
+		dto.setUnitQuantity(Integer.parseInt(unitQuantity));
+		dto.setUpdateBy(empIdx);
+		dto.setProductId(productId);
+		
+		dao.stockDetailunUpdate(dto);
+		
+		
+	}
+
+	public void stockHistoryInsert(String operationType, String quantity, String reason, String productId,
+			String empIdx) {
+		StockDto dto = new StockDto();
+		dto.setOperationType(Integer.parseInt(operationType));
+		dto.setQuantity(Integer.parseInt(quantity));
+		dto.setReason(reason);
+		dto.setProductId(productId);
+		dto.setRegBy(empIdx);
+		
+		dao.stockHistoryInsert(dto);
+		
+	}
+
+	public int minQuantity(String productId) {
+		
+		return dao.minQuantity(productId);
+	}
+
+	public void finalStock(int finalminQuantity, String productId) {
+		StockDto dto = new StockDto();
+		
+		dto.setProductId(productId);
+		dto.setFinalminQuantity(finalminQuantity);
+	
+		dao.finalStock(dto);
+		
+	}
+
+	public ArrayList<StockDto> stockHistoryList(String productId) {
+		
+	
+		return dao.stockHistoryList(productId);
 	}
 
 }

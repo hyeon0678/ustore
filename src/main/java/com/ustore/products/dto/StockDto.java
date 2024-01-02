@@ -13,8 +13,68 @@ public class StockDto {
 	private int stock;
 	private String pointEnabled;
 	private String categoryId;
-	private int regBy;
-	private int updateBy;
+	private String regBy;
+	private String updateBy;
+	private String categoryName;
+	private String empIdx;
+	private String reason;
+	private int operationType;
+	private int quantity;
+	private int price;
+	private int finalminQuantity;
+	private String regDate;
+
+	
+	
+	
+	public String getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+	public int getFinalminQuantity() {
+		return finalminQuantity;
+	}
+	public void setFinalminQuantity(int finalminQuantity) {
+		this.finalminQuantity = finalminQuantity;
+	}
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	public int getOperationType() {
+		return operationType;
+	}
+	public void setOperationType(int operationType) {
+		this.operationType = operationType;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public String getEmpIdx() {
+		return empIdx;
+	}
+	public void setEmpIdx(String empIdx) {
+		this.empIdx = empIdx;
+	}
+	public String getCategoryName() {
+		return categoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
 	public String getProductId() {
 		return productId;
 	}
@@ -63,18 +123,22 @@ public class StockDto {
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
 	}
-	public int getRegBy() {
+	
+	public String getRegBy() {
 		return regBy;
 	}
-	public void setRegBy(int regBy) {
+	public void setRegBy(String regBy) {
 		this.regBy = regBy;
 	}
-	public int getUpdateBy() {
+	public String getUpdateBy() {
 		return updateBy;
 	}
-	public void setUpdateBy(int updateBy) {
+	public void setUpdateBy(String updateBy) {
 		this.updateBy = updateBy;
 	}
+
+	
+	
 	
 	
 	
