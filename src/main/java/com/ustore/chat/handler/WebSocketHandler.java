@@ -17,7 +17,7 @@ public class WebSocketHandler extends AbstractWebSocketHandler{
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-    	logger.info("session connect : "+session.toString());
+    	logger.info("------- session connect : "+session.toString());
         activeSessions.add(session);
     }
 
@@ -26,9 +26,6 @@ public class WebSocketHandler extends AbstractWebSocketHandler{
         activeSessions.remove(session);
     }
 
-    // 추가적인 로직이 필요하다면 여기에 구현...
-
-    // 연결된 세션 확인 함수
     public Set<WebSocketSession> getActiveSessions() {
         return activeSessions;
     }

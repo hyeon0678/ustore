@@ -73,4 +73,31 @@ public class ChatController {
 		return result;
 	}
 	
+	@GetMapping("/participant.ajax")
+	@ResponseBody
+	public HashMap<String, Object> participantList(@RequestParam int roomNum, Principal principal) {
+		logger.info(principal.getName());
+		logger.info("entered roomNum : "+roomNum);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		List<Participant> participants = chatService.getParticipantLists(roomNum);
+		result.put("participants", participants);
+		return result;
+	}
+	
+	@GetMapping("/quitRoom.ajax")
+	@ResponseBody
+	public HashMap<String, Object> quitRoom(@RequestParam int roomNum, Principal principal){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		chatService.quitRoom(roomNum, principal.getName());
+		return result;
+	}
+	
+	@GetMapping("/setRead.ajax")
+	@ResponseBody
+	public HashMap<String, Object> setRead(@RequestParam int roomNum, @RequestParam int chatIdx, Principal principal){
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		chatService.setRead(roomNum, chatIdx, principal.getName());
+		return result;
+	}
+	
 }
