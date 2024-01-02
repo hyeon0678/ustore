@@ -202,7 +202,7 @@
 														<!-- ===============================체팅 참가인원 확인 아이콘======================================== -->
 														<!--begin::Menu-->
 														<div class="me-n3" style="margin: 10px;">
-															<button class="btn btn-sm btn-icon"
+															<button class="btn btn-sm btn-icon participants-btn"
 																data-kt-menu-trigger="click"
 																data-kt-menu-placement="bottom-end">
 																<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/craft/docs/core/html/src/media/icons/duotune/abstract/abs015.svg-->
@@ -222,13 +222,9 @@
 																</div>
 																<!--end::Heading-->
 																<!--begin::Menu item-->
-																<div
+																<div id="participatns"
 																	style="height: 150px; overflow-y: auto; border: 1px solid #c6da52;">
-																	<span>홍길동(인사팀 팀장)</span><br /> <span>홍길동(인사팀 팀장)</span><br />
-																	<span>홍길동(인사팀 팀장)</span><br /> <span>홍길동(인사팀 팀장)</span><br />
-																	<span>홍길동(인사팀 팀장)</span><br /> <span>홍길동(인사팀 팀장)</span><br />
-																	<span>홍길동(인사팀 팀장)</span><br /> <span>홍길동(인사팀 팀장)</span><br />
-																	<span>홍길동(인사팀 팀장)</span>
+																	
 																</div>
 																<!--end::Menu item-->
 															</div>
@@ -242,7 +238,7 @@
 														<!-- ===============================체팅 참가인원 추가 아이콘======================================== -->
 														<!--begin::Menu-->
 														<div class="me-n3">
-															<button class="btn btn-sm btn-icon"
+															<button class="btn btn-sm btn-icon add-participant"
 																data-kt-menu-trigger="click"
 																data-kt-menu-placement="bottom-end"
 																style="margin-left: 5px; padding: 10px;">
@@ -299,7 +295,7 @@
 														<!-- ===============================체팅 나가기 아이콘======================================== -->
 														<!--begin::Menu-->
 														<div class="me-n3">
-															<button class="btn btn-sm btn-icon"
+															<button class="btn btn-sm btn-icon quit-room"
 																data-kt-menu-trigger="click"
 																data-kt-menu-placement="bottom-end"
 																style="margin-right: 30px; padding: 10px;">
@@ -383,6 +379,7 @@
 		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+   	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </body>
 <!--end::Body-->
 <script>
@@ -394,13 +391,16 @@
 	let chatParticipantList = [];
 	callChatRoomList();
 	let username = '${principal.username}'
+	let empName = '${principal.name}'+'('+'${principal.department}'+'${principal.position}'+')'
 	let roomNum = '';
     let subscription = null;
     let socket = null;
     let stompClient = null;
+    let clickCnt = 0;
     // 
 	$(document).ready(function(){
 		console.log("socket connection");
+		getCurrentTime()
 		connect();
 	    if(stompClient.connected){
 	    	console.log("websocket connected");
@@ -425,19 +425,26 @@
 		$('chat_list_div').empty();
 		console.log(list.length);
 		if(list.length < 1){
-			$('chat_list_div').append("<p>참여한 채팅방이 없습니다.</p>");
+			$('#chat_list_div').append("<p>참여한 채팅방이 없습니다.</p>");
 			return true;
 		}
 		for(let elem of list){
+			let date = getCurrentTime(elem.lastMsgTime)
+			console.log(elem.lastMsgTime);
+			
 			content ="<div class='chat-list-content-div bg-hover-light-primary text-hover-primary ' style='border: 1px solid #ffffca; height: 80px; border-radius: 5px;'>"
 			content +="<p style='display:none'>"+elem.chatRoomIdx+"</p>"
 			content +="<div class='d-flex flex-column' style='margin: 5px; height: 80px;'>"
 			content +="<div class='chatmain' style='display: flex; justify-content: space-between; margin-top: 10px;'>"
-			content +="<a class='fs-5 fw-bold text-gray-900 text-hover-primary room-name' style='margin: 0px;'>"+elem.chatRoomName+"</a>"
-			content +="<span class='text-muted fs-7 mb-1' style='text-align: right; margin: 0px;'>"+elem.lastMsgTime
+			content +="<a class='fs-8 fw-bold text-gray-900 text-hover-primary room-name' style='margin: 0px;'>"+elem.chatRoomName+"</a>"
+			content +="<span class='text-muted fs-7 mb-1' style='text-align: right; margin: 0px;'>"+date
 			content +="</span></div>"
 			content +="<div class='d-flex flex-column align-items-end ms-2'>"
-			content +="<span class='cachnum' style='color: #255000;'>"+elem.readCnt
+			if(elem.readCnt!=0){
+				content +="<span class='cachnum' style='color: #255000;'>"+elem.readCnt
+			}else{
+				content +="<span class='cachnum' style='color: #255000;'>"
+			}
 			content +="</span></div></div></div>"
 			$('#chat_list_div').append(content);
 		}
@@ -489,7 +496,7 @@
 			},"Disable" : {
 					"label" : "Disable",
 					"action" : function(obj) {
-						$("#make_room_jstree").jstree("disable_node", username+'_anchor');
+						$("#make_room_jstree").jstree("disable_node", username);
 					}
 				}
 			});
@@ -565,8 +572,10 @@
 				console.log(subscription);
 				subscripe();
 				callChatList(roomNum);
-				$('chat-room-name').html(roomName);
-				$('chat-msg-tool-bar').css('display:flex');
+				$('.chat-room-name').html(roomName);
+				$('.chat-msg-tool-bar').css({'display':'flex'});
+				participantsList();
+				quitRoom();
 			}
 			
 		});
@@ -593,29 +602,36 @@
 	function drawChatHistory(data){
 		for(let message of data){
 			content = ""
+			let date = getCurrentTime(message.sendDate)
+			console.log("chat history")
+			if(message.sender == 'system'){
+				continue;
+			}
 			if(message.sender == username){
 				content+="<div class='d-flex justify-content-end mb-10'>"
 				content+="<div class='d-flex flex-column align-items-end'>"
 				content+="<div class='d-flex align-items-center mb-2'>"
 				content+="<div class='me-3'><a class='fs-5 fw-bold text-gray-900 ms-1'>"
-				content+=message.sender+"</a></div></div>"
+				content+="나 </a></div></div>"
 				content+="<div class='p-5 rounded bg-light-primary text-gray-900 fw-semibold mw-lg-400px text-end' data-kt-element='message-text'>" 
-				content+=message.data+"</div></div></div>"
+				content+=message.data+"</div><p>"+date+"</p></div></div>"
 			}else{
 				content += "<div class='d-flex justify-content-start mb-10'>"
 				content += "<div class='d-flex flex-column align-items-start'>"
 				content += "<div class='d-flex align-items-center mb-2'><div class='ms-3'>"
 				content += "<a class='fs-5 fw-bold text-gray-900 text-hover-primary me-1'>"
-				content += message.sender+"</a></div></div>"
+				content += message.empName+"</a></div></div>"
 				content += "<div class='p-5 rounded bg-light-info text-gray-900 fw-semibold mw-lg-400px text-start'data-kt-element='message-text'>" 
-				content += message.data+"</div></div></div>"
+				content += message.data+"</div><p>"+date+"</p></div></div>"
 			}
 			$('#msg-content').append(content);
+			scrollBottom();
 		}
+		
 	}
 	
 	function connect() {
-		socket = new SockJS('http://localhost:80/ws');
+		socket = new SockJS('http://192.168.0.20:80/ws');
 	    stompClient = Stomp.over(socket);
 	    stompClient.connect({}, function(frame){
 	    	console.log("connect")
@@ -629,6 +645,7 @@
 	
 	function onMessageReceived(payload){
 		var message = JSON.parse(payload.body);
+		setRead(message.roomNum, message.chatIdx);
 		console.log(message);
 		let data = [];
 		data.push(message);
@@ -647,11 +664,94 @@
 					sender : username,
 					data : message,
 					roomNum : roomNum,
-					type : 'CHAT'
+					empName: empName
 			}
 			stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
 		}
+		scrollBottom();
 		$('#msg-box ').val('');
+	}
+	
+	function participantsList(){
+		$('.participants-btn').on('click', function(){
+			
+			if(clickCnt == 0){
+				clickCnt = 1
+				$.ajax({
+					data:{
+						'roomNum':roomNum
+					},
+					url:'/chat/participant.ajax',
+					type:'GET',
+					dataType:'JSON',
+					success:function(data){
+						console.log(data);
+						$('#make_room_enter_emp').empty();
+						drawParticipants(data.participants);
+						
+					},error:function(error){
+						console.log(error);				
+					}
+				})
+			}else if(clickCnt == 1){
+				clickCnt = 0;
+			}
+		});
+	}
+	
+	function drawParticipants(participants){
+		let contents = '';
+		$('#participatns').empty();
+		console.log(participants);
+		
+		for(let data of participants){
+			console.log(data);
+			contents += '<span>'+data.empInfo+'</span><br/>';
+		}
+		$('#participatns').append(contents);
+	}
+	
+	function quitRoom(){
+		$('.quit-room').on('click', function(){
+			$.ajax({
+				data:{
+					'roomNum':roomNum
+				},
+				url:'/chat/quitRoom.ajax',
+				type:'GET',
+				dataType:'JSON',
+				success:function(data){
+					console.log(data);
+					$('#msg-content').empty();
+					callChatRoomList()
+				},error:function(error){
+					console.log(error);				
+				}
+			})
+		});
+	}
+	function getCurrentTime(timestamp){
+		var date = new Date(timestamp);
+		let chatDate = moment(date).format('YY-MM-DD HH:mm');
+	    return chatDate;
+	}
+	function setRead(roomNum, chatIdx){
+		$.ajax({
+			data:{
+				'roomNum':roomNum,
+				'chatIdx':chatIdx
+			},
+			url:'/chat/setRead.ajax',
+			type:'GET',
+			dataType:'JSON',
+			success:function(data){
+			},error:function(error){
+				console.log(error);				
+			}
+		});
+	}
+	function scrollBottom(){
+		$('#chat_messenger_body').scrollTop($('#chat_messenger_body')[0].scrollHeight)
 	}
 </script>
 </html>
