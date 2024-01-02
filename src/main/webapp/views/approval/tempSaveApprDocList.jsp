@@ -4,26 +4,22 @@
 <html lang="ko">
 	<!--begin::Head-->
 	<head>
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+		<title>UStore</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="/resource/assets/media/logos/favicon.ico" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Vendor Stylesheets(used for this page only)-->
-		<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="/resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		
-		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Global Stylesheets Bundle-->
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<link href="/resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="/resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<style>
 			.chart-div{
 				display: flex;
@@ -60,14 +56,6 @@
 									<!--begin::Title-->
 									<h1 class="text-gray-900 fw-bold my-1 fs-2">임시저장함</h1>
 									<!--end::Title-->
-									<!--begin::Breadcrumb-->
-									<ul class="breadcrumb fw-semibold fs-base my-1">
-										<li class="breadcrumb-item text-muted">
-											<a href="index.jsp" class="text-muted text-hover-primary">Home</a>
-										</li>
-										<li class="breadcrumb-item text-muted">전자결재</li>
-									</ul>
-									<!--end::Breadcrumb-->
 								</div>
 								<!--end::Info-->
 							</div>
@@ -86,11 +74,12 @@
 											<!--begin::Toolbar-->
 											<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
 												<!--begin::Filter-->
-												<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-												<i class="ki-duotone ki-filter fs-2">
-													<span class="path1"></span>
-													<span class="path2"></span>
-												</i>문서삭제</button>								
+												<button id="delTempDoc" type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+													<i class="ki-duotone ki-filter fs-2">
+														<span class="path1"></span>
+														<span class="path2"></span>
+													</i>문서삭제
+												</button>								
 											</div>
 											<!--end::Toolbar-->							
 										</div>
@@ -105,7 +94,7 @@
 												<tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
 													<th class="w-10px pe-2">
 														<div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-															<input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
+															<input type="checkbox" id="chk_all" class="form-check-input" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
 														</div>
 													</th>
 													<th class="min-w-125px">저장일자</th>
@@ -115,29 +104,24 @@
 												</tr>
 											</thead>
 											<tbody class="text-gray-600 fw-semibold">
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td class="d-flex align-items-center">										
-														<!--begin::저장일자-->
-														<div class="d-flex flex-column">
-															<span></span>
-														</div>										
-													</td>
-													<!--begin::결재양식-->
-													<td></td>
-													<!--begin::기안문 제목-->
-													<td>
-														<div class="badge badge-light fw-bold"><a href="" class="menu-link px-3"></a></div>
-													</td>
-													<!--begin::결재상태-->
-													<td>
-														<div class="badge badge-light fw-bold">임시저장</div>
-													</td>
-												</tr>	
+												<c:if test="${templist.size()==0 }">
+													<tr><td colspan="5">게시물이 존재하지 않습니다.</td></tr>
+												</c:if>
+												<c:forEach items="${templist}" var="bbs">
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input type="checkbox" name="chk" class="form-check-input"  value="1"/>
+															</div>
+														</td>
+														<td>${bbs.appr_submitdate}</td>
+														<td>${bbs.appr_idx}</td>
+														<td><a href="detail?appr_idx=${bbs.appr_idx}">${bbs.appr_subject}</a></td>
+														<td>
+															<div class="badge badge-light fw-bold">${bbs.appr_status}</div>
+														</td>														
+													</tr>
+												</c:forEach>													
 											</tbody>
 										</table>
 										<!--end::Table-->
@@ -159,12 +143,32 @@
 		<!--end::Root-->
 								
 		<!--begin::Javascript-->
-		<script>var hostUrl = "resource/assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="resource/assets/js/scripts.bundle.js"></script>
+		<script src="/resource/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="/resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
+	<script>
+	$('#chk_all').on('click',function(){
+		var $chk = $('input[type="checkbox"]');
+		if($(this).is(":checked")){
+			$chk.prop("checked", true);
+		}else{
+			$chk.prop("checked", false);
+		}
+	});
+
+	$("input[name='chk']").on('click',function(){
+		var total = $("input[name='chk']").length;
+		var checked = $("input[name='chk']:checked").length;
+		
+		if(total != checked){
+			$('#chk_all').prop("checked", false);
+		}else{
+			$('#chk_all').prop("checked", true);
+		}
+	});
+	</script>
 </html>

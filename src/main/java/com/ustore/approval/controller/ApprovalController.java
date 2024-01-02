@@ -5,9 +5,7 @@ import java.io.InputStreamReader;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,13 +23,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ustore.approval.dto.ApprDocDto;
 import com.ustore.approval.dto.ApprovalDto;
 import com.ustore.approval.service.ApprovalService;
 import com.ustore.employee.dto.EmployeeDto;
@@ -54,10 +49,7 @@ public class ApprovalController {
 	public String getMyApprList() {
 		return "approval/myApprDocList";
 	}
-	@GetMapping(value="/approval/tempapproval")
-	public String getTempApprList() {
-		return "approval/tempSaveApprDocList";
-	}
+	
 	@GetMapping(value="/approval/teamapproval")
 	public String getTeamDocList() {
 		return "approval/teamApprDocList";
@@ -125,7 +117,7 @@ public class ApprovalController {
     
 
     @PostMapping("/saveapprlinedata")
-    public ResponseEntity<Map<String, Object>> saveApprLineData(@RequestBody ApprDocDto dto, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> saveApprLineData(@RequestBody ApprovalDto dto, HttpSession session) {
         try {
             session.setAttribute("approvalLines", dto.getApprovalLines());
 
@@ -143,7 +135,7 @@ public class ApprovalController {
     } 
     
     @PostMapping("/savereceiverdata")
-    public ResponseEntity<Map<String, Object>> saveReceiverData(@RequestBody ApprDocDto dto, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> saveReceiverData(@RequestBody ApprovalDto dto, HttpSession session) {
         try {    	
             session.setAttribute("receivers", dto.getReceivers());
 
@@ -159,27 +151,46 @@ public class ApprovalController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     } 
-/*    
-    @PostMapping(value="/saveappr") 
-	public String tempSave(Principal principal, @RequestBody ApprDocDto dto) {
+    
+    @PostMapping(value="/tempsaveappr") 
+	public String tempSave(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
 		 
 		String emp_idx = principal.getName(); 
 		dto.setEmpIdx(emp_idx);
-		service.tempSave(dto);
+		logger.info("common_idx:"+dto.getCommonIdx());
+		service.tempSaveAppr(dto);
+		rAttr.addFlashAttribute("msg",  "저장되었습니다.");
 		return "redirect:/approval/newapproval";  
-	}  
- */   
-    
-    
-/*
+	}      
+
 	@PostMapping(value="/sendappr") 
-	public ModelAndView sendAppr(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
-		 ModelAndView mav = new ModelAndView("redirect:/approval/newapproval"); 
-		 String emp_idx = principal.getName(); 
+	public String sendAppr(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
+		 
+		 String emp_idx = principal.getName();
+		 dto.setEmpIdx(emp_idx);
 		 service.sendAppr(dto);
 		 rAttr.addFlashAttribute("msg",  "결재상신 되었습니다.");
-		 return mav;
+		 return "redirect:/approval/newapproval";
 	}
-	 */
+	
+	// 임시저장함(리스트)
+	@GetMapping(value="/approval/tempapproval")
+	public ModelAndView getTempApprList(Principal principal, @RequestParam HashMap<String, String> params) {
+		
+		String emp_idx = principal.getName();
+		ArrayList<ApprovalDto> templist = service.getTempList(emp_idx, params);
+		ModelAndView mav = new ModelAndView("approval/tempSaveApprDocList");
+		mav.addObject("templist", templist);
+		
+		return mav;
+	}
+	
+	// 임시저장 detail보기
+	@GetMapping(value="/approval/tempapproval/detail")
+	public ModelAndView tempDetail(@RequestParam int appr_idx) {
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	 
 	
 }

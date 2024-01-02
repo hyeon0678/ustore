@@ -36,7 +36,7 @@
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
-	
+		<input type="hidden" name="common_idx" id="common_idx" value="31">
 		<!--begin::Card-->
 		<div class="card">
 			<!--begin::Card header-->
@@ -72,7 +72,7 @@
 				<!--begin::Input group-->
 				<div class="input-group mb-5">
 					<span class="input-group-text flex-grow-1" id="inputGroup-sizing-default" style="width: 20%;">제목</span>
-					<input type="text" name="subject" id="inputSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+					<input type="text" name="appr_subject" id="appr_subject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
 				</div>
 				<!--end::Input group-->										
 
@@ -112,7 +112,7 @@
 						</tbody>
 						<tr>
 							<td colspan="4" style="text-align: center; font-weight: 600;">합 계 금 액</td>
-							<td></td>
+							<td id="totalAmount"></td>
 						</tr>
 					</table>
 				</div>
@@ -258,7 +258,19 @@
 			});
 		});
 
-
+		var orderNum = $('#orderNum').val();
+	    var totalAmount = $('#totalAmount').val();
+	    var appr_subject = $('#appr_subject').val();
+	 // 대금지급 결의서 결재 양식에 필요한 DTO
+		var payForm = {
+		    commonIdx: common_idx,
+		    apprSubject: appr_subject,
+		    approvalLines: approvalLines,
+	        receivers: receivers,
+		    orderNum: orderNum,
+		    totalAmount : totalAmount
+		};
+		
 		// set the dropzone container id
 		const id = "#kt_dropzonejs_example_2";
 		const dropzone = document.querySelector(id);

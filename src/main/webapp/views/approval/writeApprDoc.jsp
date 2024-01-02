@@ -16,8 +16,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 	<!--end::Fonts-->
 	<!--begin::Vendor Stylesheets(used for this page only)-->
-	<%-- <link href="<c:url value='/resource/assets/plugins/custom/datatables/datatables.bundle.css' />" rel="stylesheet" type="text/css" /> --%>
-	<link href="/resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+	<link href="<c:url value='/resource/assets/plugins/custom/datatables/datatables.bundle.css' />" rel="stylesheet" type="text/css" />
 	<!--end::Vendor Stylesheets-->
 	<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 	<link href="<c:url value='/resource/assets/plugins/global/plugins.bundle.css'/>" rel="stylesheet" type="text/css" />
@@ -29,10 +28,11 @@
            float: right;
            margin-left: 20px;
 		}
-		.signature-table th, td {
-			border: 1px solid #ddd;
-			padding: 1px;
-			text-align: center;
+		.signature-table td {
+				border: 1px solid #ddd;
+				padding: 10px;
+				text-align: center;
+				width: 80px;
 		}
 		.signature-table th{
 			height: 25px;
@@ -94,11 +94,10 @@
 						</div>
 						<!--end::Toolbar-->	
 						<!-- 결재 양식 들어오는 곳 -->	
-						<form id="docFormContainer" action="/saveDocument" method="post">	
-							<div class="loadApprDoc">	
-							${htmlContent}				
-							</div>	
-						</form>					
+						<p>Selected Form: <%= request.getParameter("common_idx") %></p>	
+						<div class="loadApprDoc">	
+							${htmlContent}					
+						</div>					
 					</div>
 				<!--end::Content--> 
     			</div>
@@ -234,15 +233,40 @@
 								
 		<!--begin::Javascript-->
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="<c:url value='/resource/assets/plugins/global/plugins.bundle.js' />"></script>
+		<!-- daterangepicker -->
+		<script src="<c:url value='/resource/assets/plugins/global/plugins.bundle.js' />"></script> 
 		<script src="<c:url value='/resource/assets/js/scripts.bundle.js' />"></script>
 		<!--end::Global Javascript Bundle-->
+		<!-- jstree -->
 		<script src="<c:url value='/resource/assets/plugins/custom/jstree/jstree.bundle.js' />"></script>
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
 	<script>
-	
+	var common_idx;
+	$(document).ready(function () {
+		common_idx=${common_idx};
+    	// 초기에 선택된 양식에 대한 HTML 파일 로드
+        var formPage = '<%= request.getAttribute("formPage") %>';
+        if (formPage) {
+            loadFormPage(formPage, common_idx);
+        }        
+        
+        var loggedInEmp_idx = ${principal.username};
+    	console.log(loggedInEmp_idx);
+        addLoggedInEmpToApprLine(loggedInEmp_idx);            	 	
+    	 
+        // 결재정보 버튼 클릭 시의 동작
+        $('#btnApprovalInfo').on('click', function () {
+            console.log('결재정보 버튼 클릭');            
+            myModal.show();
+        });
+                
+        $('#kt_modal_1').on('shown.bs.modal', function(){
+			getTreeData();
+		})  	
+		
+    });
 		
     // 동적으로 HTML 파일 로드하는 함수
     function loadFormPage(formPage, common_idx) {
@@ -265,30 +289,7 @@
         keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
     });
     
-    $(document).ready(function () {
-		var common_idx=${common_idx};
-    	// 초기에 선택된 양식에 대한 HTML 파일 로드
-        var formPage = '<%= request.getAttribute("formPage") %>';
-        if (formPage) {
-            loadFormPage(formPage, common_idx);
-        }        
-        
-        var loggedInEmp_idx = ${principal.username};
-    	console.log(loggedInEmp_idx);
-        addLoggedInEmpToApprLine(loggedInEmp_idx);
-            	 	
-    	 
-        // 결재정보 버튼 클릭 시의 동작
-        $('#btnApprovalInfo').on('click', function () {
-            console.log('결재정보 버튼 클릭');            
-            myModal.show();
-        });
-                
-        $('#kt_modal_1').on('shown.bs.modal', function(){
-			getTreeData();
-		})  	
-		
-    });
+    
 	
 	
 	function getTreeData(){
@@ -370,7 +371,9 @@
 	                name: loggedInEmp.empName,
 	                position: loggedInEmp.position,
 	                positionType: loggedInEmp.positionType,
-	                department: loggedInEmp.deptName
+	                department: loggedInEmp.deptName,
+	                apprOrder: 0,  // 결재순서 추가
+	                apprConfirm: false  // 결재여부 추가
 	            };
 
 	            // 테이블에 데이터 추가
@@ -394,13 +397,18 @@
 	        url: '/info/' + emp_idx,
 	        success: function (employeeInfo) {
 	            console.log(employeeInfo);
-
+				
+	            var nextApprOrder = getNextApprOrder();
+	            
 	            var approvalData = {
 	                type: '결재',
+	                approverIdx: employeeInfo.empIdx,
 	                name: employeeInfo.empName,
 	                position: employeeInfo.position,
 	                positionType: employeeInfo.positionType,
-	                department: employeeInfo.deptName
+	                department: employeeInfo.deptName,
+	                apprOrder: nextApprOrder,  // 결재순서 추가
+	                apprConfirm: false  // 결재여부 추가
 	            };
 
 	            // 테이블에 데이터 추가
@@ -424,6 +432,11 @@
 	    });
 	}
 
+	// 다음 결재순서를 반환하는 함수
+	function getNextApprOrder() {
+	    return approvalLines.length;
+	}
+	
 	// 결재정보 모달창 결재선 추가 테이블에 행을 추가하는 함수
 	function addRowToApprLineTable(approvalData) {
 	    var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
@@ -489,6 +502,7 @@
 
 	            // 생성할 receiverData 객체를 만들어서 데이터 채우기
 	            var receiverData = {
+	            	recvIdx: employeeInfo.empIdx,
 	                name: employeeInfo.empName,
 	                position: employeeInfo.position,
 	                positionType: employeeInfo.positionType,
@@ -719,25 +733,37 @@
         
     });
 	
+
+		var ApprovalDto;
+		
+		document.addEventListener('DOMContentLoaded', function() {
+
+		    switch (common_idx) {
+		        case '30':
+		            ApprovalDto = bdForm;
+		            break;
+		        case '31':
+		            ApprovalDto = payForm;
+		            break;
+		        case '32':
+		            ApprovalDto = leaveForm;
+		            break;
+		    }
+		});
+
+
+	
+        
 	// 임시저장
     $('#btnSaveTemp').on('click', function () {
     	
-        console.log('임시저장 버튼 클릭');
-        var appr_subject = $('#appr_subject').val();
-	    var appr_content = $('#appr_content').val();
+    	console.log('임시저장 버튼 클릭');    	
 	    
-        var approvalDto = {
-    		subject: appr_subject,
-            content: appr_content,
-            approverLines: approverLines,
-            receivers: receivers	
-        };
-
         $.ajax({
-            url: '/tempsave', 
+            url: '/tempsaveappr', 
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(approvalDto),
+            data: JSON.stringify(ApprovalDto),
             success: function(response) {
                 alert('임시저장이 완료되었습니다.');
             },
@@ -751,22 +777,14 @@
 	
 	// 결재상신
 	$('#btnSendApproval').on('click', function () {
-
-		console.log('결재상신 버튼 클릭');
-	    // 필요한 다른 데이터도 수집
-	    var appr_subject = $('#appr_subject').val();
-	    var appr_content = $('#appr_content').val();
-	    var approvalDto = {
-	    		subject: appr_subject,
-	            content: appr_content,
-	            approverLines: approverLines,
-	            receivers: receivers	
-	        };
+		
+		console.log('결재상신 버튼 클릭');		
 	    
 	    $.ajax({
 	        url: '/sendappr',
 	        method: 'POST',
-	        data: JSON.stringify(approvalDto),
+	        contentType: 'application/json',
+	        data: JSON.stringify(ApprovalDto),
 	        success: function (response) {
 	            console.log('문서가 결재상신 되었습니다.');
 	        },
