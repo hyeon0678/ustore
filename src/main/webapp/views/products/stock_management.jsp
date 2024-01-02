@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <!--begin::Head-->
@@ -61,6 +65,8 @@
 <!--begin::Body-->
 <body id="kt_body"
 	class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+	<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal" var="principal"/>
 	<!--begin::Theme mode setup on page load-->
 	<script>
 		var defaultThemeMode = "light";
@@ -152,7 +158,7 @@
 													</div>
 													<!--end::Close-->
 												</div>
-												<form action="stock/stock_management/insert" method="post">
+												<form action="stock/stockmanagement/insert" method="post">
 													<div class="modal-body">
 														<h2 style=" color: #c6da52;">물품 항목 추가</h2>
 														<div class="table-responsive">
@@ -202,7 +208,7 @@
 																	<tr
 																		class="fw-semibold fs-6 text-gray-800">
 																		<td class="min-w-125px" style="vertical-align: bottom;">단가(낱개)</td>
-																		<td colspan="2"><input type="text" class="form-control" placeholder="단가(낱개)를 입력 해주세요." name="purchasePrice"/></td></tr>
+																		<td colspan="2"><input type="hidden" name="empIdx" value="${principal.username}"/><input type="text" class="form-control" placeholder="단가(낱개)를 입력 해주세요." name="purchasePrice"/></td></tr>
 																</tbody>
 
 															</table>
@@ -243,39 +249,24 @@
 											<c:forEach items="${list}" var="stock">
 												<tr>
 													<td>${stock.productId}</td>
-													<td>
-														<div class="d-flex">
+													 <td>
+            <div class="d-flex">
+                <a href="/stock/stockdetail/list?productId=${stock.productId}" class="btn-link text-gray-800 text-hover-primary fs-5 fw-bold mb-1">
+    ${stock.productName}
+</a>
+            </div>
+        </td>
+													<td><c:choose>
+                <c:when test="${stock.stock gt 0}">
+                    <c:set var="roundedStock" value="${fn:substringBefore(fn:substringAfter(stock.stock / stock.unitQuantity, '.'), '0') + 1}" />
+                    ${roundedStock}
+                </c:when>
+                <c:otherwise>
+                    0
+                </c:otherwise>
+            </c:choose>/${stock.stock}</td>
 
-															<a href="views/products/stock_detail.jsp"
-																class="text-gray-800 text-hover-primary fs-5 fw-bold mb-1"
-																data-kt-ecommerce-category-filter="category_name">${stock.productName}</a>
-
-														</div>
-														</div>
-													</td>
-													<td>${stock.stock}</td>
-
-													<td class="text-end"><a href="#"
-														class="btn btn-sm btn-light btn-active-light-primary btn-flex btn-center"
-														data-kt-menu-trigger="click"
-														data-kt-menu-placement="bottom-end">Actions <i
-															class="ki-duotone ki-down fs-5 ms-1"></i></a> <!--begin::Menu-->
-														<div
-															class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-															data-kt-menu="true">
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="apps/ecommerce/catalog/add-category.jsp"
-																	class="menu-link px-3">Edit</a>
-															</div>
-															<!--end::Menu item-->
-															<!--begin::Menu item-->
-															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3"
-																	data-kt-ecommerce-category-filter="delete_row">Delete</a>
-															</div>
-															<!--end::Menu item-->
-														</div> <!--end::Menu--></td>
+													<td ><button class="btn btn-primary" onclick="confirmDelete('${stock.productId}')">delete</button></td>
 												</tr>
 											</c:forEach>
 
@@ -323,15 +314,15 @@
 
 	<script>
 		$(document).ready(function() {
-			// 대분류 선택이 변경될 때 이벤트 처리
+		
 			$("#Bselect").change(function() {
-				// 선택한 대분류 값 가져오기
+				
 				var selectedCategory = $(this).val();
 
-				// 중분류 선택 옵션 초기화
+			
 				$("#Sselect").empty();
 
-				// 선택한 대분류에 따라 중분류 옵션 추가
+				
 				if (selectedCategory === "식품") {
 					$("#Sselect").append('<option value="01">주류</option>');
 					$("#Sselect").append('<option value="02">가공</option>');
@@ -347,8 +338,64 @@
 				}
 			});
 		});
+	//------------------------------------------
+	 function confirmDelete(productId) {
+    Swal.fire({
+        text: '물품을 삭제 하시겠습니까?.',
+        icon: 'info',
+        showCancelButton: true,
+        buttonsStyling: false,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        customClass: {
+            confirmButton: 'btn btn-primary',
+            cancelButton: 'btn btn-secondary'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/stock/stockmanagement/delete',
+                method: 'POST',
+                data: {
+                    productId: productId
+                },
+                success: function (data) {
+                    console.log('Data deleted successfully:', data);
+                    
+                  
+                    Swal.fire({
+                        text: '물품이 삭제 되었습니다.',
+                        icon: 'success',
+                        confirmButtonText: '확인',
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        }
+                    }).then(() => {
+               
+                        window.location.href = '/stock/stockmanagement/list';
+                    });
+                },
+                error: function (error) {
+                    Swal.fire({
+                        text: '물품이 삭제 되었습니다.',
+                        icon: 'success',
+                        confirmButtonText: '확인',
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        }
+                    }).then(() => {
+                    
+                        window.location.href = '/stock/stockmanagement/list';
+                    });
+                }
+            });
+        }
+    });
+}
+		
+		
 	</script>
-
+</sec:authorize>
 </body>
 <!--end::Body-->
 </html>
