@@ -28,7 +28,7 @@
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
-		
+		<input type="hidden" name="common_idx" id="common_idx" value="32">
 		<!--begin::Card-->
 		<div class="card">
 			<!--begin::Card header-->
@@ -64,7 +64,7 @@
 				<!--begin::Input group-->
 				<div class="input-group mb-5">
 					<span class="input-group-text flex-grow-1" id="inputGroup-sizing-default" style="width: 20%;">제목</span>
-					<input type="text" name="subject" id="inputSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+					<input type="text" name="appr_subject" id="appr_subject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
 				</div>
 				<!--end::Input group-->
 				<div class="table-responsive">
@@ -72,7 +72,7 @@
 						<tr class="fw-bold fs-6 text-gray-800">
 							<th style="width: 20%; background-color: #f8f9fa; font-size: inherit;">휴가종류</th>
 							<td>
-								<select name="leaveType" aria-controls="kt_customers_table" class="form-select form-select-sm form-select-solid" style="width: 30%;">
+								<select name="leaveType" id="leaveType" aria-controls="kt_customers_table" class="form-select form-select-sm form-select-solid" style="width: 30%;">
 									<option value="50">연가</option>
 									<option value="51">병가</option>
 									<option value="52">공가</option>
@@ -86,14 +86,14 @@
 									<div class="mb-0" style="width: 50%;">
 										<input name="selectLeaveDate" class="form-control form-control-solid" placeholder="Pick date rage" id="kt_daterangepicker_1"/>
 									</div>	
-									&nbsp;&nbsp;&nbsp;&nbsp;신청일수 : <div class="numberofday m1-2" style="width: 10%;"></div> 일
+									&nbsp;&nbsp;&nbsp;&nbsp;신청일수 : <div id="leaveDays" class="numberofday m1-2" style="width: 10%; text-align: center;"></div> 일
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<th style="width: 20%; background-color: #f8f9fa; font-size: inherit;">휴가사유</th>
 							<td>
-								<input type="text" name="leaveReason" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+								<input type="text" id="leaveReason" name="leaveReason" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
 							</td>
 						</tr>
 					</table>
@@ -179,97 +179,143 @@
 	</body>
 	<!--end::Body-->
 	<script>
-		$("#kt_daterangepicker_1").daterangepicker();	
+	
+	var leaveStartDate;
+    var leaveEndDate;
+    
+	$("#kt_daterangepicker_1").daterangepicker({
+		}, function(start, end, label) {
+        leaveStartDate = start.format('MM/DD/YYYY');
+        leaveEndDate = end.format('MM/DD/YYYY');      
 
-		
-		// set the dropzone container id
-		const id = "#kt_dropzonejs_example_2";
-		const dropzone = document.querySelector(id);
+        console.log('Start Date: ' + leaveStartDate);
+        console.log('End Date: ' + leaveEndDate);		
+	});	
 
-		// set the preview element template
-		var previewNode = dropzone.querySelector(".dropzone-item");
-		previewNode.id = "";
-		var previewTemplate = previewNode.parentNode.innerHTML;
-		previewNode.parentNode.removeChild(previewNode);
+	$('#kt_daterangepicker_1').on('apply.daterangepicker', function(ev, picker) {
+        // 날짜 간격 계산
+        var startDate = moment(leaveStartDate, 'MM/DD/YYYY');
+        var endDate = moment(leaveEndDate, 'MM/DD/YYYY');
+        var duration = endDate.diff(startDate, 'days')+1;
 
-		var myDropzone = new Dropzone(id, { // Make the whole body a dropzone
-			url: "https://keenthemes.com/scripts/void.php", // Set the url for your upload script location
-			parallelUploads: 20,
-			previewTemplate: previewTemplate,
-			maxFilesize: 10, // Max filesize in MB
-			autoQueue: false, // Make sure the files aren't queued until manually added
-			previewsContainer: id + " .dropzone-items", // Define the container to display the previews
-			clickable: id + " .dropzone-select" // Define the element that should be used as click trigger to select files.
+        // 결과를 leaveDays 태그에 넣기
+        $('#leaveDays').text(duration);
+    });
+	
+    var leaveType = $('#leaveType').val();
+    var leaveDays = $('#leaveDays').val();
+    var leaveReason = $('#leaveReason').val();
+    var appr_subject = $('#appr_subject').val();
+    // 캘린더 닫기 버튼 클릭 시 이벤트 핸들러
+    $('#kt_daterangepicker_1').on('cancel.daterangepicker', function(ev, picker) {
+        // 날짜 선택 취소 시 필요한 동작 수행
+        $('#leaveDays').text(''); // 날짜 선택이 취소되면 내용을 지움
+    });
+    
+ 	// 휴가신청서 결재 양식에 필요한 DTO
+	var leaveForm = {
+	    commonIdx: common_idx,
+	    apprSubject: appr_subject,
+	    approvalLines: approvalLines,
+        receivers: receivers,
+	    leaveType: leaveType,
+	    leaveStartDate: leaveStartDate,
+	    leaveEndDate: leaveEndDate,
+	    leaveDays: leaveDays,
+	    leaveReason: leaveReason
+	};
+	
+	// set the dropzone container id
+	const id = "#kt_dropzonejs_example_2";
+	const dropzone = document.querySelector(id);
+
+	// set the preview element template
+	var previewNode = dropzone.querySelector(".dropzone-item");
+	previewNode.id = "";
+	var previewTemplate = previewNode.parentNode.innerHTML;
+	previewNode.parentNode.removeChild(previewNode);
+
+	var myDropzone = new Dropzone(id, { // Make the whole body a dropzone
+		url: "https://keenthemes.com/scripts/void.php", // Set the url for your upload script location
+		parallelUploads: 20,
+		previewTemplate: previewTemplate,
+		maxFilesize: 10, // Max filesize in MB
+		autoQueue: false, // Make sure the files aren't queued until manually added
+		previewsContainer: id + " .dropzone-items", // Define the container to display the previews
+		clickable: id + " .dropzone-select" // Define the element that should be used as click trigger to select files.
+	});
+
+	myDropzone.on("addedfile", function (file) {
+		// Hookup the start button
+		file.previewElement.querySelector(id + " .dropzone-start").onclick = function () { myDropzone.enqueueFile(file); };
+		const dropzoneItems = dropzone.querySelectorAll('.dropzone-item');
+		dropzoneItems.forEach(dropzoneItem => {
+			dropzoneItem.style.display = '';
 		});
+		dropzone.querySelector('.dropzone-upload').style.display = "inline-block";
+		dropzone.querySelector('.dropzone-remove-all').style.display = "inline-block";
+	});
 
-		myDropzone.on("addedfile", function (file) {
-			// Hookup the start button
-			file.previewElement.querySelector(id + " .dropzone-start").onclick = function () { myDropzone.enqueueFile(file); };
-			const dropzoneItems = dropzone.querySelectorAll('.dropzone-item');
-			dropzoneItems.forEach(dropzoneItem => {
-				dropzoneItem.style.display = '';
-			});
-			dropzone.querySelector('.dropzone-upload').style.display = "inline-block";
-			dropzone.querySelector('.dropzone-remove-all').style.display = "inline-block";
+	// Update the total progress bar
+	myDropzone.on("totaluploadprogress", function (progress) {
+		const progressBars = dropzone.querySelectorAll('.progress-bar');
+		progressBars.forEach(progressBar => {
+			progressBar.style.width = progress + "%";
 		});
+	});
 
-		// Update the total progress bar
-		myDropzone.on("totaluploadprogress", function (progress) {
-			const progressBars = dropzone.querySelectorAll('.progress-bar');
+	myDropzone.on("sending", function (file) {
+		// Show the total progress bar when upload starts
+		const progressBars = dropzone.querySelectorAll('.progress-bar');
+		progressBars.forEach(progressBar => {
+			progressBar.style.opacity = "1";
+		});
+		// And disable the start button
+		file.previewElement.querySelector(id + " .dropzone-start").setAttribute("disabled", "disabled");
+	});
+
+	// Hide the total progress bar when nothing's uploading anymore
+	myDropzone.on("complete", function (progress) {
+		const progressBars = dropzone.querySelectorAll('.dz-complete');
+
+		setTimeout(function () {
 			progressBars.forEach(progressBar => {
-				progressBar.style.width = progress + "%";
+				progressBar.querySelector('.progress-bar').style.opacity = "0";
+				progressBar.querySelector('.progress').style.opacity = "0";
+				progressBar.querySelector('.dropzone-start').style.opacity = "0";
 			});
+		}, 300);
+	});
+
+	// Setup the buttons for all transfers
+	dropzone.querySelector(".dropzone-upload").addEventListener('click', function () {
+		myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+	});
+
+	// Setup the button for remove all files
+	dropzone.querySelector(".dropzone-remove-all").addEventListener('click', function () {
+		dropzone.querySelector('.dropzone-upload').style.display = "none";
+		dropzone.querySelector('.dropzone-remove-all').style.display = "none";
+		myDropzone.removeAllFiles(true);
+	});
+
+	// On all files completed upload
+	myDropzone.on("queuecomplete", function (progress) {
+		const uploadIcons = dropzone.querySelectorAll('.dropzone-upload');
+		uploadIcons.forEach(uploadIcon => {
+			uploadIcon.style.display = "none";
 		});
+	});
 
-		myDropzone.on("sending", function (file) {
-			// Show the total progress bar when upload starts
-			const progressBars = dropzone.querySelectorAll('.progress-bar');
-			progressBars.forEach(progressBar => {
-				progressBar.style.opacity = "1";
-			});
-			// And disable the start button
-			file.previewElement.querySelector(id + " .dropzone-start").setAttribute("disabled", "disabled");
-		});
-
-		// Hide the total progress bar when nothing's uploading anymore
-		myDropzone.on("complete", function (progress) {
-			const progressBars = dropzone.querySelectorAll('.dz-complete');
-
-			setTimeout(function () {
-				progressBars.forEach(progressBar => {
-					progressBar.querySelector('.progress-bar').style.opacity = "0";
-					progressBar.querySelector('.progress').style.opacity = "0";
-					progressBar.querySelector('.dropzone-start').style.opacity = "0";
-				});
-			}, 300);
-		});
-
-		// Setup the buttons for all transfers
-		dropzone.querySelector(".dropzone-upload").addEventListener('click', function () {
-			myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
-		});
-
-		// Setup the button for remove all files
-		dropzone.querySelector(".dropzone-remove-all").addEventListener('click', function () {
+	// On all files removed
+	myDropzone.on("removedfile", function (file) {
+		if (myDropzone.files.length < 1) {
 			dropzone.querySelector('.dropzone-upload').style.display = "none";
 			dropzone.querySelector('.dropzone-remove-all').style.display = "none";
-			myDropzone.removeAllFiles(true);
-		});
-
-		// On all files completed upload
-		myDropzone.on("queuecomplete", function (progress) {
-			const uploadIcons = dropzone.querySelectorAll('.dropzone-upload');
-			uploadIcons.forEach(uploadIcon => {
-				uploadIcon.style.display = "none";
-			});
-		});
-
-		// On all files removed
-		myDropzone.on("removedfile", function (file) {
-			if (myDropzone.files.length < 1) {
-				dropzone.querySelector('.dropzone-upload').style.display = "none";
-				dropzone.querySelector('.dropzone-remove-all').style.display = "none";
-			}
-		});
+		}
+	});
+		
+		
+		
 	</script>
 </html>

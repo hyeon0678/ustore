@@ -19,77 +19,127 @@
 		    e.emp_idx = #{param1};
 	</select>
 	
-	<!-- <insert id="tempSaveDoc" parameterType="ApprovalDto">
-		<choose>
-	        <when test="commonIdx == 30">
-            INSERT INTO business_draft (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
-                                       appr_status, fn_approver, appr_type_idx)
-            VALUES (#{apprIdx}, #{empIdx}, #{apprSubject}, #{apprContent}, #{submitDate}, 43, #{fnApprover}, #{commonIdx});
-        </when>
-        <when test="commonIdx == 31">
-            INSERT INTO payment_resolution (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
-                                           appr_status, fn_approver, appr_type_idx)
-            VALUES (#{apprIdx}, #{empIdx}, #{subject}, #{content}, #{submitDate}, 43, #{fnApprover}, #{commonIdx});
-        </when>
-        <when test="commonIdx == 32">
-            INSERT INTO req_vacation (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
-                                       appr_status, fn_approver, appr_type_idx)
-            VALUES (#{apprIdx}, #{empIdx}, #{subject}, #{content}, #{submitDate}, 43, #{fnApprover}, #{commonIdx});
-        </when>
-	    </choose>
+	<insert id="tempSaveContent" parameterType="ApprovalDto" useGeneratedKeys="true" keyColumn="appr_idx" keyProperty="apprIdx">
+		<if test="commonIdx == 30">
+            INSERT INTO business_draft (appr_idx, emp_idx, appr_subject, appr_content,  
+            	appr_status, doc_step)
+            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, #{apprContent}, 43, 1);
+        </if>
+        <if test="commonIdx == 31">
+        	INSERT INTO payment_resolution (appr_idx, emp_idx, appr_subject,  
+            	appr_status, doc_step, order_num)
+            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 43, 1, #{orderNum});            
+        </if>
+        <if test="commonIdx == 32">
+            INSERT INTO req_vacation (appr_idx, emp_idx, appr_subject, 
+                appr_status, doc_step, leave_type, leave_start_date, leave_end_date, leave_reason)
+            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 43, 1, 
+            	#{leaveType}, #{leaveStartDate}, #{leaveEndDate}, #{leaveReason});
+        </if>
 	</insert>
+	
+	<update id="updateTempSaveContent" parameterType="ApprovalDto">
+		<if test="commonIdx == 30">
+            UPDATE business_draft SET appr_subject=#{apprSubject}, appr_content=#{apprContent}	
+            WHERE appr_idx=#{apprIdx}            	
+	    </if>
+        <if test="commonIdx == 31">
+	        UPDATE payment_resolution SET appr_subject=#{apprSubject}, 
+	        	appr_content=#{apprContent}, order_num=#{orderNum}
+            WHERE appr_idx=#{apprIdx}            	
+	    </if>
+        <if test="commonIdx == 32">
+	        UPDATE req_vacation SET appr_subject=#{apprSubject}, leave_type=#{leaveType},
+	        	leave_start_date=#{leaveStartDate},leave_end_date=#{leaveEndDate},leave_reason=#{leaveReason}
+	        WHERE appr_idx=#{apprIdx}
+	    </if>
+	</update>
 	   
-	<insert id="tempSaveLine" parameterType="ApprovalDto">
-		<foreach collection="approvalLines" item="approvalLine" separator=";">
-	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm, appr_date, appr_type_idx)
-	        VALUES (#{approvalLine.empIdx}, #{apprIdx}, #{approvalLine.approver}, #{approvalLine.apprOrder},
-	                #{approvalLine.apprConfirm}, #{approvalLine.apprDate}, #{approvalLine.apprTypeIdx})
-	    </foreach>
+	<insert id="saveContent" parameterType="ApprovalDto" useGeneratedKeys="true" keyColumn="appr_idx" keyProperty="apprIdx">
+		<if test="commonIdx == 30">
+            INSERT INTO business_draft (appr_idx, emp_idx, appr_subject, appr_content,  
+            	appr_status, doc_step)
+            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, #{apprContent}, 40, 1);
+        </if>
+        <if test="commonIdx == 31">
+        	INSERT INTO payment_resolution (appr_idx, emp_idx, appr_subject,  
+            	appr_status, doc_step, order_num)
+            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 40, 1, #{orderNum});            
+        </if>
+        <if test="commonIdx == 32">
+            INSERT INTO req_vacation (appr_idx, emp_idx, appr_subject, 
+                appr_status, doc_step, leave_type, leave_start_date, leave_end_date, leave_reason)
+            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 40, 1, 
+            	#{leaveType}, #{leaveStartDate}, #{leaveEndDate}, #{leaveReason});
+        </if>
 	</insert>
 	
-	<insert id="tempSaveRecv" parameterType="ApprovalDto">
-	    <foreach collection="receivers" item="receiver" separator=";">
-	        INSERT INTO recipient (emp_idx, appr_idx, appr_type_idx)
-	        VALUES (#{receiver.empIdx}, #{apprIdx}, #{receiver.apprTypeIdx})
-	    </foreach>
+	<insert id="saveApprLine" parameterType="ApprovalDto">
+	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm)
+	        VALUES (#{empIdx}, #{apprIdx}, #{approver}, #{apprOrder}, #{apprConfirm})
 	</insert>
 	
-	<insert id="saveDoc" parameterType="ApprovalDto">
-		<choose>
-	        <when test="commonIdx == 30">
-	            INSERT INTO business_draft (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
-	                                       appr_status, fn_approver, appr_type_idx)
-	            VALUES (#{apprIdx}, #{empIdx}, #{subject}, #{content}, #{submitDate}, #{apprStatus},
-	                    #{fnApprover}, #{docId});
-	        </when>
-	        <when test="commonIdx == 31">
-	            INSERT INTO payment_resolution (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
-	                                           appr_status, fn_approver, appr_type_idx)
-	            VALUES (#{apprIdx}, #{empIdx}, #{subject}, #{content}, #{submitDate}, #{apprStatus},
-	                    #{fnApprover}, #{docId});
-	        </when>
-	        <when test="commonIdx == 32">
-	            INSERT INTO req_vacation (appr_idx, emp_idx, appr_subject, appr_content, appr_submitdate,
-	                                       appr_status, fn_approver, appr_type_idx)
-	            VALUES (#{apprIdx}, #{empIdx}, #{subject}, #{content}, #{submitDate}, #{apprStatus},
-	                    #{fnApprover}, #{docId});
-	        </when>
-	    </choose>
+	<insert id="saveApprRecv" parameterType="ApprovalDto">
+	        INSERT INTO recipient (emp_idx, appr_idx, receiver)
+	        VALUES (#{empIdx}, #{apprIdx}, #{receiver})	    
 	</insert>
-	    
-	<insert id="saveLine" parameterType="ApprovalDto">
-		<foreach collection="approvalLines" item="approvalLine" separator=";">
-	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm, appr_date, appr_type_idx)
-	        VALUES (#{approvalLine.empIdx}, #{apprIdx}, #{approvalLine.approver}, #{approvalLine.apprOrder},
-	                #{approvalLine.apprConfirm}, #{approvalLine.apprDate}, #{approvalLine.apprTypeIdx})
-	    </foreach>
-	</insert>
+
+	<select id="getTempList" resultType="ApprovalDto" parameterType="map">
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		FROM business_draft
+		WHERE emp_idx = #{emp_idx} AND appr_status = 43
+		UNION
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		FROM payment_resolution
+		WHERE emp_idx = #{emp_idx} AND appr_status = 43
+		UNION
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		FROM req_vacation
+		WHERE emp_idx = #{emp_idx} AND appr_status = 43;		
+	</select>	
 	
-	<insert id="saveRecv" parameterType="ApprovalDto">
-	    <foreach collection="receivers" item="receiver" separator=";">
-	        INSERT INTO recipient (emp_idx, appr_idx, appr_type_idx)
-	        VALUES (#{receiver.empIdx}, #{apprIdx}, #{receiver.apprTypeIdx})
-	    </foreach>
-	</insert> -->
+	<!-- <select id="getMyApprList" resultType="ApprovalDto" parameterType="map">
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		FROM business_draft
+		WHERE emp_idx = #{emp_idx} AND appr_status in (40, 41, 42)
+		UNION
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		FROM payment_resolution
+		WHERE emp_idx = #{emp_idx} AND appr_status in (40, 41, 42)
+		UNION
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		FROM req_vacation
+		WHERE emp_idx = #{emp_idx} AND appr_status in (40, 41, 42)		
+	</select>	
+	
+	<select id="getReqApprList" resultType="ApprovalDto" parameterType="map">
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		FROM business_draft
+		WHERE emp_idx = #{emp_idx} AND appr_status = 40
+		UNION
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		FROM payment_resolution
+		WHERE emp_idx = #{emp_idx} AND appr_status = 40
+		UNION
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		FROM req_vacation
+		WHERE emp_idx = #{emp_idx} AND appr_status = 40		
+	</select>
+	
+	<select id="getTeamApprList" resultType="ApprovalDto" parameterType="map">
+		SELECT bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.appr_submitdate
+		FROM business_draft bd
+		JOIN employee e ON bd.emp_idx = e.emp_idx
+		WHERE e.dept_id = (SELECT dept_id FROM employee WHERE emp_idx = #{emp_idx}) 
+		AND bd.appr_status = 41;
+		UNION
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		FROM payment_resolution
+		WHERE emp_idx = #{emp_idx} AND appr_status = 41
+		UNION
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		FROM req_vacation
+		WHERE emp_idx = #{emp_idx} AND appr_status = 41;		
+	</select> -->
 
 </mapper>

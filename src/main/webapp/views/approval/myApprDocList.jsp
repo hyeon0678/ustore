@@ -10,20 +10,16 @@
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="/resource/assets/media/logos/favicon.ico" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
 		<!--begin::Vendor Stylesheets(used for this page only)-->
-		<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="/resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		
-		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Global Stylesheets Bundle-->
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<link href="/resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="/resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
 		<style>
 			.chart-div{
 				display: flex;
@@ -77,11 +73,6 @@
 										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
 											<thead>
 												<tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-													<th class="w-10px pe-2">
-														<div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-															<input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
-														</div>
-													</th>
 													<th class="min-w-125px">기안일자</th>
 													<th class="min-w-125px">결재양식</th>
 													<th class="min-w-125px">제목</th>
@@ -90,31 +81,20 @@
 												</tr>
 											</thead>
 											<tbody class="text-gray-600 fw-semibold">
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td class="d-flex align-items-center">										
-														<!--begin::기안일자-->
-														<div class="d-flex flex-column">
-															<span></span>
-														</div>										
-													</td>
-													<!--begin::결재양식-->
-													<td></td>
-													<!--begin::기안문 제목-->
-													<td>
-														<div class="badge badge-light fw-bold"><a href="" class="menu-link px-3"></a></div>
-													</td>
-													<!--begin::문서번호-->
-													<td></td>
-													<!--begin::결재상태-->
-													<td>
-														<div class="badge badge-light fw-bold">진행중</div>	
-													</td>
-												</tr>	
+												<c:if test="${myapprlist.size()==0 }">
+													<tr><td colspan="5">게시물이 존재하지 않습니다.</td></tr>
+												</c:if>
+												<c:forEach items="${myapprlist}" var="bbs">
+													<tr>
+														<td>${bbs.appr_submitdate}</td>
+														<td>${bbs.appr_type_idx}</td>
+														<td><a href="detail?appr_idx=${bbs.appr_idx}">${bbs.appr_subject}</a></td>														
+														<td>${bbs.doc_id}</td>
+														<td>
+															<div class="badge badge-light fw-bold">${bbs.appr_status}</div>
+														</td>														
+													</tr>
+												</c:forEach>
 											</tbody>
 										</table>
 										<!--end::Table-->
@@ -136,7 +116,6 @@
 		<!--end::Root-->
 								
 		<!--begin::Javascript-->
-		<script>var hostUrl = "resource/assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
