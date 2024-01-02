@@ -185,7 +185,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" id="roadaddress" name="street_address" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
+																<input type="text" id="roadaddress" name="street_address" class="form-control form-control-lg form-control-solid" placeholder="도로명 주소를 입력해주세요." value="" />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -197,7 +197,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="detail_address" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
+																<input type="text" name="detail_address" class="form-control form-control-lg form-control-solid" placeholder="상세주소를 입력해주세요." value="" />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -209,7 +209,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="brithdate" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
+																<input type="text" name="brithdate" class="form-control form-control-lg form-control-solid" placeholder="생년월일을 입력해주세요." value="" />
 																<span style="color: red; font-size: small; float: right;">* 포맷을 yyyy.mm.dd 로 입력 해주세요 *</span>
 															</div>
 															<!--end::Col-->
@@ -245,7 +245,7 @@
 														
 													<!--begin::Actions-->
 													<div class="card-footer d-flex justify-content-end py-6 px-9">
-														<button type="reset" class="btn btn-light btn-active-light-primary me-2">취소</button>
+														<button type="reset" class="btn btn-light btn-active-light-primary me-2" onclick="location.href='customer/home'">취소</button>
 														<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">회원 등록</button>
 													</div>
 													<!--end::Actions-->

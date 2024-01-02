@@ -9,74 +9,56 @@ public class MemberDto {
 	private String grade;   // 회원 등급 (회원 번호 아닙니다)
 	private String commonType;  // 회원 타입(회원 타입 번호 아닙니다)
 	//===========================================
-	private int member_idx;
-	private int grade_idx;
-	private String business_num;
-	private int member_type;
-	private String contact_num;
-	private Date create_date;
-	private Date expiry_date;
+	
+	private int gradeIdx;
+	private String businessNum;
+	private int memberType;
+	
+	private Date createDate;
+	private Date expiryDate;
 	private Date birthdate;
 	private String gender;
-	private int postal_code;
-	private String street_address;
-	private String detail_address;
-	private int member_state;
-	private int reg_by;
+	private int postalCode;
+	private String streetAddress;
+	private String detailAddress;
+	private int memberState;
+	private int regBy;
 	private Date update;
-	private int update_by;
+	private int updateBy;
 	
 	
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	public int getMember_idx() {
-		return member_idx;
+	public int getGradeIdx() {
+		return gradeIdx;
 	}
-	public void setMember_idx(int member_idx) {
-		this.member_idx = member_idx;
+	public void setGradeIdx(int gradeIdx) {
+		this.gradeIdx = gradeIdx;
 	}
-	public int getGrade_idx() {
-		return grade_idx;
+	public String getBusinessNum() {
+		return businessNum;
 	}
-	public void setGrade_idx(int grade_idx) {
-		this.grade_idx = grade_idx;
+	public void setBusinessNum(String businessNum) {
+		this.businessNum = businessNum;
 	}
-	public String getBusiness_num() {
-		return business_num;
+	public int getMemberType() {
+		return memberType;
 	}
-	public void setBusiness_num(String business_num) {
-		this.business_num = business_num;
+	public void setMemberType(int memberType) {
+		this.memberType = memberType;
 	}
-	public int getMember_type() {
-		return member_type;
+	public Date getCreateDate() {
+		return createDate;
 	}
-	public void setMember_type(int member_type) {
-		this.member_type = member_type;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
-	public String getContact_num() {
-		return contact_num;
+	public Date getExpiryDate() {
+		return expiryDate;
 	}
-	public void setContact_num(String contact_num) {
-		this.contact_num = contact_num;
-	}
-	public Date getCreate_date() {
-		return create_date;
-	}
-	public void setCreate_date(Date create_date) {
-		this.create_date = create_date;
-	}
-	public Date getExpiry_date() {
-		return expiry_date;
-	}
-	public void setExpiry_date(Date expiry_date) {
-		this.expiry_date = expiry_date;
+	public void setExpiryDate(Date expiryDate) {
+		this.expiryDate = expiryDate;
 	}
 	public Date getBirthdate() {
 		return birthdate;
@@ -90,35 +72,35 @@ public class MemberDto {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public int getPostal_code() {
-		return postal_code;
+	public int getPostalCode() {
+		return postalCode;
 	}
-	public void setPostal_code(int postal_code) {
-		this.postal_code = postal_code;
+	public void setPostalCode(int postalCode) {
+		this.postalCode = postalCode;
 	}
-	public String getStreet_address() {
-		return street_address;
+	public String getStreetAddress() {
+		return streetAddress;
 	}
-	public void setStreet_address(String street_address) {
-		this.street_address = street_address;
+	public void setStreetAddress(String streetAddress) {
+		this.streetAddress = streetAddress;
 	}
-	public String getDetail_address() {
-		return detail_address;
+	public String getDetailAddress() {
+		return detailAddress;
 	}
-	public void setDetail_address(String detail_address) {
-		this.detail_address = detail_address;
+	public void setDetailAddress(String detailAddress) {
+		this.detailAddress = detailAddress;
 	}
-	public int getMember_state() {
-		return member_state;
+	public int getMemberState() {
+		return memberState;
 	}
-	public void setMember_state(int member_state) {
-		this.member_state = member_state;
+	public void setMemberState(int memberState) {
+		this.memberState = memberState;
 	}
-	public int getReg_by() {
-		return reg_by;
+	public int getRegBy() {
+		return regBy;
 	}
-	public void setReg_by(int reg_by) {
-		this.reg_by = reg_by;
+	public void setRegBy(int regBy) {
+		this.regBy = regBy;
 	}
 	public Date getUpdate() {
 		return update;
@@ -126,15 +108,12 @@ public class MemberDto {
 	public void setUpdate(Date update) {
 		this.update = update;
 	}
-	public int getUpdate_by() {
-		return update_by;
+	public int getUpdateBy() {
+		return updateBy;
 	}
-	public void setUpdate_by(int update_by) {
-		this.update_by = update_by;
+	public void setUpdateBy(int updateBy) {
+		this.updateBy = updateBy;
 	}
-	
-	//=================================================
-	
 	public String getMemberIdx() {
 		return memberIdx;
 	}

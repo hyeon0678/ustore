@@ -17,6 +17,20 @@ public interface MemberDao {
 	int cusnum(HashMap<String, String> params);
 
 	ArrayList<HashMap<String, String>> listall(int pageState);
+
+	HashMap<String, String> detail(int idx);
+
+	ArrayList<HashMap<String, String>> cussearch(String keyword, int state);
+
+	HashMap<String, String> update(int idx);
+
+	int updatesave(HashMap<String, String> params);
+
+	int del(int idx);
+
+	int newdate(int idx);
+
+	HashMap<String, String> filefind(int idx);
 	
 
 }

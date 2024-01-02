@@ -61,7 +61,70 @@ public class MemberService {
 	public ArrayList<HashMap<String, String>> listall(int pageState) {
 		return dao.listall(pageState);
 	}
-	
+
+
+
+
+
+	public HashMap<String, String> detail(int idx) {
+		return dao.detail(idx);
+	}
+
+
+
+
+
+	public ArrayList<HashMap<String, String>> cussearch(String keyword, int state) {
+		return dao.cussearch(keyword, state);
+	}
+
+
+
+
+
+	public HashMap<String, String> update(int idx) {
+		return dao.update(idx);
+	}
+
+
+
+
+
+	public String updatesave(HashMap<String, String> params) {
+		int row = dao.updatesave(params);
+		return row>0?"변경에 성공 하였습니다.":"변경에 실패 하였습니다.";
+	}
+
+
+
+
+
+	public String del(int idx) {
+		int row = dao.del(idx);
+		return row>0?"변경에 성공 하였습니다.":"변경에 실패 하였습니다.";
+	}
+
+
+
+
+
+	public String newdate(int idx) {
+		int row = dao.newdate(idx);
+		return row>0?"변경에 성공 하였습니다.":"변경에 실패 하였습니다.";
+	}
+
+
+
+
+
+	public HashMap<String, String> filefind(int idx) {
+		return dao.filefind(idx);
+	}
+
+
+
+
+
 	
 	
 	

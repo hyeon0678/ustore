@@ -81,8 +81,8 @@
 										</select>
 									</div>
 									<!--end::Col-->
-									<input type="text" class="form-control form-control-solid" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
-									<button type="button" class="btn btn-primary" style="margin: 10px;">검색</button>
+									<input type="text" name="customersearch" class="form-control form-control-solid" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
+									<button type="button" class="btn btn-primary" style="margin: 10px;" onclick="search()">검색</button>
 								</div>
 								<!--end::Actions-->
 							</div>
@@ -169,8 +169,7 @@
 										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
 											<thead>
 												<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
-													<th class="w-10px pe-2">														
-													</th>
+													<th class="w-30px pe-2" ></th>
 													<th class="min-w-125px">회원 번호</th>
 													<th class="min-w-125px">이름</th>
 													<th class="min-w-125px">멤버쉽 종류</th>
@@ -243,22 +242,6 @@
 		<!--end::Global Javascript Bundle-->
 		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Vendors Javascript-->
-		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="resource/assets/js/widgets.bundle.js"></script>
-		<script src="resource/assets/js/custom/widgets.js"></script>
-		<script src="resource/assets/js/custom/apps/chat/chat.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/type.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/budget.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/settings.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/team.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/targets.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/files.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/complete.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/create-project/main.js"></script>
-		<script src="resource/assets/js/custom/utilities/modals/users-search.js"></script>
-		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
-		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
@@ -303,11 +286,20 @@
 				console.log(obj);
 				var content = '';
 				$('#list').empty();
+				
+				if (obj.size <= 0) {
+					
+					 content = '<tr>';				 
+					 content += '<td style="text-align: center; color: red;" colspan="7">"'+$('input[name="customersearch"]').val()+'"회원이 존재 하지 않습니다.</td>';
+					 content += '</tr>';				
+					 $('#list').append(content);
+				}else {
+					
+				
 				for (var i = 0; i < obj.size; i++) {
-					 	 content = '<tr>';
-					 	content +='<td>';
-					 	content +='<a href="customer/detail?idx='+obj.list[i].member_idx+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].member_idx+'</a>';
-					 	content +='<td/>';
+					 	content = '<tr>';
+					 	content += '<td></td>';
+					 	content +='<td><a href="customer/detail?idx='+obj.list[i].member_idx+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].member_idx+'</a></td>';
 					 	content +='<td><a href="customer/detail?idx='+obj.list[i].member_idx+'" class="text-gray-600 text-hover-primary mb-1">'+obj.list[i].name+'</a></td>';
 					 	if(obj.list[i].member_type == '82'){
 							 content += '<td>일반</td>'; 
@@ -325,6 +317,7 @@
 						 content += '<td>' + dateStr + '</td>';
 						 content += '</tr>';				
 				         $('#list').append(content);
+				};
 				};
 				/*
 				$('#pagination').twbsPagination({
@@ -344,6 +337,38 @@
 				});//
 				*/
 			}
+			
+			function search(){
+				console.log("검색 메서드  호출");
+				
+				// location.href='adminReportDetail?idx='+idx+'&&type='+type;
+				// var $state = $("input[type=checkbox][name=hisstate]:checked").val();
+				var state = $('#pageState').val();
+				
+				
+				
+				
+				var keyword = $('input[name="customersearch"]').val();
+				$.ajax({
+					type:'get',
+					url:'customer/home.ajax/customersearch', 
+					data:{'keyword':keyword, 'state':state},
+					dataType:'JSON',
+					success:function(data){
+						console.log(data);
+						console.log("리스트 호출 뿌려주기");
+						/* if (data.success == -1) {
+							alert('이 페이지의 권한이 없습니다');
+							location.href='./';
+						}else {} */		
+						drawlist(data);			
+					},
+					error:function(e){
+						console.log(e);
+					}
+					});//	
+			}
+			
 		
 		
 			var msg = "${msg}";

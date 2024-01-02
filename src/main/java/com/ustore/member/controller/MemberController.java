@@ -1,6 +1,7 @@
 package com.ustore.member.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ustore.employee.service.GroupManageService;
 import com.ustore.fileSystem.dao.FileDao;
 import com.ustore.fileSystem.dto.FileDto;
 import com.ustore.member.dto.MemberDto;
 import com.ustore.member.service.MemberService;
+import com.ustore.utils.DateCalculator;
 import com.ustore.utils.SaveFile;
 
 @Controller
@@ -31,6 +35,7 @@ public class MemberController {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired MemberService service;
+	@Autowired GroupManageService groupManageService;
 	@Autowired FileDao filedao;
 	
 	
@@ -68,6 +73,23 @@ public class MemberController {
 		return result;
 	}
 	
+	@RequestMapping(value = "customer/home.ajax/customersearch")
+	@ResponseBody
+	public HashMap<String, Object> customersearch(@RequestParam String keyword,@RequestParam int state) {
+		logger.info("회원 검색 리스트 호출하기");
+		logger.info("keyword : "+keyword);
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+			logger.info("회원리스트 == 등록된 회원 리스트");
+			ArrayList<HashMap<String, String>> list = service.cussearch(keyword, state);
+			logger.info("num"+list.toString());
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+			
+		return result;
+	}
+	
 	
 	
 	
@@ -83,17 +105,26 @@ public class MemberController {
 		return "member/cusjoin_num";
 	}
 	
-	@GetMapping(value = "/customer/detail")
-	public String cusdetail(@RequestParam int idx) {
+	@RequestMapping(value = "/customer/detail")
+	public ModelAndView cusdetail(@RequestParam int idx) {
 		logger.info("회원 상세 페이지 들어가기");
 		logger.info("idx : "+idx);
 		
+		MemberDto dto = new MemberDto();
 		
+		HashMap<String, String> file = service.filefind(idx);
+		logger.info("file : "+file);
+		DateCalculator datecal= new DateCalculator();
+		String nowdate = datecal.dateNow().toString();
+		logger.info("nowdate : "+nowdate);
 		
-		
-		
-		
-		return "member/cusdetail";
+		HashMap<String,String> map= service.detail(idx);
+		ModelAndView mav = new ModelAndView("member/cusdetail");
+		mav.addObject("info",map);
+		mav.addObject("file",file);
+		//mav.addObject("membertype",membertype);
+		//mav.addObject("grade",grade);
+		return mav;
 	}
 	
 	@GetMapping(value = "/customer/chat")
@@ -135,26 +166,19 @@ public class MemberController {
 		
 		String msg = service.joinbis(params);
 		int cusnum = service.cusnum(params);
+		String idx = Integer.toString(cusnum);
 		if(photos != null && !photos.isEmpty()) {		
 			
 			// 파일 저장 코드
-			//service.imgInfo(cusnum);
+			//groupManageService.imgInfo(idx);
 			SaveFile saveFile = new SaveFile();
 			
 			FileDto file = new FileDto();
 			file = saveFile.returnFileList(photos, 76,Integer.toString(cusnum));
-			logger.info("file : "+file);
-			
-			saveFile.saveFile(file);
-			
-			filedao.saveFile(file);
-			
+			logger.info("file : "+file);			
+			saveFile.saveFile(file);			
+			filedao.saveFile(file);			
 		}
-		
-		
-		
-		
-		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:/customer/home");
 		rAttr.addFlashAttribute("msg", msg);
@@ -162,15 +186,65 @@ public class MemberController {
 		// return null;
 	}
 	
+	@RequestMapping(value = "customer/update")
+	@ResponseBody
+	public ModelAndView cusupdate(@RequestParam int idx) {
+		logger.info("회원수정 페이지  호출하기");
+		logger.info("member idx : "+idx);
+		
+		
+		HashMap<String,String> map= service.update(idx); // 여기서 디비(서비스)에서 값을 받았다
+		ModelAndView mav = new ModelAndView("member/cusupdate");
+		logger.info("info : "+map.toString());
+		
+		mav.addObject("info",map); // 값을 넣어준다
+		
+		return mav; // 앞으로 보낸다
+	}
 	
+	//customer/update.ajax/updatesave
+	@RequestMapping(value = "customer/update.ajax/updatesave")
+	@ResponseBody
+	public ModelAndView updatesave(@RequestParam HashMap<String, String> params) {
+		logger.info("회원수정 페이지(save)  호출하기");
+		logger.info("member idx : "+params);
+		String msg = service.updatesave(params);
+		ModelAndView mav = new ModelAndView("customer/detail");
+		//logger.info("info : "+map.toString());
+		mav.addObject("msg",msg);
+		mav.addObject("idx",params.get("idx"));
+		return mav;
+	}
 	
+	@RequestMapping(value = "customer/del")
+	@ResponseBody
+	public ModelAndView cusdel(@RequestParam int idx) {
+		logger.info("회원탈퇴 페이지  호출하기");
+		logger.info("member idx : "+idx);
+		
+		String msg = service.del(idx);
+		
+		ModelAndView mav = new ModelAndView("customer/home");
+		//logger.info("info : "+map.toString());
+		mav.addObject("msg",msg);
+		
+		return mav;
+	}
 	
-	
-	
-	
-	
-	
-	
+	@RequestMapping(value = "customer/newdate")
+	@ResponseBody
+	public ModelAndView newdate(@RequestParam int idx) {
+		logger.info("회원탈퇴 페이지  호출하기");
+		logger.info("member idx : "+idx);
+		
+		String msg = service.newdate(idx);
+		
+		ModelAndView mav = new ModelAndView("customer/home");
+		//logger.info("info : "+map.toString());
+		mav.addObject("msg",msg);
+		
+		return mav;
+	}
 	
 	
 	

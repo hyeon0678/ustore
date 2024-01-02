@@ -25,21 +25,43 @@
 		</insert>
 		
 		<select id="cusnum" resultType="Integer">
-			SELECT member_idx FROM members m where name = #{name} and brithdate =#{brithdate} and create_date = CURDATE() ;
+			SELECT member_idx FROM members m where name = #{name} and brithdate =#{brithdate} and create_date = CURDATE()
 		</select>
 
 		<select id="listall" resultType="map">
-			SELECT * FROM members where member_state = #{param1};
+			SELECT * FROM members where member_state = #{param1}
 		</select>
 
+		<select id="detail" resultType="map">
+			SELECT * FROM members m  where member_idx = #{param1}
+		 </select>
+		 
+		 <select id="cussearch" resultType="map">
+		 	SELECT * FROM members WHERE name LIKE CONCAT('%',#{param1},'%') and member_state =#{param2}
+		 </select>
 
+		<select id="update" resultType="map">
+			SELECT * FROM members m  where member_idx = #{param1}
+		</select>
+		
+		<update id="updatesave">
+			UPDATE members set name =#{name}, contact_num =#{number},
+			 postal_code =#{postcode}, street_address =#{address}, detail_address =#{detailaddr}
+			WHERE member_idx =#{idx};
+		</update>
 
+		<update id="del">
+			UPDATE members  set member_state =85 where member_idx =#{param1}
+		</update>
 
-
-
-
-
-
+		<update id="newdate">
+			UPDATE members set create_date = curdate(),expiry_date = DATE_ADD(NOW(), INTERVAL 1 YEAR) ,member_state =84 
+			WHERE member_idx =#{param1}
+		</update>
+		
+		<select id="filefind" resultType="map">
+			SELECT CONCAT(file_name,extension) as orifilname, new_file_name as newfilename FROM  file f where file_type =76 and conn_idx =#{param1}
+		</select>
 
 
 

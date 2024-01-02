@@ -77,10 +77,22 @@
 					<div class="card mb-5 mb-xl-10" id="kt_profile_details_view"
 						style="align-self: center; width: 1400px; margin-top: 50px; background-color: white;">
 						<!--begin::Card header-->
-						<div class="card-header cursor-pointer">
+						<div class="card-header">
 							<!--begin::Card title-->
 							<div class="card-title m-0">
-								<h3 class="fw-bold m-0">${userstate}멤버쉽 : ${userstate}</h3>
+								<h3 class="fw-bold m-0">
+								<c:if test="${info.member_type eq '82'}">일반</c:if>
+								<c:if test="${info.member_type eq '83'}">사업자</c:if>
+								 멤버쉽 : 
+								 <c:if test="${info.grade_idx eq '80'}">스탠다드</c:if>
+								 <c:if test="${info.grade_idx eq '81'}">프리미엄</c:if>
+								</h3>
+							</div>
+							<!--end::Card title-->
+							<!--begin::Card title-->
+							<div class="card-title m-0" style="padding-right: 50px">
+								<c:if test="${info.member_state eq '84'}"><h3 class="fw-bold m-0">등록중인 회원</h3></c:if>
+								<c:if test="${info.member_state eq '85'}"><h3 class="fw-bold m-0" style="color: red;">탈퇴한 회원</h3></c:if>
 							</div>
 							<!--end::Card title-->
 						</div>
@@ -95,7 +107,7 @@
 									<!--end::Label-->
 									<!--begin::Col-->
 									<div class="col-lg-3">
-										<span class="fw-bold fs-6 text-gray-800">도재학</span>
+										<span class="fw-bold fs-6 text-gray-800">${info.name}</span>
 									</div>
 									<!--end::Col-->
 								</div>
@@ -107,7 +119,7 @@
 									<!--end::Label-->
 									<!--begin::Col-->
 									<div class="col-lg-3">
-										<span class="fw-bold fs-6 text-gray-800">도재학</span>
+										<span class="fw-bold fs-6 text-gray-800">${info.contact_num}</span>
 									</div>
 									<!--end::Col-->
 								</div>
@@ -119,7 +131,7 @@
 									<!--end::Label-->
 									<!--begin::Col-->
 									<div class="col-lg-3">
-										<span class="fw-bold fs-6 text-gray-800">도재학</span>
+										<span class="fw-bold fs-6 text-gray-800">${info.brithdate}</span>
 									</div>
 									<!--end::Col-->
 								</div>
@@ -131,7 +143,7 @@
 									<!--end::Label-->
 									<!--begin::Col-->
 									<div class="col-lg-3">
-										<span class="fw-bold fs-6 text-gray-800">도재학</span>
+										<span class="fw-bold fs-6 text-gray-800">${info.gender}</span>
 									</div>
 									<!--end::Col-->
 								</div>
@@ -143,7 +155,7 @@
 									<!--end::Label-->
 									<!--begin::Col-->
 									<div class="col-lg-3">
-										<span class="fw-bold fs-6 text-gray-800">도재학</span>
+										<span class="fw-bold fs-6 text-gray-800">${info.postal_code}</span>
 									</div>
 									<!--end::Col-->
 								</div>
@@ -155,7 +167,7 @@
 									<!--end::Label-->
 									<!--begin::Col-->
 									<div class="col-lg-3">
-										<span class="fw-bold fs-6 text-gray-800">도재학</span>
+										<span class="fw-bold fs-6 text-gray-800">${info.street_address}</span>
 									</div>
 									<!--end::Col-->
 								</div>
@@ -167,7 +179,7 @@
 									<!--end::Label-->
 									<!--begin::Col-->
 									<div class="col-lg-3">
-										<span class="fw-bold fs-6 text-gray-800">도재학</span>
+										<span class="fw-bold fs-6 text-gray-800">${info.detail_address}</span>
 									</div>
 									<!--end::Col-->
 								</div>
@@ -177,23 +189,31 @@
 							<div style="width: 600px; ">
 								<!--begin::Input group-->
 								<div class="row mb-6" style="width: 600px;">
+								<c:if test="${info.member_type eq '83'}">
 									<!--begin::Label-->
 									<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;">사업자 번호</label>
 									<!--end::Label-->
 									<!--begin::Col-->
 									<div class="col-lg-8 fv-row" style="display: flex; align-items: center;">
-										<div class="col-lg-3">
-											<span class="fw-bold fs-6 text-gray-800">20238956</span>
+										<div class="col-lg-3" style="width: 390px">
+											<span class="fw-bold fs-6 text-gray-800" style="margin-right: 10px;">${info.business_num}</span>
+											<span class="upload_cancel badge badge-light fs-8" style="margin-right: 10px;">${file.orifilname}</span>
+											<button class="" style="cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" >다운로드</button>
 										</div>
-										<i class="ki-duotone ki-scroll fs-2qx"
-											style="margin-right: 5px; margin-left: 10px;">
-											<span class="path1"></span>
-											<span class="path2"></span>
-											<span class="path3"></span>
-										</i>
+									</c:if>
+									<c:if test="${info.member_type eq '82'}">
+									<!--begin::Label-->
+									<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;"></label>
+									<!--end::Label-->
+									<!--begin::Col-->
+									<div class="col-lg-8 fv-row" style="display: flex; align-items: center;">
+										<div class="col-lg-3">
+											<span class="fw-bold fs-6 text-gray-800"></span>
+										</div>
+									</c:if>
 									</div>
 									<!--end::Col-->
-								</div>
+							</div>
 								<!--end::Input group-->
 
 
@@ -205,7 +225,7 @@
 									<!--end::Label-->
 									<!--begin::Col-->
 									<div class="col-lg-3">
-										<span class="fw-bold fs-6 text-gray-800">도재학</span>
+										<span class="fw-bold fs-6 text-gray-800">${info.create_date} ~ ${info.expiry_date}</span>
 									</div>
 									<!--end::Col-->
 								</div>
@@ -241,14 +261,49 @@
 										포인트</label>
 									<!--end::Label-->
 									<!--begin::Col-->
-									<div class="col-lg-3" style="display: flex;">
+									<div class="col-lg-3" style="display: flex; width: 390px;">
 										<span class="fw-bold fs-6 text-gray-800">12005268 포인트</span>
-										<input type="button" class="btn btn-primary" value="포인트 내역"
-											style="width: 120px; height: 40px; margin-left: 5px;" />
+										<button class="" data-bs-toggle="modal" data-bs-target="#kt_modal_2" 
+										style="margin:0px 20px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" >포인트 내역</button>
 									</div>
 									<!--end::Col-->
 								</div>
 								<!--end::Row-->
+								<!-- 모달 시작하는부분 -->
+								<div class="modal fade" id="kt_modal_2" tabindex="-1"  >
+															<div class="modal-dialog">
+															  <div class="modal-content" style="width: 700px;">
+																<div class="modal-header">
+																	<h3>포인트 사용내역</h3>
+																	<label for="date">
+																        <input type="date" id="ufirstsearchdate" value="2023-12-10" />
+																        ~
+																        <input type="date" id="ulastsearchdate" value="2024-01-10" />
+																        <input type="button" id="usearchButton" class="comm-btn" value="검색"
+																         style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" />
+																    </label>
+																</div>
+																	<div>
+																	
+																		<div class="content_tree" style="border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
+																			<span>홍길동(인사팀 팀장)</span><br/>
+																			<span>홍길동(인사팀 팀장)</span><br/>
+																			<span>홍길동(인사팀 팀장)</span><br/>
+																			<span>홍길동(인사팀 팀장)</span><br/>
+																			<span>홍길동(인사팀 팀장)</span><br/>
+																			<span>홍길동(인사팀 팀장)</span><br/>
+																			<span>홍길동(인사팀 팀장)</span><br/>
+																			<span>홍길동(인사팀 팀장)</span><br/>
+																			<span>홍길동(인사팀 팀장)</span>
+																		</div>
+																	</div>													
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-primary" data-bs-dismiss="modal">완료</button>
+															  </div>
+															</div>
+														  </div>
+														</div>
+								<!-- 모달 끝나는부분 -->
 							</div>
 							<!--end::Card body-->
 
@@ -257,11 +312,10 @@
 						<!--===============================================풋터 시작 부분======================================================-->
 	
 						<!--begin::Card footer-->
-						<div class="card-footer pt-4" id="kt_chat_messenger_footer" style="display: flex;">
+						<div class="card-footer pt-4" id="kt_chat_messenger_footer" style="display: flex; justify-content: flex-end;">
 							<!--begin::Actions-->
-							<div class="">
-								<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-									data-bs-target="#kt_modal_1">
+							<div class="" style="margin-left: 10px; margin-right: 5px">
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
 									구매내역
 								</button>
 								<div class="modal fade" tabindex="-1" id="kt_modal_1">
@@ -282,7 +336,7 @@
 												</div>
 												<!--end::Close-->
 											</div>
-											<div class="">
+											<div class="" style="margin-left: 5px; margin-right: 5px">
 												<div class="content_tree"
 													style="float: left; width: 280px; height: 400px; overflow-y: auto;">
 													<!-- 조직도 그리기 -->
@@ -307,31 +361,31 @@
 	
 	
 								<!--begin:Toolbar-->
-								<div class="">
+								<div class="" style=" margin-right: 5px">
 									<!--begin::Actions-->
 									<div class="d-flex align-items-center me-2">
 									</div>
 									<!--end::Actions-->
 									<!--begin::Send-->
-									<button class="btn btn-primary" type="button" data-kt-element="send">수정</button>
+									<button class="btn btn-primary" onclick="gotoupdate()" >수정</button>
 									<!--end::Send-->
 								</div>
 								<!--end::Toolbar-->
 								<!--begin:Toolbar-->
-								<div class="">
+								<div class="" style=" margin-right: 5px">
 									<!--begin::Actions-->
 									<div class="d-flex align-items-center me-2">
 									</div>
 									<!--end::Actions-->
 									<!--begin::Send-->
-									<button class="btn btn-primary" type="button" data-kt-element="send">탈퇴하기</button>
+									<button class="btn btn-primary"  data-kt-element="send" onclick="cusdel()">탈퇴하기</button>
 									<!--end::Send-->
 								</div>
 								<!--end::Toolbar-->
 								<!--begin::Actions-->
-								<div class="">
+								<div class="" style="margin-right: 5px">
 									<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-										data-bs-target="#kt_modal_1">
+										data-bs-target="#kt_modal_1" >
 										기간연장
 									</button>
 									<div class="modal fade" tabindex="-1" id="kt_modal_1">
@@ -368,16 +422,15 @@
 	
 													<div class="modal-footer">
 														<button type="button" class="btn btn-primary"
-															data-bs-dismiss="modal">채팅방 생성</button>
+															data-bs-dismiss="modal" onclick="newdate()">변경</button>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
 								<!--end::Actions-->
 								<!--begin::Actions-->
-								<div class="">
+								<div class="" style=" margin-right: 10px">
 									<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 										data-bs-target="#kt_modal_1">
 										재연장
@@ -411,12 +464,12 @@
 														style="float:left;width: 280px; height: 400px; border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
 														<span>홍길동(인사팀 팀장)</span><br />
 														<span>홍길동(인사팀 팀장)</span>
-														< </div>
+														</div>
 													</div>
 	
 													<div class="modal-footer">
 														<button type="button" class="btn btn-primary"
-															data-bs-dismiss="modal">채팅방 생성</button>
+															data-bs-dismiss="modal" onclick="newdate()">변경</button>
 													</div>
 												</div>
 											</div>
@@ -427,8 +480,9 @@
 	
 	
 	
+								</div>
 							</div>
-						</div>
+						
 						
 						<!--end::details View-->
 
@@ -447,13 +501,7 @@
 
 
 
-				<!--end::Content-->
-			</div>
-			<!--end::Inbox App - Messages -->
-		</div>
-		<!--end::Container-->
-	</div>
-	<!--end::Post-->
+				
 	<!--========================================================서브 사이드바 끝==============================================================-->
 
 
@@ -479,7 +527,6 @@
 	<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 	<script src="resource/assets/js/scripts.bundle.js"></script>
 	<!--end::Global Javascript Bundle-->
-	begin::Vendors Javascript(used for this page only)-->
 	<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 	<!--end::Vendors Javascript-->
 
@@ -487,6 +534,37 @@
 </body>
 <!--end::Body-->
 <script>
+
+
+
+	function gotoupdate(){
+	
+		// href="customer/update?idx='+${info.member_idx}+'"
+	console.log("회원 수정 하기 기능 들어가기");
+	location.href='customer/update?idx='+${info.member_idx};	
+	}//historycall
+
+	function cusdel(){
+		
+		console.log("회원 탈퇴 하기 기능 들어가기");
+		location.href='customer/del?idx='+${info.member_idx};
+	}
+	
+	function newdate(){
+		console.log("기간 변경 하기 기능 들어가기");
+		location.href='customer/newdate?idx'+${info.member_idx};
+		
+	}
+
+
+
+
+
+	var msg = "${msg}";
+	if(msg != ""){
+		alert(msg);
+	}
+
 </script>
 
 </html>
