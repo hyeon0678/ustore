@@ -26,7 +26,7 @@ public class WebSocketChatController {
 	public void message(ChatDto chat) {
 		logger.info(chat.toString());
 		logger.info("{}, {}, {}",chat.getRoomNum(), chat.getSender(), chat.getData());
-		chatService.saveChat(chat);
-		messageTemplete.convertAndSend("/topic/chat/"+chat.getRoomNum(), chat);
+		ChatDto chatData = chatService.saveChat(chat);
+		messageTemplete.convertAndSend("/topic/chat/"+chat.getRoomNum(), chatData);
 	}
 }

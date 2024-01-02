@@ -12,14 +12,21 @@ public class ChatRoomDto implements Comparable<ChatRoomDto>{
 	private Timestamp maxSentDate;
 	private Timestamp maxReceivedDate;
 	private int readCnt;
-	private int lastMsgTime;
+	private long lastMsgTime;
+	private String stringLastMsgTime;
 	
 	
 	
-	public int getLastMsgTime() {
+	public String getStringLastMsgTime() {
+		return stringLastMsgTime;
+	}
+	public void setStringLastMsgTime(String stringLastMsgTime) {
+		this.stringLastMsgTime = stringLastMsgTime;
+	}
+	public long getLastMsgTime() {
 		return lastMsgTime;
 	}
-	public void setLastMsgTime(int lastMsgTime) {
+	public void setLastMsgTime(long lastMsgTime) {
 		this.lastMsgTime = lastMsgTime;
 	}
 	public Timestamp getMaxSentDate() {
@@ -73,8 +80,7 @@ public class ChatRoomDto implements Comparable<ChatRoomDto>{
 	
 	@Override
 	public int compareTo(ChatRoomDto o) {
-		//Integer.parseInt(o.getLastMsgTime()) - Integer.parseInt(getLastMsgTime());
-		return 1; 
+		return 	(int)(o.getLastMsgTime()/1000) - (int)(getLastMsgTime()/1000); 
 	}
 	
 	

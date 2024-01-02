@@ -29,11 +29,11 @@ public class CustomUserDetails implements UserDetails{
 		this.name = name;
 	}
 
-	public String getDepertment() {
+	public String getDepartment() {
 		return department;
 	}
 
-	public void setDepertment(String depertment) {
+	public void setDepartment(String depertment) {
 		this.department = depertment;
 	}
 

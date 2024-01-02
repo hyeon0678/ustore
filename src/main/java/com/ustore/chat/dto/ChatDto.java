@@ -11,14 +11,22 @@ public class ChatDto{
 	private String roomNum;
 	private String type;
 	private Timestamp sendDate;
-	private String emp_idx;
+	private String empName;
+	private String read;
 	
 	
-	public String getEmp_idx() {
-		return emp_idx;
+	
+	public String getRead() {
+		return read;
 	}
-	public void setEmp_idx(String emp_idx) {
-		this.emp_idx = emp_idx;
+	public void setRead(String read) {
+		this.read = read;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 	public int getChatIdx() {
 		return chatIdx;
