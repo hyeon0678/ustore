@@ -29,6 +29,23 @@ insert into schedule(
 	)
 </insert>
 
+<insert id="addalarmevent" parameterType="EmpProrileDto">
+insert into alarm(
+	emp_idx
+	, alarm_subject
+	, alarm_content
+	, alarm_datetime
+	, url
+	)
+	values(
+	#{emp_idx}
+	, #{alarm_subject}
+	, #{alarm_content}
+	, #{event_end_time}
+	, '/employee/home'
+	)
+</insert>
+
 <select id="profilecalendar" resultType="Map" parameterType="String">
 	select * from schedule 
 </select>
@@ -57,5 +74,40 @@ insert into schedule(
 	, #{emp_idx}
 	)
 </insert>
+
+<insert id="leavework" parameterType="EmpProrileDto">
+insert into schedule(
+	emp_idx
+	, sch_start_date
+	, sch_end_date
+	, sch_content
+	, sch_subject
+	, sch_start_time 
+	, sch_end_time 
+	, sch_type 
+	, reg_by
+	)
+	values(
+	#{emp_idx}
+	, #{event_start_date}
+	, #{event_start_date}
+	, '퇴근'
+	, '퇴근'
+	, #{event_start_time}
+	, #{event_start_time}
+	, 13
+	, #{emp_idx}
+	)
+</insert>
+
+<delete id="employeDel">
+	DELETE FROM schedule WHERE sch_idx = #{param1}
+</delete>
+
+<delete id="scheduleDel">
+	DELETE FROM schedule WHERE sch_idx = #{param1}
+</delete>
+
+
 
 </mapper>

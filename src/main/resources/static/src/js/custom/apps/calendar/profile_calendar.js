@@ -13,7 +13,7 @@ var KTAppCalendar = function () {
         eventLocation: '',
         startDate: '',
         endDate: '',
-        // allDay: false
+        allDay: false
     };
 
     // Add event variables
@@ -40,7 +40,7 @@ var KTAppCalendar = function () {
 
     // View event variables
     var viewEventName;
-    // var viewAllDay;
+    var viewAllDay;
     var viewEventDescription;
     var viewScheduleType;
     var viewEventLocation;
@@ -52,24 +52,29 @@ var KTAppCalendar = function () {
 
 
     // Private functions
-    var initCalendarApp = function () {
+    $(function(){
+		var request = $.ajax({
+		  url: "/profilecalendar",
+		  method: "GET",
+		  dataType: "json"
+		});
+
+
+        request.done(function( data ) {
+            console.log(data);
+
         // Define variables
         var calendarEl = document.getElementById('kt_calendar_app');
-        var todayDate = moment().startOf('day');
-        var YM = todayDate.format('YYYY-MM');
-        var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
-        var TODAY = todayDate.format('YYYY-MM-DD');
-        var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
 
         // Init calendar --- more info: https://fullcalendar.io/docs/initialize-globals
-        calendar = new FullCalendar.Calendar(calendarEl, {
+        var calendar = new FullCalendar.Calendar(calendarEl, {
             //locale: 'es', // Set local --- more info: https://fullcalendar.io/docs/locale
+            initialView: 'dayGridMonth',
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
-            initialDate: TODAY,
             navLinks: true, // can click day/week names to navigate views
             selectable: true,
             selectMirror: true,
@@ -83,14 +88,23 @@ var KTAppCalendar = function () {
             // Click event --- more info: https://fullcalendar.io/docs/eventClick
             eventClick: function (arg) {
                 formatArgs({
+                    // id: arg.event.id,
+                    // title: arg.event.title,
+                    // description: arg.event.extendedProps.description,
+                    // schedule: arg.event.extendedProps.schedule,
+                    // location: arg.event.extendedProps.location,
+                    // startStr: arg.event.startStr,
+                    // endStr: arg.event.endStr,
+                    // allDay: arg.event.allDay
+
                     id: arg.event.id,
                     title: arg.event.title,
                     description: arg.event.extendedProps.description,
-                    schedeule: arg.event.extendedProps.schedeule,
+                    schedule: arg.event.extendedProps.schedule,
                     location: arg.event.extendedProps.location,
                     startStr: arg.event.startStr,
                     endStr: arg.event.endStr,
-                    // allDay: arg.event.allDay
+                    allDay: arg.event.allDay
                 });
                 
                 handleViewEvent();
@@ -99,16 +113,6 @@ var KTAppCalendar = function () {
             editable: true,
             dayMaxEvents: true, // allow "more" link when too many events
             events: data,
-
-
-            // function(info, successCallback, failureCallback){
-            //     // ajax 처리로 데이터를 로딩 시킨다.
-            //     $.ajax({
-            //        type:"get",
-            //        url:"/profilecalendar",
-            //       dataType:"json"  
-            //     });
-            // },
             // [
             //     {
             //         id: uid(),
@@ -116,7 +120,7 @@ var KTAppCalendar = function () {
             //         start: YM + '-01',
             //         end: YM + '-02',
             //         description: 'Toto lorem ipsum dolor sit incid idunt ut',
-            //         schedeule: 'Team',
+            //         schedule: 'Team',
             //         className: "border-success bg-success text-inverse-success",
             //         location: 'Federation Square'
             //     },
@@ -125,137 +129,10 @@ var KTAppCalendar = function () {
             //         title: 'Reporting',
             //         start: YM + '-14T13:30:00',
             //         description: 'Lorem ipsum dolor incid idunt ut labore',
-            //         schedeule: 'Team',
+            //         schedule: 'Team',
             //         end: YM + '-14T14:30:00',
             //         className: "border-warning bg-warning text-inverse-success",
             //         location: 'Meeting Room 7.03'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Company Trip',
-            //         start: YM + '-02',
-            //         description: 'Lorem ipsum dolor sit tempor incid',
-            //         schedeule: 'Team',
-            //         end: YM + '-03',
-            //         className: "border-info bg-info text-info-success",
-            //         location: 'Seoul, Korea'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'ICT Expo 2021 - Product Release',
-            //         start: YM + '-03',
-            //         description: 'Lorem ipsum dolor sit tempor inci',
-            //         schedeule: 'Team',
-            //         end: YM + '-05',
-            //         className: "fc-event-light fc-event-solid-primary",
-            //         location: 'Melbourne Exhibition Hall'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Dinner',
-            //         start: YM + '-12',
-            //         description: 'Lorem ipsum dolor sit amet, conse ctetur',
-            //         schedeule: 'Team',
-            //         end: YM + '-13',
-            //         location: 'Squire\'s Loft'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Repeating Event',
-            //         start: YM + '-09T16:00:00',
-            //         end: YM + '-09T17:00:00',
-            //         description: 'Lorem ipsum dolor sit ncididunt ut labore',
-            //         schedeule: 'personnal',
-            //         className: "fc-event-danger",
-            //         location: 'General Area'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Repeating Event',
-            //         description: 'Lorem ipsum dolor sit amet, labore',
-            //         schedeule: 'personnal',
-            //         start: YM + '-16T16:00:00',
-            //         end: YM + '-16T17:00:00',
-            //         location: 'General Area'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Conference',
-            //         start: YESTERDAY,
-            //         end: TOMORROW,
-            //         description: 'Lorem ipsum dolor eius mod tempor labore',
-            //         schedeule: 'personnal',
-            //         className: "fc-event-primary",
-            //         location: 'Conference Hall A'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Meeting',
-            //         start: TODAY + 'T10:30:00',
-            //         end: TODAY + 'T12:30:00',
-            //         description: 'Lorem ipsum dolor eiu idunt ut labore',
-            //         schedeule: 'personnal',
-            //         location: 'Meeting Room 11.06'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Lunch',
-            //         start: TODAY + 'T12:00:00',
-            //         end: TODAY + 'T14:00:00',
-            //         className: "fc-event-info",
-            //         description: 'Lorem ipsum dolor sit amet, ut labore',
-            //         schedeule: 'personnal',
-            //         location: 'Cafeteria'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Meeting',
-            //         start: TODAY + 'T14:30:00',
-            //         end: TODAY + 'T15:30:00',
-            //         className: "fc-event-warning",
-            //         description: 'Lorem ipsum conse ctetur adipi scing',
-            //         schedeule: 'personnal',
-            //         location: 'Meeting Room 11.10'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Happy Hour',
-            //         start: TODAY + 'T17:30:00',
-            //         end: TODAY + 'T21:30:00',
-            //         className: "fc-event-info",
-            //         description: 'Lorem ipsum dolor sit amet, conse ctetur',
-            //         schedeule: 'personnal',
-            //         location: 'The English Pub'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Dinner',
-            //         start: TOMORROW + 'T18:00:00',
-            //         end: TOMORROW + 'T21:00:00',
-            //         className: "fc-event-solid-danger fc-event-light",
-            //         description: 'Lorem ipsum dolor sit ctetur adipi scing',
-            //         schedeule: 'team',
-            //         location: 'New York Steakhouse'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Birthday Party',
-            //         start: TOMORROW + 'T12:00:00',
-            //         end: TOMORROW + 'T14:00:00',
-            //         className: "fc-event-primary",
-            //         description: 'Lorem ipsum dolor sit amet, scing',
-            //         schedeule: 'team',
-            //         location: 'The English Pub'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Site visit',
-            //         start: YM + '-28',
-            //         end: YM + '-29',
-            //         className: "fc-event-solid-info fc-event-light",
-            //         description: 'Lorem ipsum dolor sit amet, labore',
-            //         schedeule: 'team',
-            //         location: '271, Spring Street'
             //     }
             // ],
 
@@ -266,7 +143,14 @@ var KTAppCalendar = function () {
         });
 
         calendar.render();
-    }
+        console.log(calendar);
+        console.log("캘린더 로딩", calendar);
+    });
+
+    request.fail(function( jqXHR, textStatus ) {
+        alert( "Request failed: " + textStatus );
+      });
+});
 
     // Init validator
     const initValidator = () => {
@@ -346,7 +230,7 @@ var KTAppCalendar = function () {
                 scheduleType: '',
                 startDate: new Date(),
                 endDate: new Date(),
-                // allDay: false
+                allDay: false
             };
             handleNewEvent();
         });
@@ -365,16 +249,16 @@ var KTAppCalendar = function () {
         // Handle all day toggle
         // const allDayToggle = form.querySelector('#kt_calendar_datepicker_allday');
         // allDayToggle.addEventListener('click', e => {
-        //     if (e.target.checked) {
-        //         datepickerWrappers.forEach(dw => {
-        //             dw.classList.add('d-none');
-        //         });
-        //     } else {
+            // if (e.target.checked) {
+                // datepickerWrappers.forEach(dw => {
+                    // dw.classList.add('d-none');
+                // });
+            // } else {
                 endFlatpickr.setDate(data.startDate, true, 'Y-m-d');
                 datepickerWrappers.forEach(dw => {
                     dw.classList.remove('d-none');
                 });
-        //     }
+            // }
         // });
 
         populateForm(data);
@@ -392,6 +276,7 @@ var KTAppCalendar = function () {
                     if (status == 'Valid') {
                         // Show loading indication
                         submitButton.setAttribute('data-kt-indicator', 'on');
+
 
                         // Disable submit button whilst loading
                         submitButton.disabled = true;
@@ -418,14 +303,14 @@ var KTAppCalendar = function () {
                                     submitButton.disabled = false;
 
                                     // Detect if is all day event
-                                    // let allDayEvent = false;
+                                    let allDayEvent = false;
                                     // if (allDayToggle.checked) { allDayEvent = true; }
                                     // if (startTimeFlatpickr.selectedDates.length === 0) { allDayEvent = true; }
 
                                     // Merge date & time
                                     var startDateTime = moment(startFlatpickr.selectedDates[0]).format();
-                                    var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length /*- 1*/]).format();
-                                    // if (!allDayEvent) {
+                                    var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length - 1]).format();
+                                    if (!allDayEvent) {
                                         const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
                                         const endDate = startDate;
                                         const startTime = moment(startTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
@@ -433,27 +318,31 @@ var KTAppCalendar = function () {
 
                                         startDateTime = startDate + 'T' + startTime;
                                         endDateTime = endDate + 'T' + endTime;
-                                    // }
+                                    }
 
                                     // Add new event to calendar
-                                    calendar.addEvent({
-                                        id: uid(),
-                                        title: eventName.value,
-                                        description: eventDescription.value,
-                                        schedule: scheduleType.value,
-                                        location: eventLocation.value,
-                                        start: startDateTime,
-                                        end: endDateTime,
-                                        // allDay: allDayEvent
-                                    });
+                                    // calendar.addEvent({
+                                    //     id: uid(),
+                                    //     title: eventName.value,
+                                    //     description: eventDescription.value,
+                                    //     schedule: scheduleType.value,
+                                    //     location: eventLocation.value,
+                                    //     start: startDateTime,
+                                    //     end: endDateTime,
+                                    //     allDay: allDayEvent
+                                    // });
+
+                                    location.href="employee/addevent";
+
+
                                     calendar.render();
 
                                     // Reset form for demo purposes only
-                                    form.reset();
+                                    // form.reset();
                                 }
                             });
 
-                            //form.submit(); // Submit form
+                            form.submit(); // Submit form
                         }, 2000);
                     } else {
                         // Show popup warning 
@@ -472,12 +361,14 @@ var KTAppCalendar = function () {
         });
     }
 
+    // 수정 이벤트 관리
     // Handle edit event
     const handleEditEvent = () => {
         // Update modal title
         modalTitle.innerText = "Edit an Event";
 
         modal.show();
+        console.log("수정 일정1 id",data.id);
 
         // Select datepicker wrapper elements
         const datepickerWrappers = form.querySelectorAll('[data-kt-calendar="datepicker"]');
@@ -485,11 +376,11 @@ var KTAppCalendar = function () {
         // Handle all day toggle
         // const allDayToggle = form.querySelector('#kt_calendar_datepicker_allday');
         // allDayToggle.addEventListener('click', e => {
-        //     if (e.target.checked) {
-        //         datepickerWrappers.forEach(dw => {
-        //             dw.classList.add('d-none');
-        //         });
-        //     } else {
+            // if (e.target.checked) {
+                // datepickerWrappers.forEach(dw => {
+                    // dw.classList.add('d-none');
+                // });
+            // } else {
                 endFlatpickr.setDate(data.startDate, true, 'Y-m-d');
                 datepickerWrappers.forEach(dw => {
                     dw.classList.remove('d-none');
@@ -497,12 +388,33 @@ var KTAppCalendar = function () {
             // }
         // });
 
+        $('#kt_modal_add_event_submit').on('click',function(){
+            var sch_idx = data.id;
+            console.log("삭제 일정 id : " , data.id);
+            console.log("삭제 일정 idx : " , sch_idx);
+            
+            $.ajax({
+                type:'post',
+                url:'/employee/delete.ajax',
+                data:{'sch_idx' : data.id},
+                dataType:'JSON',
+                success:function(data){
+                    console.log(data,"번 일정 삭제");
+                },
+                error:function(e){
+                    console.log(e);
+                }
+            });
+        });
+
         populateForm(data);
 
         // Handle submit form
         submitButton.addEventListener('click', function (e) {
             // Prevent default button action
             e.preventDefault();
+            console.log("수정 일정2 id",data.id);
+            
 
             // Validate form before submit
             if (validator) {
@@ -538,17 +450,20 @@ var KTAppCalendar = function () {
                                     submitButton.disabled = false;
 
                                     // Remove old event
-                                    calendar.getEventById(data.id).remove();
+                                    // calendar.getEventById(data.id).remove();
+                                    // calendar.getEventById(data.id).remove();
+                                    // location.href="schDel.do?sch_idx="+data.id;
+                                    console.log(data.id,"번 일정 삭제");
 
                                     // Detect if is all day event
-                                    // let allDayEvent = false;
-                                    // if (allDayToggle.checked) { allDayEvent = true; }
-                                    // if (startTimeFlatpickr.selectedDates.length === 0) { allDayEvent = true; }
+                                    let allDayEvent = false;
+                                    if (allDayToggle.checked) { allDayEvent = true; }
+                                    if (startTimeFlatpickr.selectedDates.length === 0) { allDayEvent = true; }
 
                                     // Merge date & time
                                     var startDateTime = moment(startFlatpickr.selectedDates[0]).format();
-                                    var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length /*- 1*/]).format();
-                                    // if (!allDayEvent) {
+                                    var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length - 1]).format();
+                                    if (!allDayEvent) {
                                         const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
                                         const endDate = startDate;
                                         const startTime = moment(startTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
@@ -556,27 +471,33 @@ var KTAppCalendar = function () {
 
                                         startDateTime = startDate + 'T' + startTime;
                                         endDateTime = endDate + 'T' + endTime;
-                                    // }
+                                    }
 
                                     // Add new event to calendar
-                                    calendar.addEvent({
-                                        id: uid(),
-                                        title: eventName.value,
-                                        description: eventDescription.value,
-                                        schedeul: scheduleType.value,
-                                        location: eventLocation.value,
-                                        start: startDateTime,
-                                        end: endDateTime,
-                                        // allDay: allDayEvent
-                                    });
+                                    // calendar.addEvent({
+                                    //     id: uid(),
+                                    //     title: eventName.value,
+                                    //     description: eventDescription.value,
+                                    //     schedule: scheduleType.value,
+                                    //     location: eventLocation.value,
+                                    //     start: startDateTime,
+                                    //     end: endDateTime,
+                                    //     allDay: allDayEvent
+                                    // });
+
+                                    // location.href="employee/addevent";
+
+
                                     calendar.render();
+                                    console.log(data.id,"번 일정 등록");
+                                    console.log(data.id,"번 일정 삭제");
 
                                     // Reset form for demo purposes only
-                                    form.reset();
+                                    // form.reset();
                                 }
                             });
 
-                            //form.submit(); // Submit form
+                            form.submit(); // Submit form
                         }, 2000);
                     } else {
                         // Show popup warning 
@@ -605,30 +526,45 @@ var KTAppCalendar = function () {
         var endDateMod;
 
         // Generate labels
-        // if (data.allDay) {
-        //     eventNameMod = 'All Day';
-        //     startDateMod = moment(data.startDate).format('Do MMM, YYYY');
-        //     endDateMod = moment(data.endDate).format('Do MMM, YYYY');
-        // } else {
+        if (data.allDay) {
+            eventNameMod = 'All Day';
+            startDateMod = moment(data.startDate).format('Do MMM, YYYY');
+            endDateMod = moment(data.endDate).format('Do MMM, YYYY');
+        } else {
             eventNameMod = '';
             startDateMod = moment(data.startDate).format('Do MMM, YYYY - h:mm a');
             endDateMod = moment(data.endDate).format('Do MMM, YYYY - h:mm a');
-        // }
+        }
 
         // Populate view data
         viewEventName.innerText = data.eventName;
         // viewAllDay.innerText = eventNameMod;
         viewEventDescription.innerText = data.eventDescription ? data.eventDescription : '--';
-        viewScheduleType.innerText = data.scheduleType ? data.scheduleType : '--';
-        viewEventLocation.innerText = data.eventLocation ? data.eventLocation : '--';
+        // viewEventLocation.innerText = data.eventLocation ? data.eventLocation : '--';
         viewStartDate.innerText = startDateMod;
         viewEndDate.innerText = endDateMod;
+
+        if (data.scheduleType == 10) {
+            viewScheduleType.innerText = '개인 일정';
+        } else if (data.scheduleType == 11) {
+            viewScheduleType.innerText = '팀 일정';
+        } else if (data.scheduleType == 12) {
+            viewScheduleType.innerText = '출근';
+        } else if (data.scheduleType == 13) {
+            viewScheduleType.innerText = '퇴근';
+        } else {
+            viewScheduleType.innerText = '--'; // 기본적으로 지정된 값이 없을 경우 '--'를 표시합니다.
+        }
+        // viewScheduleType.innerText = data.scheduleType ? data.scheduleType : '--';
+
     }
 
     // Handle delete event
     const handleDeleteEvent = () => {
         viewDeleteButton.addEventListener('click', e => {
             e.preventDefault();
+            console.log(calendar);
+            console.log(data.id);
 
             Swal.fire({
                 text: "Are you sure you would like to delete this event?",
@@ -643,7 +579,11 @@ var KTAppCalendar = function () {
                 }
             }).then(function (result) {
                 if (result.value) {
-                    calendar.getEventById(data.id).remove();
+
+                    // calendar.getEventById(data.id).remove();
+                    location.href="/employee/schedule/delete?sch_idx="+data.id;
+                    console.log("del",data.id);
+                    console.log("del",calendar);
 
                     viewModal.hide(); // Hide modal				
                 } else if (result.dismiss === 'cancel') {
@@ -776,7 +716,7 @@ var KTAppCalendar = function () {
         startFlatpickr.setDate(data.startDate, true, 'Y-m-d');
 
         // Handle null end dates
-        // const endDate = data.endDate ? data.endDate : moment(data.startDate).format();
+        const endDate = data.endDate ? data.endDate : moment(data.startDate).format();
         endFlatpickr.setDate(endDate, true, 'Y-m-d');
 
         // const allDayToggle = form.querySelector('#kt_calendar_datepicker_allday');
@@ -802,11 +742,11 @@ var KTAppCalendar = function () {
         data.id = res.id;
         data.eventName = res.title;
         data.eventDescription = res.description;
-        data.scheduleType = res.schedeule;
+        data.scheduleType = res.schedule;
         data.eventLocation = res.location;
         data.startDate = res.startStr;
         data.endDate = res.endStr;
-        // data.allDay = res.allDay;
+        data.allDay = res.allDay;
     }
 
     // Generate unique IDs for events
@@ -840,7 +780,7 @@ var KTAppCalendar = function () {
             const viewElement = document.getElementById('kt_modal_view_event');
             viewModal = new bootstrap.Modal(viewElement);
             viewEventName = viewElement.querySelector('[data-kt-calendar="event_name"]');
-            // viewAllDay = viewElement.querySelector('[data-kt-calendar="all_day"]');
+            viewAllDay = viewElement.querySelector('[data-kt-calendar="all_day"]');
             viewEventDescription = viewElement.querySelector('[data-kt-calendar="event_description"]');
             viewScheduleType = viewElement.querySelector('[data-kt-calendar="schedule_type"]');
             viewEventLocation = viewElement.querySelector('[data-kt-calendar="event_location"]');
@@ -849,7 +789,6 @@ var KTAppCalendar = function () {
             viewEditButton = viewElement.querySelector('#kt_modal_view_event_edit');
             viewDeleteButton = viewElement.querySelector('#kt_modal_view_event_delete');
 
-            initCalendarApp();
             initValidator();
             initDatepickers();
             handleEditButton();

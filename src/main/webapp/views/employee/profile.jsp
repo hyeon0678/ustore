@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <!--
 Author: Keenthemes
@@ -93,22 +93,53 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin::Actions-->
 													
 													<div class="d-flex my-4">
-													<form action="attendance" method="post">
-														<button class="btn btn-sm btn-light me-2" id="kt_user_follow_button">출근
+													<form action="employee/attendance" method="post">
+													<div hidden="true">
+													<jsp:useBean id="attendance" class="java.util.Date" />
+														<input type="text" name="emp_idx" value="${sessionScope.loginId}" /> 
+														<fmt:formatDate var="curDt" value="${attendance}" type="DATE" pattern="yyyy-MM-dd" />
+														<fmt:formatDate var="curTime" value="${attendance}" type="DATE" pattern="HH" />
+														<input type="text" name="event_start_date" value="${curDt}"/>
+														<input type="text" name="event_start_time" value="${curTime}"/>
+													</div>
+														<button class="btn btn-flex btn-primary" id="midnightchecker" style="margin-right: 5px">출근</button>
+														
 															<!-- <i class="ki-duotone ki-check fs-3 d-none"></i> -->
 															<!--begin::Indicator label-->
 															<!-- <span class="indicator-label">출근</span> -->
 															<!--end::Indicator label-->
 															<!--begin::Indicator progress-->
-															</button>
-															<span class="indicator-progress">Please wait... 
+															<!-- <span class="indicator-progress">Please wait... 
 																<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-															</span>
+															</span> -->
 															
 															<!--end::Indicator progress-->
 														</form>
-														</a>
-														<a href="#" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#kt_modal_offer_a_deal">퇴근</a>
+													
+														<form action="employee/leavework" method="post">
+														<div hidden="true">
+															<jsp:useBean id="leavework" class="java.util.Date" />
+															<input type="text" name="emp_idx" value="${sessionScope.loginId}" /> 
+															<fmt:formatDate var="curDt" value="${leavework}" type="DATE" pattern="yyyy-MM-dd" />
+															<fmt:formatDate var="curTime" value="${leavework}" type="DATE" pattern="HH:mm:ss" />
+															<input type="text" name="event_start_date" value="${curDt}"/>
+															<input type="text" name="event_start_time" value="${curTime}"/>
+														</div>
+															<button class="btn btn-flex btn-primary" id="midnightchecker">퇴근</button>
+														
+															<!-- <i class="ki-duotone ki-check fs-3 d-none"></i> -->
+															<!--begin::Indicator label-->
+															<!-- <span class="indicator-label">출근</span> -->
+															<!--end::Indicator label-->
+															<!--begin::Indicator progress-->
+															<!-- <span class="indicator-progress">Please wait... 
+																<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+															</span> -->
+															
+															<!--end::Indicator progress-->
+														</form>
+														
+														
 													</div>
 													
 													<!--end::Actions-->
@@ -408,8 +439,9 @@ License: For each use you must have a valid license purchased only from above li
 															<label class="fs-6 fw-semibold mb-2" for="flexSwitchChecked">
 																알림
 															</label>
-															<input class="form-check-input" type="checkbox" value="" id="flexSwitchChecked" checked="checked" style="margin-left: 5%;"/>
-															
+															<input class="form-check-input" type="checkbox" name="url" value="/employee/home" id="flexSwitchChecked" checked="checked" style="margin-left: 5%;"/>
+															<input class="form-control form-control-solid" type="text" name="alarm_subject" value="프로필 알람" hidden="true" style="margin-left: 5%;"/>
+															<input class="form-control form-control-solid" type="text" name="alarm_content" value="30분 전" hidden="true" style="margin-left: 5%;"/>
 														</div>
 
 														<!--end::Input-->
@@ -463,8 +495,8 @@ License: For each use you must have a valid license purchased only from above li
 														</div>
 													</div>
 													<div hidden="true">
-														<input type="text" value="${sessionScope.loginId}" name="emp_idx">
-														<input type="text" value="${sessionScope.loginId}" name="reg_by">
+														<input type="text" value="${sessionScope.loginId}" name="emp_idx" />
+														<input type="text" value="${sessionScope.loginId}" name="reg_by" />
 													</div>
 													<!--end::Input group-->
 												</div>
@@ -492,7 +524,7 @@ License: For each use you must have a valid license purchased only from above li
 								<!--end::Modal - New Product-->
 								
 								
-								
+								<!-- 이벤트 선택 -->
 								<!--begin::Modal - New Product-->
 								<div class="modal fade" id="kt_modal_view_event" tabindex="-1" data-bs-focus="false" aria-hidden="true">
 									<!--begin::Modal dialog-->
@@ -546,13 +578,14 @@ License: For each use you must have a valid license purchased only from above li
 													<!--end::Icon-->
 													<div class="mb-9">
 														<!--begin::Event name-->
-														<!-- <div class="d-flex align-items-center mb-2">
+														<div class="d-flex align-items-center mb-2">
 															<span class="fs-3 fw-bold me-3" data-kt-calendar="event_name"></span>
-															<span class="badge badge-light-success" data-kt-calendar="all_day"></span>
-														</div> -->
+															<!-- <span class="badge badge-light-success" data-kt-calendar="all_day"></span> -->
+														</div>
 														<!--end::Event name-->
 														<!--begin::Event description-->
 														<div class="fs-6" data-kt-calendar="event_description"></div>
+														<div class="fs-6" data-kt-calendar="schedule_type" ></div>
 														<!--end::Event description-->
 													</div>
 												</div>
@@ -584,19 +617,18 @@ License: For each use you must have a valid license purchased only from above li
 												</div>
 												<!--end::Row-->
 												<!--begin::Row-->
-												<div class="d-flex align-items-center">
-													<!--begin::Icon-->
+												<!-- <div class="d-flex align-items-center">
+													begin::Icon
 													<i class="ki-duotone ki-geolocation fs-1 text-muted me-5">
 														<span class="path1"></span>
 														<span class="path2"></span>
 													</i>
-												</div>
+												</div> -->
 												<div class="d-flex align-items-center">
 													<!--begin::Icon-->
 													
 													<!--end::Icon-->
 													<!--begin::Event location-->
-													<div class="fs-6" data-kt-calendar="schedule_type"></div>
 													<!--end::Event location-->
 												</div>
 												<!--end::Row-->
@@ -666,34 +698,10 @@ License: For each use you must have a valid license purchased only from above li
 	</body>
 	<!--end::Body-->	
 	<script>
-	$(function(){
-		var request = $.ajax({
-		  url: "/profilecalendar",
-		  method: "GET",
-		  dataType: "json"
-		});
-		 
-		request.done(function( data ) {
-			console.log(data);
-				
-				var calendarEl = document.getElementById('kt_calendar_app');
-				
-			    var calendar = new FullCalendar.Calendar(calendarEl, {
-			      initialView: 'dayGridMonth',
-			      headerToolbar: {
-			        left: 'prev,next today',
-			        center: 'title',
-			        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-			      },
-			      events: data
-			    });
-		
-			    calendar.render();								
-		});
-		 
-		request.fail(function( jqXHR, textStatus ) {
-		  alert( "Request failed: " + textStatus );
-		});
-});
+	
+	
+	var curDate = new Date();
+	var curDay = curDate.getFullYear() + "-" + (curDate.getMonth() + 1) + "-" + curDate.getDate();
+	var curTime = curDate.getHours() + ":" + curDate.getMinutes() + ":" + curDate.getSeconds();
 </script>
 </html>
