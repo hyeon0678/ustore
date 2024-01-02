@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
 <!--begin::Head-->
@@ -81,6 +82,8 @@ h1 {
 <!--begin::Body-->
 <body id="kt_body"
 	class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+	<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal" var="principal"/>
 	<!--begin::Theme mode setup on page load-->
 	<script>
 		var defaultThemeMode = "light";
@@ -127,92 +130,40 @@ h1 {
 
 					<!--begin::Post-->
 					<div class="container">
-						<button type="button" class="btn btn-primary"
-							data-bs-toggle="modal" data-bs-target="#kt_modal_1"
-							style="background-color: #C6DA52;">단위/단가 수정</button>
-
-						<div class="modal fade" tabindex="-1" id="kt_modal_1">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h3 class="modal-title">단위/단가 수정</h3>
-
-										<!--begin::Close-->
-										<div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-											data-bs-dismiss="modal" aria-label="Close">
-											<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
-												class="path2"></span></i>
-										</div>
-										<!--end::Close-->
-									</div>
-
-									<div class="modal-body">
-										<div class="table-responsive">
-											<table
-												class="table table-hover table-rounded table-striped border gy-7 gs-7">
-												<thead>
-													<tr
-														class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200">
-														<th>단가</th>
-														<th><input type="text" class="form-control"
-															placeholder="수정할 단가를 입력해 주세요." /></th>
-
-
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>단위(파레트)</td>
-														<td><input type="text" class="form-control"
-															placeholder="수정할 단위를 입력해 주세요." /></td>
-
-													</tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
-
-									<div class="modal-footer">
-
-										<button type="button" class="btn btn-primary"
-											style="background-color: #255000">저장</button>
-									</div>
-								</div>
-							</div>
-						</div>
+					<h3 style="color:#fffff8;">칸 넣기용</h3>
 					</div>
 					<div class="stock">
-						<table>
-							<tr>
-								<td>분류</td>
-								<td colspan="2">식품>음료</td>
-							</tr>
-							<tr>
-								<td>상품 코드</td>
-								<td>P113006</td>
-							</tr>
-							<tr>
-								<td>상품 명</td>
-								<td>코카콜라</td>
-							</tr>
-							<tr>
-								<td>재고</td>
-								<td>8381</td>
-							</tr>
-							<tr>
-								<td>단위(파렛트)</td>
-								<td>1000</td>
-							</tr>
-							<tr>
-								<td>단가</td>
-								<td>1,000</td>
-
-							</tr>
-
-						</table>
-
-
-					</div>
+    <table id="stockDetailTable">
+        <tr>
+            <td>분류</td>
+            <td colspan="2" id="categoryName"></td>
+        </tr>
+        <tr>
+            <td>상품 코드</td>
+            <td id="productId"></td>
+            
+        </tr>
+        <tr>
+            <td>상품 명</td>
+            <td id="productName"></td>
+        </tr>
+        <tr>
+            <td>재고</td>
+            <td id="stock"></td>
+        </tr>
+        <tr>
+            <td>단위(파렛트)</td>
+            <td id="unitQuantity"></td>
+            <td><button onclick="modifyUnitQuantity()" id="unitQuantityBtn" class="btn btn-primary">단위 수정</button></td>
+        </tr>
+        <tr>
+            <td>단가</td>
+            <td id="purchasePrice"></td>
+            <td><button onclick="modifyPurchasePrice()" id="purchaseBtn" class="btn btn-primary">단가 수정</button></td>
+        </tr>
+    
+    </table>
+</div>
 					<div>
 						<div class="table-responsive">
 							<table
@@ -220,8 +171,8 @@ h1 {
 								style="text-align: center;">
 								<thead>
 									<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
-										<th>입고 날짜</th>
-										<th>파렛트/전체</th>
+										<th style="text-align: center;">입고 날짜</th>
+										<th style="text-align: center;">파렛트/전체</th>
 
 
 									</tr>
@@ -273,10 +224,10 @@ h1 {
 													<tr
 														class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200">
 
-														<th>구분</th>
+														<th class="min-w-70px">구분</th>
 														<th colspan="2"><select
 															class="form-select form-select-solid"
-															data-control="select2" data-placeholder="파손"
+															data-control="select2" data-placeholder="선택"
 															data-hide-search="true">
 																<option></option>
 																<option value="1">파손</option>
@@ -290,16 +241,16 @@ h1 {
 												</thead>
 												<tbody>
 													<tr>
-														<td>수량</td>
+														<td class="min-w-70px">수량</td>
 														<td colspan="2"><input type="text"
 															class="form-control" placeholder="개수를 입력해 주세요." /></td>
 
 
 													</tr>
 													<tr>
-														<td>사유</td>
+														<td class="min-w-70px">사유</td>
 														<td colspan="2" rowspan="5"><textarea cols="50"
-																rows="10" placeholder="내용을 입력해 주세요"></textarea></td>
+																rows="10" placeholder="내용을 입력해 주세요"  class="form-control"></textarea></td>
 
 
 													</tr>
@@ -310,8 +261,7 @@ h1 {
 
 									<div class="modal-footer">
 
-										<button type="button" class="btn btn-primary"
-											style="background-color: #255000">등록</button>
+										<button class="btn btn-primary">등록</button>
 									</div>
 								</div>
 							</div>
@@ -331,21 +281,9 @@ h1 {
 
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td>23.12.20</td>
-										<td>파손</td>
-										<td>1</td>
-										<td>창고에서 떨어뜨려 파손</td>
-
-									</tr>
-									<tr>
-										<td>23.12.20</td>
-										<td>파손</td>
-										<td>1</td>
-										<td>창고에서 떨어뜨려 파손</td>
-
-									</tr>
+								<tbody id="tableBody">
+									
+									
 								</tbody>
 							</table>
 
@@ -381,8 +319,301 @@ h1 {
 	<script>
 		$("#kt_daterangepicker_1").daterangepicker();
 	</script>
+	<script>
+    document.addEventListener('DOMContentLoaded', function () {
+     
+        fetchStockDetail(); 
+    });
+
+    function fetchStockDetail() {
+       
+        var urlParams = new URLSearchParams(window.location.search);
+        var productId = urlParams.get('productId');
+
+       
+        fetch('/stock/stockdetail/data?productId=' + encodeURIComponent(productId))
+            .then(response => response.json())
+            .then(data => {
+            
+                updateStockDetailTable(data);
+            })
+            .catch(error => {
+                console.error('Error fetching stock detail:', error);
+            });
+    }
+
+    function updateStockDetailTable(data) {
+   
+        document.getElementById('categoryName').textContent = data[0].categoryName;
+        document.getElementById('productId').textContent = data[0].productId;
+        document.getElementById('productName').textContent = data[0].productName;
+        document.getElementById('stock').textContent = data[0].stock;
+        document.getElementById('unitQuantity').textContent = data[0].unitQuantity;
+        document.getElementById('purchasePrice').textContent = data[0].purchasePrice;
+    }
+    
+ 
+    //-------------------------------------------------단가 수정
+ 
+    function modifyPurchasePrice() {
+    var button = document.querySelector('#purchaseBtn');
+    var purchasePriceCell = document.getElementById('purchasePrice');
+
+    if (button.textContent === '단가 수정') {
+       
+        button.textContent = '수정 완료';
+
+       
+        var inputElement = document.createElement('input');
+        inputElement.type = 'text';
+        inputElement.value = purchasePriceCell.textContent;
+
+       
+        inputElement.setAttribute('class', 'form-control');
+        inputElement.style.width = '100px';
+
+        purchasePriceCell.innerHTML = '';
+        purchasePriceCell.appendChild(inputElement);
+
+        
+        inputElement.focus();
+    } else if (button.textContent === '수정 완료') {
+      
+        var newPurchasePrice = purchasePriceCell.querySelector('input').value;
+        var empIdx = ${principal.username};
+        var productId = document.getElementById('productId').textContent;
+
+        
+        $.ajax({
+            url: '/stock/stockdetailpu/update', 
+            method: 'POST',
+            data: {
+                purchasePrice: newPurchasePrice, 
+                productId: productId,
+                empIdx: empIdx
+            },
+            success: function (data) {
+          
+                console.log('Ajax request successful:', data);
+
+            
+                button.textContent = '단가 수정';
+                purchasePriceCell.innerHTML = newPurchasePrice;
+            },
+            error: function (error) {
+            
+                console.error('Ajax request error:', error);
+                button.textContent = '단가 수정';
+                purchasePriceCell.innerHTML = newPurchasePrice;
+            }
+        });
+    }
+}
+    //---------------------단위 수정
+    
+    function modifyUnitQuantity() {
+    var button = document.querySelector('#unitQuantityBtn');
+    var unitQuantityCell = document.getElementById('unitQuantity');
+
+    if (button.textContent === '단위 수정') {
+      
+        button.textContent = '수정 완료';
+
+       
+        var inputElement = document.createElement('input');
+        inputElement.type = 'text';
+        inputElement.value = unitQuantityCell.textContent;
+
+     
+        inputElement.setAttribute('class', 'form-control');
+        inputElement.style.width = '100px';
+
+        unitQuantityCell.innerHTML = '';
+        unitQuantityCell.appendChild(inputElement);
+
+   
+        inputElement.focus();
+    } else if (button.textContent === '수정 완료') {
+    
+        var newUnitQuantity = unitQuantityCell.querySelector('input').value;
+        var empIdx = ${principal.username};
+        var productId = document.getElementById('productId').textContent;
+
+      
+        $.ajax({
+            url: '/stock/stockdetailun/update', 
+            method: 'POST',
+            data: {
+                unitQuantity: newUnitQuantity,
+                productId: productId,
+                empIdx: empIdx
+            },
+            success: function (data) {
+              
+                console.log('Ajax request successful:', data);
+
+             
+                button.textContent = '단위 수정';
+                unitQuantityCell.innerHTML = newUnitQuantity;
+            },
+            error: function (error) {
+         
+                console.error('Ajax request error:', error);
+                button.textContent = '단위 수정';
+                unitQuantityCell.innerHTML = newUnitQuantity;
+            }
+        });
+    }
+}
+  //-----------------------------------폐기/파손 등록----------------------------------
+$(document).ready(function () {
+    var isClickable = true;
+
+    $('#kt_modal_2').on('shown.bs.modal', function () {
+    
+        function registerButtonClickHandler() {
+            if (!isClickable) {
+                return;
+            }
+
+            isClickable = false;
+
+            var operationType = $('select[data-control="select2"]').val();
+            var quantity = $('input.form-control').val();
+            var reason = $('textarea.form-control').val();
+            var empIdx = ${principal.username};
+            var productId = document.getElementById('productId').textContent;
+
+            $.ajax({
+                url: '/stock/stockdetailhistory/insert',
+                method: 'POST',
+                data: {
+                    operationType: operationType,
+                    quantity: quantity,
+                    reason: reason,
+                    productId: productId,
+                    empIdx: empIdx
+                },
+                success: function (data) {
+                    console.log('Ajax request successful:', data);
+
+                    Swal.fire({
+                        text: '파손 등록이 완료 되었습니다.',
+                        icon: 'success',
+                        confirmButtonText: '확인',
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                  
+                            $('select[data-control="select2"]').val('');
+                            $('input.form-control').val('');
+                            $('textarea.form-control').val('');
+
+                         
+                            $('.btn[data-bs-dismiss="modal"]').click();
+                            isClickable = true;
+                            $('.btn-primary').off('click', registerButtonClickHandler); 
+                  
+                            fetchStockDetailHistory(productId);
+                            fetchStockDetail();
+                        }
+                    });
+                },
+                error: function (error) {
+                    Swal.fire({
+                        text: '파손 등록이 실패했습니다.',
+                        icon: 'error',
+                        confirmButtonText: '확인',
+                        customClass: {
+                            confirmButton: 'btn btn-danger'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                         
+                            $('.btn[data-bs-dismiss="modal"]').click();
+                            isClickable = true;
+                            $('.btn-primary').off('click', registerButtonClickHandler); 
+                            fetchStockDetailHistory(productId);
+                            fetchStockDetail();
+                        }
+                    });
+                }
+            });
+        }
+
+  
+        $('.btn-primary').on('click', registerButtonClickHandler);
+
+        
+        $('#kt_modal_2').on('hidden.bs.modal', function () {
+         
+            $('.btn-primary').off('click', registerButtonClickHandler);
+        });
+    });
+});
+  //--------------------------------------------------
+ 
+function fetchStockDetailHistory(productId) {
+    $.ajax({
+        url: "/stock/stockdetailhistory/list",
+        type: 'GET',
+        data: {productId: productId},
+        dataType: 'json',
+        success: function(data) {
+           
+            $('#tableBody').empty();
+
+       
+            if (data.length === 0) {
+            
+                var noRecordMessage = '<tr><td></td><td colspan="2" style="color: lightgrey;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;폐기/파손 기록이 없습니다.</td><td></td></tr>';
+                $('#tableBody').append(noRecordMessage);
+            } else {
+           
+                $.each(data, function(index, item) {
+                    var operationTypeText = '';
+                    switch (item.operationType) {
+                        case 1:
+                            operationTypeText = '파손';
+                            break;
+                        case 2:
+                            operationTypeText = '폐기';
+                            break;
+                        case 3:
+                            operationTypeText = '분실';
+                            break;
+                        default:
+                            operationTypeText = '알 수 없음';
+                    }
+
+                    var row = '<tr>' +
+                        '<td>' + item.regDate + '</td>' +
+                        '<td>' + operationTypeText + '</td>' +
+                        '<td>' + item.quantity + '</td>' +
+                        '<td>' + item.reason + '</td>' +
+                        '</tr>';
+                    $('#tableBody').append(row);
+                });
+            }
+        },
+        error: function() {
+            console.log('Failed to fetch data.');
+        }
+    });
+}
+
+
+$(document).ready(function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var productId = urlParams.get('productId');
+    fetchStockDetailHistory(productId);
+});
+</script>
 	<!--end::Custom Javascript-->
 	<!--end::Javascript-->
+	</sec:authorize>
 </body>
 <!--end::Body-->
 </html>

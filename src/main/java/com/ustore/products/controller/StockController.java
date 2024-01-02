@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,72 +16,173 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ustore.products.dto.StockDto;
 import com.ustore.products.service.StockService;
 
 @Controller
 public class StockController {
-	
-	Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired StockService service;
 
-	
-	@PostMapping(value = "/stock/stock_management/insert")
-	public String Stock_managementInsert(Model model,@RequestParam Map<String, String>params,HttpSession session) {
-		logger.info("parmas : "+params);
+	Logger logger = LoggerFactory.getLogger(getClass());
+	@Autowired
+	StockService service;
+
+	@PostMapping(value = "/stock/stockmanagement/insert")
+	public String Stock_managementInsert(Model model, @RequestParam Map<String, String> params, HttpSession session) {
+		logger.info("parmas : " + params);
 		session.setAttribute("data", params);
-		
-		Object ProNum= service.stock_insert(params);
-		logger.info("상품 번호 최종 : "+ProNum);
+
+		Object ProNum = service.stock_insert(params);
+		logger.info("상품 번호 최종 : " + ProNum);
 		session.setAttribute("proNum", ProNum);
-		return "redirect:/stock/stock_management/insert2";
+		return "redirect:/stock/stockmanagement/insert2";
 	}
-	
-	@RequestMapping(value = "/stock/stock_management/insert2", method = {RequestMethod.GET, RequestMethod.POST})
-	public String  Stock_managementInsert2(Model model,HttpSession session) {
+
+	@RequestMapping(value = "/stock/stockmanagement/insert2", method = { RequestMethod.GET, RequestMethod.POST })
+	public String Stock_managementInsert2(Model model, HttpSession session) {
 		Map<String, String> data = (Map<String, String>) session.getAttribute("data");
 		Object proNumObject = session.getAttribute("proNum");
 		String proNums = proNumObject != null ? proNumObject.toString() : null;
-		
-		logger.info("data : "+ data);
+
+		logger.info("data : " + data);
 		logger.info("proNums: " + proNums);
-		
+
 		String proNums1 = proNums.substring(3);
 		String proNumsHead = proNums.substring(0, 3);
-		
-		int proNums2 = Integer.parseInt(proNums1) +1;
+
+		int proNums2 = Integer.parseInt(proNums1) + 1;
 		String proNums3 = String.format("%04d", proNums2);
 		String proNum = proNumsHead + proNums3;
-		
-		logger.info("상품번호+1 :"+proNum);
-		
-		service.stock_insert2(proNum,data);
-		
-		
-		
-		return "redirect:/stock/stock_management/list";
-	}
-	
 
-	
-	@RequestMapping(value = "/stock/stock_management/list")
+		logger.info("상품번호+1 :" + proNum);
+
+		service.stock_insert2(proNum, data);
+
+		return "redirect:/stock/stockmanagement/list";
+	}
+
+	@RequestMapping(value = "/stock/stockmanagement/list")
 	public String stock_management(Model model) {
-		
-		ArrayList<StockDto> list =service.list();
-		model.addAttribute("list",list);
-		logger.info("list : "+list);
-		
+
+		ArrayList<StockDto> list = service.list();
+		model.addAttribute("list", list);
+		logger.info("list : " + list);
+
 		return "products/stock_management";
 	}
+	@PostMapping("/stock/stockmanagement/delete")
+	public String stockManagementDelete(@RequestParam("productId")String productId) {
+		
+		logger.info("productId : " +productId);
+		
+		service.stockManagementDelete(productId);
+		
+		return "물품이 삭제 되었습니다.";
+	}
+// ---------------------------------------------------------------------- 제품 상세보기 --------------------------
+
+	@RequestMapping(value = "/stock/stockdetail/list", method = { RequestMethod.GET, RequestMethod.POST })
+	public String showStockDetailListPage() {
+		return "products/stock_detail";
+	}
+
+	@RequestMapping(value = "/stock/stockdetail/data", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<StockDto> getStockDetailData(@RequestParam("productId") String productId) {
+		logger.info("productId : " + productId);
+		ArrayList<StockDto> detailList = service.stockDetailList(productId);
+		logger.info("데이터 불러왔는지? : " + detailList);
+
+		return detailList;
+	}
+
+	@PostMapping("/stock/stockdetailpu/update")
+	@ResponseBody
+	public String stockDetailpuUpdate(@RequestParam("purchasePrice") String purchasePrice,
+			@RequestParam("empIdx") String empIdx,@RequestParam("productId") String productId) {
+		
+		logger.info("단가 :" +purchasePrice);
+		logger.info("등록자 :" +empIdx);
+		logger.info("상품 번호 :"+productId);
 	
+	
+			service.stockDetailpuUpdate(purchasePrice,empIdx,productId);
+	
+	
+
+		return "수정 완료";
+	}
+	@PostMapping("/stock/stockdetailun/update")
+	@ResponseBody
+	public String stockDetailunUpdate(@RequestParam("unitQuantity") String unitQuantity,
+			@RequestParam("empIdx") String empIdx,@RequestParam("productId") String productId) {
+		
+		logger.info("단위 :" +unitQuantity);
+		logger.info("등록자 :" +empIdx);
+		logger.info("상품 번호 :"+productId);
+	
+	
+			service.stockDetailunUpdate(unitQuantity,empIdx,productId);
+	
+	
+
+		return "수정 완료";
+	}
+	
+	//-------------------------------폐기/파손----------------------------------------
+	
+	@PostMapping("/stock/stockdetailhistory/insert")
+	@ResponseBody
+	public String stockHistoryInsert(@RequestParam("operationType")String operationType,
+			@RequestParam("quantity")String quantity,@RequestParam("reason")String reason,
+			@RequestParam("productId")String productId,@RequestParam("empIdx") String empIdx) {
+		
+		logger.info("분류 코드 : " +operationType );
+		logger.info("수량 : " +quantity );
+		logger.info("사유 : " +reason );
+		logger.info("상품 번호 : " +productId );
+		logger.info("등록자 : " +empIdx );
+		
+		service.stockHistoryInsert(operationType,quantity,reason,productId,empIdx);
+		int minQuantity = service.minQuantity(productId);
+		
+		if(minQuantity != 0) {
+			int finalQuantity = Integer.parseInt(quantity);
+			
+			int finalminQuantity = minQuantity-finalQuantity;
+			
+		
+			
+			service.finalStock(finalminQuantity,productId);
+			
+		}
+		
+		
+		
+		
+		
+		return "폐기/파손 등록 처리가 완료 되었습니다.";
+	}
+	
+	@GetMapping(value = "/stock/stockdetailhistory/list")
+	@ResponseBody
+	public ArrayList<StockDto> stockHistoryList(@RequestParam("productId") String productId) {
+		logger.info("파손 리스트 상품 아이디 : "+productId);
+		
+		
+		ArrayList<StockDto> HistoryList = service.stockHistoryList(productId);
+		
+		
+		return HistoryList;
+	}
+
 	@GetMapping(value = "/incoming")
 	public String incoming() {
 		
 		
+
 		return "products/incoming";
 	}
-	
-	
 
 }

@@ -15,4 +15,22 @@ public interface StockDao {
 
 	void stock_insert2(StockDto dto);
 
+	ArrayList<StockDto> stockDetailList(StockDto dto);
+
+	void stockManagementDelete(String productId);
+
+	void stockDetailpuUpdate(StockDto dto);
+
+	void stockDetailunUpdate(StockDto dto);
+
+	void stockHistoryInsert(StockDto dto);
+
+	int minQuantity(String productId);
+
+	void finalStock(StockDto dto);
+
+	ArrayList<StockDto> stockHistoryList(String productId);
+
+
+
 }
