@@ -45,7 +45,7 @@
 		}
 
 		.content_tree {
-			margin: 20px 50px;
+			margin: 20px 20px;
 			padding: 20px;
 
 		}
@@ -275,30 +275,45 @@
 															  <div class="modal-content" style="width: 700px;">
 																<div class="modal-header">
 																	<h3>포인트 사용내역</h3>
-																	<label for="date">
-																        <input type="date" id="ufirstsearchdate" value="2023-12-10" />
+																	<label for="date" style="padding-left: 150px;">
+																        <input type="date" id="ufirstsearchdate" value="${beforeMonth}" />
 																        ~
-																        <input type="date" id="ulastsearchdate" value="2024-01-10" />
+																        <input type="date" id="ulastsearchdate" value="${nowdate}" />
 																        <input type="button" id="usearchButton" class="comm-btn" value="검색"
 																         style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" />
 																    </label>
+																    <!--begin::Close-->
+																	<div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+																		data-bs-dismiss="modal" aria-label="Close">
+																		<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+																				class="path2"></span></i>
+																	</div>
+																	<!--end::Close-->
 																</div>
 																	<div>
 																	
 																		<div class="content_tree" style="border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
-																			<span>홍길동(인사팀 팀장)</span><br/>
-																			<span>홍길동(인사팀 팀장)</span><br/>
-																			<span>홍길동(인사팀 팀장)</span><br/>
-																			<span>홍길동(인사팀 팀장)</span><br/>
-																			<span>홍길동(인사팀 팀장)</span><br/>
-																			<span>홍길동(인사팀 팀장)</span><br/>
-																			<span>홍길동(인사팀 팀장)</span><br/>
-																			<span>홍길동(인사팀 팀장)</span><br/>
-																			<span>홍길동(인사팀 팀장)</span>
+																			<!--begin::Table-->
+																				<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
+																					<thead>
+																						<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">																							
+																							<th class="min-w-100px" style="text-align: center;">종류</th>
+																							<th class="min-w-100px" style="text-align: center;">포인트</th>
+																							<th class="min-w-100px" style="text-align: center;">총포인트</th>
+																							<th class="min-w-100px" style="text-align: center;">변경날짜</th>
+																						</tr>
+																						
+																					</thead>
+																					<tbody class="fw-semibold text-gray-600" id="list">
+																						
+																					</tbody>
+																				</table>
+																				<!--end::Table-->
 																		</div>
 																	</div>													
 																<div class="modal-footer">
-																	<button type="button" class="btn btn-primary" data-bs-dismiss="modal">완료</button>
+																	<!-- <button type="button" class="btn btn-primary" data-bs-dismiss="modal">완료</button> -->
+																	<h3>누적포인트 : 5000000점</h3>
 															  </div>
 															</div>
 														  </div>
@@ -315,19 +330,21 @@
 						<div class="card-footer pt-4" id="kt_chat_messenger_footer" style="display: flex; justify-content: flex-end;">
 							<!--begin::Actions-->
 							<div class="" style="margin-left: 10px; margin-right: 5px">
-								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+								<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1"  onclick="productlistcall()" >
 									구매내역
 								</button>
 								<div class="modal fade" tabindex="-1" id="kt_modal_1">
-									<div class="modal-dialog">
-										<div class="modal-content">
+									<div class="modal-dialog" >
+										<div class="modal-content" style="width:1110px; height:700px; position: fixed;  top: 50%;  left: 50%;  transform: translate(-50%, -50%);">
 											<div class="modal-header">
-												<div style="display: flex; align-items: center;">
-													<input type="text" class="form-control form-control-solid"
-														placeholder="이름을 입력하세요" style="width:200px; height:30px; " />
-													<button type="button" class="btn btn-primary"
-														style="margin: 5px;">검색</button>
-												</div>
+												<h3>제품 구매 이력</h3>
+												<label for="date" style="padding-left: 500px;">
+											        <input type="date" id="ufirstsearchdate" value="${beforeMonth}" />
+											        ~
+											        <input type="date" id="ulastsearchdate" value="${nowdate}" />
+											        <input type="button" id="usearchButton" class="comm-btn" value="검색" onclick="productlistcall()"
+											         style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" />
+											    </label>
 												<!--begin::Close-->
 												<div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
 													data-bs-dismiss="modal" aria-label="Close">
@@ -338,21 +355,87 @@
 											</div>
 											<div class="" style="margin-left: 5px; margin-right: 5px">
 												<div class="content_tree"
-													style="float: left; width: 280px; height: 400px; overflow-y: auto;">
-													<!-- 조직도 그리기 -->
-													<!-- <span>여기에 조직도를 그려주세요</span> -->
+													style="float: left; width: 300px; height: 550px; overflow-y: auto; border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
+													<h4>UStore</h4>
+													<h2 style="margin-bottom: 5px; ">100000원</h2>
+													<span style="float: right; margin-top: 10px">결제번호(abc2037592-bfja3949)</span>
+													<!--begin::Table-->
+													<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
+														<thead>
+															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" style=" color: #c6da52;">																							
+																<th class="min-w-100px" style="text-align: center;">상품명(상품번호)</th>
+																<th class="min-w-80px" style="text-align: center;">단위수량</th>
+																<th class="min-w-100px" style="text-align: center;">금액</th>
+															</tr>
+															
+														</thead>
+														<tbody class="fw-semibold text-gray-600" id="cartlist">
+															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
+																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
+																<th class="min-w-80px" style="text-align: center;">2개</th>
+																<th class="min-w-100px" style="text-align: center;">10400 원</th>
+															</tr>
+															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
+																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
+																<th class="min-w-80px" style="text-align: center;">2개</th>
+																<th class="min-w-100px" style="text-align: center;">10400 원</th>
+															</tr>
+															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
+																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
+																<th class="min-w-80px" style="text-align: center;">2개</th>
+																<th class="min-w-100px" style="text-align: center;">10400 원</th>
+															</tr>
+															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
+																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
+																<th class="min-w-80px" style="text-align: center;">2개</th>
+																<th class="min-w-100px" style="text-align: center;">10400 원</th>
+															</tr>
+															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
+																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
+																<th class="min-w-80px" style="text-align: center;">2개</th>
+																<th class="min-w-100px" style="text-align: center;">10400 원</th>
+															</tr>
+															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
+																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
+																<th class="min-w-80px" style="text-align: center;">2개</th>
+																<th class="min-w-100px" style="text-align: center;">10400 원</th>
+															</tr>
+														</tbody>
+													</table>
+													<!--end::Table-->
+													<span style="float: right; margin-top: 10px">결제수단 : 신한카드(4404)</span>
+													<span style="float: right; margin-top: 10px">포인트 사용 : 0원</span>
+													<span style="float: right; margin-top: 10px">포인트 적립 : 0원</span>
+													<span style="float: right; margin-top: 10px">결제 후 남은 포인트 : 0원</span>
+													<span style="float: right; margin-top: 10px">결제일시 : 2023.12.01</span>
+													
+													
 												</div>
 												<div class="content_tree"
-													style="float:left;width: 280px; height: 400px; border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
-													<span>홍길동(인사팀 팀장)</span><br />
-													<span>홍길동(인사팀 팀장)</span>
-													< </div>
+													style="float:left;width: 660px; height: 550px; border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
+													<!--begin::Table-->
+													<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
+														<thead>
+															<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">																							
+																<th class="min-w-130px" style="text-align: center;">판매번호</th>
+																<th class="min-w-130px" style="text-align: center;">판매일시</th>
+																<th class="min-w-130px" style="text-align: center;">결제상태</th>
+																<th class="min-w-130px" style="text-align: center;">결제금액</th>
+																<th class="min-w-130px" style="text-align: center;">환불</th>
+															</tr>
+														</thead>
+														<tbody class="fw-semibold text-gray-600" id="paylist">
+															
+														</tbody>
+													</table>
+													<!--end::Table-->
+												</div>
 												</div>
 	
-												<div class="modal-footer">
+												<!-- <div class="modal-footer">
 													<button type="button" class="btn btn-primary"
 														data-bs-dismiss="modal">채팅방 생성</button>
-												</div>
+												</div> -->
 											</div>
 										</div>
 									</div>
@@ -535,24 +618,89 @@
 <!--end::Body-->
 <script>
 
+var memberidx= ${info.member_idx};
+
+
 
 
 	function gotoupdate(){
 	
 		// href="customer/update?idx='+${info.member_idx}+'"
 	console.log("회원 수정 하기 기능 들어가기");
-	location.href='customer/update?idx='+${info.member_idx};	
+	location.href='customer/update?idx='+memberidx;	
 	}//historycall
 
 	function cusdel(){
 		
 		console.log("회원 탈퇴 하기 기능 들어가기");
-		location.href='customer/del?idx='+${info.member_idx};
+		location.href='customer/del?idx='+memberidx;
 	}
 	
 	function newdate(){
 		console.log("기간 변경 하기 기능 들어가기");
-		location.href='customer/newdate?idx'+${info.member_idx};
+		location.href='customer/newdate?idx'+memberidx;
+		
+	}
+	
+	/* productlistcall  */
+	function productlistcall(){
+		console.log("제품 구매 이력 리스트 호출");
+		var startdate= $('input[name="startdate"]').val();
+		var enddate= $('input[name="enddate"]').val();
+		var memberidx= ${info.member_idx};
+			
+		$.ajax({
+			type:'post',
+			url:'customer/detail.ajax/productlistcall', 
+			data:{'startdate':startdate, 'enddate':enddate,'memberidx':memberidx},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				console.log("리스트 호출 뿌려주기");
+				/*
+				var content = '';
+				$('#paylist').empty();
+					
+				if (obj.size == null) {					
+					 content = '<tr>';				 
+					 content += '<td style="text-align: center; color: red;">'+uniqueNo+'가 존재 하지 않습니다.</td>';
+					 content += '</tr>';				
+		            $('#paylist').append(content);
+				}else {
+					
+				for (var i = 0; i < obj.size; i++) {
+					 	 content = '<tr class="text-start fw-bold fs-7 text-uppercase gs-0">';																	
+						<th class="min-w-130px" style="text-align: center;">판매번호</th>
+						<th class="min-w-130px" style="text-align: center;">판매일시</th>
+						<th class="min-w-130px" style="text-align: center;">결제상태</th>
+						<th class="min-w-130px" style="text-align: center;">결제금액</th>
+						<th class="min-w-130px" style="text-align: center;">환불</th>
+						 content += '<td><a href="adminReportDetail?idx='+obj.list[i].reportNo+'&&type='+obj.list[i].reportType+'">' + obj.list[i].reportNo + '</td>';
+						 content += '<td>' + obj.list[i].userId + '</td>';
+						 var date = new Date(obj.list[i].reportRegDate);
+						 var dateStr = date.toLocaleDateString("ko-KR");
+						 content += '<td>' + dateStr + '</td>';
+						 if(obj.list[i].reportType == '글'){
+							 content += '<td>' + obj.list[i].uniqueNo +'B'+ '</td>'; 
+						 } else {
+							 content += '<td>' + obj.list[i].uniqueNo +'R'+ '</td>'; 
+						}					
+						 content += '<td>' + obj.list[i].processState + '</td>';
+						 content += '</tr>';				
+			            $('#paylist').append(content);
+				}
+				};
+				*/
+				
+			},
+			error:function(e){
+				console.log(e);
+			}
+			});//	
+		
+		
+		
+		
 		
 	}
 

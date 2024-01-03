@@ -3,6 +3,7 @@ package com.ustore.member.controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
@@ -94,15 +95,42 @@ public class MemberController {
 	
 	
 	@GetMapping(value = "/customer/businessperson")
-	public String businessperson() {
+	public ModelAndView businessperson() {
 		logger.info("사업자 회원 등록 페이지 들어가기");
-		return "member/cusjoin_bis";
+		
+		ModelAndView mav = new ModelAndView("member/cusjoin_bis");
+		DateCalculator datecal= new DateCalculator();
+		String nowdate = datecal.dateNow().toString();		
+		logger.info("nowdate : "+nowdate);		
+		Calendar mon = Calendar.getInstance();
+		mon.add(Calendar.MONTH, -1);
+		String beforeMonth = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
+		logger.info("beforeMonth"+beforeMonth);
+
+		mav.addObject("nowdate : ",nowdate);
+		mav.addObject("beforeMonth",beforeMonth);
+		
+		return mav;
 	}
 	
 	@GetMapping(value = "/customer/general")
-	public String general() {
+	public ModelAndView general() {
 		logger.info("일반 회원 등록 페이지 들어가기");
-		return "member/cusjoin_num";
+		
+		ModelAndView mav = new ModelAndView("member/cusjoin_num");
+		DateCalculator datecal= new DateCalculator();
+		String nowdate = datecal.dateNow().toString();			
+		logger.info("nowdate : "+nowdate);		
+		Calendar mon = Calendar.getInstance();
+		mon.add(Calendar.MONTH, -1);
+		String beforeMonth = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
+		logger.info("beforeMonth"+beforeMonth);
+		
+
+		mav.addObject("nowdate",nowdate);
+		mav.addObject("beforeMonth",beforeMonth);
+		
+		return mav;
 	}
 	
 	@RequestMapping(value = "/customer/detail")
@@ -114,18 +142,50 @@ public class MemberController {
 		
 		HashMap<String, String> file = service.filefind(idx);
 		logger.info("file : "+file);
+		
 		DateCalculator datecal= new DateCalculator();
-		String nowdate = datecal.dateNow().toString();
-		logger.info("nowdate : "+nowdate);
+		String nowdate = datecal.dateNow().toString();		
+		logger.info("nowdate : "+nowdate);		
+		Calendar mon = Calendar.getInstance();
+		mon.add(Calendar.MONTH, -1);
+		String beforeMonth = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
+		logger.info("beforeMonth"+beforeMonth);
+		
+		
 		
 		HashMap<String,String> map= service.detail(idx);
 		ModelAndView mav = new ModelAndView("member/cusdetail");
 		mav.addObject("info",map);
 		mav.addObject("file",file);
+		mav.addObject("nowdate",nowdate);
+		mav.addObject("beforeMonth",beforeMonth);
 		//mav.addObject("membertype",membertype);
 		//mav.addObject("grade",grade);
 		return mav;
 	}
+	
+	// customer/detail.ajax/productlistcall
+	@RequestMapping(value = "/customer/detail.ajax/productlistcall")
+	@ResponseBody
+	public ModelAndView productlistcall(@RequestParam int startdate,@RequestParam int enddate,@RequestParam int memberidx) {
+		logger.info("구매이력 리스트 불러오기  호출하기");
+		logger.info("member idx : "+memberidx);
+		logger.info("startdate : "+startdate);
+		logger.info("enddate : "+enddate);
+		
+		/*
+		HashMap<String,String> map= service.update(idx); // 여기서 디비(서비스)에서 값을 받았다
+		ModelAndView mav = new ModelAndView("member/cusupdate");
+		logger.info("info : "+map.toString());
+		
+		mav.addObject("info",map); // 값을 넣어준다
+		*/
+		return null; // 앞으로 보낸다
+	}
+	
+	
+	
+	
 	
 	@GetMapping(value = "/customer/chat")
 	public String chat() {
