@@ -74,49 +74,33 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="flex-grow-1">
 												<!--begin::Title-->
 												<div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
-													<!--begin::User-->
 													<div class="d-flex flex-column">
-														<!--begin::Name-->
 														<div class="d-flex align-items-center mb-2">
 															<p class="text-gray-900 fs-2 fw-bold me-1">이름</p>
 														</div>
-														<!--end::Name-->
-														<!--begin::Info-->
 														<div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
 															<a href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
 															<i class="ki-duotone ki-profile-circle fs-4 me-1">
 															</i>사원 번호 ${sessionScope.loginId}</a>
 														</div>
-														<!--end::Info-->
 													</div>
-													<!--end::User-->
-													<!--begin::Actions-->
 													
 													<div class="d-flex my-4">
-													<form action="employee/attendance" method="post">
-													<div hidden="true">
-													<jsp:useBean id="attendance" class="java.util.Date" />
-														<input type="text" name="emp_idx" value="${sessionScope.loginId}" /> 
-														<fmt:formatDate var="curDt" value="${attendance}" type="DATE" pattern="yyyy-MM-dd" />
-														<fmt:formatDate var="curTime" value="${attendance}" type="DATE" pattern="HH" />
-														<input type="text" name="event_start_date" value="${curDt}"/>
-														<input type="text" name="event_start_time" value="${curTime}"/>
-													</div>
-														<button class="btn btn-flex btn-primary" id="midnightchecker" style="margin-right: 5px">출근</button>
-														
-															<!-- <i class="ki-duotone ki-check fs-3 d-none"></i> -->
-															<!--begin::Indicator label-->
-															<!-- <span class="indicator-label">출근</span> -->
-															<!--end::Indicator label-->
-															<!--begin::Indicator progress-->
-															<!-- <span class="indicator-progress">Please wait... 
-																<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-															</span> -->
-															
-															<!--end::Indicator progress-->
-														</form>
 													
-														<form action="employee/leavework" method="post">
+													<form action="employee/attendance" method="post">
+														<div hidden="true">
+															<jsp:useBean id="attendance" class="java.util.Date" />
+															<input type="text" name="emp_idx" value="${sessionScope.loginId}" /> 
+															<fmt:formatDate var="curDt" value="${attendance}" type="DATE" pattern="yyyy-MM-dd" />
+															<fmt:formatDate var="curTime" value="${attendance}" type="DATE" pattern="HH:mm:ss" />
+															<input type="text" name="event_start_date" value="${curDt}"/>
+															<input type="text" name="event_start_time" value="${curTime}"/>
+														</div>
+														<button class="btn btn-flex btn-primary" id="midnightchecker" style="margin-right: 5px">출근</button>
+													</form>
+														
+														
+													<form action="employee/leavework" method="post">
 														<div hidden="true">
 															<jsp:useBean id="leavework" class="java.util.Date" />
 															<input type="text" name="emp_idx" value="${sessionScope.loginId}" /> 
@@ -125,35 +109,18 @@ License: For each use you must have a valid license purchased only from above li
 															<input type="text" name="event_start_date" value="${curDt}"/>
 															<input type="text" name="event_start_time" value="${curTime}"/>
 														</div>
-															<button class="btn btn-flex btn-primary" id="midnightchecker">퇴근</button>
-														
-															<!-- <i class="ki-duotone ki-check fs-3 d-none"></i> -->
-															<!--begin::Indicator label-->
-															<!-- <span class="indicator-label">출근</span> -->
-															<!--end::Indicator label-->
-															<!--begin::Indicator progress-->
-															<!-- <span class="indicator-progress">Please wait... 
-																<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-															</span> -->
-															
-															<!--end::Indicator progress-->
-														</form>
-														
+														<button class="btn btn-flex btn-primary" id="midnightchecker">퇴근</button>
+													</form>
 														
 													</div>
-													
-													<!--end::Actions-->
 												</div>
-												<!--end::Title-->
-												<!--begin::Stats-->
+												
+												
+																								
 												<div class="d-flex flex-wrap flex-stack">
-													<!--begin::Wrapper-->
 													<div class="d-flex flex-column flex-grow-1 pe-8">
-														<!--begin::Stats-->
 														<div class="d-flex flex-wrap">
-															<!--begin::Stat-->
 															<div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
-																<!--begin::Number-->
 																<div class="d-flex align-items-center">
 																	<div class="text-gray-900 fs-2 fw-bold me-1">오늘의 일정</div>
 																</div>
@@ -210,7 +177,7 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end::Card title-->
 										<!--begin::Action-->
-										<a href="account/settings.html" class="btn btn-sm btn-primary align-self-center">프로필 수정</a>
+										<a href="/employee/correction" class="btn btn-sm btn-primary align-self-center">프로필 수정</a>
 										<!--end::Action-->
 									</div>
 									<!--begin::Card header-->
@@ -302,36 +269,25 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin::Label-->
 										</div>
 										<div class="row mb-10">
-											<!--begin::Label-->
 											<label class="col-lg-4 fw-semibold text-muted">주소</label>
-											<!--begin::Label-->
-											<!--begin::Label-->
+											
 											<div class="col-lg-8">
 												<span class="fw-bold fs-6 text-gray-800">서울 금천구 ~~ 도로명 주소</span>
 												<br/>
 												<span class="fw-bold fs-6 text-gray-800">타워1층 ~~ 상세 주소</span>
 											</div>
-											<!--begin::Label-->
 										</div>
-										<!--end::Input group-->
 										
 									</div>
-									<!--end::Card body-->
 								</div>
-								<!--end::details View-->
-								<!--begin::Row-->
+								
 								<div class="row gy-5 g-xl-10">
-									<!--begin::Col-->
+									
 									<div class="col-xl-12 mb-xl-5">
-										<!--begin::Chart widget 5-->
-										<!--begin::Container-->
-										<!--begin::Post-->
+										
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
-							<!--begin::Container-->
 							<div class="container-xxl">
-								<!--begin::Card-->
 								<div class="card">
-									<!--begin::Card header-->
 									<div class="card-header">
 										<h2 class="card-title fw-bold">Calendar</h2>
 										<div class="card-toolbar">
@@ -339,45 +295,26 @@ License: For each use you must have a valid license purchased only from above li
 											<i class="ki-duotone ki-plus fs-2"></i>Add Event</button>
 										</div>
 									</div>
-									<!--end::Card header-->
-									<!--begin::Card body-->
 									<div class="card-body">
-										<!--begin::Calendar-->
 										<div id="kt_calendar_app"></div>
-										<!--end::Calendar-->
 									</div>
-									<!--end::Card body-->
 								</div>
-								<!--end::Card-->
-								<!--begin::Modals-->
-								<!--begin::Modal - New Product-->
 								<div class="modal fade" id="kt_modal_add_event" tabindex-="1" aria-hidden="true" data-bs-focus="false">
-									<!--begin::Modal dialog-->
 									<div class="modal-dialog modal-dialog-centered mw-650px">
-										<!--begin::Modal content-->
 										<div class="modal-content">
-											<!--begin::Form-->
 											<form action="employee/addevent" id="kt_modal_add_event_form" method="post">
-												<!--begin::Modal header-->
 												<div class="modal-header">
-													<!--begin::Modal title-->
 													<h2 class="fw-bold" data-kt-calendar="title">Add Event</h2>
 													<!--end::Modal title-->
-													<!--begin::Close-->
 													<div class="btn btn-icon btn-sm btn-active-icon-primary" id="kt_modal_add_event_close">
 														<i class="ki-duotone ki-cross fs-1">
 															<span class="path1"></span>
 															<span class="path2"></span>
 														</i>
 													</div>
-													<!--end::Close-->
 												</div>
-												<!--end::Modal header-->
-												<!--begin::Modal body-->
 												<div class="modal-body py-10 px-lg-17">
-													<!--begin::Input group-->
 													<div class="fv-row mb-9">
-														<!-- 시작::라벨 -->
 														
 														<div class="form-check form-check-custom form-check-solid">									
 															<input class="form-check-input" type="radio" value="notuse" name="schedule_type" checked="checked" hidden="true"/>
@@ -387,11 +324,6 @@ License: For each use you must have a valid license purchased only from above li
 														</div>
 														
 														<label class="fs-6 fw-semibold required mb-2">일정 종류</label>
-														
-														<!-- 끝::라벨 -->
-														<!-- id="flexRadioDefault"  -->
-														<!-- for="flexRadioDefault" -->
-														<!-- 시작::입력 -->
 														
 														<div class="form-check form-check-custom form-check-solid">									
 															<input class="form-check-input" type="radio" value="10" name="schedule_type" checked="checked"/>
@@ -407,90 +339,51 @@ License: For each use you must have a valid license purchased only from above li
 															</label>
 														</div>
 														
-														<!-- 끝::입력 -->
 													</div>
-													<!--end::Input group-->
-													<!--begin::Input group-->
 													<div class="fv-row mb-9">
-														<!--begin::Label-->
 														<label class="fs-6 fw-semibold mb-2">일정</label>
-														<!--end::Label-->
-														<!--begin::Input-->
 														<input type="text" class="form-control form-control-solid" placeholder="" name="calendar_event_name" />
-														<!--end::Input-->
 													</div>
-													<!--end::Input group-->
-													<!--begin::Input group-->
 													<div class="fv-row mb-9">
-														<!--begin::Label-->
 														<label class="fs-6 fw-semibold mb-2">일정 내용</label>
-														<!--end::Label-->
-														<!--begin::Input-->
 														<input type="text" class="form-control form-control-solid" placeholder="" name="calendar_event_description" />
-														<!--end::Input-->
 													</div>
-													<!--end::Input group-->
-													<!--begin::Input group-->
 													<div class="fv-row mb-9">
-														<!--begin::Label-->
-														<!--end::Label-->
-														<!--begin::Input-->
 														<div class="form-check form-switch form-check-custom form-check-solid">
 															<label class="fs-6 fw-semibold mb-2" for="flexSwitchChecked">
 																알림
 															</label>
-															<input class="form-check-input" type="checkbox" name="url" value="/employee/home" id="flexSwitchChecked" checked="checked" style="margin-left: 5%;"/>
-															<input class="form-control form-control-solid" type="text" name="alarm_subject" value="프로필 알람" hidden="true" style="margin-left: 5%;"/>
+															<input class="form-check-input" type="checkbox" name="url" value="/employee/home" id="flexSwitchChecked" style="margin-left: 5%;"/>
+															<input class="form-control form-control-solid" type="text" name="alarm_subject" value="프로필 알림" hidden="true" style="margin-left: 5%;"/>
 															<input class="form-control form-control-solid" type="text" name="alarm_content" value="30분 전" hidden="true" style="margin-left: 5%;"/>
 														</div>
-
-														<!--end::Input-->
 													</div>
-													<!--end::Input group-->
-													<!--begin::Input group-->
 													<div class="row row-cols-lg-2 g-10">
 														<div class="col">
 															<div class="fv-row mb-9">
 																<!--begin::Label-->
 																<label class="fs-6 fw-semibold mb-2 required">일정 시작 일</label>
-																<!--end::Label-->
-																<!--begin::Input-->
 																<input class="form-control form-control-solid" name="event_start_date" placeholder="Pick a start date" id="kt_calendar_datepicker_start_date"/>
-																<!--end::Input-->
 															</div>
 														</div>
 														<div class="col" data-kt-calendar="datepicker">
 															<div class="fv-row mb-9">
-																<!--begin::Label-->
 																<label class="fs-6 fw-semibold mb-2">일정 시작 시간</label>
-																<!--end::Label-->
-																<!--begin::Input-->
 																<input class="form-control form-control-solid" name="event_start_time" placeholder="Pick a start time" id="kt_calendar_datepicker_start_time" />
-																<!--end::Input-->
 															</div>
 														</div>
 													</div>
-													<!--end::Input group-->
-													<!--begin::Input group-->
 													<div class="row row-cols-lg-2 g-10">
 														<div class="col">
 															<div class="fv-row mb-9">
-																<!--begin::Label-->
 																<label class="fs-6 fw-semibold mb-2 required">일정 종료 일</label>
-																<!--end::Label-->
-																<!--begin::Input-->
 																<input class="form-control form-control-solid" name="event_end_date" placeholder="Pick a end date" id="kt_calendar_datepicker_end_date" />
-																<!--end::Input-->
 															</div>
 														</div>
 														<div class="col" data-kt-calendar="datepicker">
 															<div class="fv-row mb-9">
-																<!--begin::Label-->
 																<label class="fs-6 fw-semibold mb-2">일정 종료 시간</label>
-																<!--end::Label-->
-																<!--begin::Input-->
 																<input class="form-control form-control-solid" name="event_end_time" placeholder="Pick a end time" id="kt_calendar_datepicker_end_time" />
-																<!--end::Input-->
 															</div>
 														</div>
 													</div>
@@ -498,30 +391,20 @@ License: For each use you must have a valid license purchased only from above li
 														<input type="text" value="${sessionScope.loginId}" name="emp_idx" />
 														<input type="text" value="${sessionScope.loginId}" name="reg_by" />
 													</div>
-													<!--end::Input group-->
 												</div>
-												<!--end::Modal body-->
-												<!--begin::Modal footer-->
 												<div class="modal-footer flex-center">
-													<!--begin::Button-->
 													<button type="reset" id="kt_modal_add_event_cancel" class="btn btn-light">취소</button>
-													<!--end::Button-->
-													<!--begin::Button-->
 													<button id="kt_modal_add_event_submit" class="btn btn-primary">
 														<span class="indicator-label">추가</span>
 														<span class="indicator-progress">Please wait... 
 															<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
 														</span>
 													 </button>
-													<!--end::Button-->
 												</div>
-												<!--end::Modal footer-->
 											</form>
-											<!--end::Form-->
 										</div>
 									</div>
 								</div>
-								<!--end::Modal - New Product-->
 								
 								
 								<!-- 이벤트 선택 -->
@@ -658,47 +541,93 @@ License: For each use you must have a valid license purchased only from above li
 					<!--end::Content-->
 					<!--begin::Footer-->
 					<div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
-						<!--begin::Container-->
 						
-						<!--end::Container-->
 					</div>
-					<!--end::Footer-->
 				</div>
-				<!--end::Wrapper-->
 			</div>
-			<!--end::Page-->
 		</div>
-		<!--end::Root-->
 		
-		<!--end::Main-->
-		<!--begin::Scrolltop-->
-		
-		<!--end::Scrolltop-->
-		
-		
-		<!--end::Modals-->
-		<!--begin::Javascript-->
 		<script>var hostUrl = "/";</script>
-		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
-		<!--end::Global Javascript Bundle-->
-		<!--begin::Vendors Javascript(used for this page only)-->
 		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-		<!--end::Vendors Javascript-->
-		<!--begin::Vendors Javascript(used for this page only)-->
 		<script src="resource/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
-		<!--begin::Custom Javascript(used for this page only)-->
-		<!-- <script src="resource/src/js/custom/apps/calendar/calendar.js"></script> -->
 		<script src="resource/src/js/custom/apps/calendar/profile_calendar.js"></script>
 		<script src="resource/assets/js/custom/pages/user-profile/general.js"></script>
 
-		<!--end::Custom Javascript-->
-		<!--end::Javascript-->
 	</body>
-	<!--end::Body-->	
 	<script>
+	/* $('#midnightchecker').on('click',function(){
+		var $event_start_date = $('input[name="event_start_date"]');
+		var $event_start_time = $('input[name="event_start_time"]');
+		var $emp_idx = $('input[name="emp_idx"]');
+		
+		
+
+		console.log("출근 날짜 : "+$event_start_date.val());
+		console.log("출근 시간 : "+$event_start_time.val());
+		console.log("사원 번호 : "+$emp_idx.val());
+
+		var param = {};
+		param.event_start_date = $event_start_date.val();
+		param.event_start_time = $event_start_time.val();
+		param.emp_idx = $emp_idx.val();
+
+		console.log("출근 parameter : "+param);
+
+		$.ajax({
+			type:'post',
+			url:'/employee/attendance.ajax',
+			data:param,
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				console.log("출근 정보 등록 성공");
+				location.href="/employee/home?"+"${sessionScope.loginId}";
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}); */
 	
+	/* function attSet(){
+		var $event_start_date = $('input[name="event_start_date"]');
+		var $event_start_time = $('input[name="event_start_time"]');
+		var $event_start_time = '00:00:00';
+		var $emp_idx = $('input[name="emp_idx"]');
+
+		console.log("출근 날짜 : "+$event_start_date.val());
+		console.log("출근 시간 : "+$event_start_time.val());
+		console.log("사원 번호 : "+$emp_idx.val());
+
+		var param = {};
+		param.event_start_date = $event_start_date.val();
+		param.event_start_time = $event_start_time.val();
+		param.emp_idx = $emp_idx.val();
+
+		console.log("출근 parameter : "+param);
+
+		$.ajax({
+			type:'post',
+			url:'/employee/attendancesetting.ajax',
+			data:param,
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				console.log("출근 초기값 정보 등록 성공");
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}; */
+	
+	var msg = "${msg}"; // msg값을 받아와서 msg에 넣고
+	console.log(msg);
+	if (msg != "") { // msg가 null이 아니라면
+		alert(msg); // msg를 alert로 메세지창을 띄운다
+	}
 	
 	var curDate = new Date();
 	var curDay = curDate.getFullYear() + "-" + (curDate.getMonth() + 1) + "-" + curDate.getDate();

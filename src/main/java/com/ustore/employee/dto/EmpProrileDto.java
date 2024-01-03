@@ -25,11 +25,17 @@ public class EmpProrileDto {
 	private Time alarm_datetime;
 	private String alarm_read;
 	private String url;
+	private int alarm_type;
 	
 	
 	
 	
-	
+	public int getAlarm_type() {
+		return alarm_type;
+	}
+	public void setAlarm_type(int alarm_type) {
+		this.alarm_type = alarm_type;
+	}
 	public int getAlarm_idx() {
 		return alarm_idx;
 	}

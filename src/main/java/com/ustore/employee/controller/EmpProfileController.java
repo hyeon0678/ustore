@@ -1,6 +1,6 @@
 package com.ustore.employee.controller;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +30,11 @@ public class EmpProfileController {
 	
 	@Autowired EmpProfileService service;
 	
+	@GetMapping("/employee/correction")
+	public String correction() {
+		return "employee/profile_correction";
+	}
+	
 	@GetMapping("/employee/home")
 	public String home() {
 		return "employee/profile";
@@ -43,13 +48,13 @@ public class EmpProfileController {
 		
 		return "redirect:/employee/home";
 	}
-	
+
 	@RequestMapping(value = "/employee/attendance", method = {RequestMethod.GET, RequestMethod.POST})
 	public String attendance(@RequestParam Map<String, String>params, Model model) {
 		logger.info("attendance_params : "+ params);
 		
 		service.attendance(params);
-		
+				
 		return "redirect:/employee/home";
 	}
 	
@@ -61,6 +66,32 @@ public class EmpProfileController {
 		
 		return "redirect:/employee/home";
 	}
+	
+//	@RequestMapping(value = "/employee/attendance", method = {RequestMethod.GET, RequestMethod.POST})
+//	public String attendance(@RequestParam Map<String, String>params, Model model) {
+//		logger.info("attendance_params : "+ params);
+//		/* LocalDate now = LocalDate.now(); */
+//		
+//		service.attendance(params);
+//		
+//		logger.info("현재 날짜 : " + now);
+//		
+//		return "redirect:/employee/home";
+//	}
+	
+//	@RequestMapping(value = "/employee/attendance.ajax")
+//	@ResponseBody
+//	public HashMap<String, Object> attendance (@RequestParam HashMap<String, String> params){
+//		logger.info("reg_attendance_params : " + params);
+//		HashMap<String, Object> result = new HashMap<String, Object>();
+//		int attendance = service.attendance(params);
+//		logger.info("reg_attendance_params2 : "+params);
+//		result.put("success", attendance);
+//		return result;
+//	}
+	
+	
+	
 	
 	@RequestMapping(value = "/profilecalendar", method = RequestMethod.GET)
 	@ResponseBody
@@ -105,5 +136,33 @@ public class EmpProfileController {
 		result.put("삭제 일정 번호 전달 success", employeDel);
 		return result;
 	}
+	
+//	@Scheduled(cron = "0 0/1 * * * *")
+//	public HashMap<String, Object> attendancesetting(@RequestParam HashMap<String, String>params) {		
+//		
+//		logger.info("attendancesetting_5min_params : "+params);
+//		
+//		HashMap<String, Object> result = new HashMap<String, Object>();
+//		int attSet = service.attendancesetting(params);
+//		
+//		logger.info("attendancesetting_5min_params : "+params);
+//		
+//		result.put("success", attSet);
+//				
+//		return result;
+//		
+//	}
+	
+//	@RequestMapping(value = "/employee/attendance.ajax")
+//	@ResponseBody
+//	public HashMap<String, Object> attendance (@RequestParam HashMap<String, String> params){
+//		logger.info("reg_attendance_params : " + params);
+//		HashMap<String, Object> result = new HashMap<String, Object>();
+//		int attendance = service.attendance(params);
+//		logger.info("reg_attendance_params2 : "+params);
+//		result.put("success", attendance);
+//		return result;
+//	}
+	
 	
 }

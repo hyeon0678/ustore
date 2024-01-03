@@ -53,14 +53,14 @@ var KTAppCalendar = function () {
 
     // Private functions
     $(function(){
+    // function profilecalendarlistCall(){
 		var request = $.ajax({
 		  url: "/profilecalendar",
 		  method: "GET",
 		  dataType: "json"
 		});
 
-
-        request.done(function( data ) {
+        request.done(function(data) {
             console.log(data);
 
         // Define variables
@@ -88,15 +88,6 @@ var KTAppCalendar = function () {
             // Click event --- more info: https://fullcalendar.io/docs/eventClick
             eventClick: function (arg) {
                 formatArgs({
-                    // id: arg.event.id,
-                    // title: arg.event.title,
-                    // description: arg.event.extendedProps.description,
-                    // schedule: arg.event.extendedProps.schedule,
-                    // location: arg.event.extendedProps.location,
-                    // startStr: arg.event.startStr,
-                    // endStr: arg.event.endStr,
-                    // allDay: arg.event.allDay
-
                     id: arg.event.id,
                     title: arg.event.title,
                     description: arg.event.extendedProps.description,
@@ -113,32 +104,11 @@ var KTAppCalendar = function () {
             editable: true,
             dayMaxEvents: true, // allow "more" link when too many events
             events: data,
-            // [
-            //     {
-            //         id: uid(),
-            //         title: 'All Day Event',
-            //         start: YM + '-01',
-            //         end: YM + '-02',
-            //         description: 'Toto lorem ipsum dolor sit incid idunt ut',
-            //         schedule: 'Team',
-            //         className: "border-success bg-success text-inverse-success",
-            //         location: 'Federation Square'
-            //     },
-            //     {
-            //         id: uid(),
-            //         title: 'Reporting',
-            //         start: YM + '-14T13:30:00',
-            //         description: 'Lorem ipsum dolor incid idunt ut labore',
-            //         schedule: 'Team',
-            //         end: YM + '-14T14:30:00',
-            //         className: "border-warning bg-warning text-inverse-success",
-            //         location: 'Meeting Room 7.03'
-            //     }
-            // ],
 
             // Handle changing calendar views --- more info: https://fullcalendar.io/docs/datesSet
             datesSet: function(){
-                // do some stuff
+            
+            // do some stuff
             }
         });
 

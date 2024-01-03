@@ -1,5 +1,7 @@
 package com.ustore.employee.service;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,15 +32,45 @@ public class EmpProfileService {
 		return dao.profilecalendar();
 	}
 
-	public void attendance(Map<String, String> params) {
-		logger.info("service_attendance : " + params);
-		dao.attendance(params);
+	public String attendance(Map<String, String> params) {
+		String msg = "출근 데이터 입력";
+		if(dao.attCheck(params.get("sch_subject"))==0) {
+			logger.info("출근 데이터 : " + params);
+			int row = dao.attendance(params);
+			logger.info("출근 입력 성공");
+			msg = row > 0 ? "출근 데이터 입력 성공":"출근 데이터 입력 실패";
+			logger.info("얼럿 값 출력 : "+msg);
+		}
+		return msg;
 	}
+	
+	public String leavework(Map<String, String> params) {
+		String msg = "퇴근 데이터 입력";
+		if(dao.levCheck(params.get("sch_subject"))==0) {
+			logger.info("퇴근 데이터 : "+params);
+			int row = dao.leavework(params);
+			logger.info("퇴근 입력 성공");
+			msg = row > 0 ? "퇴근 데이터 입력 성공":"퇴근 데이터 입력 실패";
+			logger.info("얼럿 값 출력 : "+msg);
+		}
+		return msg;
+	}
+		
+//	public void attendance(Map<String, String> params) {
+//		logger.info("service_attendance : " + params);
+//		dao.attendance(params);
+//	}
+	
+//	public int attendance(HashMap<String, String> params) {
+//		int attendance = 0;
+//		logger.info("출근 정보 등록 : " + params);
+//		attendance = dao.attendance(params);
+//		logger.info("출근 정보 등록 2 : " + attendance);
+//		
+//		return attendance;
+//	}
 
-	public void leavework(Map<String, String> params) {
-		logger.info("service_leavework : " + params);
-		dao.leavework(params);
-	}
+	
 
 	public int employeDel(String sch_idx) {
 		logger.info("일정 삭제 service " + sch_idx);
@@ -49,5 +81,17 @@ public class EmpProfileService {
 	public int scheduleDel(String sch_idx) {
 		return dao.scheduleDel(sch_idx);
 	}
+
+	
+
+	/*
+	 * public int attendancesetting(HashMap<String, String> params) { int attSet =
+	 * 0; logger.info("attSetting_params : " + params); attSet = dao.attSet(params);
+	 * logger.info("attSetting_params2 : " + attSet);
+	 * 
+	 * return attSet; }
+	 */
+
+	
 	
 }
