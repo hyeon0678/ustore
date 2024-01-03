@@ -12,4 +12,6 @@ public interface OrganizationChartDao {
 	
 	List<OrganizationChartDto> selectDepartments();
 	List<OrganizationChartDto> selectEmployees();
+	List<OrganizationChartDto> selectParent();
+	List<OrganizationChartDto> selectChild();
 }

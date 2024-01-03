@@ -1,4 +1,4 @@
-package com.ustore.chat.handler;
+package com.ustore.handler;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,15 +9,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 @Component
-public class WebSocketHandler extends AbstractWebSocketHandler{
+public class MyWebSocketHandler extends TextWebSocketHandler{
 	Logger logger = LoggerFactory.getLogger(getClass());
 	private Set<WebSocketSession> activeSessions = new HashSet<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-    	logger.info("------- session connect : "+session.toString());
+    	System.out.println("------------------------------------- session connect : "+session.toString());
+    	System.out.println("------------------------------------- session connect : "+session.getId());
         activeSessions.add(session);
     }
 

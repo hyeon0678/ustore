@@ -73,6 +73,7 @@
 			document.documentElement.setAttribute("data-bs-theme", themeMode);
 		}
 	</script>
+	<jsp:include page="/views/common/header.jsp"></jsp:include>
 	<!--end::Theme mode setup on page load-->
 	<!--begin::Main-->
 	<!--begin::Root-->
@@ -88,7 +89,7 @@
 				<!--begin::Content-->
 				<div class="content fs-6 d-flex flex-column flex-column-fluid"
 					id="kt_content"
-					style="margin-top: 90px; background-color: #fffff8;">
+					style="margin-top: 10px; background-color: #fffff8;">
 					<!--<h1 class="text-gray-900 fw-bold my-1 fs-2">채팅</h1>-->
 					<!--begin::Toolbar-->
 					<div class="toolbar" id="kt_toolbar">
@@ -114,10 +115,10 @@
 										<div class="modal-content">
 											<div class="modal-header">
 												<div style="display: flex; align-items: center;">
-													<input type="text" class="form-control form-control-solid"
+													<input type="text" class="form-control form-control-solid" id=""
 														placeholder="이름을 입력하세요"
 														style="width: 200px; height: 30px;" />
-													<button type="button" class="btn btn-primary"
+													<button type="button" class="btn btn-primary" id=""
 														style="margin: 5px;">검색</button>
 												</div>
 												<!--begin::Close-->
@@ -372,13 +373,13 @@
 		<script>
 			var hostUrl = "assets/";
 		</script>
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<!--<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<script
 			src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
-   	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+   	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>-->
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </body>
 <!--end::Body-->
@@ -394,14 +395,14 @@
 	let empName = '${principal.name}'+'('+'${principal.department}'+'${principal.position}'+')'
 	let roomNum = '';
     let subscription = null;
-    let socket = null;
-    let stompClient = null;
+    //let socket = null;
+    //let stompClient = null;
     let clickCnt = 0;
     // 
 	$(document).ready(function(){
 		console.log("socket connection");
 		getCurrentTime()
-		connect();
+		//connect();
 	    if(stompClient.connected){
 	    	console.log("websocket connected");
 	    }
@@ -563,10 +564,11 @@
 			let $roomName = $(this).children('div');
 			$roomName = $roomName.children('div');
 			let roomName = $roomName.children('a').text();
-			
+			//$('#chat_messenger_body').empty();
 			if(roomNum != newRoomNum){
+				
 				if(subscription != null){
-					subscription.unsubscribe();
+					subscription.unsubscribe('/topic/chat/'+roomNum);
 				}
 				roomNum = newRoomNum;
 				console.log(subscription);
@@ -582,6 +584,7 @@
 	}
 	
 	function callChatList(roomNum){
+		//
 		$.ajax({
 			data:{
 				'roomNum':roomNum
@@ -630,13 +633,13 @@
 		
 	}
 	
-	function connect() {
+	/*function connect() {
 		socket = new SockJS('http://192.168.0.20:80/ws');
 	    stompClient = Stomp.over(socket);
 	    stompClient.connect({}, function(frame){
 	    	console.log("connect")
 	    }, onError);
-	}
+	}*/
 	
 	function onError(error){
 		alert('서버와 연결할 수 없습니다. 다시 시도해 주세요');

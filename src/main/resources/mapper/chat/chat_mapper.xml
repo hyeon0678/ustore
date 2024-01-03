@@ -145,4 +145,13 @@ ORDER BY chatting.send_date;
 	SET `read` ='Y'
 	WHERE chat_room_idx = #{param1} AND chat_idx = #{param1} AND receiver = #{param3} 
 </update>
+
+<select id="unReadUser" resultType="String">
+SELECT  crh.receiver 
+FROM chat_received_history crh 
+LEFT OUTER JOIN chat_sent_history csh
+ON csh.chat_idx = crh.chat_idx 
+WHERE csh.chat_room_idx = #{param1} AND csh.chat_idx = #{param2} AND crh.`read` like 'N';
+</select>
+
 </mapper>

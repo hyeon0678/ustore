@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ustore.organizationChart.dao.OrganizationChartDao">
-<!-- 	<sql id="chartJoin">
+ <!-- <sql id="chartJoin">
 		FROM employee e 
 		LEFT OUTER JOIN department d
 		ON d.dept_id = e.dept_id 
@@ -11,24 +11,44 @@
 		ON e.position = common.common_idx
 	</sql>
 	<select id="selectParent" resultType="OrganizationChartDto">
-		SELECT d.dept_name as id
-		,IFNULL((
-			SELECT d2.dept_name 
-			FROM department d2
-			WHERE d2.dept_id = d.parent_dept_id),'#') parent
+		SELECT d.emp_idx AS id
+		,IFNULL(d.parent_dept_id ,'#') parent
 		, CONCAT(e.emp_name,'(',d.dept_name,' ',common.common_type,')') text
 		<include refid="chartJoin"></include>
 		WHERE e.position in (20,21);
 	</select>
 	
 	<select id="selectChild" resultType="OrganizationChartDto">
-		SELECT CONCAT(e.emp_name,'(',d.dept_name,' ',common.common_type,')')id
-		,d.dept_name as parent
+		SELECT e.emp_idx AS id, (<include refid="chartJoin"/> and sub_d.dept_id = d.parent_dept_id) as parent
 		, CONCAT(e.emp_name,'(',d.dept_name,' ',common.common_type,')') text
-		<include refid="chartJoin"></include>
+		FROM employee e 
+		LEFT OUTER JOIN department d
+		ON d.dept_id = e.dept_id 
+		LEFT OUTER JOIN common
+		ON e.position = common.common_idx
 		WHERE e.position in (22, 23);
 	</select> -->
-	
+<!--	<select>
+	WITH RECURSIVE tree_path(dept_id, parent_dept_id, emp_idx, position,depth, path) AS (
+  SELECT d.dept_id, d.parent_dept_id, e.emp_idx, e.`position`, 0, CAST(d.dept_id AS CHAR(200))
+  FROM employee e
+	LEFT OUTER JOIN department d ON d.dept_id = e.dept_id 
+	LEFT OUTER JOIN common c ON e.position = c.common_idx
+  WHERE 
+    d.parent_dept_id IS NULL
+  UNION ALL
+  SELECT d2.dept_id, d2.parent_dept_id, e2.emp_idx,e2.`position`, tp.depth + 1, CONCAT(tp.path, ', ', d2.dept_id)
+  FROM 
+    employee e2
+    LEFT OUTER JOIN department d2 ON d2.dept_id = e2.dept_id 
+    LEFT OUTER JOIN common c2 ON e2.position = c2.common_idx
+    INNER JOIN tree_path tp ON d2.parent_dept_id = tp.dept_id
+)
+SELECT 
+  dept_id, parent_dept_id, emp_idx, `position` ,depth, path
+FROM tree_path
+ORDER BY path;
+	</select>-->
 	<select id="selectDepartments" resultType="OrganizationChartDto">
 	    SELECT
 	        d.dept_id AS id,

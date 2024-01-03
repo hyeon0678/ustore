@@ -15,13 +15,14 @@ import com.ustore.chat.dao.ChatDao;
 import com.ustore.chat.dto.ChatDto;
 import com.ustore.chat.dto.ChatRoomDto;
 import com.ustore.chat.dto.Participant;
+import com.ustore.config.WebSocketConfig;
 
 
 @Service
 public class ChatService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
-	ChatDao chatDao;
+	private ChatDao chatDao;
 	
 	@Transactional
 	public ChatDto saveChat(ChatDto chat) {
@@ -42,6 +43,9 @@ public class ChatService {
 			logger.info("room_num : "+chat.getRoomNum());
 			row += chatDao.insertReceivedMsg(chat);	
 		}
+		
+		WebSocketConfig config = new WebSocketConfig();
+		config.printSubscription();
 		return chat;
 		
 	}

@@ -506,6 +506,7 @@ License: For each use you must have a valid license purchased only from above li
 		}
 		
 		function jsTree(treeData){
+			console.log(error);
 			$('#kt_docs_jstree_basic').jstree({
 				"core" : {
 					"data" : treeData

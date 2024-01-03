@@ -279,8 +279,15 @@
 	    stompClient.connect({}, function(frame){
 	    	console.log("webSocket is connected");
 	    }, onError);
-	    stompClient.subscribe('/queue/alarm', onMessageReceived);
+	    
+	    stompClient.subscribe('/queue/alarm',alarmReceived);
 	});
+    
+    function alarmReceived(payload){
+		var message = JSON.parse(payload.body);
+		if(message == 'EXIST')
+			console.log();
+	}
     
 	$('#read-all').on('click', function(){
 		$.ajax({

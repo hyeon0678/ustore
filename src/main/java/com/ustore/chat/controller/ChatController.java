@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +24,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ustore.chat.dto.ChatDto;
 import com.ustore.chat.dto.Participant;
 import com.ustore.chat.service.ChatService;
+import com.ustore.handler.MyWebSocketHandler;
 
 @Controller
 @RequestMapping("/chat")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ChatController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -44,6 +47,8 @@ public class ChatController {
 	@ResponseBody
 	public HashMap<String, Object> chatRoomList(Principal principal) {
 		logger.info(principal.getName());
+		MyWebSocketHandler handler = new MyWebSocketHandler();
+		logger.info(handler.getActiveSessions().toString());
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("list", chatService.getChatRoomList(principal.getName()));
 		return result;
