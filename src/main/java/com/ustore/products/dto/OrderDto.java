@@ -27,11 +27,18 @@ public class OrderDto {
 	private String phoneNum;
 	private String deliveryDate;
 	private int quantity;
+	private String confStatus;
+
 	
 	
 	
 	
-	
+	public String getConfStatus() {
+		return confStatus;
+	}
+	public void setConfStatus(String confStatus) {
+		this.confStatus = confStatus;
+	}
 	public int getQuantity() {
 		return quantity;
 	}

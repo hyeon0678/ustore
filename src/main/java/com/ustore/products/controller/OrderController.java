@@ -57,6 +57,7 @@ public class OrderController {
 		
 		model.addAttribute("list",list);
 		logger.info("list : "+list);
+		
 		ArrayList<OrderDto> list3 = service.driveList(formattedBirthdate); // 배달기사 리스트
 		model.addAttribute("list3",list3);
 				logger.info("list3 : "+list3);
@@ -71,6 +72,7 @@ public class OrderController {
     public String ordercartInsert(@RequestParam Map<String, String> params, HttpSession session) {
         String birthdate = params.get("birthdate");
         session.setAttribute("birthdate", birthdate);
+        
         
         logger.info("birthdate :"+birthdate);
         logger.info("params : "+params);
@@ -87,7 +89,7 @@ public class OrderController {
 	
 	@GetMapping("/order/ordercart/list") // 발주 장바구니 리스트  ajax 요청
 	@ResponseBody
-	public ResponseEntity<ArrayList<OrderDto>> getOrderList() {
+	public ResponseEntity<ArrayList<OrderDto>> getOrderList(HttpSession session,Model model) {
 	   
 		boolean orderCheck = service.orderCartCheck();
 	    logger.info("장바구니에 값이 있나?  없으면 false : "+orderCheck);
@@ -96,7 +98,25 @@ public class OrderController {
 	        return ResponseEntity.noContent().build();
 	    }
 		ArrayList<OrderDto> orderList = service.orderList();
-	    
+		
+		
+		
+		
+		
+		String birthdateString  = (String) session.getAttribute("birthdate");
+		if (birthdateString == null) {
+		    birthdateString = "01/01/2100";
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		
+		LocalDate birthdate = LocalDate.parse(birthdateString, formatter);
+		
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String formattedBirthdate = birthdate.format(outputFormatter);
+		ArrayList<OrderDto> list3 = service.driveList(formattedBirthdate); // 배달기사 리스트
+		model.addAttribute("list3",list3);
+				logger.info("list3 : "+list3);
 	    
 	    
 	    

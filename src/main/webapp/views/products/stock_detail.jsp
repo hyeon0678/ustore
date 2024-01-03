@@ -598,8 +598,8 @@ function fetchStockDetailHistory(productId) {
                 });
             }
         },
-        error: function() {
-            console.log('Failed to fetch data.');
+        error: function(e) {
+            console.log(e);
         }
     });
 }

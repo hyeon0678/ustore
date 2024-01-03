@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ustore.products.dao.StockDao;
+import com.ustore.products.dto.OrderDto;
 import com.ustore.products.dto.StockDto;
 
 @Service
@@ -145,6 +146,69 @@ public class StockService {
 		
 	
 		return dao.stockHistoryList(productId);
+	}
+
+	public ArrayList<OrderDto> incomingList() {
+		
+		return dao.incomingList();
+	}
+
+	public ArrayList<OrderDto> incomModalList(int orderIdx) {
+		
+		return dao.incomModalList(orderIdx);
+	}
+
+	public void incomingModalUpdate(String productId,int orderIdx) {
+		
+		StockDto dto = new StockDto();
+		dto.setProductId(productId);
+		dto.setOrderIdx(orderIdx);
+		
+		
+		dao.incomingModalUpdate(dto);
+		
+	
+	}
+
+	public void addProductQuantity(String productId, int totalQuantity) {
+		
+		StockDto dto = new StockDto();
+		dto.setProductId(productId);
+		dto.setQuantity(totalQuantity);
+		
+		dao.addProductQuantity(dto);
+		
+		
+		
+	}
+
+	public boolean allOffSelect(int orderIdx) {
+		
+		ArrayList<StockDto> dto = dao.allOffSelect(orderIdx);
+		
+		
+		return dto.isEmpty();
+	}
+
+	public void driverDelete(int driverIdx, String dateIdx) {
+		OrderDto dto = new OrderDto();
+		
+		dto.setDriverIdx(driverIdx);
+		dto.setExpArrivalDate(dateIdx);
+		
+
+		dao.driverDelete(dto);
+		
+	}
+
+	public int drvierSelect(int orderIdx) {
+		
+		return dao.drvierSelect(orderIdx);
+	}
+
+	public String dateIdx(int orderIdx) {
+		
+		return dao.dateIdx(orderIdx);
 	}
 
 }

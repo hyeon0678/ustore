@@ -387,7 +387,7 @@ button i.bi {
                     },
                     success: function (response) {
                         console.log('물품 추가 결과:', response);
-                      
+
                         Swal.fire({
                             title: response === 'success' ? '물품이 추가되었습니다.' : '이미 추가된 물품입니다.',
                             icon: response === 'success' ? 'success' : 'error',

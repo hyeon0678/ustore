@@ -101,7 +101,59 @@ select stock from products where product_id = #{productId}
 select reg_date,operation_type,quantity,reason from stock_history where product_id =#{productId}
 </select>
 
+<select id="incomingList" resultType="OrderDto">
+SELECT DISTINCT `order`.exp_arrival_date, `order`.order_idx, delivery_driver.car_num, delivery_driver.driver_name
+FROM `order`
+JOIN delivery_driver ON `order`.driver_idx = delivery_driver.driver_idx
+JOIN order_detail ON `order`.order_idx = order_detail.order_idx
+WHERE order_detail.conf_status = 'N';
+</select>
 
+<select id="incomModalList" resultType="OrderDto">
+SELECT
+    od.order_idx,
+    od.product_id,
+    od.quantity,
+    p.product_name,
+    p.unit_quantity,
+    od.conf_status
+FROM
+    order_detail od
+JOIN
+    products p ON od.product_id = p.product_id
+WHERE
+    od.order_idx = #{orderIdx};
+
+</select>
+<update id="incomingModalUpdate" parameterType="StockDto">
+UPDATE order_detail
+SET conf_status = 'Y'
+WHERE order_idx = #{orderIdx} and product_id =#{productId};
+
+</update>
+
+<update id="addProductQuantity" parameterType="StockDto">
+UPDATE products
+SET stock = stock + #{quantity}
+WHERE product_id = #{productId};
+</update>
+
+<select id="allOffSelect" resultType="StockDto">
+
+SELECT *
+FROM order_detail
+WHERE order_idx = #{orderIdx} AND conf_status = 'N';
+</select>
+<select id="drvierSelect" resultType="int">
+
+select driver_idx from `order` where order_idx = #{orderIdx}
+</select>
+<select id="dateIdx" resultType="String">
+select exp_arrival_date from `order`where order_idx = #{orderIdx}
+</select>
+<delete id="driverDelete" parameterType="OrderDto">
+delete from driver_schedule where driver_idx = #{driverIdx} and delivery_date = #{expArrivalDate}
+</delete>
 
 
 
