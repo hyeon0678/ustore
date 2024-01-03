@@ -169,6 +169,9 @@ License: For each use you must have a valid license purchased only from above li
 	        dataType: 'json',
 	        success: function (data) {
 				console.log(data);
+				if(data.list.length==0){
+					alert('검색 결과가 없습니다.');
+				}
 				drawList(data);
 	        },
 	        error: function (e) {

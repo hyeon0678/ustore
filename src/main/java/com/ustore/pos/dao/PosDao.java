@@ -31,4 +31,8 @@ public interface PosDao {
 
 	ArrayList<PosDto> productSearch(HashMap<String, String> params);
 
+	PosDto payModal(HashMap<String, String> params);
+
+	int payPoint(HashMap<String, String> params);
+
 }

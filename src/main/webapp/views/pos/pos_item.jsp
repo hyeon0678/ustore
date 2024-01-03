@@ -44,7 +44,7 @@ License: For each use you must have a valid license purchased only from above li
   }
 
   /* 입력 필드 크기 재정의 */
-  .form-control {
+  .dialer {
     width: 0px; /* 필요한대로 너비를 조정하세요 */
     height: 43px; /* 필요한대로 높이를 조정하세요 */
     font-size: 14px; /* 필요한대로 글꼴 크기를 조정하세요 */
@@ -60,7 +60,7 @@ License: For each use you must have a valid license purchased only from above li
     margin-right: -150px; /* 필요한대로 여백을 조정하세요 */
   }
     /* 다이얼러 입력 상자 가운데 정렬 */
-  .form-control {
+  .dialer {
     text-align: center; /* 텍스트를 가운데 정렬합니다. */
   }
 </style>
@@ -128,7 +128,7 @@ License: For each use you must have a valid license purchased only from above li
 														<th></th>
 													</tr>
 												</thead>
-												<tbody>
+												<tbody id="itemBody">
 												<c:forEach var="itemList" items="${itemList}">
 													<tr style="vertical-align: middle;">
 														<td style="text-align: center; padding-left: 9.75px;">${itemList.stock}</td>
@@ -205,7 +205,7 @@ License: For each use you must have a valid license purchased only from above li
 												        <!--end::Decrease control-->
 												
 												        <!--begin::Input control-->
-												        <input type="text" class="form-control" placeholder="금액" value="${itemCart.quantity}" id="${itemCart.productId}" data-kt-dialer-control="input" />
+												        <input type="text" class="dialer form-control" placeholder="금액" value="${itemCart.quantity}" id="${itemCart.productId}" data-kt-dialer-control="input" />
 												        <!--end::Input control-->
 												
 												        <!--begin::Increase control-->
@@ -228,7 +228,7 @@ License: For each use you must have a valid license purchased only from above li
 											</table>
 												<div style="display: flex; align-items: center;">
 												    <h3 style="margin-left: 20px;" id="allSellingSum">총 결제 금액 : ${allSellingSum} 원</h3>
-												    <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+												    <button type="button" id="modalBut" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
 												        결제 하기
 												    </button>
 												</div>
@@ -262,14 +262,14 @@ License: For each use you must have a valid license purchased only from above li
 
 											<div class="modal-body">
 												<!-- 모달창 몸통 테이블 시작-->
-												<div class="py-5" style="margin-top: -40px;">
+												<div class="py-5">
 													<div class="row mb-7">
 															<!--begin::Label-->
 															<label class="fw-bold col-lg-4 fw-semibold text-gray-800">회원이름</label>
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fs-6 text-gray-800">김동동</span>
+																<span class="fs-6 text-gray-800" id="memberName">김동동</span>
 															</div>
 															<!--end::Col-->
 													</div>
@@ -279,7 +279,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fs-6 text-gray-800">100000</span>
+																<span class="fs-6 text-gray-800" id="totalPoint">100000</span>
 															</div>
 															<!--end::Col-->
 													</div>
@@ -289,7 +289,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fs-6 text-gray-800">2023-12-12</span>
+																<span class="fs-6 text-gray-800" id="expiryDate">2023-12-12</span>
 															</div>
 															<!--end::Col-->
 													</div>
@@ -299,7 +299,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fs-6 text-gray-800">200000</span>
+																<span class="fs-6 text-gray-800" id="sellingSum">200000</span>
 															</div>
 															<!--end::Col-->
 													</div>
@@ -309,7 +309,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fs-6 text-gray-800">10000</span>
+																<span class="fs-6 text-gray-800" id="upPoint">10000</span>
 															</div>
 															<!--end::Col-->
 													</div>
@@ -319,8 +319,8 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 row">
-																<input type="text" class="form-control form-control-solid" placeholder="사용 포인트 금액을 입력해주세요.">
-																<button type="button" class="btn btn-primary fs-7">
+																<input type="text" class="form-control form-control-solid" placeholder="사용 포인트 금액을 입력해주세요." id="pointText" oninput="validateInput()">
+																<button type="button" class="btn btn-primary fs-7" id="pointBut">
 																	포인트 사용
 																</button>
 															</div>
@@ -332,7 +332,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fs-6 text-gray-800">10000</span>
+																<span class="fs-6 text-gray-800" id="endSellingSum">10000</span>
 															</div>
 															<!--end::Col-->
 													</div>
@@ -342,7 +342,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fs-6 text-gray-800">10000</span>
+																<span class="fs-6 text-gray-800" id="endPoint">10000</span>
 															</div>
 															<!--end::Col-->
 													</div>
@@ -458,6 +458,80 @@ License: For each use you must have a valid license purchased only from above li
 	</body>
 	<!--end::Body-->	
 	<script>
+	var accumulationRate = 0;
+	
+	
+	function validateInput() {
+	    var inputElement = document.getElementById('pointText');
+	    var inputValue = inputElement.value;
+
+	    // 정규 표현식을 사용하여 숫자가 아닌 문자를 제거
+	    inputValue = inputValue.replace(/[^0-9]/g, '');
+		
+	    // 6000 이상의 숫자를 입력할 경우 값을 6000으로 제한
+	    if (inputValue >= 6000) {
+	        inputValue = 6000;
+	    }
+
+	    // 정제된 값을 다시 입력 필드에 설정
+	    inputElement.value = inputValue;
+	}
+	
+	
+	$('#modalBut').on('click',function(){
+		posPayModal(${memberIdx});
+	});
+	
+	function posPayModal(memberId){
+		$.ajax({
+	        type: 'get',
+	        url: 'pos/payModal.ajax',
+	        data: {
+	            'memberId': memberId
+	        },
+	        dataType: 'json',
+	        success: function (data) {
+				console.log(data);
+				$('#name').text(data.name);
+				$('#totalPoint').text(data.totalPoint);
+				$('#expiryDate').text(data.expiryDate);
+				$('#sellingSum').text(data.sellingSum);
+				$('#upPoint').text(data.upPoint);
+				$('#endSellingSum').text(data.sellingSum);  // 실결제 금액
+				$('#endPoint').attr('data-product-id', data.endPoint)
+				accumulationRate = data.accumulationRate;
+				var calculatedValue = Math.floor(data.upPoint * (accumulationRate / 100));
+				if(data.endPoint<calculatedValue){					
+					if(data.endPoint == 0){
+						calculatedValue = 0;
+					}else{
+						calculatedValue = data.endPoint;
+					}
+				}
+				$('#endPoint').text(calculatedValue);
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}
+	
+	
+	
+	$('#pointBut').on('click',function(){
+		var pointText = $('#pointText').val();
+		console.log('포인트 버튼 확인',pointText);
+		var endSellingSum = $('#endSellingSum').text()-pointText;
+		console.log("포인트 값 들어오는거 확인",endSellingSum);
+		$('#endSellingSum').text(endSellingSum);
+		var calculatedValue = Math.floor(endSellingSum * (accumulationRate / 100));
+	});
+	
+	
+	
+	
+	
+	
 
     // 지정된 데이터 속성을 가진 모든 다이얼러 엘리먼트를 가져옵니다.
     var dialerElements = document.querySelectorAll(".input-group[data-kt-dialer='true']");
@@ -557,7 +631,7 @@ License: For each use you must have a valid license purchased only from above li
 			content += '<button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="decrease">'
 			content += '<i class="ki-duotone ki-minus fs-2"></i>'
 			content += '</button>'
-			content += '<input type="text" class="form-control" placeholder="금액" value="'+itemCart.quantity+'" id="'+itemCart.productId+'" data-kt-dialer-control="input" />'
+			content += '<input type="text" class="dialer form-control" placeholder="금액" value="'+itemCart.quantity+'" id="'+itemCart.productId+'" data-kt-dialer-control="input" />'
 			content += '<button class="btn btn-icon btn-outline btn-active-color-primary" type="button" data-kt-dialer-control="increase">'
 			content += '<i class="ki-duotone ki-plus fs-2"></i>'
 			content += '</button>'
@@ -632,11 +706,11 @@ License: For each use you must have a valid license purchased only from above li
 	$('#produceBtn').on('click',function(){
 		var selectedOption = document.getElementById("productOpt").value;
 		var searchText = document.getElementById("productText").value;
-		if(searchText != null){
-			productSearch(selectedOption, searchText);
-		}else{
-			alert('검색어를 입력해주세요.');
-		}
+
+		productSearch(selectedOption, searchText);
+
+
+
 	});
 	
 	function productSearch(selectedOption, searchText){
@@ -650,6 +724,9 @@ License: For each use you must have a valid license purchased only from above li
 	        dataType: 'json',
 	        success: function (data) {
 				console.log(data);
+				if(data.itemList.length==0){
+					alert('검색 결과가 없습니다.');
+				}
 				drawPosItem(data);
 	        },
 	        error: function (e) {
@@ -660,6 +737,23 @@ License: For each use you must have a valid license purchased only from above li
 	
 	function drawPosItem(data){
 		var content = '';
+		data.itemList.forEach(function(itemList,idx){
+			content += '<tr style="vertical-align: middle;">'
+			content += '<td style="text-align: center; padding-left: 9.75px;">'+itemList.stock+'</td>'
+			content += '<td>'+itemList.productName+'</td>'
+			content += '<td class="productId">'+itemList.productId+'</td>'
+			content += '<td>'+itemList.sellingPrice+'</td>'
+			content += '<th style="text-align: center;">'
+			content += '<button type="button" class="btn btn-primary fs-7 productButton" '
+			content += 'data-product-id="'+itemList.productId+'"'
+			content += 'style="white-space:nowrap; margin-left: 20px;">'
+			content += '선택'
+			content += '</button>'
+			content += '</th>'
+			content += '</tr>'
+		});
+		$('#itemBody').empty();
+		$('#itemBody').append(content);
 	}
 	</script>
 </html>
