@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ustore.products.dto.OrderDto;
 import com.ustore.products.dto.StockDto;
 import com.ustore.products.service.StockService;
 
@@ -176,6 +176,7 @@ public class StockController {
 		
 		return HistoryList;
 	}
+	// ---------------------------------------입고 리스트---------------------------------
 
 	@GetMapping(value = "/incoming")
 	public String incoming() {
@@ -184,5 +185,69 @@ public class StockController {
 
 		return "products/incoming";
 	}
+	
+	@GetMapping(value = "/stock/incoming/list")
+	public String incomingList(Model model){
+		
+		ArrayList<OrderDto>incomList = service.incomingList();
+		
+		
+		model.addAttribute("incomList",incomList);
+
+		return "products/incoming";
+	}
+	
+	@GetMapping(value = "/stock/incomingmodal/list")
+	@ResponseBody
+	public ArrayList<OrderDto> incomingModalList(@RequestParam("orderIdx") int orderIdx){
+		
+		logger.info("발주 번호 : "+orderIdx);
+		ArrayList<OrderDto>incomModalList = service.incomModalList(orderIdx);
+		
+		
+		
+		
+		return incomModalList;
+	}
+	
+	@PostMapping(value = "/stock/incomingmoadl/update")
+	@ResponseBody
+	public boolean incomingModalUpdate(@RequestParam("productId") String productId,
+			@RequestParam("totalQuantity") int totalQuantity,@RequestParam("orderIdx") int orderIdx) {
+		
+		logger.info("productId : "+productId);
+		logger.info("totalQuantity : " +totalQuantity);
+		logger.info("orderIdx : "+orderIdx);
+		
+		int driverIdx = service.drvierSelect(orderIdx);
+		String dateIdx = service.dateIdx(orderIdx);
+		service.incomingModalUpdate(productId,orderIdx);
+		service.addProductQuantity(productId,totalQuantity);
+		boolean allOff = service.allOffSelect(orderIdx);
+		
+	
+		logger.info("기사 번호 : "+driverIdx);
+		logger.info("값이 담긴여부 : "+allOff);
+		logger.info("입고 날짜 : "+dateIdx);
+		if(allOff) {
+			
+			service.driverDelete(driverIdx,dateIdx);
+		}
+		
+		return allOff;
+	}
+	
+	@PostMapping(value = "/stock/incoming/insert")
+	@ResponseBody
+	public String incomingInsert(@RequestParam("orderIdx") int orderIdx) {
+		
+		logger.info("컨트롤러 들어옴");
+		logger.info("orderIdx 최종? =  "+ orderIdx);
+		
+		
+		return "처리 완료";
+	}
+	
+
 
 }

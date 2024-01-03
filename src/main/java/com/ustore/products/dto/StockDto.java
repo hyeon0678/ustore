@@ -23,10 +23,20 @@ public class StockDto {
 	private int price;
 	private int finalminQuantity;
 	private String regDate;
+	private int orderIdx;
+	
+	
+	
 
 	
 	
 	
+	public int getOrderIdx() {
+		return orderIdx;
+	}
+	public void setOrderIdx(int orderIdx) {
+		this.orderIdx = orderIdx;
+	}
 	public String getRegDate() {
 		return regDate;
 	}
