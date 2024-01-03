@@ -64,4 +64,12 @@ public class PosService {
 	public ArrayList<PosDto> productSearch(HashMap<String, String> params) {
 		return posDao.productSearch(params);
 	}
+
+	public PosDto payModal(HashMap<String, String> params) {
+		PosDto pos = new PosDto();
+		pos = posDao.payModal(params);
+		int point = posDao.payPoint(params);
+		pos.setEndPoint(point);
+		return pos;
+	}
 }

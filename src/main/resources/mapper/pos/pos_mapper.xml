@@ -20,12 +20,13 @@
 			LEFT JOIN member_grade mg ON m.grade_idx = mg.grade_idx
 			LEFT JOIN common c2 ON m.member_type = c2.common_idx 
 			WHERE m.member_state = (SELECT c.common_idx FROM common c WHERE common_type='등록된 회원')
-			AND
-			<if test="selectedOption == 'name'">	  	
-		   	 m.name =#{searchText}
-	  		</if>
-	  		<if test="selectedOption == 'contact_num'">
-			m.contact_num LIKE CONCAT('%', #{searchText})
+			<if test="searchText != ''">
+				<if test="selectedOption == 'name'">	  	
+			   	 AND m.name =#{searchText}
+		  		</if>
+		  		<if test="selectedOption == 'contact_num'">
+				AND m.contact_num LIKE CONCAT('%', #{searchText})
+				</if>
 			</if>
 		</select>
 		
@@ -69,22 +70,56 @@
 		
 		<!-- pos 물품 검색 -->
 		<select id="productSearch" resultType="com.ustore.pos.dto.PosDto">
-			SELECT p.product_id ,p.product_name ,p.selling_price ,p.stock FROM products p WHERE p.stock != 0
-			AND
-			<if test="selectedOption == 'productName'">
-			product_name = #{searchText}
-			</if>
-			<if test="selectedOption == 'productId'">
-			product_id = #{searchText}
+			SELECT p.product_id ,p.product_name ,p.selling_price ,p.stock FROM products p WHERE p.stock != 0			
+			<if test="searchText != ''">
+				<if test="selectedOption == 'productName'">
+				AND product_name = #{searchText}
+				</if>
+				<if test="selectedOption == 'productId'">
+				AND product_id = #{searchText}
+				</if>
 			</if>
 		</select>
-
-
-
-
-
-
-
-
-
+		
+		<!-- 결제 모달창 정보 가져오기 -->
+		<select id="payModal" resultType="com.ustore.pos.dto.PosDto">
+			SELECT
+			    m.name,
+			    tp.total_point,
+			    m.expiry_date,
+			    mg.accumulation_rate, 
+			    SUM(p.selling_price * pc.quantity) AS selling_sum,
+			    (SUM(p.selling_price * pc.quantity)-
+			    SUM(
+			        CASE WHEN p.point_enabled = 'N'
+			             THEN p.selling_price * pc.quantity
+			             ELSE 0
+			        END
+			    )) AS up_point
+			FROM
+			    members m
+			LEFT JOIN
+			    total_point tp ON m.member_idx = tp.member_idx
+			LEFT JOIN
+			    payment_cart pc ON m.member_idx = pc.member_id
+			LEFT JOIN
+			    products p ON pc.product_id = p.product_id
+			LEFT JOIN 
+			member_grade mg ON m.grade_idx = mg.grade_idx 
+			WHERE
+			    m.member_idx = #{memberId}
+		</select>
+		
+		<!-- 결제 포인트 적립 한도 검색 -->
+		<select id="payPoint" resultType="int">
+			SELECT (
+				CASE WHEN pm.payment_date BETWEEN m.create_date AND m.expiry_date AND sum(pm.earned_points) BETWEEN 0 AND mg.max_points
+					THEN  mg.max_points - sum(pm.earned_points)
+					ELSE 0
+					END
+			) AS end_point
+			FROM members m LEFT JOIN member_grade mg ON m.grade_idx = mg.grade_idx 
+			LEFT JOIN payments pm ON m.member_idx = pm.member_id 
+			WHERE m.member_idx = #{memberId}
+		</select>
 </mapper>

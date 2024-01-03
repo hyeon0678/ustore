@@ -109,8 +109,14 @@ public class PosController {
 		ArrayList<PosDto> itemList = posService.productSearch(params);
 		map.put("itemList", itemList);
 		logger.info("아이템 검색 확인 : "+itemList);
-		return map;
+		return map; 
 	}
 	
-
+	@RequestMapping("/payModal.ajax")
+	@ResponseBody
+	public PosDto payModal(@RequestParam HashMap<String, String>params){
+		PosDto payModal = new PosDto();
+		payModal = posService.payModal(params);
+		return payModal;
+	}
 }
