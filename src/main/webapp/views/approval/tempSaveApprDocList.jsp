@@ -114,11 +114,25 @@
 																<input type="checkbox" name="chk" class="form-check-input"  value="1"/>
 															</div>
 														</td>
-														<td>${bbs.appr_submitdate}</td>
-														<td>${bbs.appr_idx}</td>
-														<td><a href="detail?appr_idx=${bbs.appr_idx}">${bbs.appr_subject}</a></td>
+														<td>${bbs.apprSubmitDate}</td>
 														<td>
-															<div class="badge badge-light fw-bold">${bbs.appr_status}</div>
+															<c:choose>
+												                <c:when test="${bbs.apprTypeIdx == 30}">
+												                    일반기안문
+												                </c:when>
+												                <c:when test="${bbs.apprTypeIdx == 31}">
+												                    대금지급결의서
+												                </c:when>
+												                <c:when test="${bbs.apprTypeIdx == 32}">
+												                    휴가신청서
+												                </c:when>
+												            </c:choose>
+												        </td>
+														<td><a href="/approval/tempapproval/detail?apprIdx=${bbs.apprIdx}&apprTypeIdx=${bbs.apprTypeIdx}">${bbs.apprSubject}</a></td>
+														<td>
+															<c:if test="${bbs.apprStatus == 43}">
+												                <span class="badge badge-warning">임시저장</span>
+												            </c:if>
 														</td>														
 													</tr>
 												</c:forEach>													
@@ -170,5 +184,12 @@
 			$('#chk_all').prop("checked", true);
 		}
 	});
+	
+	$('#delTempDoc').on('click', function(){
+	
+		
+		
+	})
+	
 	</script>
 </html>

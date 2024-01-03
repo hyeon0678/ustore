@@ -85,6 +85,8 @@
 								<div class="d-flex align-items-center">
 									<div class="mb-0" style="width: 50%;">
 										<input name="selectLeaveDate" class="form-control form-control-solid" placeholder="Pick date rage" id="kt_daterangepicker_1"/>
+										<input type="hidden" id="leaveStartDate" value=""/>
+										<input type="hidden" id="leaveEndDate" value=""/>
 									</div>	
 									&nbsp;&nbsp;&nbsp;&nbsp;신청일수 : <div id="leaveDays" class="numberofday m1-2" style="width: 10%; text-align: center;"></div> 일
 								</div>
@@ -181,50 +183,44 @@
 	<script>
 	
 	var leaveStartDate;
-    var leaveEndDate;
+	var leaveEndDate;
     
 	$("#kt_daterangepicker_1").daterangepicker({
+			format : 'YYYY-MM-DD',
+			separator : ' ~ ',
+			applyLabel : '확인',
+			cancelLabel : '취소',
+			timePicker : false		
 		}, function(start, end, label) {
-        leaveStartDate = start.format('MM/DD/YYYY');
-        leaveEndDate = end.format('MM/DD/YYYY');      
+        leaveStartDate = start.format('YYYY-MM-DD');
+        leaveEndDate = end.format('YYYY-MM-DD'); 
+        console.log("시작일 : "+leaveStartDate);
+        console.log("종료일 : "+leaveEndDate);
+        $('#leaveStartDate').val(leaveStartDate);
+        $('#leaveEndDate').val(leaveEndDate);
+        
+	});
 
-        console.log('Start Date: ' + leaveStartDate);
-        console.log('End Date: ' + leaveEndDate);		
-	});	
-
+	/* var offDays={day:0, weeks:[2,4]}; */
+	
 	$('#kt_daterangepicker_1').on('apply.daterangepicker', function(ev, picker) {
         // 날짜 간격 계산
-        var startDate = moment(leaveStartDate, 'MM/DD/YYYY');
-        var endDate = moment(leaveEndDate, 'MM/DD/YYYY');
+        var startDate = moment(leaveStartDate, 'YYYY-MM-DD');
+        var endDate = moment(leaveEndDate, 'YYYY-MM-DD');
         var duration = endDate.diff(startDate, 'days')+1;
 
         // 결과를 leaveDays 태그에 넣기
         $('#leaveDays').text(duration);
     });
 	
-    var leaveType = $('#leaveType').val();
-    var leaveDays = $('#leaveDays').val();
-    var leaveReason = $('#leaveReason').val();
-    var appr_subject = $('#appr_subject').val();
+    
     // 캘린더 닫기 버튼 클릭 시 이벤트 핸들러
     $('#kt_daterangepicker_1').on('cancel.daterangepicker', function(ev, picker) {
         // 날짜 선택 취소 시 필요한 동작 수행
         $('#leaveDays').text(''); // 날짜 선택이 취소되면 내용을 지움
     });
     
- 	// 휴가신청서 결재 양식에 필요한 DTO
-	var leaveForm = {
-	    commonIdx: common_idx,
-	    apprSubject: appr_subject,
-	    approvalLines: approvalLines,
-        receivers: receivers,
-	    leaveType: leaveType,
-	    leaveStartDate: leaveStartDate,
-	    leaveEndDate: leaveEndDate,
-	    leaveDays: leaveDays,
-	    leaveReason: leaveReason
-	};
-	
+ 
 	// set the dropzone container id
 	const id = "#kt_dropzonejs_example_2";
 	const dropzone = document.querySelector(id);
@@ -314,8 +310,87 @@
 			dropzone.querySelector('.dropzone-remove-all').style.display = "none";
 		}
 	});
+				
+
+	document.addEventListener("DOMContentLoaded", function () {
 		
-		
+		$.ajax({
+	        url: '/approval/tempapproval/detail',
+	        type: 'GET',
+	        data: { apprIdx: /* 값 */, apprTypeIdx: /* 값 */ },
+	        success: function(data) {
+	            var apprLineData = data.apprline;
+	            function addApprLineToTable(data) {
+	                var tbody = document.getElementById("approverTableBody");
+
+	                for (var i = 0; i < data.length; i++) {
+	                    var row = tbody.insertRow(-1);
+
+	                    // 이름
+	                    var cellName = row.insertCell(1);
+	                    cellName.innerHTML = data[i].approver;
+
+	                    // 직책
+	                    var cellPosition = row.insertCell(2);
+	                    cellPosition.innerHTML = data[i].positionType;
+
+	                    // 부서
+	                    var cellDept = row.insertCell(3);
+	                    cellDept.innerHTML = data[i].dept_name;
+	                }
+	            };
+	            
+	            addApprLineToTable(apprLineData);
+	            
+	            var receiverData = data.receiver;
+	         	// 수신자 정보를 테이블에 추가하는 함수
+	            function addRecvToTable(data) {
+	                var tbody = document.getElementById("approverTableBody");
+
+	                for (var i = 0; i < data.length; i++) {
+	                    var row = tbody.insertRow(-1);
+
+	                    var cellName = row.insertCell(0);
+	                    cellName.innerHTML = data[i].approver;
+
+	                    var cellPosition = row.insertCell(1);
+	                    cellPosition.innerHTML = data[i].positionType;
+
+	                    var cellDept = row.insertCell(2);
+	                    cellDept.innerHTML = data[i].dept_name;
+	                }
+	            }
+	            // 수신자 정보를 테이블에 추가
+	            addRecvToTable(receiverData);
+	            
+	         	// 컨텐츠 부분 불러오기
+	            var apprSubject = data.content.appr_subject;
+	            document.getElementById("appr_subject").value = apprSubject;
+	            
+	            var leaveType = data.content.leave_type;
+	            document.getElementById("leaveType").value = leaveType;
+	            
+	            var leaveStartDate = data.content.leave_start_date;        
+	            var leaveEndDate = data.content.leave_end_date;
+	            $('#kt_daterangepicker_1').daterangepicker({
+	                startDate: leaveStartDate, // 시작일
+	                endDate: leaveEndDate
+	            });
+	            
+	            var leaveReason = data.content.leave_reason;
+	            document.getElementById("leaveReason").value = leaveReason;
+	            
+	            var leaveDays = data.content.leave_days;
+	            document.getElementById("leaveDays").value = leaveDays;
+
+
+	        },
+	        error: function(e) {
+	            console.log(e);
+	        }
+	    });
+
+    });
 		
 	</script>
 </html>

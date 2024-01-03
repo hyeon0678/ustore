@@ -163,36 +163,15 @@
 <!--end::Body-->
 <script>
 var myEditor;
-var appr_content;
 ClassicEditor
 	.create(document.querySelector('#kt_docs_ckeditor_classic'))
 	.then(editor => {
 		console.log(editor);
 		myEditor = editor;
-		handleEditorData();
 	})
 	.catch(error => {
 		console.error(error);
 	});
-
-function handleEditorData(){
-	appr_content = myEditor.getData();	
-}
-var ApprovalDto;
-var appr_subject = document.getElementById('appr_subject').value;
-var common_idx = document.getElementById('common_idx').value;
-console.log(common_idx);
-//업무기안문 결재 양식에 필요한 DTO
-var bdForm = {
-    commonIdx: common_idx,
-    apprSubject: appr_subject,
-    apprContent: appr_content,
-    approvalLines: approvalLines,
-    receivers: receivers
-};
-if(common_idx==30){
-	ApprovalDto = bdForm
-}
 
 // set the dropzone container id
 	const id = "#kt_dropzonejs_example_2";

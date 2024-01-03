@@ -1,7 +1,6 @@
 package com.ustore.approval.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +27,8 @@ public class ApprovalService {
 
 	@Transactional(isolation = Isolation.DEFAULT)
 	public void tempSaveAppr(ApprovalDto dto) {
-		
-		if(dto.getApprIdx()== null) {
-			int generatedKey = dao.tempSaveContent(dto);
-		    dto.setApprIdx(generatedKey);
-		}else {
-			dao.updateTempSaveContent(dto);
-		}
+				
+		dao.tempSaveContent(dto);
 		logger.info("appr_idx : "+dto.getApprIdx());
 		
 		List<Map<String, String>> apprlist = dto.getApprovalLines();
@@ -42,7 +36,7 @@ public class ApprovalService {
 			dto.setApprover(emp.get("name"));
 			dto.setApprOrder(Integer.parseInt(emp.get("apprOrder")));
 			dto.setApprConfirm(emp.get("apprConfirm"));
-			dto.setApprIdx(dto.getApprIdx());			
+			dto.setApprIdx(dto.getApprIdx());		
 			dao.saveApprLine(dto);
 		}
 		List<Map<String, String>> recvlist = dto.getReceivers();
@@ -55,8 +49,7 @@ public class ApprovalService {
 	@Transactional(isolation = Isolation.DEFAULT)
 	public void sendAppr(ApprovalDto dto) {
 		
-		int generatedKey = dao.saveContent(dto);
-		dto.setApprIdx(generatedKey);
+		dao.saveContent(dto);
 		logger.info("appr_idx : "+dto.getApprIdx());
 		
 		List<Map<String, String>> apprlist = dto.getApprovalLines();
@@ -71,17 +64,33 @@ public class ApprovalService {
 		for (Map<String, String> recv : recvlist) {
 			dto.setReceiver(recv.get("name"));
 			dao.saveApprRecv(dto);						    
-		}
-		
+		}		
 	}
 
-
-	public ArrayList<ApprovalDto> getTempList(String emp_idx, HashMap<String, String> params) {
-		return dao.getTempList(emp_idx, params);
+	public ArrayList<ApprovalDto> getTempList(String emp_idx) {
+		return dao.getTempList(emp_idx);
 	}
 		
 		
-		
+	public void updateTempDoc(ApprovalDto dto) {
+		dao.updateTempDoc(dto);		
+	}
+
+	
+	public ApprovalDto getContent(int apprIdx, int common_idx) {
+		return dao.getContent(apprIdx, common_idx);
+	}
+
+	public ArrayList<ApprovalDto> getApprLine(int apprIdx) {
+		return dao.getApprLine(apprIdx);
+	}
+
+	public ArrayList<ApprovalDto> getRecv(int apprIdx) {
+		return dao.getRecv(apprIdx);
+	}
+
+
+
 }
 	
 
