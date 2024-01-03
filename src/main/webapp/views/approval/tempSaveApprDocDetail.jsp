@@ -89,13 +89,11 @@
 							</div>
 						</div>
 						<!--end::Toolbar-->
-						<!-- 결재 양식 들어오는 곳 -->		
-						<form id="docFormContainer" action="/saveDocument" method="post">	
-							<p>Selected Form: <%= request.getParameter("common_idx") %></p>
-							<div class="loadApprDoc">	
-							${htmlContent}				
-							</div>	
-						</form>							
+						<!-- 결재 양식 들어오는 곳 -->								
+						<p>Selected Form: <%= request.getParameter("common_idx") %></p>
+						<div class="loadApprDoc">	
+						${htmlContent}				
+						</div>					
 					</div>
 				<!--end::Content--> 
     			</div>
@@ -157,7 +155,7 @@
 														<th>부서</th>
 													</tr>
 												</thead>
-												<tbody>											
+												<tbody id="approverTableBody">											
 												</tbody>
 											</table>
 										</div>
@@ -178,7 +176,7 @@
 														<th>부서</th>
 													</tr>
 												</thead>
-												<tbody>														
+												<tbody id="receiverTableBody">														
 												</tbody>
 											</table>
 										</div>										
@@ -222,7 +220,9 @@
 				</div>
 			</div>
 		</div>
-								
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="principal"/>
+		</sec:authorize>						
 		<!--begin::Javascript-->
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="<c:url value='/resource/assets/plugins/global/plugins.bundle.js' />"></script>
@@ -233,11 +233,12 @@
 	</body>
 	<!--end::Body-->
 	<script>
-	// 동적으로 HTML 파일 로드하는 함수
+
+	
     function loadFormPage(formPage, common_idx) {
         $.ajax({
             type: 'GET',
-            url: "/getHtml?common_idx=" + common_idx,
+            url: "/gethtml?common_idx=" + common_idx,
             success: function (data) {
                 // 로드한 HTML을 동적으로 추가
                 $('.loadApprDoc').html(data);
@@ -286,8 +287,8 @@
         // 뒤로가기 버튼 클릭 시의 동작
         $('#btnGoBack').on('click', function () {
         	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
-                // 사용자가 Yes를 클릭한 경우 /newapproval 페이지로 이동
-                window.location.href = '/newapproval';
+                // 사용자가 Yes를 클릭한 경우 임시저장함 리스트 페이지로 이동
+                window.location.href = '/approval/tempapproval';
             } else {
                 // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
                 console.log('뒤로가기 버튼 클릭 - 취소');

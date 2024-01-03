@@ -19,7 +19,11 @@
 		    e.emp_idx = #{param1};
 	</select>
 	
-	<insert id="tempSaveContent" parameterType="ApprovalDto" useGeneratedKeys="true" keyColumn="appr_idx" keyProperty="apprIdx">
+	<insert id="tempSaveContent" parameterType="ApprovalDto">
+		<selectKey keyProperty="apprIdx" order="AFTER" resultType="Integer">
+	       select lastval(appr_idx_sequence)
+	    </selectKey>
+	    
 		<if test="commonIdx == 30">
             INSERT INTO business_draft (appr_idx, emp_idx, appr_subject, appr_content,  
             	appr_status, doc_step)
@@ -32,9 +36,9 @@
         </if>
         <if test="commonIdx == 32">
             INSERT INTO req_vacation (appr_idx, emp_idx, appr_subject, 
-                appr_status, doc_step, leave_type, leave_start_date, leave_end_date, leave_reason)
+                appr_status, doc_step, leave_type, leave_start_date, leave_end_date, leave_reason, leave_days)
             VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 43, 1, 
-            	#{leaveType}, #{leaveStartDate}, #{leaveEndDate}, #{leaveReason});
+            	#{leaveType}, #{leaveStartDate}, #{leaveEndDate}, #{leaveReason}, #{leaveDays});
         </if>
 	</insert>
 	
@@ -55,7 +59,10 @@
 	    </if>
 	</update>
 	   
-	<insert id="saveContent" parameterType="ApprovalDto" useGeneratedKeys="true" keyColumn="appr_idx" keyProperty="apprIdx">
+	<insert id="saveContent" parameterType="ApprovalDto">
+		<selectKey keyProperty="apprIdx" order="AFTER" resultType="Integer">
+	       select lastval(appr_idx_sequence)
+	    </selectKey>
 		<if test="commonIdx == 30">
             INSERT INTO business_draft (appr_idx, emp_idx, appr_subject, appr_content,  
             	appr_status, doc_step)
@@ -74,29 +81,71 @@
         </if>
 	</insert>
 	
-	<insert id="saveApprLine" parameterType="ApprovalDto">
-	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm)
-	        VALUES (#{empIdx}, #{apprIdx}, #{approver}, #{apprOrder}, #{apprConfirm})
+	<insert id="saveApprLine" parameterType="ApprovalDto">    
+	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm, appr_type_idx)
+	        VALUES (#{empIdx}, #{apprIdx}, #{approver}, #{apprOrder}, #{apprConfirm}, #{apprTypeIdx})
 	</insert>
 	
-	<insert id="saveApprRecv" parameterType="ApprovalDto">
+	<insert id="saveApprRecv" parameterType="ApprovalDto">		    
 	        INSERT INTO recipient (emp_idx, appr_idx, receiver)
 	        VALUES (#{empIdx}, #{apprIdx}, #{receiver})	    
 	</insert>
 
-	<select id="getTempList" resultType="ApprovalDto" parameterType="map">
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+	<select id="getTempList" resultType="ApprovalDto">
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
 		FROM business_draft
 		WHERE emp_idx = #{emp_idx} AND appr_status = 43
 		UNION
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
 		FROM payment_resolution
 		WHERE emp_idx = #{emp_idx} AND appr_status = 43
 		UNION
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
 		FROM req_vacation
 		WHERE emp_idx = #{emp_idx} AND appr_status = 43;		
 	</select>	
+	
+
+	<select id="getApprLine" resultType="ApprovalDto" parameterType="int">
+		SELECT al.approver, al.appr_order, al.appr_confirm, d.dept_name, c.common_type AS positionType 
+	    FROM approval_line al
+	    JOIN employee e ON al.approver = e.emp_name
+	    LEFT JOIN department d ON e.dept_id = d.dept_id
+	    LEFT JOIN common c ON e.position = c.common_idx
+	    WHERE al.appr_idx = #{param1}
+	</select>
+	
+	<select id="getRecv" resultType="ApprovalDto" parameterType="int">
+		SELECT r.receiver, d.dept_name, c.common_type AS positionType 
+	    FROM recipient r
+	    JOIN employee e ON r.receiver = e.emp_name
+	    LEFT JOIN department d ON e.dept_id = d.dept_id
+	    LEFT JOIN common c ON e.position = c.common_idx
+	    WHERE r.appr_idx = #{param1}
+	</select>
+	
+	<select id="getContent" resultType="ApprovalDto" parameterType="int">
+		<if test="common_idx == 30">
+            SELECT appr_subject, appr_content, appr_status, doc_step 
+            FROM business_draft
+            WHERE appr_idx=#{param1}
+        </if>
+        <if test="common_idx == 31">
+        	SELECT appr_subject, appr_status, doc_step, order_num 
+        	FROM payment_resolution          
+        	WHERE appr_idx=#{param1}
+        </if>
+        <if test="common_idx == 32">
+            SELECT appr_subject, appr_status, doc_step, leave_type, leave_start_date, 
+            	leave_end_date, leave_reason, leave_days 
+            FROM req_vacation
+            WHERE appr_idx=#{param1}
+        </if>
+	</select>
+	
+	
+	
+	
 	
 	<!-- <select id="getMyApprList" resultType="ApprovalDto" parameterType="map">
 		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate

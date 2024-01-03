@@ -1,7 +1,8 @@
 package com.ustore.approval.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,15 +16,21 @@ public interface ApprovalDao {
 
 	int tempSaveContent(ApprovalDto dto);
 
-	void updateTempSaveContent(ApprovalDto dto);
-
 	void saveApprLine(ApprovalDto approvalDto);
 
 	void saveApprRecv(ApprovalDto approvalDto);
 
 	int saveContent(ApprovalDto dto);
 
-	ArrayList<ApprovalDto> getTempList(String emp_idx, HashMap<String, String> params);
+	ArrayList<ApprovalDto> getTempList(String emp_idx);
+
+	void updateTempDoc(ApprovalDto dto);
+
+	ApprovalDto getContent(int apprIdx, int common_idx);
+
+	ArrayList<ApprovalDto> getApprLine(int apprIdx);
+
+	ArrayList<ApprovalDto> getRecv(int apprIdx);
 
 
 

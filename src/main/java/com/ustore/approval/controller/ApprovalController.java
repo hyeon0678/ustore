@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -18,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,7 +57,48 @@ public class ApprovalController {
 	public String getTeamDocList() {
 		return "approval/teamApprDocList";
 	}
+	// 임시저장함(리스트)
+	@GetMapping(value="/approval/tempapproval")
+	public ModelAndView getTempApprList(Principal principal) {
+		
+		String emp_idx = principal.getName();
+		ArrayList<ApprovalDto> templist = service.getTempList(emp_idx);
+		ModelAndView mav = new ModelAndView("approval/tempSaveApprDocList");
+		mav.addObject("templist", templist);
+		
+		return mav;
+	}
 	
+	// 임시저장 detail보기
+	@Transactional(isolation = Isolation.DEFAULT)
+	@GetMapping(value="/approval/tempapproval/detail")
+	public ModelAndView tempDetail(@RequestParam int apprIdx, @RequestParam int apprTypeIdx) {
+		ModelAndView mav = new ModelAndView("approval/tempSaveApprDocDetail");
+		logger.info("apprIdx : "+apprIdx);
+		logger.info("apprTypeIdx : "+apprTypeIdx);
+		
+		int common_idx = apprTypeIdx;
+		logger.info("common_idx : "+common_idx);
+		String formPage = getFormPageByCommonIdx(common_idx);
+		mav.addObject("common_idx", common_idx);
+		mav.addObject("formPage", formPage);
+		
+		ApprovalDto content = service.getContent(apprIdx, common_idx);
+		List<ApprovalDto> apprline = new ArrayList<ApprovalDto>();
+		List<ApprovalDto> receiver = new ArrayList<ApprovalDto>();
+		apprline.addAll(service.getApprLine(apprIdx));
+		receiver.addAll(service.getRecv(apprIdx));
+		
+		
+		mav.addObject("apprIdx", apprIdx);
+		mav.addObject("content", content);
+		mav.addObject("apprline", apprline);
+		mav.addObject("receiver", receiver);
+		
+		return mav;
+	}	
+	
+	// 결재 작성 페이지(선택한 양식에 따라 다른 양식 html파일 로드)
 	@GetMapping(value="/approval/newapproval/write")
 	public String write(@RequestParam int common_idx, Model model, HttpSession session) {
 		ApprovalDto dto = new ApprovalDto();
@@ -66,7 +110,7 @@ public class ApprovalController {
         return "approval/writeApprDoc";
 	}
 	
-	@GetMapping(value="/getHtml")
+	@GetMapping(value="/gethtml")
 	public ResponseEntity<byte[]> getHtml(@RequestParam int common_idx) throws IOException {
 	    String filePath = getFormPageByCommonIdx(common_idx);
 	    ClassPathResource classPathResource = new ClassPathResource(filePath);
@@ -106,7 +150,6 @@ public class ApprovalController {
     @GetMapping("/info/{emp_idx}")
     public ResponseEntity<EmployeeDto> getEmployeeInfo(@PathVariable String emp_idx) {
         try {
-            // emp_idx에 해당하는 사원 정보 조회
             EmployeeDto empDto = service.getEmployeeInfo(emp_idx);
             return ResponseEntity.ok(empDto);
         } catch (Exception e) {
@@ -171,26 +214,15 @@ public class ApprovalController {
 		 service.sendAppr(dto);
 		 rAttr.addFlashAttribute("msg",  "결재상신 되었습니다.");
 		 return "redirect:/approval/newapproval";
-	}
-	
-	// 임시저장함(리스트)
-	@GetMapping(value="/approval/tempapproval")
-	public ModelAndView getTempApprList(Principal principal, @RequestParam HashMap<String, String> params) {
-		
-		String emp_idx = principal.getName();
-		ArrayList<ApprovalDto> templist = service.getTempList(emp_idx, params);
-		ModelAndView mav = new ModelAndView("approval/tempSaveApprDocList");
-		mav.addObject("templist", templist);
-		
-		return mav;
-	}
-	
-	// 임시저장 detail보기
-	@GetMapping(value="/approval/tempapproval/detail")
-	public ModelAndView tempDetail(@RequestParam int appr_idx) {
-		ModelAndView mav = new ModelAndView();
-		return mav;
-	}
+	}	
 	 
+	@GetMapping(value="/approval/tempapproval/modify")
+	public String reSaveTempDoc(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
+		String emp_idx = principal.getName();
+		 dto.setEmpIdx(emp_idx);
+		 service.updateTempDoc(dto);
+		 rAttr.addFlashAttribute("msg",  "결재상신 되었습니다.");
+		 return "redirect:/approval/newapproval";
+	}
 	
 }

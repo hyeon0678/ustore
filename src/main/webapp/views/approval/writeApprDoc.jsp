@@ -243,9 +243,8 @@
 	</body>
 	<!--end::Body-->
 	<script>
-	var common_idx;
+	var common_idx = ${common_idx};
 	$(document).ready(function () {
-		common_idx=${common_idx};
     	// 초기에 선택된 양식에 대한 HTML 파일 로드
         var formPage = '<%= request.getAttribute("formPage") %>';
         if (formPage) {
@@ -272,7 +271,7 @@
     function loadFormPage(formPage, common_idx) {
         $.ajax({
             type: 'GET',
-            url: "/getHtml?common_idx=" + common_idx,
+            url: "/gethtml?common_idx=" + common_idx,
             success: function (data) {
                 // 로드한 HTML을 동적으로 추가
                 $('.loadApprDoc').html(data);
@@ -734,30 +733,59 @@
     });
 	
 
-		var ApprovalDto;
-		
-		document.addEventListener('DOMContentLoaded', function() {
-
-		    switch (common_idx) {
-		        case '30':
-		            ApprovalDto = bdForm;
-		            break;
-		        case '31':
-		            ApprovalDto = payForm;
-		            break;
-		        case '32':
-		            ApprovalDto = leaveForm;
-		            break;
-		    }
-		});
-
-
 	
         
 	// 임시저장
     $('#btnSaveTemp').on('click', function () {
     	
-    	console.log('임시저장 버튼 클릭');    	
+    	console.log('임시저장 버튼 클릭'); 
+    	var ApprovalDto;
+    	console.log(common_idx);
+    	var appr_subject = $('#appr_subject').val();
+    	
+        if(common_idx=='30') {          		
+        	var appr_content = myEditor.getData();
+            ApprovalDto = {
+                	    commonIdx: common_idx,
+                	    apprSubject: appr_subject,
+                	    apprContent: appr_content,
+                	    approvalLines: approvalLines,
+                	    receivers: receivers
+                	};
+        }else if(common_idx=='31'){
+        	var orderNum = $('#orderNum').val();
+    	    var totalAmount = $('#totalAmount').val();
+        	ApprovalDto = {
+        		    commonIdx: common_idx,
+        		    apprSubject: appr_subject,
+        		    approvalLines: approvalLines,
+        	        receivers: receivers,
+        		    orderNum: orderNum,
+        		    totalAmount : totalAmount
+        		};
+        }else{
+        	var leaveType = $('#leaveType option:selected').val();
+            var leaveDays = $('#leaveDays').html();
+            var leaveReason = $('#leaveReason').val();
+            var leaveStartDate =$('#leaveStartDate').val();
+            var leaveEndDate = $('#leaveEndDate').val();
+            
+            console.log(leaveStartDate);
+            console.log(leaveEndDate);
+            
+        	ApprovalDto = {
+            	    commonIdx: common_idx,
+            	    apprSubject: appr_subject,
+            	    approvalLines: approvalLines,
+                    receivers: receivers,
+            	    leaveType: leaveType,
+            	    leaveStartDate: leaveStartDate,
+            	    leaveEndDate: leaveEndDate,
+            	    leaveDays: leaveDays,
+            	    leaveReason: leaveReason
+            	};
+        }
+    	console.log(ApprovalDto);
 	    
         $.ajax({
             url: '/tempsaveappr', 
@@ -778,7 +806,52 @@
 	// 결재상신
 	$('#btnSendApproval').on('click', function () {
 		
-		console.log('결재상신 버튼 클릭');		
+		console.log('결재상신 버튼 클릭');
+		var ApprovalDto;
+    	console.log(common_idx);
+    	var appr_subject = $('#appr_subject').val();
+    	
+    	if(common_idx=='30') {  
+    		var appr_content = myEditor.getData();	
+            ApprovalDto = {
+            	    commonIdx: common_idx,
+            	    apprSubject: appr_subject,
+            	    apprContent: appr_content,
+            	    approvalLines: approvalLines,
+            	    receivers: receivers
+            	};
+	    }else if(common_idx=='31'){
+	    	var orderNum = $('#orderNum').val();
+    	    var totalAmount = $('#totalAmount').val();
+	    	ApprovalDto = {
+	    		    commonIdx: common_idx,
+	    		    apprSubject: appr_subject,
+	    		    approvalLines: approvalLines,
+	    	        receivers: receivers,
+	    		    orderNum: orderNum,
+	    		    totalAmount : totalAmount
+	    		};
+	    }else{
+	    	var leaveType = $('#leaveType').val();
+            var leaveDays = $('#leaveDays').val();
+            var leaveReason = $('#leaveReason').val();
+            var leaveStartDate =$('#leaveStartDate').val();
+            var leaveEndDate = $('#leaveEndDate').val();
+            console.log(leaveStartDate);
+            console.log(leaveEndDate);
+	    	ApprovalDto = {
+	        	    commonIdx: common_idx,
+	        	    apprSubject: appr_subject,
+	        	    approvalLines: approvalLines,
+	                receivers: receivers,
+	        	    leaveType: leaveType,
+	        	    leaveStartDate: leaveStartDate,
+	        	    leaveEndDate: leaveEndDate,
+	        	    leaveDays: leaveDays,
+	        	    leaveReason: leaveReason
+	        	};
+	    }
+		console.log(ApprovalDto);
 	    
 	    $.ajax({
 	        url: '/sendappr',

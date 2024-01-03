@@ -21,16 +21,13 @@ public class ApprovalDto {
 	private List<Map<String, String>> approvalLines; // 설정한 결재문서 결재선 리스트
 	private List<Map<String, String>> receivers;  // 설정한 결재문서 수신자 리스트
 	private int commonIdx; 	
-	// 직책 common_idx 20(점장), 21(팀장), 22(매니저), 23(사원)
-	// 결재 양식번호 common_idx 30(업무),31(대금),32(휴가)
-	// 결재 문서상태 common_idx 40(결재중), 41(완료), 42(반려), 43(임시저장)
-	private String empIdx;
+	// 직책 common_idx 20(점장), 21(팀장), 22(매니저), 23(사원)	
+	private String empIdx;	
 	private String empName;	
-	
-	
+	private int apprStatus; // 결재 문서상태 common_idx 40(결재중), 41(완료), 42(반려), 43(임시저장)
 	private String deptName;
 	private String deptId;
-	private int appr_type_idx; // 결재 양식번호 common_idx 30(업무),31(대금),32(휴가)
+	private int apprTypeIdx; // 결재 양식번호 common_idx 30(업무),31(대금),32(휴가)
 	private String positionType; // 직책 position(int) -> common_idx 20(점장), 21(팀장), 22(매니저), 23(사원)
 	
 	private int docStep; // 문서의 결재단계(순서)
@@ -45,6 +42,13 @@ public class ApprovalDto {
 	private Date leaveEndDate; // 신청 휴가 종료일
 	private int leaveDays; // 신청일수
 	
+	
+	public Integer getApprIdx() {
+		return apprIdx;
+	}
+	public void setApprIdx(Integer apprIdx) {
+		this.apprIdx = apprIdx;
+	}
 	public int getLeaveDays() {
 		return leaveDays;
 	}
@@ -110,12 +114,10 @@ public class ApprovalDto {
 	public void setCommonIdx(int commonIdx) {
 		this.commonIdx = commonIdx;
 	}
-	public Integer getApprIdx() {
-		return apprIdx;
-	}
-	public void setApprIdx(Integer apprIdx) {
-		this.apprIdx = apprIdx;
-	}
+	/*
+	 * public Integer getApprIdx() { return apprIdx; } public void
+	 * setApprIdx(Integer apprIdx) { this.apprIdx = apprIdx; }
+	 */
 	
 	public String getApprover() {
 		return approver;
@@ -165,11 +167,12 @@ public class ApprovalDto {
 	public void setReceivers(List<Map<String, String>> receivers) {
 		this.receivers = receivers;
 	}
-	public int getAppr_type_idx() {
-		return appr_type_idx;
+	
+	public int getApprTypeIdx() {
+		return apprTypeIdx;
 	}
-	public void setAppr_type_idx(int appr_type_idx) {
-		this.appr_type_idx = appr_type_idx;
+	public void setApprTypeIdx(int apprTypeIdx) {
+		this.apprTypeIdx = apprTypeIdx;
 	}
 	public int getDocStep() {
 		return docStep;
@@ -177,6 +180,7 @@ public class ApprovalDto {
 	public void setDocStep(int docStep) {
 		this.docStep = docStep;
 	}
+
 	public Date getApprSubmitDate() {
 		return apprSubmitDate;
 	}
@@ -224,6 +228,12 @@ public class ApprovalDto {
 	}
 	public void setOrderNum(int orderNum) {
 		this.orderNum = orderNum;
+	}
+	public int getApprStatus() {
+		return apprStatus;
+	}
+	public void setApprStatus(int apprStatus) {
+		this.apprStatus = apprStatus;
 	}
 	
 	
