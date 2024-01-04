@@ -4,7 +4,7 @@
 <html lang="ko">
 	<head>
 <base href="../../" />
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+		<title>UStore</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
@@ -39,17 +39,17 @@
 			<!--begin::Authentication - Sign-in -->
 			<div class="d-flex flex-column flex-lg-row flex-column-fluid">
 				<!--begin::Aside-->
-				<div class="d-flex flex-column flex-lg-row-auto bg-primary w-xl-600px positon-xl-relative">
+				<div class="d-flex flex-column flex-lg-row-auto w-xl-600px positon-xl-relative" style="background: #fffff8;">
 					<!--begin::Wrapper-->
 					<div class="d-flex flex-column position-xl-fixed top-0 bottom-0 w-xl-600px scroll-y">
 						<!--begin::Header-->
 						<div class="d-flex flex-row-fluid flex-column text-center p-5 p-lg-10 pt-lg-20">
 							<a href="index.go" class="py-2 py-lg-20">
-								<img alt="Logo" src="resource/assets/media/logos/logo-ellipse.svg" class="h-60px h-lg-70px" />
+								<img alt="Logo" src="resource/assets/media/logos/mainLogo.svg" class="h-60px h-lg-70px" />
 							</a>
-							<h1 class="d-none d-lg-block fw-bold text-white fs-2qx pb-5 pb-md-10">Welcome to Craft</h1>
-							<p class="d-none d-lg-block fw-semibold fs-2 text-white">Plan your blog post by choosing a topic creating 
-							<br />an outline and checking facts</p>
+							<h1 class="d-none d-lg-block fw-bold fs-2qx pb-5 pb-md-10" style="color: #255000;">어서오세요 UStore 입니다.</h1>
+							<p class="d-none d-lg-block fw-semibold fs-4" style="color: #255000;">UStore는 임직원분들의 행복한 하루와 안전한 일자리를 기원합니다.
+							<br />오늘도 안전근무 유의해주시기 바랍니다.</p>
 						</div>
 						<div class="d-none d-lg-block d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url(resource/assets/media/illustrations/sigma-1/17.png)"></div>
 					</div>

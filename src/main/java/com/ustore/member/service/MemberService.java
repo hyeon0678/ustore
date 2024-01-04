@@ -108,8 +108,8 @@ public class MemberService {
 
 
 
-	public String newdate(int idx) {
-		int row = dao.newdate(idx);
+	public String newdate(int idx, int gradeidx) {
+		int row = dao.newdate(idx, gradeidx);
 		return row>0?"변경에 성공 하였습니다.":"변경에 실패 하였습니다.";
 	}
 
@@ -127,6 +127,15 @@ public class MemberService {
 
 	public ArrayList<HashMap<String, String>> productlistcall(int memberidx, String startdate, String enddate) {
 		return dao.productlistcall(memberidx, startdate, enddate);
+	}
+
+
+
+
+
+	public void pointinsert(int cusnum) {
+		dao.pointinsert(cusnum);
+		
 	}
 
 

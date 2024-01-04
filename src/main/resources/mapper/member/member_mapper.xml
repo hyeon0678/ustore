@@ -24,6 +24,11 @@
 			 #{ postal_code}, #{street_address}, #{detail_address},#{member_state}, 00990099,#{business_num})
 		</insert>
 		
+		<insert id="pointinsert" parameterType="Integer">
+			insert into total_point (member_idx, total_point) values(#{param1},0)
+		</insert>
+		
+		
 		<select id="cusnum" resultType="Integer">
 			SELECT member_idx FROM members m where name = #{name} and brithdate =#{brithdate} and create_date = CURDATE()
 		</select>
@@ -55,7 +60,7 @@
 		</update>
 
 		<update id="newdate">
-			UPDATE members set create_date = curdate(),expiry_date = DATE_ADD(NOW(), INTERVAL 1 YEAR) ,member_state =84 
+			UPDATE members set create_date = curdate(),expiry_date = DATE_ADD(NOW(), INTERVAL 1 YEAR) ,member_state =84 , grade_idx = #{param2}
 			WHERE member_idx =#{param1}
 		</update>
 		
@@ -64,7 +69,7 @@
 		</select>
 		
 		<select id="productlistcall" resultType="map">
-			select payment_id , payment_date , payment_status , actual_amount   from payments p 
+			select payment_id , payment_date , payment_status , actual_amount   from payments  
 			where member_id =#{param1} and payments_type =92 and payment_date BETWEEN #{param2} and #{param3}
 		</select>
 		
