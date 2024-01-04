@@ -62,6 +62,33 @@
 		<select id="filefind" resultType="map">
 			SELECT CONCAT(file_name,extension) as orifilname, new_file_name as newfilename FROM  file f where file_type =76 and conn_idx =#{param1}
 		</select>
+		
+		<select id="productlistcall" resultType="map">
+			select payment_id , payment_date , payment_status , actual_amount   from payments p 
+			where member_id =#{param1} and payments_type =92 and payment_date BETWEEN #{param2} and #{param3}
+		</select>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 

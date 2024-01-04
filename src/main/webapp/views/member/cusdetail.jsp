@@ -80,13 +80,8 @@
 						<div class="card-header">
 							<!--begin::Card title-->
 							<div class="card-title m-0">
-								<h3 class="fw-bold m-0">
-								<c:if test="${info.member_type eq '82'}">일반</c:if>
-								<c:if test="${info.member_type eq '83'}">사업자</c:if>
-								 멤버쉽 : 
-								 <c:if test="${info.grade_idx eq '80'}">스탠다드</c:if>
-								 <c:if test="${info.grade_idx eq '81'}">프리미엄</c:if>
-								</h3>
+								<h3 class="fw-bold m-0">회원번호 : ${info.member_idx}</h3>
+								
 							</div>
 							<!--end::Card title-->
 							<!--begin::Card title-->
@@ -231,29 +226,35 @@
 								</div>
 								<!--end::Row-->
 								<!--begin::Row-->
-								<div class="row mb-7">
-									<!--begin::Label-->
-									<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;">멤버쉽</label>
-									<!--end::Label-->
-									<!--begin::Col-->
-									<div class="col-lg-3">
-										<span class="fw-bold fs-6 text-gray-800">도재학</span>
-									</div>
-									<!--end::Col-->
-								</div>
-								<!--end::Row-->
-								<!--begin::Row-->
-								<div class="row mb-7">
-									<!--begin::Label-->
-									<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;">회원등급</label>
-									<!--end::Label-->
-									<!--begin::Col-->
-									<div class="col-lg-3">
-										<span class="fw-bold fs-6 text-gray-800">도재학</span>
-									</div>
-									<!--end::Col-->
-								</div>
-								<!--end::Row-->
+										<div class="row mb-7">
+											<!--begin::Label-->
+											<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;">멤버쉽 종류</label>
+											<!--end::Label-->
+											<!--begin::Col-->
+											<div class="col-lg-3">
+												<span class="fw-bold fs-6 text-gray-800">
+												<c:if test="${info.member_type eq '82'}">일반</c:if>
+												<c:if test="${info.member_type eq '83'}">사업자</c:if>
+												</span>
+											</div>
+											<!--end::Col-->
+										</div>
+										<!--end::Row-->
+										<!--begin::Row-->
+										<div class="row mb-7">
+											<!--begin::Label-->
+											<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;">회원등급</label>
+											<!--end::Label-->
+											<!--begin::Col-->
+											<div class="col-lg-3">
+												<span class="fw-bold fs-6 text-gray-800">
+												<c:if test="${info.grade_idx eq '80'}">스탠다드</c:if>
+								 				<c:if test="${info.grade_idx eq '81'}">프리미엄</c:if>
+												</span>
+											</div>
+											<!--end::Col-->
+										</div>
+										<!--end::Row-->
 								<!--begin::Row-->
 								<div class="row mb-7">
 									<!--begin::Label-->
@@ -468,23 +469,16 @@
 								<!--begin::Actions-->
 								<div class="" style="margin-right: 5px">
 									<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-										data-bs-target="#kt_modal_1" >
+										data-bs-target="#kt_modal_3" >
 										기간연장
 									</button>
-									<div class="modal fade" tabindex="-1" id="kt_modal_1">
+									<div class="modal fade" tabindex="-1" id="kt_modal_3">
 										<div class="modal-dialog">
 											<div class="modal-content">
-												<div class="modal-header">
-													<div style="display: flex; align-items: center;">
-														<input type="text" class="form-control form-control-solid"
-															placeholder="이름을 입력하세요"
-															style="width:200px; height:30px; " />
-														<button type="button" class="btn btn-primary"
-															style="margin: 5px;">검색</button>
-													</div>
+												<div class="modal-header">													
 													<!--begin::Close-->
 													<div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-														data-bs-dismiss="modal" aria-label="Close">
+														data-bs-dismiss="modal" aria-label="Close" style="float: right;">
 														<i class="ki-duotone ki-cross fs-1"><span
 																class="path1"></span><span class="path2"></span></i>
 													</div>
@@ -492,15 +486,21 @@
 												</div>
 												<div class="">
 													<div class="content_tree"
-														style="float: left; width: 280px; height: 400px; overflow-y: auto;">
+														style="float: left; width: 280px; height: 300px; overflow-y: auto;">
 														<!-- 조직도 그리기 -->
 														<!-- <span>여기에 조직도를 그려주세요</span> -->
+														<!--begin::Col 드롭박스 >> 회원 상태-->
+														<div class="col-lg-8 fv-row" style="width: 150px; height: 30px; display: flex; margin: 10px;">
+															<select id="membergrade" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;"> 
+																<option  value="80">스탠다드</option>																	
+																<option  value="81">프리미엄</option>
+															</select>
+														</div>
+														<!--end::Col-->
 													</div>
-													<div class="content_tree"
-														style="float:left;width: 280px; height: 400px; border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
-														<span>홍길동(인사팀 팀장)</span><br />
-														<span>홍길동(인사팀 팀장)</span>
-														< </div>
+													<div class="content_tree">
+														
+														</div>
 													</div>
 	
 													<div class="modal-footer">
@@ -515,10 +515,10 @@
 								<!--begin::Actions-->
 								<div class="" style=" margin-right: 10px">
 									<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-										data-bs-target="#kt_modal_1">
+										data-bs-target="#kt_modal_3">
 										재연장
 									</button>
-									<div class="modal fade" tabindex="-1" id="kt_modal_1">
+									<div class="modal fade" tabindex="-1" id="kt_modal_4">
 										<div class="modal-dialog">
 											<div class="modal-content">
 												<div class="modal-header">
@@ -619,6 +619,7 @@
 <script>
 
 var memberidx= ${info.member_idx};
+var gradeidx = $('#membergrade').val();
 
 
 
@@ -638,15 +639,21 @@ var memberidx= ${info.member_idx};
 	
 	function newdate(){
 		console.log("기간 변경 하기 기능 들어가기");
-		location.href='customer/newdate?idx'+memberidx;
+		console.log(gradeidx)
+		location.href='customer/newdate?idx='+memberidx+'&&gradeidx='+gradeidx;
 		
 	}
 	
 	/* productlistcall  */
 	function productlistcall(){
 		console.log("제품 구매 이력 리스트 호출");
-		var startdate= $('input[name="startdate"]').val();
-		var enddate= $('input[name="enddate"]').val();
+		const startdate = document.getElementById('ufirstsearchdate').value;
+		const enddate = document.getElementById('ulastsearchdate').value;
+		//conesole.log(startdate);
+		//conesole.log(enddate);
+		
+		// var startdate= $('input[name="startdate"]').val();
+		// var enddate= $('input[name="enddate"]').val();
 		var memberidx= ${info.member_idx};
 			
 		$.ajax({
@@ -654,43 +661,42 @@ var memberidx= ${info.member_idx};
 			url:'customer/detail.ajax/productlistcall', 
 			data:{'startdate':startdate, 'enddate':enddate,'memberidx':memberidx},
 			dataType:'JSON',
-			success:function(data){
-				console.log(data);
+			success:function(obj){
+				console.log(obj);
 				console.log("리스트 호출 뿌려주기");
-				/*
+				
 				var content = '';
 				$('#paylist').empty();
 					
-				if (obj.size == null) {					
+				if (obj.size == 0) {					
 					 content = '<tr>';				 
-					 content += '<td style="text-align: center; color: red;">'+uniqueNo+'가 존재 하지 않습니다.</td>';
+					 content += '<td style=" text-align: center; color: red;" colspan="5">구매이력이 존재하지 않습니다</td>';
 					 content += '</tr>';				
 		            $('#paylist').append(content);
 				}else {
 					
 				for (var i = 0; i < obj.size; i++) {
 					 	 content = '<tr class="text-start fw-bold fs-7 text-uppercase gs-0">';																	
-						<th class="min-w-130px" style="text-align: center;">판매번호</th>
-						<th class="min-w-130px" style="text-align: center;">판매일시</th>
-						<th class="min-w-130px" style="text-align: center;">결제상태</th>
-						<th class="min-w-130px" style="text-align: center;">결제금액</th>
-						<th class="min-w-130px" style="text-align: center;">환불</th>
-						 content += '<td><a href="adminReportDetail?idx='+obj.list[i].reportNo+'&&type='+obj.list[i].reportType+'">' + obj.list[i].reportNo + '</td>';
-						 content += '<td>' + obj.list[i].userId + '</td>';
-						 var date = new Date(obj.list[i].reportRegDate);
-						 var dateStr = date.toLocaleDateString("ko-KR");
-						 content += '<td>' + dateStr + '</td>';
-						 if(obj.list[i].reportType == '글'){
-							 content += '<td>' + obj.list[i].uniqueNo +'B'+ '</td>'; 
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].payment_id+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].payment_date+'</th>';
+					 	if(obj.list[i].payment_status == '90'){
+					 		content += '<th class="min-w-130px" style="text-align: center;">결제</th>'; 
 						 } else {
-							 content += '<td>' + obj.list[i].uniqueNo +'R'+ '</td>'; 
-						}					
-						 content += '<td>' + obj.list[i].processState + '</td>';
+							 content += '<th class="min-w-130px" style="text-align: center;">결제취소</th>';
+						}		
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].actual_amount+'</th>';
+					 	if(obj.list[i].payment_status == '91'){
+					 		content += '<th class="min-w-130px" style="text-align: center;">횐불됨</th>'; 
+						 } else {
+							content += '<th class="min-w-130px" style="text-align: center;">';
+							content += '<button style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;">';
+							content += '환불</button></th>';
+						}	
 						 content += '</tr>';				
 			            $('#paylist').append(content);
 				}
 				};
-				*/
+				
 				
 			},
 			error:function(e){

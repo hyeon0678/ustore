@@ -125,6 +125,14 @@ public class MemberService {
 
 
 
+	public ArrayList<HashMap<String, String>> productlistcall(int memberidx, String startdate, String enddate) {
+		return dao.productlistcall(memberidx, startdate, enddate);
+	}
+
+
+
+
+
 	
 	
 	
