@@ -203,7 +203,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h3 class="modal-title" style="color: #c6da52;">배송 품목</h3>
+					<h3 class="modal-title">배송 품목</h3>
 
 					<!--begin::Close-->
 					<div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
@@ -241,13 +241,13 @@
 	</div>
 
 	<script>
-		// 모달이 열릴 때 호출되는 이벤트 핸들러
+	
 		$(document)
 				.ready(
 						function() {
 							var modalClicked = false;
 
-							// 모달이 열릴 때 호출되는 이벤트 핸들러
+					
 							$('#kt_modal_1')
 									.on(
 											'show.bs.modal',

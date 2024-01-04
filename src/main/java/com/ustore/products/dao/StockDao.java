@@ -50,6 +50,10 @@ public interface StockDao {
 
 	String dateIdx(int orderIdx);
 
+	ArrayList<OrderDto> addIncomingList(String productId);
+
+	ArrayList<OrderDto> calendarList(String firstDate, String lastDate);
+
 
 
 }

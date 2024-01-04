@@ -243,7 +243,7 @@ button i.bi {
 								<div class="modal-dialog modal-dialog-scrollable modal-lg">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h1 style=" color: #c6da52;">발주할 물품</h1>
+											<h1>발주할 물품</h1>
 
 
 											<!--begin::Close-->
@@ -375,7 +375,7 @@ button i.bi {
             cancelButtonText: '취소',
         }).then((result) => {
             if (result.isConfirmed) {
-                // count가 0이 아닌 경우에만 Ajax 요청 실행
+             
                 $.ajax({
                     url: '/order/ordercart/insert',
                     method: 'POST',
@@ -387,7 +387,7 @@ button i.bi {
                     },
                     success: function (response) {
                         console.log('물품 추가 결과:', response);
-                      
+
                         Swal.fire({
                             title: response === 'success' ? '물품이 추가되었습니다.' : '이미 추가된 물품입니다.',
                             icon: response === 'success' ? 'success' : 'error',
@@ -525,6 +525,7 @@ orderButton.addEventListener('click', async function () {
                             }).then(() => {
                             
                                 $('.btn[data-bs-dismiss="modal"]').click();
+                                $('table#kt_ecommerce_category_table input[name="count"]').val(0);
                             });
                         },
                         error: function (e) {

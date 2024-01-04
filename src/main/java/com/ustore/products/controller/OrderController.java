@@ -10,17 +10,15 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ustore.products.dao.OrderDao;
 import com.ustore.products.dto.OrderDto;
 import com.ustore.products.service.OrderService;
 
@@ -28,6 +26,7 @@ import com.ustore.products.service.OrderService;
 public class OrderController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired OrderService service;
+	@Autowired OrderDao dao;
 
 	@GetMapping(value = "/order/list") //발주 화면 뿌려주는 컨트롤러 
 		public String order(Model model, HttpSession session) {
@@ -205,5 +204,11 @@ public class OrderController {
 	}
 	
 	
-	
+	@GetMapping(value = "/modal")
+	public String modaltest() {
+		
+		
+		
+		return "products/alertModal";
+	}
 }
