@@ -87,7 +87,7 @@
 			    m.name,
 			    tp.total_point,
 			    m.expiry_date,
-			    mg.accumulation_rate, 
+			    mg.accumulation_rate,
 			    SUM(p.selling_price * pc.quantity) AS selling_sum,
 			    (SUM(p.selling_price * pc.quantity)-
 			    SUM(

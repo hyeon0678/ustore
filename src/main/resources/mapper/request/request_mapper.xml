@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustore.request.dao.RequestDao">
+
+<!-- 결제 정보 저장 -->
+<insert id="pay">
+	INSERT INTO payments (payment_id ,member_id, iamport_idx, payment_status, earned_points, used_points, actual_amount, payments_type, payment_title,remain_points)
+	VALUES (#{merchant_uid},#{memberId},#{imp_uid},#{paymentStatus},#{endPoint},#{pointText},#{paid_amount},#{paymentsType},#{name},#{remainPoints})
+</insert>
+
+<!-- 토탈 포인트 테이블 보유시 업데이트 -->
+<update id="updatePoints">
+	UPDATE total_point SET total_point =#{param1} WHERE member_idx =#{param2}
+</update>
+
+</mapper>
