@@ -1,26 +1,37 @@
 package com.ustore.employee.controller;
 
-import java.time.LocalDate;
+import java.net.http.HttpRequest;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.ibatis.annotations.Param;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.junit.runners.Parameterized.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.ustore.employee.dto.EmployeeDto;
 import com.ustore.employee.service.EmpProfileService;
+import com.ustore.main.service.security.CustomUserDetails;
+import com.ustore.main.service.security.CustomUserdetailsService;
 
 @EnableScheduling
 @Controller
@@ -35,9 +46,21 @@ public class EmpProfileController {
 		return "employee/profile_correction";
 	}
 	
+	
+	
 	@GetMapping("/employee/home")
-	public String home() {
-		return "employee/profile";
+	public ModelAndView home(Principal principal) {
+		String empIdx = principal.getName();
+		
+		logger.info("로그인 아이디 : "+empIdx);
+		
+		EmployeeDto dto = service.homeProfileDetail(empIdx);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("employee", dto);
+		mav.setViewName("employee/profile");
+		
+		return mav;
 	}
 	
 	@RequestMapping(value = "/employee/addevent", method = {RequestMethod.GET, RequestMethod.POST})

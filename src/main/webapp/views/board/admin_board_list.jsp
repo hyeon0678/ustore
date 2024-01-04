@@ -49,6 +49,7 @@
 		<!--end::Theme mode setup on page load-->
 		<!--begin::Main-->
 		<!--begin::Root-->
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
@@ -59,6 +60,8 @@
 					<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">공지사항</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 						<!--begin::Toolbar-->
+						
+						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
 								<!--begin::Info-->
@@ -72,7 +75,7 @@
 									<!--end::Col-->
 									<input type="text" class="form-control form-control-solid" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
 									<button type="button" class="btn btn-primary" style="margin: 10px;">검색</button>
-									<button onclick="location.href='#'" class="btn btn-primary">글작성</button>
+									<button onclick="location.href='board/WriteForm'" class="btn btn-primary">글작성</button>
 								</div>
 								<!--end::Actions-->
 							</div>
