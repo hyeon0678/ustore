@@ -10,28 +10,28 @@
 SELECT products.*, category.category_name
 FROM products
 JOIN category ON products.category_id = category.category_id
-order by product_id asc;
+order by product_id asc
 
 </select>
 <select id="checkProduct" resultType="OrderDto">
 select  oc.*
 FROM order_cart oc
 JOIN products p ON oc.product_id = p.product_id
-WHERE p.product_id=#{productId};
+WHERE p.product_id=#{productId}
 </select>
 
 <select id="orderList" resultType="OrderDto">
 SELECT oc.*, p.product_name, p.unit_quantity, c.category_name
 FROM order_cart oc
 JOIN products p ON oc.product_id = p.product_id
-JOIN category c ON p.category_id = c.category_id;
+JOIN category c ON p.category_id = c.category_id
 </select>
 <select id="driveList" resultType="OrderDto">
 
-SELECT delivery_driver.*
+SELECT DISTINCT delivery_driver.*
 FROM delivery_driver
 LEFT JOIN driver_schedule ON delivery_driver.driver_idx = driver_schedule.driver_idx
-WHERE driver_schedule.driver_idx IS NULL OR driver_schedule.delivery_date != #{expArrivalDate};
+WHERE driver_schedule.driver_idx IS NULL OR driver_schedule.delivery_date != #{expArrivalDate}
 
 </select>
 
@@ -39,7 +39,7 @@ WHERE driver_schedule.driver_idx IS NULL OR driver_schedule.delivery_date != #{e
 <insert id="orderCartInsert" parameterType="OrderDto">
 
 insert into order_cart (product_id,emp_idx,order_quantity)
-values(#{productId},#{empIdx},#{orderQuantity});
+values(#{productId},#{empIdx},#{orderQuantity})
 
 </insert>
 
@@ -47,7 +47,7 @@ values(#{productId},#{empIdx},#{orderQuantity});
      DELETE  oc.*
 FROM order_cart oc
 JOIN products p ON oc.product_id = p.product_id
-WHERE p.product_name = #{productName};
+WHERE p.product_name = #{productName}
     </delete>
     
     <delete id="orderDelete">
@@ -62,7 +62,7 @@ WHERE p.product_name = #{productName};
     
     <select id="orderCartSelect" resultType="OrderDto">
 
-select product_id from order_cart;    
+select product_id from order_cart   
     
     
     
@@ -82,7 +82,7 @@ VALUES (
   0,                                   
   (SELECT order_quantity FROM order_cart WHERE product_id = #{productId}),  
   (SELECT exp_arrival_date FROM `order` ORDER BY order_idx DESC LIMIT 1)   
-);
+)
     
     </insert>
     
@@ -98,14 +98,14 @@ VALUES (
 FROM
     `order` o
 JOIN
-    delivery_driver d ON o.driver_idx = d.driver_idx;
+    delivery_driver d ON o.driver_idx = d.driver_idx
     </select>
     
     <select id="orderListModal" resultType="OrderDto">
      SELECT od.quantity, p.product_name, p.unit_quantity
 FROM order_detail od
 JOIN products p ON od.product_id = p.product_id
-WHERE od.order_idx = #{orderIdx};
+WHERE od.order_idx = #{orderIdx}
     
     </select>
     

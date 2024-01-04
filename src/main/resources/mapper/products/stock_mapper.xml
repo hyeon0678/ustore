@@ -19,7 +19,7 @@ SELECT product_id
 FROM products
 WHERE product_id LIKE CONCAT(#{proNum}, '%')
 ORDER BY product_id DESC
-LIMIT 1;
+LIMIT 1
 
 </select>
 
@@ -52,7 +52,7 @@ VALUES (
 	ELSE 'Y'
 END,
     NOW(),
-    #{regBy});
+    #{regBy})
 </insert>
 
 <delete id="stockManagementDelete" parameterType="String">
@@ -64,7 +64,7 @@ END,
 SELECT p.*, c.category_name
 FROM products p
 JOIN category c ON p.category_id = c.category_id
-WHERE p.product_id = #{productId};
+WHERE p.product_id = #{productId}
 </select>
 
 <update id="stockDetailpuUpdate" parameterType="StockDto">
@@ -73,11 +73,11 @@ WHERE p.product_id = #{productId};
         purchase_price = #{purchasePrice},
         selling_price = purchase_price * 1.3,  
         update_by = #{updateBy} 
-    WHERE product_id = #{productId};
+    WHERE product_id = #{productId}
 </update>
 
 <update id="stockDetailunUpdate" parameterType="StockDto">
-UPDATE products Set unit_quantity = #{unitQuantity}, update_by = #{updateBy} WHERE product_id =#{productId};
+UPDATE products Set unit_quantity = #{unitQuantity}, update_by = #{updateBy} WHERE product_id =#{productId}
 </update>
 <update id="finalStock" parameterType="StockDto">
 update products Set stock = #{finalminQuantity} where product_id=#{productId}
@@ -106,7 +106,7 @@ SELECT DISTINCT `order`.exp_arrival_date, `order`.order_idx, delivery_driver.car
 FROM `order`
 JOIN delivery_driver ON `order`.driver_idx = delivery_driver.driver_idx
 JOIN order_detail ON `order`.order_idx = order_detail.order_idx
-WHERE order_detail.conf_status = 'N';
+WHERE order_detail.conf_status = 'N'
 </select>
 
 <select id="incomModalList" resultType="OrderDto">
@@ -122,27 +122,27 @@ FROM
 JOIN
     products p ON od.product_id = p.product_id
 WHERE
-    od.order_idx = #{orderIdx};
+    od.order_idx = #{orderIdx}
 
 </select>
 <update id="incomingModalUpdate" parameterType="StockDto">
 UPDATE order_detail
 SET conf_status = 'Y'
-WHERE order_idx = #{orderIdx} and product_id =#{productId};
+WHERE order_idx = #{orderIdx} and product_id =#{productId}
 
 </update>
 
 <update id="addProductQuantity" parameterType="StockDto">
 UPDATE products
 SET stock = stock + #{quantity}
-WHERE product_id = #{productId};
+WHERE product_id = #{productId}
 </update>
 
 <select id="allOffSelect" resultType="StockDto">
 
 SELECT *
 FROM order_detail
-WHERE order_idx = #{orderIdx} AND conf_status = 'N';
+WHERE order_idx = #{orderIdx} AND conf_status = 'N'
 </select>
 <select id="drvierSelect" resultType="int">
 
@@ -155,6 +155,22 @@ select exp_arrival_date from `order`where order_idx = #{orderIdx}
 delete from driver_schedule where driver_idx = #{driverIdx} and delivery_date = #{expArrivalDate}
 </delete>
 
+<select id="addIncomingList" resultType="OrderDto">
+SELECT od.receipt_date, od.quantity, p.unit_quantity
+FROM order_detail od
+JOIN products p ON od.product_id = p.product_id
+WHERE od.product_id = #{productId} AND od.conf_status = 'Y'
+</select>
+<select id="calendarList" resultType="OrderDto">
+
+SELECT DISTINCT `order`.exp_arrival_date, `order`.order_idx, delivery_driver.car_num, delivery_driver.driver_name
+FROM `order`
+JOIN delivery_driver ON `order`.driver_idx = delivery_driver.driver_idx
+JOIN order_detail ON `order`.order_idx = order_detail.order_idx
+WHERE order_detail.conf_status = 'N'
+  AND `order`.exp_arrival_date BETWEEN #{firstDate} AND #{lastDate}
+
+</select>
 
 
 

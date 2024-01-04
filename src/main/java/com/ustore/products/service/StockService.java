@@ -211,4 +211,19 @@ public class StockService {
 		return dao.dateIdx(orderIdx);
 	}
 
+	public ArrayList<OrderDto> addIncomingList(String productId) {
+		
+		
+		
+		return dao.addIncomingList(productId);
+	}
+
+	public ArrayList<OrderDto> calendarList(String firstDate, String lastDate) {
+	
+		
+		
+		
+		return dao.calendarList(firstDate,lastDate);
+	}
+
 }
