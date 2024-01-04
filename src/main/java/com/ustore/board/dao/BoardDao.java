@@ -1,5 +1,8 @@
 package com.ustore.board.dao;
 
-public class BoardDao {
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface BoardDao {
 
 }

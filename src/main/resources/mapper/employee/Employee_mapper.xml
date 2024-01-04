@@ -32,7 +32,7 @@ insert into schedule(
 </insert>
 
 <insert id="addalarmevent" parameterType="EmpProrileDto">
-insert into alarm(
+	insert into alarm(
 	emp_idx
 	, alarm_subject
 	, alarm_content
@@ -55,7 +55,7 @@ insert into alarm(
 </select>
 
 <insert id="attendance" parameterType="EmpProrileDto">
-insert into schedule(
+	insert into schedule(
 	emp_idx
 	, sch_start_date
 	, sch_end_date
@@ -80,7 +80,7 @@ insert into schedule(
 </insert>
 
 <insert id="leavework" parameterType="EmpProrileDto">
-insert into schedule(
+	insert into schedule(
 	emp_idx
 	, sch_start_date
 	, sch_end_date
@@ -138,11 +138,15 @@ insert into schedule(
 </delete>
 
 <select id="attCheck" resultType="Integer">
-Select count(sch_subject) from schedule where sch_subject = '출근' and current_date()
+SELECT COUNT(*) FROM schedule WHERE sch_subject = '출근' AND DATE(sch_start_date) = CURDATE()
 </select>
 
 <select id="levCheck" resultType="Integer">
-Select count(sch_subject) from schedule where sch_subject = '퇴근' and current_date()
+SELECT COUNT(*) FROM schedule WHERE sch_subject = '퇴근' AND DATE(sch_start_date) = CURDATE()
+</select>
+
+<select id="homeProfileDetail" resultType="EmployeeDto">
+select * from employee where emp_idx = #{param1}
 </select>
 
 </mapper>
