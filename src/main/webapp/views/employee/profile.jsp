@@ -44,6 +44,7 @@ License: For each use you must have a valid license purchased only from above li
 		<!--end::Theme mode setup on page load-->
 		<!--begin::Main-->
 		<!--begin::Root-->
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
@@ -53,11 +54,15 @@ License: For each use you must have a valid license purchased only from above li
 					
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content">
-						
+						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<!--begin::Post-->
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
+						
+							
+						
 							<!--begin::Container-->
 							<div class="container-xxl">
+							<input type="button" onclick="location.href='/adboard/list'" value="임시 게시글 이동 버튼"/>
 								<!--begin::Navbar-->
 								<div class="card mb-5 mb-xl-10">
 									<div class="card-body pt-9 pb-0">
@@ -81,7 +86,7 @@ License: For each use you must have a valid license purchased only from above li
 														<div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
 															<a href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
 															<i class="ki-duotone ki-profile-circle fs-4 me-1">
-															</i>사원 번호 ${sessionScope.loginId}</a>
+															</i>${employee.empName}</a>
 														</div>
 													</div>
 													
@@ -90,7 +95,7 @@ License: For each use you must have a valid license purchased only from above li
 													<form action="employee/attendance" method="post">
 														<div hidden="true">
 															<jsp:useBean id="attendance" class="java.util.Date" />
-															<input type="text" name="emp_idx" value="${sessionScope.loginId}" /> 
+															<input type="text" name="emp_idx" value="${employee.empIdx}" />
 															<fmt:formatDate var="curDt" value="${attendance}" type="DATE" pattern="yyyy-MM-dd" />
 															<fmt:formatDate var="curTime" value="${attendance}" type="DATE" pattern="HH:mm:ss" />
 															<input type="text" name="event_start_date" value="${curDt}"/>
@@ -103,7 +108,7 @@ License: For each use you must have a valid license purchased only from above li
 													<form action="employee/leavework" method="post">
 														<div hidden="true">
 															<jsp:useBean id="leavework" class="java.util.Date" />
-															<input type="text" name="emp_idx" value="${sessionScope.loginId}" /> 
+															<input type="text" name="emp_idx" value="${employee.empIdx}" /> 
 															<fmt:formatDate var="curDt" value="${leavework}" type="DATE" pattern="yyyy-MM-dd" />
 															<fmt:formatDate var="curTime" value="${leavework}" type="DATE" pattern="HH:mm:ss" />
 															<input type="text" name="event_start_date" value="${curDt}"/>
@@ -190,7 +195,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-8">
-												<span class="fw-bold fs-6 text-gray-800">김동동</span>
+												<span class="fw-bold fs-6 text-gray-800">${employee.empName}</span>
 											</div>
 											<!--end::Col-->
 										</div>
@@ -201,21 +206,42 @@ License: For each use you must have a valid license purchased only from above li
 											<label class="col-lg-4 fw-semibold text-muted">부서</label>
 											<!--end::Label-->
 											<!--begin::Col-->
-											<div class="col-lg-8 fv-row">
-												<span class="fw-bold fs-6 text-gray-800">매장 관리팀</span>
+ 											<div class="col-lg-8 fv-row">
+    											<%
+    											
+    												String department = "";
+    												String deptId = (String) request.getAttribute("employee.deptId"); // employee.deptId 값을 가져옵니다.
+													
+    												System.out.print("!!!부서 아이디2!!! : " + deptId);
+    												
+    												// deptId 값에 따라 부서를 결정합니다.
+    												if ("1".equals(deptId)) {
+        												department = "회계팀";
+											    	} else if ("2".equals(deptId)) {
+        												department = "인사팀";
+    												} else if ("3".equals(deptId)) {
+        												department = "매장 관리팀";
+    												} else {
+														department = "다른 부서";
+    												}
+    												
+    											%>
+    											<span class="fw-bold fs-6 text-gray-800"><%= department %></span>
 											</div>
+											<%-- <div class="col-lg-8 fv-row">
+												<span class="fw-bold fs-6 text-gray-800">${employee.deptId}</span>
+											</div>--%>
 											<!--end::Col-->
 										</div>
 										<!--end::Input group-->
 										<!--begin::Input group-->
 										<div class="row mb-7">
 											<!--begin::Label-->
-											<label class="col-lg-4 fw-semibold text-muted">내선번호
-											</span></label>
+											<label class="col-lg-4 fw-semibold text-muted">내선 번호</label>
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-8 d-flex align-items-center">
-												<span class="fw-bold fs-6 text-gray-800">044 3276 454 935</span>
+												<span class="fw-bold fs-6 text-gray-800">${employee.empExtNo}</span>
 											</div>
 											<!--end::Col-->
 										</div>
@@ -227,7 +253,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-8">
-												<span class="fw-bold fs-6 text-gray-800">매니저</span>
+												<span class="fw-bold fs-6 text-gray-800">${employee.position}</span>
 											</div>
 											<!--end::Col-->
 										</div>
@@ -240,7 +266,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-8">
-												<span class="fw-bold fs-6 text-gray-800">2023-12-19</span>
+												<span class="fw-bold fs-6 text-gray-800">${employee.empJoinDate}</span>
 											</div>
 											<!--end::Col-->
 										</div>
@@ -252,7 +278,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-8">
-												<span class="fw-bold fs-6 text-gray-800">010-0000-0000</span>
+												<span class="fw-bold fs-6 text-gray-800">${employee.empPhone}</span>
 											</div>
 											<!--end::Col-->
 										</div>
@@ -264,7 +290,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin::Label-->
 											<!--begin::Label-->
 											<div class="col-lg-8">
-												<span class="fw-bold fs-6 text-gray-800">qqqq@email.com</span>
+												<span class="fw-bold fs-6 text-gray-800">${employee.empEmail}</span>
 											</div>
 											<!--begin::Label-->
 										</div>
@@ -272,9 +298,9 @@ License: For each use you must have a valid license purchased only from above li
 											<label class="col-lg-4 fw-semibold text-muted">주소</label>
 											
 											<div class="col-lg-8">
-												<span class="fw-bold fs-6 text-gray-800">서울 금천구 ~~ 도로명 주소</span>
+												<span class="fw-bold fs-6 text-gray-800">${employee.empRoadAddr}</span>
 												<br/>
-												<span class="fw-bold fs-6 text-gray-800">타워1층 ~~ 상세 주소</span>
+												<span class="fw-bold fs-6 text-gray-800">${employee.empDetailAddr}</span>
 											</div>
 										</div>
 										

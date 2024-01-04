@@ -35,6 +35,7 @@
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 		<!--end::Theme mode setup on page load-->
 		<!--begin::Main-->
 		<!--begin::Root-->
@@ -47,7 +48,7 @@
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
 						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">글쓰기</h1>
 					<!--================================메인 내용들어가는부분================================================-->
-						
+						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
@@ -62,7 +63,7 @@
 								<div class="container-xxl" style="background-color: white;margin: 20px;">
 									<div style="margin-top:20px">
 										제목
-										<input type="text" name="" class="form-control" placeholder="제목을 입력해주세요" />
+										<input type="text" name="notice_subject" class="form-control" placeholder="제목을 입력해주세요" />
 									</div>
 									
 									<div style="margin-top:20px">
@@ -71,7 +72,7 @@
 									</div>
 									
 									<div style="margin-top:20px">
-										<textarea class="form-control" placeholder="내용을 입력해주세요" style="height: 600px; resize: none;"></textarea>
+										<textarea class="form-control" name="notice_content" placeholder="내용을 입력해주세요" style="height: 600px; resize: none;"></textarea>
 									</div>
 									<div class="card-footer d-flex justify-content-end py-6 px-9">
 										<button type="reset" class="btn btn-light btn-active-light-primary me-2">취소</button>

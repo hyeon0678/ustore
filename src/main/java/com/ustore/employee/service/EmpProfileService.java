@@ -1,7 +1,5 @@
 package com.ustore.employee.service;
 
-import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ustore.employee.dao.EmpProfileDao;
+import com.ustore.employee.dto.EmployeeDto;
 
 @Service
 public class EmpProfileService {
@@ -20,6 +19,10 @@ public class EmpProfileService {
 	
 	@Autowired EmpProfileDao dao;
 
+	public EmployeeDto homeProfileDetail(String empIdx) {
+
+		return dao.homeProfileDetail(empIdx);
+	}
 	
 	@Transactional
 	public void addevent(Map<String, String> params) {
@@ -81,6 +84,8 @@ public class EmpProfileService {
 	public int scheduleDel(String sch_idx) {
 		return dao.scheduleDel(sch_idx);
 	}
+
+	
 
 	
 
