@@ -106,7 +106,7 @@
 											</svg>
 											</span>
 											<!--end::Svg Icon-->											
-											<span class="bullet bullet-dot bg-success h-6px w-6px position-absolute translate-middle top-0 start-50 animation-blink"></span>
+											<span class="chat-alarm bullet bullet-dot bg-success h-6px w-6px position-absolute translate-middle top-0 start-50 animation-blink" style="visibility: hidden;"></span>
 										</div>
 										<!--end::Menu wrapper-->
 									</div>
@@ -244,7 +244,7 @@
 											<!--end::Menu separator-->											
 											<!--begin::Menu item-->
 											<div class="menu-item px-5">
-												<a href="authentication/sign-in/basic.html" class="menu-link px-5">Log Out</a>
+												<a href="/logout" class="menu-link px-5">Log Out</a>
 											</div>
 											<!--end::Menu item-->
 										</div>
@@ -273,21 +273,37 @@
 	let socket = null;
     let stompClient = null;
     
-    $(document).ready(function(){
-		socket = new SockJS('http://localhost:80/ws');
+   	function headerOnReady(){
+   		socket = new SockJS('http://localhost:80/ws');
 	    stompClient = Stomp.over(socket);
 	    stompClient.connect({}, function(frame){
 	    	console.log("webSocket is connected");
+	    	stompClient.subscribe('/chat/alarm',alarmReceived);
+		    stompClient.subscribe('/chat/chatAlarm',chatReceived);
 	    }, onError);
 	    
-	    stompClient.subscribe('/queue/alarm',alarmReceived);
-	});
+   	}
     
     function alarmReceived(payload){
 		var message = JSON.parse(payload.body);
-		if(message == 'EXIST')
-			console.log();
+		if(message == 'EXIST'){
+			console.log('alarm'+message);
+		}else{
+			console.log('alarm'+message);
+		}
+			
 	}
+    
+    function chatReceived(){
+    	// visibility:hidden
+    	var message = JSON.parse(payload.body);
+		if(message == 'EXIST')
+			console.log('chat alarm');
+    }
+    
+    $('.char-alarm').on('click', function(){
+    	// visibility:hidden
+    })
     
 	$('#read-all').on('click', function(){
 		$.ajax({

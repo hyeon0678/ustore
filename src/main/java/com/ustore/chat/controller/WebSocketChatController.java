@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ import com.ustore.chat.service.ChatService;
 public class WebSocketChatController {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
-
+	@Autowired
 	private SimpMessageSendingOperations messageTemplete;
 	private ChatService chatService;
 	
@@ -32,6 +33,8 @@ public class WebSocketChatController {
 		logger.info(chat.toString());
 		logger.info("{}, {}, {}",chat.getRoomNum(), chat.getSender(), chat.getData());
 		ChatDto chatData = chatService.saveChat(chat);
+		
+		messageTemplete.convertAndSendToUser(chat.getSender(), "/topic/chat"+chat.getRoomNum(), "EXIST");
 		messageTemplete.convertAndSend("/topic/chat/"+chat.getRoomNum(), chatData);
 	}
 }

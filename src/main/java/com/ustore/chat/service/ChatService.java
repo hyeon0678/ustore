@@ -2,7 +2,6 @@ package com.ustore.chat.service;
 
 import java.sql.Timestamp;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,15 +22,15 @@ public class ChatService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private ChatDao chatDao;
-	
+	@Autowired 
+	WebSocketConfig config;
 	@Transactional
 	public ChatDto saveChat(ChatDto chat) {
 		// 발신 히스토리 쌓기
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		chat.setSendDate(timestamp);
 		int row = chatDao.insertSendMsg(chat);
-		// 수신 히스토리 쌓기
-		//수신 잘 들어가는 지 확인//ㅈㄷ
+		
 		List<String> receiveMembers = chatDao.selectReceiveMember(chat.getRoomNum(), chat.getSender());
 		for(String member : receiveMembers) {
 			chat.setReceiver(member);
@@ -43,11 +42,7 @@ public class ChatService {
 			logger.info("room_num : "+chat.getRoomNum());
 			row += chatDao.insertReceivedMsg(chat);	
 		}
-		
-		WebSocketConfig config = new WebSocketConfig();
-		config.printSubscription();
 		return chat;
-		
 	}
 	
 	@Transactional
@@ -117,6 +112,7 @@ public class ChatService {
 			}
 		}
 		Collections.sort(list);
+		config.printSubscription();
 		return list;
 	}
 

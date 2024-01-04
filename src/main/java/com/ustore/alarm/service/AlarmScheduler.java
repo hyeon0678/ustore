@@ -25,16 +25,22 @@ public class AlarmScheduler {
 		this.operations = operations;
 		this.dao = dao;
 	}
-	
-	@Scheduled(cron = "0 1 * * * ?") // 매달 1일에 시작된다.
+	// 등록이 되었습니다 -> 모달로
+	//@Scheduled(cron = "0 0/1 * * * ?")
 	public void getUnReadAlarm() {
 		List<String> employeeList = dao.selectEmployees();
-		List<AlarmDto> alarmList = null;
 		for(String e : employeeList) {
 			int unReadSchedule = dao.selectUnReadSchedule(e);
+			int unReadChat = dao.selectUnReadChat(e);
+			if(unReadChat>0) {
+				operations.convertAndSendToUser(e, "/topic/chatAlarm", "EXIST");
+			}
 			if(unReadSchedule > 0) {
-				operations.convertAndSendToUser(e, "/queue/alarm", "EXIST");
+				operations.convertAndSendToUser(e, "/topic/alarm", "EXIST");
+			}else if(unReadSchedule <= 0) {
+				operations.convertAndSendToUser(e, "/topic/alarm", "NONE");
 			}
 		}
+		System.out.println("------- alarm scheduler");
 	}
 }

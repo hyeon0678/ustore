@@ -34,22 +34,5 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer{
 		registry.setApplicationDestinationPrefixes("/app");
 	}
 
-//	@Override
-//	public void configureClientInboundChannel(ChannelRegistration registration) {
-//		registration.interceptors(new ChannelInterceptor() {
-//
-//			@Override
-//			public Message<?> preSend(Message<?> message, MessageChannel channel) {
-//				logger.info(message.getHeaders().toString());
-//				logger.info(""+message.getPayload());
-//				logger.info("=================="+channel.toString());
-//				return ChannelInterceptor.super.preSend(message, channel);
-//			}
-//			
-//		});
-//		WebSocketMessageBrokerConfigurer.super.configureClientInboundChannel(registration);
-//	}
-	
-	
 
 }

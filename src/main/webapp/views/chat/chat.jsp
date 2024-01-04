@@ -99,12 +99,7 @@
 							<div
 								class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2"
 								style="margin-top: 10px;">
-								<!--begin::Title-->
-
-								<!--end::Title-->
 							</div>
-							<!--end::Info-->
-							<!--begin::Actions-->
 							<div
 								class="d-flex align-items-center flex-nowrap text-nowrap py-1">
 								<button type="button" class="btn btn-primary"
@@ -115,29 +110,23 @@
 										<div class="modal-content">
 											<div class="modal-header">
 												<div style="display: flex; align-items: center;">
-													<input type="text" class="form-control form-control-solid" id=""
+													<input type="text" class="form-control form-control-solid" id="search-input"
 														placeholder="이름을 입력하세요"
 														style="width: 200px; height: 30px;" />
-													<button type="button" class="btn btn-primary" id=""
+													<button type="button" class="btn btn-primary" id="search-btn"
 														style="margin: 5px;">검색</button>
 												</div>
-												<!--begin::Close-->
 												<div
 													class="btn btn-icon btn-sm btn-active-light-primary ms-2"
 													data-bs-dismiss="modal" aria-label="Close">
 													<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
 														class="path2"></span></i>
 												</div>
-												<!--end::Close-->
 											</div>
 											<div class="chat_modal_body">
 												<div class="content_tree"
 													style="float: left; width: 280px; height: 400px; overflow-y: auto;">
-													<!-- 조직도 그리기 -->
-													<!-- <span>여기에 조직도를 그려주세요</span> -->
-													<!-- js트리 그리는 공간 -->
 													<div id="make_room_jstree"></div>
-													<!-- js트리 끝나는 곳-->
 												</div>
 												<div class="content_tree" id="make_room_enter_emp"
 													style="float: left; width: 280px; height: 400px; border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
@@ -170,7 +159,7 @@
 											<div class="card-body pt-5" id="kt_chat_contacts_body"
 												style="height: 700px; overflow-y: auto;">
 												<!--begin::List-->
-												<div class="scroll-y me-n5 pe-5 h-200px "
+												<div class="scroll-y me-n5 pe-5 h-700px "
 													id = "chat_list_div"
 													data-kt-scroll="true"
 													data-kt-scroll-activate="{default: false, lg: true}"
@@ -373,14 +362,8 @@
 		<script>
 			var hostUrl = "assets/";
 		</script>
-		<!--<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="resource/assets/js/scripts.bundle.js"></script>
-		<script
-			src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-		<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
-   	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>-->
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+   	<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
 </body>
 <!--end::Body-->
 <script>
@@ -388,6 +371,7 @@
 
 </script>
 <script>
+
 	let makeRoomParticipantList = [];
 	let chatParticipantList = [];
 	callChatRoomList();
@@ -395,19 +379,52 @@
 	let empName = '${principal.name}'+'('+'${principal.department}'+'${principal.position}'+')'
 	let roomNum = '';
     let subscription = null;
+    let jsTreeData = [];
+    let departmentData = [];
+    let searchTreeData = [];
+    let treeEmpData = [];
     //let socket = null;
     //let stompClient = null;
     let clickCnt = 0;
     // 
 	$(document).ready(function(){
+		headerOnReady();
 		console.log("socket connection");
 		getCurrentTime()
+		$('#send-msg').prop('disabled', true);
+		$('#msg-box').prop('readonly', true);
 		//connect();
 	    if(stompClient.connected){
 	    	console.log("websocket connected");
 	    }
-	})
+	});
+	$('#search-btn').on('click', function(){
+		let keyword = $('#search-input').val();
+		searchTreeData = [];
+		searchTreeData.push(...departmentData);
+		for(let data of treeEmpData){
+			let text = data.text;
+			
+			if(text.includes(keyword) == true){
+				console.log(text);
+				searchTreeData.push(data);
+			}
+		}
+		let setData = [...new Set()];
+		console.log(setData);
+		makeRoomJsTree(setData);
+	});
 	
+	$('#search-input').on('keyup',function(){
+		let keyword = $(this).val();
+		if(keyword == ''){
+			searchTreeData = []
+			searchTreeData = departmentData;
+			makeRoomJsTree(jsTreeData);
+		}
+		
+	});
+    
 	function callChatRoomList(){
 		$.ajax({
 			url:'/chat/chatRoomList.ajax',
@@ -415,6 +432,7 @@
 			dataType:'JSON',
 			success:function(data){
 				console.log("caht list:"+data.list);
+				$('#chat_list_div').empty();
 				drawChatRoomList(data.list);
 			},error: function(error){
 				console.log(error);
@@ -423,7 +441,7 @@
 	}
 	
 	function drawChatRoomList(list){
-		$('chat_list_div').empty();
+		
 		console.log(list.length);
 		if(list.length < 1){
 			$('#chat_list_div').append("<p>참여한 채팅방이 없습니다.</p>");
@@ -459,6 +477,16 @@
 			dataType:'JSON',
 			success:function(data){
 				jsTreeData = data.treeData;
+				for(let jtData of data.treeData){
+					if(jtData.type == 'department'){
+						departmentData.push(jtData);
+					    
+					}else{
+						treeEmpData.push(jtData)
+					}
+					
+				}
+				console.log(treeEmpData)
 				makeRoomJsTree(data.treeData);
 			},error: function(error){
 				console.log(error);
@@ -477,9 +505,10 @@
 			type:'POST',
 			dataType:'JSON',
 			success:function(data){
-				console.log(data);
+				console.log("make roooomm"+data);
 				$('#make_room_enter_emp').empty();
 				makeRoomParticipantList=[];
+				
 				callChatRoomList();
 			},error:function(error){
 				console.log(error);				
@@ -560,13 +589,14 @@
 	
 	function clickChatRoomListElem(){
 		$('.chat-list-content-div').on('click', function(){
+			$('#send-msg').prop('disabled', false);
+			$('#msg-box').prop('readonly', false);
 			let newRoomNum =  $(this).children('p').html();
 			let $roomName = $(this).children('div');
 			$roomName = $roomName.children('div');
 			let roomName = $roomName.children('a').text();
-			//$('#chat_messenger_body').empty();
+			
 			if(roomNum != newRoomNum){
-				
 				if(subscription != null){
 					subscription.unsubscribe('/topic/chat/'+roomNum);
 				}
@@ -584,7 +614,6 @@
 	}
 	
 	function callChatList(roomNum){
-		//
 		$.ajax({
 			data:{
 				'roomNum':roomNum
@@ -603,6 +632,7 @@
 	}
 	
 	function drawChatHistory(data){
+		$('#msg-content').empty();
 		for(let message of data){
 			content = ""
 			let date = getCurrentTime(message.sendDate)
@@ -652,7 +682,39 @@
 		console.log(message);
 		let data = [];
 		data.push(message);
-		drawChatHistory(data);
+		drawReceivedData(data);
+		callChatRoomList();
+	}
+	
+	function drawReceivedData(data){
+		for(let message of data){
+			content = ""
+			let date = getCurrentTime(message.sendDate)
+			console.log("chat history")
+			if(message.sender == 'system'){
+				continue;
+			}
+			if(message.sender == username){
+				content+="<div class='d-flex justify-content-end mb-10'>"
+				content+="<div class='d-flex flex-column align-items-end'>"
+				content+="<div class='d-flex align-items-center mb-2'>"
+				content+="<div class='me-3'><a class='fs-5 fw-bold text-gray-900 ms-1'>"
+				content+="나 </a></div></div>"
+				content+="<div class='p-5 rounded bg-light-success text-gray-900 fw-semibold mw-lg-400px text-end' data-kt-element='message-text'>" 
+				content+=message.data+"</div><p>"+date+"</p></div></div>"
+			}else{
+				content += "<div class='d-flex justify-content-start mb-10'>"
+				content += "<div class='d-flex flex-column align-items-start'>"
+				content += "<div class='d-flex align-items-center mb-2'><div class='ms-3'>"
+				content += "<a class='fs-5 fw-bold text-gray-900 text-hover-primary me-1'>"
+				content += message.empName+"</a></div></div>"
+				content += "<div class='p-5 rounded bg-light-info text-gray-900 fw-semibold mw-lg-400px text-start'data-kt-element='message-text'>" 
+				content += message.data+"</div><p>"+date+"</p></div></div>"
+			}
+			$('#msg-content').append(content);
+			scrollBottom();
+		}
+		
 	}
 
 	function subscripe(){
@@ -672,9 +734,19 @@
 			stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
 		}
 		scrollBottom();
-		$('#msg-box ').val('');
+		$('#msg-box').val('');
 	}
-	
+
+	$('#msg-box').on('keyup', function(){
+		console.log($(this).val());
+		if($('#msg-box').prop('readonly') == false){
+			if($(this).val()==''){
+				$('#send-msg').prop('disabled', true);
+			}else{
+				$('#send-msg').prop('disabled', false);
+			}
+		}
+	});
 	function participantsList(){
 		$('.participants-btn').on('click', function(){
 			
@@ -713,7 +785,7 @@
 		}
 		$('#participatns').append(contents);
 	}
-	
+
 	function quitRoom(){
 		$('.quit-room').on('click', function(){
 			$.ajax({
@@ -726,6 +798,10 @@
 				success:function(data){
 					console.log(data);
 					$('#msg-content').empty();
+					$('.chat-room-name').html('');
+					$('.chat-msg-tool-bar').css({'display':'none'});
+					$('#send-msg').prop('disabled', true);
+					$('#msg-box').prop('readonly', true);
 					callChatRoomList()
 				},error:function(error){
 					console.log(error);				
@@ -748,13 +824,14 @@
 			type:'GET',
 			dataType:'JSON',
 			success:function(data){
+				callChatRoomList();
 			},error:function(error){
 				console.log(error);				
 			}
 		});
 	}
 	function scrollBottom(){
-		$('#chat_messenger_body').scrollTop($('#chat_messenger_body')[0].scrollHeight)
+		$('#msg-content').scrollTop($('#msg-content')[0].scrollHeight)
 	}
 </script>
 </html>

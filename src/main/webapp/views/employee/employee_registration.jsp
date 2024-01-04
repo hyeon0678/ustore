@@ -40,15 +40,16 @@
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
 		<!--begin::Main-->
 		<!--begin::Root-->
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
-				<jsp:include page="/views/common/header.jsp"></jsp:include>
+				
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content">
 					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 					<!--================================메인 내용들어가는부분================================================-->
 						

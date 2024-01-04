@@ -1,5 +1,4 @@
 package com.ustore.alarm.dao;
-import java.security.Principal;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -14,5 +13,6 @@ public interface AlarmDao {
 	int deleteAlarm(int alarmIdx);
 	int deleteAll(String empIdx);
 	int selectUnReadSchedule(String empIdx);
+	int selectUnReadChat(String e);
 	
 }

@@ -49,7 +49,7 @@ public class GroupManageController {
 		logger.info(principal.getName());
 		boolean success = groupManageService.insertEmp(params, principal.getName());
 		if(success) {
-			return "redirect:/registration";
+			return "redirect:/employee/management";
 		}
 		rattr.addFlashAttribute("msg","사원등록에 실패했습니다");
 		return "redirect:/employee/registration";

@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ustore.chat.dto.ChatDto;
 import com.ustore.chat.dto.Participant;
 import com.ustore.chat.service.ChatService;
+import com.ustore.config.WebSocketConfig;
 import com.ustore.handler.MyWebSocketHandler;
 
 @Controller
@@ -33,9 +34,11 @@ public class ChatController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private ChatService chatService;
+	private WebSocketConfig config;
 	
-	public ChatController(SimpMessageSendingOperations messageTemplete, ChatService chatService) {
+	public ChatController(SimpMessageSendingOperations messageTemplete, ChatService chatService, WebSocketConfig config) {
 		this.chatService = chatService;
+		this.config = config;
 	}
 	
 	@GetMapping()
@@ -62,9 +65,10 @@ public class ChatController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<Participant> list = mapper.readValue(json, new TypeReference<ArrayList<Participant>>(){});
 		
-		// 누가 만든건지 세션에서 가져와야함 
+		// make room 후에 send    
 		chatService.makeRoom(list, principal.getName());
-		return null;
+		
+		return new HashMap<String, Object>();
 	}
 	
 	@GetMapping("/chatList.ajax")
@@ -72,6 +76,7 @@ public class ChatController {
 	public HashMap<String, Object> chatList(@RequestParam int roomNum, Principal principal) {
 		logger.info(principal.getName());
 		logger.info("entered roomNum : "+roomNum);
+		config.printSubscription();
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		List<ChatDto> chatList = chatService.getChatData(roomNum, principal.getName());
 		result.put("chatdata", chatList);
