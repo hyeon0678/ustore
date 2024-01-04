@@ -28,11 +28,13 @@ public interface MemberDao {
 
 	int del(int idx);
 
-	int newdate(int idx);
+	int newdate(int idx, int gradeidx);
 
 	HashMap<String, String> filefind(int idx);
 
 	ArrayList<HashMap<String, String>> productlistcall(int memberidx, String startdate, String enddate);
+
+	void pointinsert(int cusnum);
 	
 
 }
