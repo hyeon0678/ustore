@@ -28,11 +28,18 @@ public class OrderDto {
 	private String deliveryDate;
 	private int quantity;
 	private String confStatus;
+	private String receiptDate;
 
 	
 	
 	
 	
+	public String getReceiptDate() {
+		return receiptDate;
+	}
+	public void setReceiptDate(String receiptDate) {
+		this.receiptDate = receiptDate;
+	}
 	public String getConfStatus() {
 		return confStatus;
 	}

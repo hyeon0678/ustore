@@ -178,16 +178,12 @@ h1 {
 									</tr>
 								</thead>
 								<tbody>
+								<c:forEach items="${incomingList}" var="incoming">
 									<tr>
-										<td>23.12.20</td>
-										<td>4/399</td>
-
-									</tr>
-									<tr>
-										<td>23.12.20</td>
-										<td>4/399</td>
-
-									</tr>
+									<td>${incoming.receiptDate}</td>
+									<td>${incoming.quantity}/${incoming.unitQuantity}</td>
+							</tr>
+							</c:forEach>
 								</tbody>
 							</table>
 						</div>
@@ -230,7 +226,7 @@ h1 {
 															data-control="select2" data-placeholder="선택"
 															data-hide-search="true">
 																<option></option>
-																<option value="1">파손</option>
+																<option value="1" selected="selected">파손</option>
 																<option value="2">폐기</option>
 																<option value="3">분실</option>
 

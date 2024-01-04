@@ -1,5 +1,7 @@
 package com.ustore.products.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ustore.products.dao.OrderDao;
 import com.ustore.products.dto.OrderDto;
 import com.ustore.products.dto.StockDto;
 import com.ustore.products.service.StockService;
@@ -27,6 +30,9 @@ public class StockController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	StockService service;
+	@Autowired 
+	OrderDao dao;
+
 
 	@PostMapping(value = "/stock/stockmanagement/insert")
 	public String Stock_managementInsert(Model model, @RequestParam Map<String, String> params, HttpSession session) {
@@ -83,7 +89,15 @@ public class StockController {
 // ---------------------------------------------------------------------- 제품 상세보기 --------------------------
 
 	@RequestMapping(value = "/stock/stockdetail/list", method = { RequestMethod.GET, RequestMethod.POST })
-	public String showStockDetailListPage() {
+	public String showStockDetailListPage(@RequestParam("productId") String productId,Model model) {
+	
+		logger.info("상품 id : "+productId);
+		ArrayList<OrderDto> incomingList = service.addIncomingList(productId);
+		
+		model.addAttribute("incomingList",incomingList);
+		
+		
+		
 		return "products/stock_detail";
 	}
 
@@ -151,9 +165,7 @@ public class StockController {
 			int finalQuantity = Integer.parseInt(quantity);
 			
 			int finalminQuantity = minQuantity-finalQuantity;
-			
-		
-			
+
 			service.finalStock(finalminQuantity,productId);
 			
 		}
@@ -178,13 +190,7 @@ public class StockController {
 	}
 	// ---------------------------------------입고 리스트---------------------------------
 
-	@GetMapping(value = "/incoming")
-	public String incoming() {
-		
-		
-
-		return "products/incoming";
-	}
+	
 	
 	@GetMapping(value = "/stock/incoming/list")
 	public String incomingList(Model model){
@@ -210,7 +216,7 @@ public class StockController {
 		return incomModalList;
 	}
 	
-	@PostMapping(value = "/stock/incomingmoadl/update")
+	@PostMapping(value = "/stock/incomingmodal/update")
 	@ResponseBody
 	public boolean incomingModalUpdate(@RequestParam("productId") String productId,
 			@RequestParam("totalQuantity") int totalQuantity,@RequestParam("orderIdx") int orderIdx) {
@@ -248,6 +254,49 @@ public class StockController {
 		return "처리 완료";
 	}
 	
+	@GetMapping("/stock/incomingcalendar/list")
+	@ResponseBody
+	public ArrayList<OrderDto> calendarList(@RequestParam("selectedDate")String selectedDate){
+		
+		logger.info("selectedDate : "+selectedDate);
+		
+		String firstDateString = selectedDate.substring(0,10);
+		String lastDateString = selectedDate.substring(13,23);
+		
+		
+	
+		
+		
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		
+		LocalDate firstDateStringLatter = LocalDate.parse(firstDateString, formatter);
+		
+		DateTimeFormatter firstDateStringLast = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		String  firstDate = firstDateStringLatter.format(firstDateStringLast);
+		
+		
+		//----------
+		
+		
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		
+		LocalDate lastDateStringLatter = LocalDate.parse(lastDateString, formatter);
+		
+		DateTimeFormatter lastDateStringLast = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		String  lastDate = lastDateStringLatter.format(lastDateStringLast);
+		
+		
+		logger.info("fistDate : "+firstDate);
+		logger.info("lastDate : "+lastDate);
+		
+		
+		ArrayList<OrderDto> CaList = service.calendarList(firstDate,lastDate);
+		
+		return CaList;
+	}
 
 
 }
