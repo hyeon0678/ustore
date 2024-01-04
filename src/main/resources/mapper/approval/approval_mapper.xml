@@ -82,8 +82,8 @@
 	</insert>
 	
 	<insert id="saveApprLine" parameterType="ApprovalDto">    
-	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm, appr_type_idx)
-	        VALUES (#{empIdx}, #{apprIdx}, #{approver}, #{apprOrder}, #{apprConfirm}, #{apprTypeIdx})
+	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm, appr_type_idx, appr_type)
+	        VALUES (#{empIdx}, #{apprIdx}, #{approver}, #{apprOrder}, #{apprConfirm}, #{apprTypeIdx}, #{apprType})
 	</insert>
 	
 	<insert id="saveApprRecv" parameterType="ApprovalDto">		    
@@ -106,8 +106,8 @@
 	</select>	
 	
 
-	<select id="getApprLine" resultType="ApprovalDto" parameterType="int">
-		SELECT al.approver, al.appr_order, al.appr_confirm, d.dept_name, c.common_type AS positionType 
+	<select id="getApprLine" resultType="map" parameterType="int">
+		SELECT al.approver, al.appr_order, al.appr_confirm, al.appr_type, d.dept_name, c.common_type AS positionType 
 	    FROM approval_line al
 	    JOIN employee e ON al.approver = e.emp_name
 	    LEFT JOIN department d ON e.dept_id = d.dept_id
@@ -115,7 +115,7 @@
 	    WHERE al.appr_idx = #{param1}
 	</select>
 	
-	<select id="getRecv" resultType="ApprovalDto" parameterType="int">
+	<select id="getRecv" resultType="map" parameterType="int">
 		SELECT r.receiver, d.dept_name, c.common_type AS positionType 
 	    FROM recipient r
 	    JOIN employee e ON r.receiver = e.emp_name
@@ -143,7 +143,16 @@
         </if>
 	</select>
 	
-	
+	<select id="chkRecordExists">
+		SELECT count(*) FROM business_draft
+		WHERE appr_idx = #{apprIdx} AND appr_status = 43
+		UNION
+		SELECT count(*) FROM payment_resolution
+		WHERE appr_idx = #{apprIdx} AND appr_status = 43
+		UNION
+		SELECT count(*) FROM req_vacation
+		WHERE appr_idx = #{apprIdx} AND appr_status = 43;
+	</select>
 	
 	
 	

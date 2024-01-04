@@ -41,8 +41,15 @@ public class ApprovalDto {
 	private Date leaveStartDate; // 신청 휴가 시작일
 	private Date leaveEndDate; // 신청 휴가 종료일
 	private int leaveDays; // 신청일수
+	private String apprType; // 결재타입(기안, 결재)
 	
 	
+	public String getApprType() {
+		return apprType;
+	}
+	public void setApprType(String apprType) {
+		this.apprType = apprType;
+	}
 	public Integer getApprIdx() {
 		return apprIdx;
 	}

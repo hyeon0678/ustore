@@ -81,12 +81,22 @@ public class ApprovalService {
 		return dao.getContent(apprIdx, common_idx);
 	}
 
-	public ArrayList<ApprovalDto> getApprLine(int apprIdx) {
+	public ArrayList<Map<String, Object>> getApprLine(int apprIdx) {
 		return dao.getApprLine(apprIdx);
 	}
 
-	public ArrayList<ApprovalDto> getRecv(int apprIdx) {
+	public ArrayList<Map<String, Object>> getRecv(int apprIdx) {
 		return dao.getRecv(apprIdx);
+	}
+
+	public boolean chkRecordExists(Integer apprIdx) {
+		int count = dao.chkRecordExists(apprIdx);
+		return count > 0;
+	}
+
+	public void getOrderList(String orderDate) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

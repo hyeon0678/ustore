@@ -28,9 +28,11 @@ public interface ApprovalDao {
 
 	ApprovalDto getContent(int apprIdx, int common_idx);
 
-	ArrayList<ApprovalDto> getApprLine(int apprIdx);
+	ArrayList<Map<String, Object>> getApprLine(int apprIdx);
 
-	ArrayList<ApprovalDto> getRecv(int apprIdx);
+	ArrayList<Map<String, Object>> getRecv(int apprIdx);
+
+	int chkRecordExists(Integer apprIdx);
 
 
 

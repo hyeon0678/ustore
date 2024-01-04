@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ustore.approval.dto.ApprovalDto;
 import com.ustore.approval.service.ApprovalService;
 import com.ustore.employee.dto.EmployeeDto;
@@ -72,7 +74,7 @@ public class ApprovalController {
 	// 임시저장 detail보기
 	@Transactional(isolation = Isolation.DEFAULT)
 	@GetMapping(value="/approval/tempapproval/detail")
-	public ModelAndView tempDetail(@RequestParam int apprIdx, @RequestParam int apprTypeIdx) {
+	public ModelAndView tempDetail(@RequestParam int apprIdx, @RequestParam int apprTypeIdx) throws JsonProcessingException {
 		ModelAndView mav = new ModelAndView("approval/tempSaveApprDocDetail");
 		logger.info("apprIdx : "+apprIdx);
 		logger.info("apprTypeIdx : "+apprTypeIdx);
@@ -84,16 +86,19 @@ public class ApprovalController {
 		mav.addObject("formPage", formPage);
 		
 		ApprovalDto content = service.getContent(apprIdx, common_idx);
-		List<ApprovalDto> apprline = new ArrayList<ApprovalDto>();
-		List<ApprovalDto> receiver = new ArrayList<ApprovalDto>();
+		List<Map<String, Object>> apprline = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> receiver = new ArrayList<Map<String, Object>>();
 		apprline.addAll(service.getApprLine(apprIdx));
 		receiver.addAll(service.getRecv(apprIdx));
 		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String apprlineJson = objectMapper.writeValueAsString(apprline);
+		String receiverJson = objectMapper.writeValueAsString(receiver);
 		
 		mav.addObject("apprIdx", apprIdx);
 		mav.addObject("content", content);
-		mav.addObject("apprline", apprline);
-		mav.addObject("receiver", receiver);
+		mav.addObject("apprline", apprlineJson);
+		mav.addObject("receiver", receiverJson);
 		
 		return mav;
 	}	
@@ -195,13 +200,29 @@ public class ApprovalController {
         }
     } 
     
+    
+    @GetMapping(value="/getorderlist")
+    public String getOrderList(@RequestBody String orderDate) {
+    	service.getOrderList(orderDate);
+    	
+    	return "";
+    }
+    
+    
+    
     @PostMapping(value="/tempsaveappr") 
 	public String tempSave(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
 		 
 		String emp_idx = principal.getName(); 
 		dto.setEmpIdx(emp_idx);
-		logger.info("common_idx:"+dto.getCommonIdx());
-		service.tempSaveAppr(dto);
+		logger.info("해당문서 기안번호 : "+dto.getApprIdx());
+		boolean recordExists = service.chkRecordExists(dto.getApprIdx());
+		
+		if(!recordExists) {
+			service.tempSaveAppr(dto);		
+		}else {
+			service.updateTempDoc(dto);
+		}
 		rAttr.addFlashAttribute("msg",  "저장되었습니다.");
 		return "redirect:/approval/newapproval";  
 	}      
