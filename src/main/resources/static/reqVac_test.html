@@ -64,7 +64,7 @@
 				<!--begin::Input group-->
 				<div class="input-group mb-5">
 					<span class="input-group-text flex-grow-1" id="inputGroup-sizing-default" style="width: 20%;">제목</span>
-					<input type="text" name="appr_subject" id="appr_subject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+					<input type="text" name="apprSubject" id="apprSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
 				</div>
 				<!--end::Input group-->
 				<div class="table-responsive">
@@ -201,7 +201,6 @@
         
 	});
 
-	/* var offDays={day:0, weeks:[2,4]}; */
 	
 	$('#kt_daterangepicker_1').on('apply.daterangepicker', function(ev, picker) {
         // 날짜 간격 계산
@@ -311,86 +310,8 @@
 		}
 	});
 				
-
-	document.addEventListener("DOMContentLoaded", function () {
-		
-		$.ajax({
-	        url: '/approval/tempapproval/detail',
-	        type: 'GET',
-	        data: { apprIdx: /* 값 */, apprTypeIdx: /* 값 */ },
-	        success: function(data) {
-	            var apprLineData = data.apprline;
-	            function addApprLineToTable(data) {
-	                var tbody = document.getElementById("approverTableBody");
-
-	                for (var i = 0; i < data.length; i++) {
-	                    var row = tbody.insertRow(-1);
-
-	                    // 이름
-	                    var cellName = row.insertCell(1);
-	                    cellName.innerHTML = data[i].approver;
-
-	                    // 직책
-	                    var cellPosition = row.insertCell(2);
-	                    cellPosition.innerHTML = data[i].positionType;
-
-	                    // 부서
-	                    var cellDept = row.insertCell(3);
-	                    cellDept.innerHTML = data[i].dept_name;
-	                }
-	            };
-	            
-	            addApprLineToTable(apprLineData);
-	            
-	            var receiverData = data.receiver;
-	         	// 수신자 정보를 테이블에 추가하는 함수
-	            function addRecvToTable(data) {
-	                var tbody = document.getElementById("approverTableBody");
-
-	                for (var i = 0; i < data.length; i++) {
-	                    var row = tbody.insertRow(-1);
-
-	                    var cellName = row.insertCell(0);
-	                    cellName.innerHTML = data[i].approver;
-
-	                    var cellPosition = row.insertCell(1);
-	                    cellPosition.innerHTML = data[i].positionType;
-
-	                    var cellDept = row.insertCell(2);
-	                    cellDept.innerHTML = data[i].dept_name;
-	                }
-	            }
-	            // 수신자 정보를 테이블에 추가
-	            addRecvToTable(receiverData);
-	            
-	         	// 컨텐츠 부분 불러오기
-	            var apprSubject = data.content.appr_subject;
-	            document.getElementById("appr_subject").value = apprSubject;
-	            
-	            var leaveType = data.content.leave_type;
-	            document.getElementById("leaveType").value = leaveType;
-	            
-	            var leaveStartDate = data.content.leave_start_date;        
-	            var leaveEndDate = data.content.leave_end_date;
-	            $('#kt_daterangepicker_1').daterangepicker({
-	                startDate: leaveStartDate, // 시작일
-	                endDate: leaveEndDate
-	            });
-	            
-	            var leaveReason = data.content.leave_reason;
-	            document.getElementById("leaveReason").value = leaveReason;
-	            
-	            var leaveDays = data.content.leave_days;
-	            document.getElementById("leaveDays").value = leaveDays;
-
-
-	        },
-	        error: function(e) {
-	            console.log(e);
-	        }
-	    });
-
-    });
-		
+	
+	
+	
 	</script>
 </html>

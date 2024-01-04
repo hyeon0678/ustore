@@ -64,13 +64,13 @@
 				<!--begin::Input group-->
 				<div class="input-group mb-5">
 					<span class="input-group-text flex-grow-1" id="inputGroup-sizing-default" style="width: 20%;">제목</span>
-					<input type="text" name="appr_subject" id="appr_subject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+					<input type="text" name="apprSubject" id="apprSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
 				</div>
 				<!--end::Input group-->
 				
 				<!--begin::editor-->
 				<div class="py-5" data-bs-theme="light">
-					<textarea name="appr_content" id="kt_docs_ckeditor_classic" class="appr_content"></textarea>												
+					<textarea name="apprContent" id="kt_docs_ckeditor_classic" class="apprContent"></textarea>												
 				</div>	
 				<!--end::editor-->	
 					
@@ -168,6 +168,7 @@ ClassicEditor
 	.then(editor => {
 		console.log(editor);
 		myEditor = editor;
+		// myEditor.setData(apprContent);
 	})
 	.catch(error => {
 		console.error(error);

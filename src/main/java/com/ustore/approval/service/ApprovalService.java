@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ustore.approval.dao.ApprovalDao;
 import com.ustore.approval.dto.ApprovalDto;
 import com.ustore.employee.dto.EmployeeDto;
+import com.ustore.products.dto.OrderDto;
 
 @Service
 public class ApprovalService {
@@ -36,12 +37,17 @@ public class ApprovalService {
 			dto.setApprover(emp.get("name"));
 			dto.setApprOrder(Integer.parseInt(emp.get("apprOrder")));
 			dto.setApprConfirm(emp.get("apprConfirm"));
-			dto.setApprIdx(dto.getApprIdx());		
+			dto.setApprIdx(dto.getApprIdx());
+			dto.setApprType(emp.get("apprType"));
+			dto.setPositionType(emp.get("positionType"));
+			dto.setDeptName(emp.get("department"));
 			dao.saveApprLine(dto);
 		}
 		List<Map<String, String>> recvlist = dto.getReceivers();
 		for (Map<String, String> recv : recvlist) {
 			dto.setReceiver(recv.get("name"));
+			dto.setPositionType(recv.get("positionType"));
+			dto.setDeptName(recv.get("department"));
 			dao.saveApprRecv(dto);						    
 		}
 	}
@@ -57,12 +63,17 @@ public class ApprovalService {
 			dto.setApprover(emp.get("name"));
 			dto.setApprOrder(Integer.parseInt(emp.get("apprOrder")));
 			dto.setApprConfirm(emp.get("apprConfirm"));
-			dto.setApprIdx(dto.getApprIdx());			
+			dto.setApprIdx(dto.getApprIdx());
+			dto.setApprType(emp.get("apprType"));
+			dto.setPositionType(emp.get("positionType"));
+			dto.setDeptName(emp.get("department"));
 			dao.saveApprLine(dto);
 		}
 		List<Map<String, String>> recvlist = dto.getReceivers();
 		for (Map<String, String> recv : recvlist) {
 			dto.setReceiver(recv.get("name"));
+			dto.setPositionType(recv.get("positionType"));
+			dto.setDeptName(recv.get("department"));
 			dao.saveApprRecv(dto);						    
 		}		
 	}
@@ -81,12 +92,21 @@ public class ApprovalService {
 		return dao.getContent(apprIdx, common_idx);
 	}
 
-	public ArrayList<ApprovalDto> getApprLine(int apprIdx) {
+	public ArrayList<Map<String, Object>> getApprLine(int apprIdx) {
 		return dao.getApprLine(apprIdx);
 	}
 
-	public ArrayList<ApprovalDto> getRecv(int apprIdx) {
+	public ArrayList<Map<String, Object>> getRecv(int apprIdx) {
 		return dao.getRecv(apprIdx);
+	}
+
+	public boolean chkRecordExists(Integer apprIdx) {
+		int count = dao.chkRecordExists(apprIdx);
+		return count > 0;
+	}
+
+	public List<OrderDto> getOrderList(String orderDate) {
+		return dao.getOrderList(orderDate);
 	}
 
 

@@ -72,7 +72,7 @@
 				<!--begin::Input group-->
 				<div class="input-group mb-5">
 					<span class="input-group-text flex-grow-1" id="inputGroup-sizing-default" style="width: 20%;">제목</span>
-					<input type="text" name="appr_subject" id="appr_subject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+					<input type="text" name="apprSubject" id="apprSubject" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
 				</div>
 				<!--end::Input group-->										
 
@@ -84,7 +84,7 @@
 				</div>
 				
 				<div class="table-responsive">											
-					<table class="table table-rounded table-striped border gy-7 gs-7">		
+					<table id="orderTable" class="table table-rounded table-striped border gy-7 gs-7">		
 						<thead>
 							<tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
 								<th style="font-weight: 600;">번호</th>
@@ -94,21 +94,7 @@
 								<th style="font-weight: 600;">금액</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
+						<tbody>							
 						</tbody>
 						<tr>
 							<td colspan="4" style="text-align: center; font-weight: 600;">합 계 금 액</td>
@@ -209,22 +195,15 @@
 							</div>
 						</div><hr>
 						<div class="table-responsive">
-							<table class="table table-bordered">
+							<table id="specificDayOrder" class="table table-bordered">
 								<thead>
 									<tr class="fw-bold fs-6 text-gray-800">
 										<th>발주일자</th>
 										<th>발주번호</th>
-										<th>발주부서</th>
+										<th>발주사원</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td></td>
-										<td>
-											<a href="" class="text-gray-800 text-hover-primary mb-1">${orderNo}</a>
-										</td>
-										<td></td>
-									</tr>
+								<tbody>									
 								</tbody>								
 							</table>
 						</div>						
@@ -254,11 +233,46 @@
 					showDropdowns: true,
 					minYear: 1901,
 					maxYear: parseInt(moment().format("YYYY"),12)
+				}, function(start, label) {
+			        // 날짜가 선택됐을 때의 콜백 함수
+			        var orderDate = start.format('YYYY-MM-DD');
+			        // 선택한 날짜에 대한 데이터를 가져오는 함수 호출
+			        getOrderData(orderDate);
 				});
+				
 			});
 		});
 
+		function getOrderData(orderDate){
+			
+			$.ajax({
+				type : 'GET',
+				url: '/getorderlist', // 적절한 서버 엔드포인트로 수정
+		        data: { orderDate: orderDate },
+		        dataType : 'JSON',
+		        success: function (data) {
+		            OrderListTable(data);
+		        },
+		        error: function (error) {
+		            console.error('날짜별 발주 데이터를 가져오는 중 오류가 발생했습니다.');
+		        }				
+			});			
+		}
 		
+		function OrderListTable(data){
+			var tableBody = $('#specificDayOrder tbody');
+		    tableBody.empty(); // 기존 데이터 삭제
+
+		    // 데이터를 반복하면서 테이블에 행을 추가
+		    $.each(data, function (index, order) {
+		        var row = '<tr>' +
+		                      '<td>' + order.orderDate + '</td>' +
+		                      '<td><a href="" class="text-gray-800 text-hover-primary mb-1">' + order.orderIdx + '</a></td>' +
+		                      '<td>' + order.emp_idx + '</td>' +
+		                  '</tr>';
+		        tableBody.append(row);
+		    });
+		}
 
 		
 		// set the dropzone container id

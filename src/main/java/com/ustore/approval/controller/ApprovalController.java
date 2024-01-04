@@ -30,9 +30,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ustore.approval.dto.ApprovalDto;
 import com.ustore.approval.service.ApprovalService;
 import com.ustore.employee.dto.EmployeeDto;
+import com.ustore.products.dto.OrderDto;
 
 @Controller
 public class ApprovalController {
@@ -72,7 +75,7 @@ public class ApprovalController {
 	// 임시저장 detail보기
 	@Transactional(isolation = Isolation.DEFAULT)
 	@GetMapping(value="/approval/tempapproval/detail")
-	public ModelAndView tempDetail(@RequestParam int apprIdx, @RequestParam int apprTypeIdx) {
+	public ModelAndView tempDetail(@RequestParam int apprIdx, @RequestParam int apprTypeIdx) throws JsonProcessingException {
 		ModelAndView mav = new ModelAndView("approval/tempSaveApprDocDetail");
 		logger.info("apprIdx : "+apprIdx);
 		logger.info("apprTypeIdx : "+apprTypeIdx);
@@ -84,16 +87,19 @@ public class ApprovalController {
 		mav.addObject("formPage", formPage);
 		
 		ApprovalDto content = service.getContent(apprIdx, common_idx);
-		List<ApprovalDto> apprline = new ArrayList<ApprovalDto>();
-		List<ApprovalDto> receiver = new ArrayList<ApprovalDto>();
+		List<Map<String, Object>> apprline = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> receiver = new ArrayList<Map<String, Object>>();
 		apprline.addAll(service.getApprLine(apprIdx));
 		receiver.addAll(service.getRecv(apprIdx));
 		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String apprlineJson = objectMapper.writeValueAsString(apprline);
+		String receiverJson = objectMapper.writeValueAsString(receiver);
 		
 		mav.addObject("apprIdx", apprIdx);
 		mav.addObject("content", content);
-		mav.addObject("apprline", apprline);
-		mav.addObject("receiver", receiver);
+		mav.addObject("apprline", apprlineJson);
+		mav.addObject("receiver", receiverJson);
 		
 		return mav;
 	}	
@@ -195,13 +201,28 @@ public class ApprovalController {
         }
     } 
     
+    
+    @GetMapping(value="/getorderlist")
+    public ResponseEntity<List<OrderDto>> getOrderList(@RequestParam String orderDate) {
+    	List<OrderDto> orderlist = service.getOrderList(orderDate);    	
+    	return new ResponseEntity<>(orderlist, HttpStatus.OK);
+    }
+    
+    
+    
     @PostMapping(value="/tempsaveappr") 
 	public String tempSave(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
 		 
 		String emp_idx = principal.getName(); 
 		dto.setEmpIdx(emp_idx);
-		logger.info("common_idx:"+dto.getCommonIdx());
-		service.tempSaveAppr(dto);
+		
+		boolean recordExists = service.chkRecordExists(dto.getApprIdx());
+		logger.info("번호 중복여부 : "+recordExists);
+		if(!recordExists) {
+			service.tempSaveAppr(dto);		
+		}else {
+			service.updateTempDoc(dto);
+		}
 		rAttr.addFlashAttribute("msg",  "저장되었습니다.");
 		return "redirect:/approval/newapproval";  
 	}      
@@ -216,13 +237,6 @@ public class ApprovalController {
 		 return "redirect:/approval/newapproval";
 	}	
 	 
-	@GetMapping(value="/approval/tempapproval/modify")
-	public String reSaveTempDoc(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
-		String emp_idx = principal.getName();
-		 dto.setEmpIdx(emp_idx);
-		 service.updateTempDoc(dto);
-		 rAttr.addFlashAttribute("msg",  "결재상신 되었습니다.");
-		 return "redirect:/approval/newapproval";
-	}
+	
 	
 }

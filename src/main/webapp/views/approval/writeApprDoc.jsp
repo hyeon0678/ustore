@@ -244,27 +244,31 @@
 	<!--end::Body-->
 	<script>
 	var common_idx = ${common_idx};
+	var myModal = new bootstrap.Modal(document.getElementById('kt_modal_1'), {
+        backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
+        keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
+    });
 	$(document).ready(function () {
     	// 초기에 선택된 양식에 대한 HTML 파일 로드
         var formPage = '<%= request.getAttribute("formPage") %>';
         if (formPage) {
             loadFormPage(formPage, common_idx);
-        }        
-        
-        var loggedInEmp_idx = ${principal.username};
-    	console.log(loggedInEmp_idx);
-        addLoggedInEmpToApprLine(loggedInEmp_idx);            	 	
+        }         	 	
     	 
         // 결재정보 버튼 클릭 시의 동작
         $('#btnApprovalInfo').on('click', function () {
             console.log('결재정보 버튼 클릭');            
             myModal.show();
+            
         });
                 
         $('#kt_modal_1').on('shown.bs.modal', function(){
 			getTreeData();
-		})  	
+		})  
 		
+		var loggedInEmp_idx = ${principal.username};
+    	console.log(loggedInEmp_idx);
+		addLoggedInEmpToApprLine(loggedInEmp_idx);
     });
 		
     // 동적으로 HTML 파일 로드하는 함수
@@ -282,15 +286,7 @@
         });
     }
     
-
-    var myModal = new bootstrap.Modal(document.getElementById('kt_modal_1'), {
-        backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
-        keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
-    });
     
-    
-	
-	
 	function getTreeData(){
 		$.ajax({
 			url:'/organizationChart.ajax',
@@ -304,6 +300,7 @@
 			}
 		})
 	}
+	
 	
 	function jsTree(treeData){
 		$('#kt_docs_jstree_basic').jstree({
@@ -366,7 +363,7 @@
 
 	            // 생성할 approvalData 객체를 만들어서 데이터 채우기
 	            var approvalData = {
-	                type: '기안',
+	                apprType: '기안',
 	                name: loggedInEmp.empName,
 	                position: loggedInEmp.position,
 	                positionType: loggedInEmp.positionType,
@@ -400,7 +397,7 @@
 	            var nextApprOrder = getNextApprOrder();
 	            
 	            var approvalData = {
-	                type: '결재',
+	                apprType: '결재',
 	                approverIdx: employeeInfo.empIdx,
 	                name: employeeInfo.empName,
 	                position: employeeInfo.position,
@@ -451,7 +448,19 @@
 		    var cell4 = newRow.insertCell(3);
 		    var cell5 = newRow.insertCell(4);
 	
-		    cell1.innerHTML = approvalData.type;
+		 	// 결재타입을 선택할 수 있는 selectbox 생성
+	        var apprTypeSelect = document.createElement('select');
+
+	        apprTypeSelect.innerHTML = `
+	            <option value='기안' ${approvalData.apprType eq '기안' ? 'selected' : ''}>기안</option>
+	            <option value='결재' ${approvalData.apprType eq '결재' ? 'selected' : ''}>결재</option>
+	        `;
+
+	        // selectbox에 change 이벤트 리스너 추가
+	        apprTypeSelect.addEventListener('change', function () {
+	            approvalData.apprType = this.value;
+	        });
+	        cell1.appendChild(apprTypeSelect);
 		    cell2.innerHTML = approvalData.name;
 		    cell3.innerHTML = approvalData.positionType;
 		    cell4.innerHTML = approvalData.department;
@@ -741,14 +750,14 @@
     	console.log('임시저장 버튼 클릭'); 
     	var ApprovalDto;
     	console.log(common_idx);
-    	var appr_subject = $('#appr_subject').val();
+    	var apprSubject = $('#apprSubject').val();
     	
         if(common_idx=='30') {          		
-        	var appr_content = myEditor.getData();
+        	var apprContent = myEditor.getData();
             ApprovalDto = {
                 	    commonIdx: common_idx,
-                	    apprSubject: appr_subject,
-                	    apprContent: appr_content,
+                	    apprSubject: apprSubject,
+                	    apprContent: apprContent,
                 	    approvalLines: approvalLines,
                 	    receivers: receivers
                 	};
@@ -757,7 +766,7 @@
     	    var totalAmount = $('#totalAmount').val();
         	ApprovalDto = {
         		    commonIdx: common_idx,
-        		    apprSubject: appr_subject,
+        		    apprSubject: apprSubject,
         		    approvalLines: approvalLines,
         	        receivers: receivers,
         		    orderNum: orderNum,
@@ -775,7 +784,7 @@
             
         	ApprovalDto = {
             	    commonIdx: common_idx,
-            	    apprSubject: appr_subject,
+            	    apprSubject: apprSubject,
             	    approvalLines: approvalLines,
                     receivers: receivers,
             	    leaveType: leaveType,
@@ -809,14 +818,14 @@
 		console.log('결재상신 버튼 클릭');
 		var ApprovalDto;
     	console.log(common_idx);
-    	var appr_subject = $('#appr_subject').val();
+    	var apprSubject = $('#apprSubject').val();
     	
     	if(common_idx=='30') {  
-    		var appr_content = myEditor.getData();	
+    		var apprContent = myEditor.getData();	
             ApprovalDto = {
             	    commonIdx: common_idx,
-            	    apprSubject: appr_subject,
-            	    apprContent: appr_content,
+            	    apprSubject: apprSubject,
+            	    apprContent: apprContent,
             	    approvalLines: approvalLines,
             	    receivers: receivers
             	};
@@ -825,7 +834,7 @@
     	    var totalAmount = $('#totalAmount').val();
 	    	ApprovalDto = {
 	    		    commonIdx: common_idx,
-	    		    apprSubject: appr_subject,
+	    		    apprSubject: apprSubject,
 	    		    approvalLines: approvalLines,
 	    	        receivers: receivers,
 	    		    orderNum: orderNum,
@@ -841,7 +850,7 @@
             console.log(leaveEndDate);
 	    	ApprovalDto = {
 	        	    commonIdx: common_idx,
-	        	    apprSubject: appr_subject,
+	        	    apprSubject: apprSubject,
 	        	    approvalLines: approvalLines,
 	                receivers: receivers,
 	        	    leaveType: leaveType,
@@ -860,9 +869,11 @@
 	        data: JSON.stringify(ApprovalDto),
 	        success: function (response) {
 	            console.log('문서가 결재상신 되었습니다.');
+	            alert('문서가 결재 상신되었습니다.');
 	        },
 	        error: function (error) {
 	            console.error('결재상신 중 오류가 발생했습니다.');
+	            alert('결재상신 중 오류가 발생했습니다.');
 	        }
 	    });
 	});
