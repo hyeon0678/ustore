@@ -119,4 +119,5 @@ public class PosController {
 		payModal = posService.payModal(params);
 		return payModal;
 	}
+	
 }

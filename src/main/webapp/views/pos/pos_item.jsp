@@ -31,6 +31,7 @@ License: For each use you must have a valid license purchased only from above li
 		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
 		<!--end::Global Stylesheets Bundle-->
+		<script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	<style>
   /* 다이얼러 너비 재정의 */
@@ -99,33 +100,34 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin::Col-->
 									<div class="col-xl-4">
 										<!--begin::List Widget 5-->
-										<div class="card h-xl-100">
+										<div class="card h-xl-100 mb-5">
 											<!--begin::Header-->
-											<div class="card-header align-items-center border-0 mt-5">
-												<h3 class="card-title align-items-start flex-column" style="width:100%;">
-													<span class="fw-bolder text-gray-900 fs-2 mb-5">상품</span>
-													<div class="d-flex">
-														<select class="form-select fs-6" id="productOpt" aria-label="Select option" style="width: 110px; height: 40px;">
+											<div class="card-header align-items-center border-0 mt-5 ">
+												<div class="card-title align-items-start flex-column" style="width:100%;">
+												
+													<h3 class="fw-bolder text-gray-900 fs-2 mb-5">상품</h3>
+														<div style="white-space:nowrap; display: flex; width: 100%;">
+														<select class="form-select fs-6" id="productOpt" aria-label="Select option" style="width: auto; height: 40px;">
 															<option value="productName">상품명</option>
 															<option value="productId">상품코드</option>
 															<!-- 추가적인 옵션들을 필요에 따라 추가할 수 있습니다 -->
 														</select>
-														<input type="text" class="form-control form-control-solid" id="productText" placeholder="이름 입력" style="width: 220px; height: 40px; margin-left: 10px;">
-            											<button type="button" class="btn btn-primary fs-7" id="produceBtn" style="white-space:nowrap;">
+														<input type="text" class="form-control form-control-solid" id="productText" placeholder="이름 입력" style="width: 229px; height: 40px; margin-left: 10px;">
+            											<button type="button" class="btn btn-primary fs-7" id="produceBtn" style="white-space:nowrap; margin-left: 11px;">
 															검색
 														</button>
-													</div>
-												</h3>
-												<div class="card-toolbar">
-													<div class="table-responsive">
+</div>
+												</div>
+												<div class="card-toolbar" style="margin-right: 110px;">
+													<div class="table-responsive scroll h-600px px-5 " style="overflow-x: hidden" >
 											<table class="table table-row-dashed table-row-gray-300 gy-5" style="white-space:nowrap;">
 												<thead>
 													<tr class="fw-bold fs-6 text-gray-800">
 														<th style="text-align: center; padding-left: 9.75px;">보유 수량</th>
-														<th>상품명</th>
-														<th>상품코드</th>
-														<th>가격</th>
-														<th></th>
+														<th style="text-align: center;">상품명</th>
+														<th style="text-align: center;">상품코드</th>
+														<th style="text-align: center;">가격</th>
+														<th style="text-align: center;"></th>
 													</tr>
 												</thead>
 												<tbody id="itemBody">
@@ -134,11 +136,11 @@ License: For each use you must have a valid license purchased only from above li
 														<td style="text-align: center; padding-left: 9.75px;">${itemList.stock}</td>
 														<td>${itemList.productName}</td>
 														<td class="productId">${itemList.productId}</td>
-												        <td>${itemList.sellingPrice}</td>
+												        <td>${itemList.sellingPrice} 원</td>
 												        <th style="text-align: center;">
 												            <button type="button" class="btn btn-primary fs-7 productButton" 
 												                    data-product-id="${itemList.productId}"
-												                    style="white-space:nowrap; margin-left: 20px;">
+												                    style="white-space:nowrap; margin-left: auto;">
 												                선택
 												            </button>
 												        </th>
@@ -146,7 +148,7 @@ License: For each use you must have a valid license purchased only from above li
 												</c:forEach>
 												</tbody>
 											</table>
-										</div>
+												</div>
 												</div>
 											</div>
 											<!--end::Header-->
@@ -162,7 +164,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin::Col-->
 									<div class="col-xl-8">
 										<!--begin::Table Widget 5-->
-										<div class="card card-flush h-xl-100">
+										<div class="card  h-xl-100">
 											<div class="card-header align-items-center border-0 mt-5">
 												<h3 class="card-title align-items-start flex-column">
 													<span class="fw-bolder text-gray-900 fs-2 mb-5">상품</span>
@@ -170,7 +172,7 @@ License: For each use you must have a valid license purchased only from above li
 												</h3>
 												</div>
 												<div class="card-toolbar my-10">
-													<div class="table-responsive" style="margin-left: 30px;">
+													<div class="table-responsive scroll h-600px px-5 " style="margin-left: 30px; overflow-x: hidden;">
 											<table class="table table-row-dashed table-row-gray-300 gy-5" id="cartTable">
 												<thead>
 													<tr class="fw-bold fs-6 text-gray-800">
@@ -269,7 +271,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8">
-																<span class="fs-6 text-gray-800" id="memberName">김동동</span>
+																<span class="fs-6 text-gray-800" id="name">김동동</span>
 															</div>
 															<!--end::Col-->
 													</div>
@@ -353,7 +355,7 @@ License: For each use you must have a valid license purchased only from above li
 
 											<div class="modal-footer">
 												
-												<button type="button" class="btn btn-primary">결제하기</button>
+												<button onclick="requestPay(${memberIdx})" class="btn btn-primary">결제하기</button>
 											</div>
 										</div>
 									</div>
@@ -458,7 +460,7 @@ License: For each use you must have a valid license purchased only from above li
 	</body>
 	<!--end::Body-->	
 	<script>
-	var accumulationRate = 0;
+
 	
 	
 	function validateInput() {
@@ -468,10 +470,17 @@ License: For each use you must have a valid license purchased only from above li
 	    // 정규 표현식을 사용하여 숫자가 아닌 문자를 제거
 	    inputValue = inputValue.replace(/[^0-9]/g, '');
 		
-	    // 6000 이상의 숫자를 입력할 경우 값을 6000으로 제한
-	    if (inputValue >= 6000) {
-	        inputValue = 6000;
+	    // 최대 이상의 숫자를 입력할 경우 값을 최대로 제한
+	    var upPoint = parseInt($('#upPoint').text(),10);
+	    if (parseInt(inputValue, 10) > upPoint) {
+	        inputValue = upPoint.toString();
 	    }
+	    
+	    var totalPoint = parseInt($('#totalPoint').text(), 10);
+	    if (parseInt(inputValue, 10) > totalPoint) {
+	        inputValue = totalPoint.toString();
+	    }
+
 
 	    // 정제된 값을 다시 입력 필드에 설정
 	    inputElement.value = inputValue;
@@ -482,6 +491,9 @@ License: For each use you must have a valid license purchased only from above li
 		posPayModal(${memberIdx});
 	});
 	
+	var accumulationRate = 0;  // 멈버쉽 비율
+	var endPoint = 0; // 적립 가능 포인트 최대 한도
+	var contactNum = ''; // 구매자 전화번호
 	function posPayModal(memberId){
 		$.ajax({
 	        type: 'get',
@@ -492,20 +504,23 @@ License: For each use you must have a valid license purchased only from above li
 	        dataType: 'json',
 	        success: function (data) {
 				console.log(data);
+				contactNum = data.contactNum;
 				$('#name').text(data.name);
 				$('#totalPoint').text(data.totalPoint);
 				$('#expiryDate').text(data.expiryDate);
 				$('#sellingSum').text(data.sellingSum);
 				$('#upPoint').text(data.upPoint);
 				$('#endSellingSum').text(data.sellingSum);  // 실결제 금액
-				$('#endPoint').attr('data-product-id', data.endPoint)
+				$('#endSellingSum').attr('data-product-id', data.sellingSum)
+				endPoint = data.endPoint;
+				$('#endPoint').attr('data-product-id', endPoint);
 				accumulationRate = data.accumulationRate;
 				var calculatedValue = Math.floor(data.upPoint * (accumulationRate / 100));
-				if(data.endPoint<calculatedValue){					
-					if(data.endPoint == 0){
+				if(endPoint<calculatedValue){					
+					if(endPoint == 0){
 						calculatedValue = 0;
 					}else{
-						calculatedValue = data.endPoint;
+						calculatedValue = endPoint;
 					}
 				}
 				$('#endPoint').text(calculatedValue);
@@ -518,13 +533,23 @@ License: For each use you must have a valid license purchased only from above li
 	
 	
 	
+		var pointText = 0;
 	$('#pointBut').on('click',function(){
-		var pointText = $('#pointText').val();
+		pointText = $('#pointText').val();
 		console.log('포인트 버튼 확인',pointText);
-		var endSellingSum = $('#endSellingSum').text()-pointText;
-		console.log("포인트 값 들어오는거 확인",endSellingSum);
+		var upPoint = $('#upPoint').text() - pointText;
+		var endSellingSum = $('#endSellingSum').text() - pointText;
 		$('#endSellingSum').text(endSellingSum);
-		var calculatedValue = Math.floor(endSellingSum * (accumulationRate / 100));
+		var calculatedValue = Math.floor(upPoint * (accumulationRate / 100));
+		console.log("endSellingSum",calculatedValue);
+		if(endPoint<calculatedValue){					
+			if(endPoint == 0){
+				calculatedValue = 0;
+			}else{
+				calculatedValue = endPoint;
+			}
+		}
+		$('#endPoint').text(calculatedValue);
 	});
 	
 	
@@ -746,7 +771,7 @@ License: For each use you must have a valid license purchased only from above li
 			content += '<th style="text-align: center;">'
 			content += '<button type="button" class="btn btn-primary fs-7 productButton" '
 			content += 'data-product-id="'+itemList.productId+'"'
-			content += 'style="white-space:nowrap; margin-left: 20px;">'
+			content += 'style="white-space:nowrap; margin-left: auto;">'
 			content += '선택'
 			content += '</button>'
 			content += '</th>'
@@ -755,5 +780,60 @@ License: For each use you must have a valid license purchased only from above li
 		$('#itemBody').empty();
 		$('#itemBody').append(content);
 	}
+	
+	
+	
+	
+	
+
+	function requestPay(memberId) {
+		  IMP.init('imp47548806'); //iamport 대신 자신의 "가맹점 식별코드"를 사용
+		  IMP.request_pay({
+		    pg: 'html5_inicis',     //  결제 pg사   -- 필수 입력값
+		    pay_method: "card",    //  결제 메서드  -- 필수 입력값
+		    merchant_uid : memberId+"_"+Date.now(), // 결제 번호 --- 필수 입력값
+		    name : 'UStore',  // 결제 이름 -- 필수 입력값
+		    amount : 100,   // 가격 -- 필수 입력값    -- $('#endSellingSum').text()
+		    buyer_tel: contactNum,
+		  }, function (rsp) { // callback
+			  console.log(rsp);
+			    if (rsp.success) { // 성공했을때
+			      $.ajax({
+				        type: 'get',
+				        url: 'request/pay.ajax',
+				        data: {
+				        	 'merchant_uid' : rsp.merchant_uid,
+				        	 'name' : rsp.name,
+				        	 'imp_uid' : rsp.imp_uid,
+				        	 'paid_amount' : rsp.paid_amount,
+				        	 'paymentStatus' : '90',
+				        	 'memberId' : memberId,    // 회원 번호
+				        	 'endPoint' : $('#endPoint').text(),    // 적립 포인트
+				        	 'pointText' : pointText,  // 사용 포인트
+				        	 'paymentsType': '92',
+				        	 'remainPoints' : $('#totalPoint').text()-pointText
+				        },
+				        dataType: 'json',
+				        success: function (data) {
+							console.log(data);
+							if(data){
+								window.location.href = "/pos/member";
+							}else{
+								alert('결제 오류 발생 관리자에게 문의해주세요.')
+							}
+				        },
+				        error: function (e) {
+				            console.log(e);
+				        }
+				    });
+			    } else { // 실패했을때
+			      var msg = '결제에 실패하였습니다.';
+			      alert(msg);
+			    }
+		  });
+		}
+	
+	
+	
 	</script>
 </html>

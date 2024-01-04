@@ -14,6 +14,13 @@ public class PosDto {
 	private int upPoint; // 포인트 사용 가능 금액, 포인트 적립되는 금액
 	private int endPoint; // 포인트 적립 액수
 	private int accumulationRate; // 포인트 적립 비율
+	private String contactNum;  // 회원 전화번호
+	public String getContactNum() {
+		return contactNum;
+	}
+	public void setContactNum(String contactNum) {
+		this.contactNum = contactNum;
+	}
 	public int getAccumulationRate() {
 		return accumulationRate;
 	}
