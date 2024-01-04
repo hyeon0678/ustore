@@ -35,7 +35,7 @@ License: For each use you must have a valid license purchased only from above li
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
-	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled ">
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
@@ -46,16 +46,16 @@ License: For each use you must have a valid license purchased only from above li
 			<div class="page d-flex flex-row flex-column-fluid">
 				
 				<!--begin::Wrapper-->
-				<div class="wrapper d-flex flex-column flex-row-fluid">
+				<div class="d-flex flex-column flex-row-fluid">
 
 					
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" style="width: 100%;">
 						
 						<!--begin::Post-->
-						<div class="post fs-6 d-flex flex-column-fluid" style="margin-left: 30px;">
+						<div class="post fs-6 d-flex flex-column-fluid" style="margin-left: 30px; margin-right: 30px;">
 							<div class="card mb-5 mb-xl-10"  style="width: 100%;">
-								<div class="card-body card-scroll h-200px">
+								<div class="card-body">
 									<div class="row d-flex">
 								        <div class="col-md-4 d-flex">
 								            <!-- 셀렉트 박스 -->
