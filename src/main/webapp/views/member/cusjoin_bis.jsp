@@ -40,6 +40,20 @@
 				padding: 20px;
 
 			}
+			
+			input[type=file]::file-selector-button {
+			  width: 80px;
+			  height: 30px;
+			  background: #C6DA52;
+			  border-radius: 10px;
+			  color: white;
+			  cursor: pointer;
+			  border:none;
+			  &:hover {
+			    background: white;
+			    color: #C6DA52;
+			  }
+			}
 		</style>
 	</head>
 	<!--end::Head-->
@@ -139,7 +153,7 @@
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row" style="display: flex; align-items: center;">
 																<input type="text" name="business_num" class="form-control form-control-lg form-control-solid" placeholder="사업자번호를 입력해 주세요." value="" style="width: 300px; margin-right: 10px"/>
-																<input type="file" name="photos" multiple="multiple" />
+																<input type="file" name="photos"  id="file" multiple="multiple"  />
 																<!--
 																<i class="ki-duotone ki-scroll fs-2qx" id="bis_file" style="margin-right: 5px; margin-left: 10px;">
 																<span class="path1"></span>
@@ -192,7 +206,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<span class="form-control form-control-lg form-control-solid">2024.01.25 ~ 2025.01.25</span>
+																<span class="form-control form-control-lg form-control-solid"> ${nowdate} ~ ${exdate}</span>
 																<span style="color: red; font-size: small; float: right;">* 일자를 임의로 설정 할 수 없습니다. *</span>
 															</div>
 															<!--end::Col-->

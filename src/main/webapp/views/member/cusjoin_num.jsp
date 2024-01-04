@@ -161,7 +161,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<span class="form-control form-control-lg form-control-solid">2024.01.25 ~ 2025.01.25</span>
+																<span class="form-control form-control-lg form-control-solid">${nowdate} ~ ${exdate}</span>
 																<span style="color: red; font-size: small; float: right;">* 일자를 임의로 설정 할 수 없습니다. *</span>
 															</div>
 															<!--end::Col-->

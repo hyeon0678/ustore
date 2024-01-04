@@ -31,6 +31,8 @@ public interface MemberDao {
 	int newdate(int idx);
 
 	HashMap<String, String> filefind(int idx);
+
+	ArrayList<HashMap<String, String>> productlistcall(int memberidx, String startdate, String enddate);
 	
 
 }

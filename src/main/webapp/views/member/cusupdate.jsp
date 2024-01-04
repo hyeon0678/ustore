@@ -65,14 +65,20 @@
 						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">회원정보수정</h1>
 						
 						<!--begin::details View-->
-								<div class="card mb-5 mb-xl-10" id="kt_profile_details_view" style="align-self: center; width: 1400px; margin-top: 50px; background-color: white;">
+								<div class="card mb-5 mb-xl-10" id="kt_profile_details_view" style="align-self: center; width: 1200px; margin-top: 50px; background-color: white;">
 									<!--begin::Card header-->
 									<div class="card-header cursor-pointer">
 										<!--begin::Card title-->
 										<div class="card-title m-0">
 											<h3 class="fw-bold m-0">회원번호 : ${info.member_idx}</h3>
 										</div>
-										<!--end::Card title-->										
+										<!--end::Card title-->	
+										<!--begin::Card title-->
+										<div class="card-title m-0" style="padding-right: 50px">
+											<c:if test="${info.member_state eq '84'}"><h3 class="fw-bold m-0">등록중인 회원</h3></c:if>
+											<c:if test="${info.member_state eq '85'}"><h3 class="fw-bold m-0" style="color: red;">탈퇴한 회원</h3></c:if>
+										</div>
+										<!--end::Card title-->									
 									</div>
 									<!--begin::Card header-->
 									<!--begin::Card body-->
@@ -109,7 +115,7 @@
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-8 fv-row">
-												<input type="text" name="birthdate" class="form-control form-control-lg form-control-solid"  value="${info.brithdate}" />
+												<input type="text" name="birthdate" class="form-control form-control-lg form-control-solid"  value="${info.brithdate}" readonly="readonly"/>
 											</div>
 											<!--end::Col-->
 										</div>
@@ -121,7 +127,7 @@
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-8 fv-row">
-												<input type="text" name="gender" class="form-control form-control-lg form-control-solid"  value="${info.gender}" />
+												<input type="text" name="gender" class="form-control form-control-lg form-control-solid"  value="${info.gender}" readonly="readonly"/>
 											</div>
 											<!--end::Col-->
 										</div>
@@ -132,9 +138,9 @@
 											<label class="col-lg-2 fw-semibold text-muted" >우편번호</label>
 											<!--end::Label-->
 											<!--begin::Col-->
-											<div class="col-lg-8 fv-row">
-												<input type="text" name="postcode"  id="post_num" class="form-control form-control-lg form-control-solid"  value="${info.postal_code}" />
-												<input type="button" onclick="findlocation()" class="btn btn-primary" id="kt_toolbar_primary_button" value="주소 찾기" style="width: 100px; height: 40px; margin-left: 5px;"/>
+											<div class="col-lg-7 fv-row"  style="width: 150px;">
+												<input type="text" name="postcode"  id="post_num" class="form-control form-control-lg form-control-solid"  value="${info.postal_code}"/>
+																								
 											</div>
 											<input type="button" onclick="findlocation()" class="btn btn-primary" id="kt_toolbar_primary_button" value="주소 찾기" style="width: 100px; height: 40px; margin-left: 5px;"/>
 											<!--end::Col-->
@@ -170,11 +176,11 @@
 											<!--begin::Input group-->
 											<div class="row mb-6"  style="width: 600px;">
 												<!--begin::Label-->
-												<label class="col-lg-2 fw-semibold text-muted" >사업자 번호</label>
+												<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;">사업자 번호</label>
 												<!--end::Label-->
 												<!--begin::Col-->
 											<div class="col-lg-8 fv-row">
-												<input type="text" name="name" class="form-control form-control-lg form-control-solid"  value="${info.business_num}" readonly/>
+												<input type="text" name="name" class="form-control form-control-lg form-control-solid"  value="${info.business_num}"  readonly/>
 											</div>
 											<!--end::Col-->
 											</div>
@@ -182,13 +188,13 @@
 
 
 										<!--begin::Row-->
-										<div class="row mb-7">
+										<div class="row mb-7" style="width: 600px;">
 											<!--begin::Label-->
-											<label class="col-lg-2 fw-semibold text-muted" >등록/만료 일자</label>
+											<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;">등록/만료 일자</label>
 											<!--end::Label-->
 											<!--begin::Col-->
-											<div class="col-lg-3">
-												<span class="fw-bold fs-6 text-gray-800">도재학</span>
+											<div class="col-lg-3" style="width: 300px;">
+												<span class="fw-bold fs-6 text-gray-800" >${info.create_date} ~ ${info.expiry_date}</span>
 											</div>
 											<!--end::Col-->
 										</div>
@@ -196,11 +202,14 @@
 										<!--begin::Row-->
 										<div class="row mb-7">
 											<!--begin::Label-->
-											<label class="col-lg-2 fw-semibold text-muted" >멤버쉽</label>
+											<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;">멤버쉽 종류</label>
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-3">
-												<span class="fw-bold fs-6 text-gray-800">도재학</span>
+												<span class="fw-bold fs-6 text-gray-800">
+												<c:if test="${info.member_type eq '82'}">일반</c:if>
+												<c:if test="${info.member_type eq '83'}">사업자</c:if>
+												</span>
 											</div>
 											<!--end::Col-->
 										</div>
@@ -208,11 +217,14 @@
 										<!--begin::Row-->
 										<div class="row mb-7">
 											<!--begin::Label-->
-											<label class="col-lg-2 fw-semibold text-muted" >회원등급</label>
+											<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;">회원등급</label>
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-3">
-												<span class="fw-bold fs-6 text-gray-800">도재학</span>
+												<span class="fw-bold fs-6 text-gray-800">
+												<c:if test="${info.grade_idx eq '80'}">스탠다드</c:if>
+								 				<c:if test="${info.grade_idx eq '81'}">프리미엄</c:if>
+												</span>
 											</div>
 											<!--end::Col-->
 										</div>

@@ -103,12 +103,12 @@ public class MemberController {
 		String nowdate = datecal.dateNow().toString();		
 		logger.info("nowdate : "+nowdate);		
 		Calendar mon = Calendar.getInstance();
-		mon.add(Calendar.MONTH, -1);
-		String beforeMonth = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
-		logger.info("beforeMonth"+beforeMonth);
+		mon.add(Calendar.YEAR, +1);
+		String exdate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
+		logger.info("exdate"+exdate);
 
-		mav.addObject("nowdate : ",nowdate);
-		mav.addObject("beforeMonth",beforeMonth);
+		mav.addObject("nowdate",nowdate);
+		mav.addObject("exdate",exdate);
 		
 		return mav;
 	}
@@ -122,13 +122,13 @@ public class MemberController {
 		String nowdate = datecal.dateNow().toString();			
 		logger.info("nowdate : "+nowdate);		
 		Calendar mon = Calendar.getInstance();
-		mon.add(Calendar.MONTH, -1);
-		String beforeMonth = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
-		logger.info("beforeMonth"+beforeMonth);
+		mon.add(Calendar.YEAR, +1);
+		String exdate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
+		logger.info("exdate"+exdate);
 		
 
 		mav.addObject("nowdate",nowdate);
-		mav.addObject("beforeMonth",beforeMonth);
+		mav.addObject("exdate",exdate);
 		
 		return mav;
 	}
@@ -167,20 +167,23 @@ public class MemberController {
 	// customer/detail.ajax/productlistcall
 	@RequestMapping(value = "/customer/detail.ajax/productlistcall")
 	@ResponseBody
-	public ModelAndView productlistcall(@RequestParam int startdate,@RequestParam int enddate,@RequestParam int memberidx) {
+	public HashMap<String, Object> productlistcall(@RequestParam String startdate,@RequestParam String enddate,@RequestParam int memberidx) {
 		logger.info("구매이력 리스트 불러오기  호출하기");
 		logger.info("member idx : "+memberidx);
 		logger.info("startdate : "+startdate);
 		logger.info("enddate : "+enddate);
 		
-		/*
-		HashMap<String,String> map= service.update(idx); // 여기서 디비(서비스)에서 값을 받았다
-		ModelAndView mav = new ModelAndView("member/cusupdate");
-		logger.info("info : "+map.toString());
+		HashMap<String, Object> result = new HashMap<String, Object>();
 		
-		mav.addObject("info",map); // 값을 넣어준다
-		*/
-		return null; // 앞으로 보낸다
+		ArrayList<HashMap<String, String>> list = service.productlistcall(memberidx, startdate, enddate );
+		logger.info("num"+list.toString());
+		result.put("list", list);
+		result.put("size", list.size());
+		logger.info("result : " +result);	
+		
+		
+		
+		return result; // 앞으로 보낸다
 	}
 	
 	
@@ -269,7 +272,7 @@ public class MemberController {
 		logger.info("회원수정 페이지(save)  호출하기");
 		logger.info("member idx : "+params);
 		String msg = service.updatesave(params);
-		ModelAndView mav = new ModelAndView("customer/detail");
+		ModelAndView mav = new ModelAndView("member/detail");
 		//logger.info("info : "+map.toString());
 		mav.addObject("msg",msg);
 		mav.addObject("idx",params.get("idx"));
@@ -283,8 +286,8 @@ public class MemberController {
 		logger.info("member idx : "+idx);
 		
 		String msg = service.del(idx);
-		
-		ModelAndView mav = new ModelAndView("customer/home");
+		logger.info(idx+" : 탈퇴 성공");
+		ModelAndView mav = new ModelAndView("member/customerlist");
 		//logger.info("info : "+map.toString());
 		mav.addObject("msg",msg);
 		
@@ -293,13 +296,14 @@ public class MemberController {
 	
 	@RequestMapping(value = "customer/newdate")
 	@ResponseBody
-	public ModelAndView newdate(@RequestParam int idx) {
+	public ModelAndView newdate(@RequestParam int idx,@RequestParam String gradeidx) {
 		logger.info("회원탈퇴 페이지  호출하기");
 		logger.info("member idx : "+idx);
+		logger.info("gradeidx  : "+gradeidx);
 		
 		String msg = service.newdate(idx);
 		
-		ModelAndView mav = new ModelAndView("customer/home");
+		ModelAndView mav = new ModelAndView("member/customerlist");
 		//logger.info("info : "+map.toString());
 		mav.addObject("msg",msg);
 		
