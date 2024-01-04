@@ -207,6 +207,8 @@ public class MemberController {
 		// params : {member_type=82, member_state=84, memberstate=80, name=ds, num=sdf, postal_code=sdf, street_address=sdf, detail_address=sdf, brithdate=sdf, gender=남}
 		
 		String msg = service.joinnum(params);
+		int cusnum = service.cusnum(params);
+		service.pointinsert(cusnum);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:/customer/home");
 		rAttr.addFlashAttribute("msg", msg);
@@ -272,7 +274,7 @@ public class MemberController {
 		logger.info("회원수정 페이지(save)  호출하기");
 		logger.info("member idx : "+params);
 		String msg = service.updatesave(params);
-		ModelAndView mav = new ModelAndView("member/detail");
+		ModelAndView mav = new ModelAndView("member/customerlist");
 		//logger.info("info : "+map.toString());
 		mav.addObject("msg",msg);
 		mav.addObject("idx",params.get("idx"));
@@ -296,12 +298,12 @@ public class MemberController {
 	
 	@RequestMapping(value = "customer/newdate")
 	@ResponseBody
-	public ModelAndView newdate(@RequestParam int idx,@RequestParam String gradeidx) {
+	public ModelAndView newdate(@RequestParam int idx,@RequestParam int gradeidx) {
 		logger.info("회원탈퇴 페이지  호출하기");
 		logger.info("member idx : "+idx);
 		logger.info("gradeidx  : "+gradeidx);
 		
-		String msg = service.newdate(idx);
+		String msg = service.newdate(idx,gradeidx);
 		
 		ModelAndView mav = new ModelAndView("member/customerlist");
 		//logger.info("info : "+map.toString());
