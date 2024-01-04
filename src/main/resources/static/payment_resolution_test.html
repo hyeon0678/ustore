@@ -195,22 +195,15 @@
 							</div>
 						</div><hr>
 						<div class="table-responsive">
-							<table class="table table-bordered">
+							<table id="specificDayOrder" class="table table-bordered">
 								<thead>
 									<tr class="fw-bold fs-6 text-gray-800">
 										<th>발주일자</th>
 										<th>발주번호</th>
-										<th>발주부서</th>
+										<th>발주사원</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td></td>
-										<td>
-											<a href="" class="text-gray-800 text-hover-primary mb-1">${orderNo}</a>
-										</td>
-										<td></td>
-									</tr>
+								<tbody>									
 								</tbody>								
 							</table>
 						</div>						
@@ -240,22 +233,23 @@
 					showDropdowns: true,
 					minYear: 1901,
 					maxYear: parseInt(moment().format("YYYY"),12)
-				}, function(start, end, label) {
+				}, function(start, label) {
 			        // 날짜가 선택됐을 때의 콜백 함수
-			        var selectedDate = start.format('YYYY-MM-DD');
+			        var orderDate = start.format('YYYY-MM-DD');
 			        // 선택한 날짜에 대한 데이터를 가져오는 함수 호출
-			        getOrderData(selectedDate);
+			        getOrderData(orderDate);
 				});
 				
 			});
 		});
 
-		function getOrderData(selectedDate){
+		function getOrderData(orderDate){
 			
 			$.ajax({
 				type : 'GET',
 				url: '/getorderlist', // 적절한 서버 엔드포인트로 수정
-		        data: { selectedDate: selectedDate },
+		        data: { orderDate: orderDate },
+		        dataType : 'JSON',
 		        success: function (data) {
 		            OrderListTable(data);
 		        },
@@ -266,15 +260,15 @@
 		}
 		
 		function OrderListTable(data){
-			var tableBody = $('#orderTable tbody');
+			var tableBody = $('#specificDayOrder tbody');
 		    tableBody.empty(); // 기존 데이터 삭제
 
 		    // 데이터를 반복하면서 테이블에 행을 추가
 		    $.each(data, function (index, order) {
 		        var row = '<tr>' +
 		                      '<td>' + order.orderDate + '</td>' +
-		                      '<td><a href="" class="text-gray-800 text-hover-primary mb-1">' + order.orderNo + '</a></td>' +
-		                      '<td>' + order.orderEmployee + '</td>' +
+		                      '<td><a href="" class="text-gray-800 text-hover-primary mb-1">' + order.orderIdx + '</a></td>' +
+		                      '<td>' + order.emp_idx + '</td>' +
 		                  '</tr>';
 		        tableBody.append(row);
 		    });

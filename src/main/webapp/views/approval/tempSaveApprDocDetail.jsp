@@ -249,6 +249,8 @@
 	console.log('apprTypeIdx:', apprTypeIdx);
 	
 	var apprContent;
+	var approvalLines = [];
+	var receivers = [];
 	
     function loadFormPage(formPage, common_idx, apprTypeIdx) {
         $.ajax({
@@ -269,23 +271,22 @@
         	switch (apprTypeIdx) {
             case '30':
             	var apprlineData = ${apprline};
-           	    // 가공된 데이터를 저장할 리스트
-           	    var apprline = [];
-           	    // 받아온 데이터를 가공하여 리스트에 저장
+           	    // 받아온 데이터를 가공하여 approvalLines 리스트에 저장
            	    for (var i = 0; i < apprlineData.length; i++) {
            	        var row = apprlineData[i];
            	        var processedData = {};
+           	        processedData.approverType = row.appr_type;
            	        processedData.approverName = row.approver;
            	     	processedData.approverDept = row.dept_name;
            	  		processedData.approverPos = row.positionType;
-           	        apprline.push(processedData);
+           	  		approvalLines.push(processedData);
            	    }
 
            	    // 가공된 데이터를 테이블에 동적으로 추가
            	    var apprTableBody = document.getElementById('approverTableBody');
 				var existingRows = apprTableBody.innerHTML;
-           	    for (var j = 0; j < apprline.length; j++) {
-           	        var rowData = apprline[j];
+           	    for (var j = 0; j < approvalLines.length; j++) {
+           	        var rowData = approvalLines[j];
 					
            	     	var deleteIcon = document.createElement('i');
 	     			deleteIcon.className = 'fa fa-trash';
@@ -295,7 +296,7 @@
 	     			};
            	        
            	        var rowHtml = '<tr>' +
-           	            '<td></td>' +
+           	            '<td>' + rowData.approverType + '</td>' +
            	            '<td>' + rowData.approverName + '</td>' +
            	            '<td>' + rowData.approverDept + '</td>' +
            	            '<td>' + rowData.approverPos + '</td>' +
@@ -306,7 +307,6 @@
            	 	apprTableBody.innerHTML = existingRows;
            	 	
             	var receiverData = ${receiver};
-            	var recvline = [];
            	    // 받아온 데이터를 가공하여 리스트에 저장
            	    for (var i = 0; i < receiverData.length; i++) {
            	        var row = receiverData[i];
@@ -314,14 +314,14 @@
            	        processedData.recvName = row.receiver;
            	     	processedData.recvDept = row.dept_name;
            	  		processedData.recvPos = row.positionType;
-           	  		recvline.push(processedData);
+           	  		receivers.push(processedData);
            	    }
            	    
            	 	var inputReceiver = document.getElementById("inputReceiver");
 
 		        // 이름들을 쉼표로 구분하여 문자열로 만듭니다.
-		        var namesString = recvline.map(function(item) {
-		            return item.recvName;
+		        var namesString = receivers.map(function(item) {
+		            return item.recvName+'('+item.recvDept+')';
 		        }).join(', ');
 		
 		        inputReceiver.value = namesString;
@@ -329,8 +329,8 @@
            	    // 가공된 데이터를 테이블에 동적으로 추가
            	    var recvTableBody = document.getElementById('receiverTableBody');
 				var existingRows = recvTableBody.innerHTML;
-           	    for (var j = 0; j < recvline.length; j++) {
-           	        var rowData = recvline[j];
+           	    for (var j = 0; j < receivers.length; j++) {
+           	        var rowData = receivers[j];
 					
 	           	    var deleteIcon = document.createElement('i');
 	     			deleteIcon.className = 'fa fa-trash';
@@ -407,7 +407,7 @@
 
 		        // 이름들을 쉼표로 구분하여 문자열로 만듭니다.
 		        var namesString = recvline.map(function(item) {
-		            return item.recvName;
+		            return item.recvName+'('+item.recvDept+')';
 		        }).join(', ');
 		
 		        inputReceiver.value = namesString;
@@ -495,7 +495,7 @@
 
 		        // 이름들을 쉼표로 구분하여 문자열로 만듭니다.
 		        var namesString = recvline.map(function(item) {
-		            return item.recvName;
+		            return item.recvName+'('+item.recvDept+')';
 		        }).join(', ');
 		
 		        inputReceiver.value = namesString;

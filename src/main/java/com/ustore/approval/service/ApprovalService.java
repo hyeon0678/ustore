@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ustore.approval.dao.ApprovalDao;
 import com.ustore.approval.dto.ApprovalDto;
 import com.ustore.employee.dto.EmployeeDto;
+import com.ustore.products.dto.OrderDto;
 
 @Service
 public class ApprovalService {
@@ -36,12 +37,17 @@ public class ApprovalService {
 			dto.setApprover(emp.get("name"));
 			dto.setApprOrder(Integer.parseInt(emp.get("apprOrder")));
 			dto.setApprConfirm(emp.get("apprConfirm"));
-			dto.setApprIdx(dto.getApprIdx());		
+			dto.setApprIdx(dto.getApprIdx());
+			dto.setApprType(emp.get("apprType"));
+			dto.setPositionType(emp.get("positionType"));
+			dto.setDeptName(emp.get("department"));
 			dao.saveApprLine(dto);
 		}
 		List<Map<String, String>> recvlist = dto.getReceivers();
 		for (Map<String, String> recv : recvlist) {
 			dto.setReceiver(recv.get("name"));
+			dto.setPositionType(recv.get("positionType"));
+			dto.setDeptName(recv.get("department"));
 			dao.saveApprRecv(dto);						    
 		}
 	}
@@ -57,12 +63,17 @@ public class ApprovalService {
 			dto.setApprover(emp.get("name"));
 			dto.setApprOrder(Integer.parseInt(emp.get("apprOrder")));
 			dto.setApprConfirm(emp.get("apprConfirm"));
-			dto.setApprIdx(dto.getApprIdx());			
+			dto.setApprIdx(dto.getApprIdx());
+			dto.setApprType(emp.get("apprType"));
+			dto.setPositionType(emp.get("positionType"));
+			dto.setDeptName(emp.get("department"));
 			dao.saveApprLine(dto);
 		}
 		List<Map<String, String>> recvlist = dto.getReceivers();
 		for (Map<String, String> recv : recvlist) {
 			dto.setReceiver(recv.get("name"));
+			dto.setPositionType(recv.get("positionType"));
+			dto.setDeptName(recv.get("department"));
 			dao.saveApprRecv(dto);						    
 		}		
 	}
@@ -94,9 +105,8 @@ public class ApprovalService {
 		return count > 0;
 	}
 
-	public void getOrderList(String orderDate) {
-		// TODO Auto-generated method stub
-		
+	public List<OrderDto> getOrderList(String orderDate) {
+		return dao.getOrderList(orderDate);
 	}
 
 

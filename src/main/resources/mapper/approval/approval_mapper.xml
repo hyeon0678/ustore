@@ -61,35 +61,43 @@
 	   
 	<insert id="saveContent" parameterType="ApprovalDto">
 		<selectKey keyProperty="apprIdx" order="AFTER" resultType="Integer">
-	       select lastval(appr_idx_sequence)
+	       select lastval(appr_idx_sequence)  <!-- 잘못된 부분 -->
 	    </selectKey>
 		<if test="commonIdx == 30">
             INSERT INTO business_draft (appr_idx, emp_idx, appr_subject, appr_content,  
             	appr_status, doc_step)
-            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, #{apprContent}, 40, 1);
+            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, #{apprContent}, 40, 1)
         </if>
         <if test="commonIdx == 31">
         	INSERT INTO payment_resolution (appr_idx, emp_idx, appr_subject,  
             	appr_status, doc_step, order_num)
-            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 40, 1, #{orderNum});            
+            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 40, 1, #{orderNum})            
         </if>
         <if test="commonIdx == 32">
             INSERT INTO req_vacation (appr_idx, emp_idx, appr_subject, 
                 appr_status, doc_step, leave_type, leave_start_date, leave_end_date, leave_reason)
             VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 40, 1, 
-            	#{leaveType}, #{leaveStartDate}, #{leaveEndDate}, #{leaveReason});
+            	#{leaveType}, #{leaveStartDate}, #{leaveEndDate}, #{leaveReason})
         </if>
 	</insert>
 	
 	<insert id="saveApprLine" parameterType="ApprovalDto">    
-	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm, appr_type_idx, appr_type)
-	        VALUES (#{empIdx}, #{apprIdx}, #{approver}, #{apprOrder}, #{apprConfirm}, #{apprTypeIdx}, #{apprType})
+	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm, appr_type)
+	        VALUES (#{empIdx}, #{apprIdx}, #{approver}, #{apprOrder}, #{apprConfirm}, #{apprType})
 	</insert>
 	
 	<insert id="saveApprRecv" parameterType="ApprovalDto">		    
 	        INSERT INTO recipient (emp_idx, appr_idx, receiver)
 	        VALUES (#{empIdx}, #{apprIdx}, #{receiver})	    
 	</insert>
+	
+	<select id="getOrderList" resultType="OrderDto">
+		SELECT DISTINCT o.order_date, o.order_idx, o.emp_idx 
+		FROM `order` o
+		JOIN order_detail od ON o.order_idx = od.order_idx 
+		WHERE o.order_date =#{orderDate} and od.conf_status = 'Y'	
+	</select>
+	
 
 	<select id="getTempList" resultType="ApprovalDto">
 		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
@@ -102,7 +110,7 @@
 		UNION
 		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
 		FROM req_vacation
-		WHERE emp_idx = #{emp_idx} AND appr_status = 43;		
+		WHERE emp_idx = #{emp_idx} AND appr_status = 43		
 	</select>	
 	
 

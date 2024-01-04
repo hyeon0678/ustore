@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ustore.approval.dto.ApprovalDto;
 import com.ustore.approval.service.ApprovalService;
 import com.ustore.employee.dto.EmployeeDto;
+import com.ustore.products.dto.OrderDto;
 
 @Controller
 public class ApprovalController {
@@ -202,10 +203,9 @@ public class ApprovalController {
     
     
     @GetMapping(value="/getorderlist")
-    public String getOrderList(@RequestBody String orderDate) {
-    	service.getOrderList(orderDate);
-    	
-    	return "";
+    public ResponseEntity<List<OrderDto>> getOrderList(@RequestParam String orderDate) {
+    	List<OrderDto> orderlist = service.getOrderList(orderDate);    	
+    	return new ResponseEntity<>(orderlist, HttpStatus.OK);
     }
     
     
@@ -215,9 +215,9 @@ public class ApprovalController {
 		 
 		String emp_idx = principal.getName(); 
 		dto.setEmpIdx(emp_idx);
-		logger.info("해당문서 기안번호 : "+dto.getApprIdx());
-		boolean recordExists = service.chkRecordExists(dto.getApprIdx());
 		
+		boolean recordExists = service.chkRecordExists(dto.getApprIdx());
+		logger.info("번호 중복여부 : "+recordExists);
 		if(!recordExists) {
 			service.tempSaveAppr(dto);		
 		}else {
@@ -237,13 +237,6 @@ public class ApprovalController {
 		 return "redirect:/approval/newapproval";
 	}	
 	 
-	@GetMapping(value="/approval/tempapproval/modify")
-	public String reSaveTempDoc(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
-		String emp_idx = principal.getName();
-		 dto.setEmpIdx(emp_idx);
-		 service.updateTempDoc(dto);
-		 rAttr.addFlashAttribute("msg",  "결재상신 되었습니다.");
-		 return "redirect:/approval/newapproval";
-	}
+	
 	
 }

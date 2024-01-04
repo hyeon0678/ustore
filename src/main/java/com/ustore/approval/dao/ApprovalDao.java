@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ustore.approval.dto.ApprovalDto;
 import com.ustore.employee.dto.EmployeeDto;
+import com.ustore.products.dto.OrderDto;
 
 @Mapper
 public interface ApprovalDao {
@@ -33,6 +34,8 @@ public interface ApprovalDao {
 	ArrayList<Map<String, Object>> getRecv(int apprIdx);
 
 	int chkRecordExists(Integer apprIdx);
+
+	List<OrderDto> getOrderList(String orderDate);
 
 
 
