@@ -11,18 +11,18 @@
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
+<!-- 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
 		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
-		<!--begin::Fonts(mandatory for all pages)-->
+		begin::Fonts(mandatory for all pages)
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Vendor Stylesheets(used for this page only)-->
+		end::Fonts
+		begin::Vendor Stylesheets(used for this page only)
 		<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
 		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Vendor Stylesheets-->
-		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+		end::Vendor Stylesheets
+		begin::Global Stylesheets Bundle(mandatory for all pages)
 		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" /> -->
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
@@ -87,7 +87,7 @@
 										<div class="menu-item">
 											<!--begin:Menu link-->
 											<!--// class="menu-link active" // 클래스 이름을 바꿔주면 활성화 된다-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/approval/newapproval">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -99,7 +99,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/approval/approvalreq">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -111,7 +111,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/approval/myapproval">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -123,7 +123,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/approval/tempapproval">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -135,7 +135,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/approval/teamapproval">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -512,10 +512,10 @@
 		<!--end::Scrolltop-->
 								
 		<!--begin::Javascript-->
-		<script>var hostUrl = "resource/assets/";</script>
-		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
+<!-- 		<script>var hostUrl = "resource/assets/";</script>
+		begin::Global Javascript Bundle(mandatory for all pages)
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="resource/assets/js/scripts.bundle.js"></script>
+		<script src="resource/assets/js/scripts.bundle.js"></script> -->
 		<!--end::Global Javascript Bundle-->
 		
 		

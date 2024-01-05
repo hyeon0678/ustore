@@ -29,12 +29,15 @@
            margin-left: 20px;
 		}
 		.signature-table td {
-				border: 1px solid #ddd;
-				padding: 10px;
-				text-align: center;
-				width: 80px;
+			border: 1px solid #ddd;
+			padding: 10px;
+			text-align: center;
+			width: 80px;
 		}
 		.signature-table th{
+			border: 1px solid #ddd;
+			padding: 10px;
+			text-align: center;
 			height: 25px;
 		}
 	</style>
@@ -45,6 +48,8 @@
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
+		<%-- <jsp:include page="/views/common/header.jsp"></jsp:include> --%>
+				
 		<!--begin::Main-->
 		<!--begin::Root-->
 		<div class="d-flex flex-column flex-root">
@@ -53,8 +58,9 @@
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px">
 					<!--================================메인 내용들어가는부분================================================-->
+					<%-- <jsp:include page="/views/common/sidebar.jsp"></jsp:include> --%>
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
@@ -193,11 +199,11 @@
 						<!-- 아래쪽 div -->
 						<c:if test="${commentsExist}">
 							<div>
-								<div class="apprreceiver border"  style="align-items: center; margin: 5px;">
+								<div class="comment border"  style="align-items: center; margin: 5px;">
 									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
 										<span class="text-center">결재의견(반려, 수정)</span>
 									</div>										
-									<div class="d-flex flex-column receiver scroll" id="receiver" style="height: 100px;">
+									<div class="d-flex flex-column commentTable scroll" id="comment" style="height: 100px;">
 										<div style="overflow: auto;">
 											<table class="w-100">
 												<thead>
@@ -448,19 +454,8 @@
 		    var cell4 = newRow.insertCell(3);
 		    var cell5 = newRow.insertCell(4);
 	
-		 	// 결재타입을 선택할 수 있는 selectbox 생성
-	        var apprTypeSelect = document.createElement('select');
-
-	        apprTypeSelect.innerHTML = `
-	            <option value='기안' ${approvalData.apprType eq '기안' ? 'selected' : ''}>기안</option>
-	            <option value='결재' ${approvalData.apprType eq '결재' ? 'selected' : ''}>결재</option>
-	        `;
-
-	        // selectbox에 change 이벤트 리스너 추가
-	        apprTypeSelect.addEventListener('change', function () {
-	            approvalData.apprType = this.value;
-	        });
-	        cell1.appendChild(apprTypeSelect);
+		 		        
+	        cell1.innerHTML = approvalData.apprType;
 		    cell2.innerHTML = approvalData.name;
 		    cell3.innerHTML = approvalData.positionType;
 		    cell4.innerHTML = approvalData.department;
@@ -472,8 +467,8 @@
 		        removeEmpFromApprLines(approvalData);
 		    };
 		    cell5.appendChild(deleteIcon);	
-		    cell5.style.width='30px';
-		    
+		    cell5.style.width='30px';		    
+		 		    
 		 	// 선택한 노드 정보를 행에 저장 (data-node 필요)
 		    newRow.setAttribute('data-node', JSON.stringify(approvalData));
 	    }else{
@@ -481,19 +476,62 @@
 	    }
 	}
 
-	function removeEmpFromApprLines(empToRemove){
-		var index = -1;
+	function removeEmpFromApprLines(empToRemove) {
+	    var index = -1;
 	    for (var i = 0; i < approvalLines.length; i++) {
-	        if (JSON.stringify(approvalLines[i]) == JSON.stringify(empToRemove)) {
+	        if (JSON.stringify(approvalLines[i]) === JSON.stringify(empToRemove)) {
 	            index = i;
 	            break;
 	        }
 	    }
-	    if (index != -1) {
+
+	    if (index !== -1) {
+	        // 결재 순서 변경
+	        for (var i = index + 1; i < approvalLines.length; i++) {
+	            var currentOrder = parseInt(approvalLines[i].apprOrder, 10);
+	            approvalLines[i].apprOrder = (currentOrder - 1).toString();
+	        }
+
 	        approvalLines.splice(index, 1);
-	        console.log("삭제 후 결재선 :", approvalLines);
-	    }	
+	        console.log("삭제 후 결재선:", approvalLines);
+
+	        // 테이블 UI 업데이트
+	        updateApprLineTable();
+	    }
 	}
+	
+	// 결재선 테이블의 UI를 업데이트하는 함수
+	function updateApprLineTable() {
+	    var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
+	    tbody.innerHTML = ""; // 테이블 내용 비우기
+
+	    // 새로운 테이블 내용 추가
+	    for (var i = approvalLines.length - 1; i >= 0; i--) {
+	        var newRow = tbody.insertRow(-1);
+	        var cell1 = newRow.insertCell(0);
+	        var cell2 = newRow.insertCell(1);
+	        var cell3 = newRow.insertCell(2);
+	        var cell4 = newRow.insertCell(3);
+	        var cell5 = newRow.insertCell(4);
+
+	        cell1.innerHTML = approvalLines[i].apprType;
+	        cell2.innerHTML = approvalLines[i].name;
+	        cell3.innerHTML = approvalLines[i].positionType;
+	        cell4.innerHTML = approvalLines[i].department;
+
+	        var deleteIcon = document.createElement('i');
+	        deleteIcon.className = 'fa fa-trash';
+	        deleteIcon.onclick = function () {
+	            newRow.remove();
+	            removeEmpFromApprLines(approvalLines[i]);
+	        };
+	        cell5.appendChild(deleteIcon);
+	        cell5.style.width = '30px';
+
+	        newRow.setAttribute('data-node', JSON.stringify(approvalLines[i]));
+	    }
+	}
+	
 	
 	
 	// 조직도에서 수신자 추가하는 버튼 함수
@@ -802,8 +840,12 @@
             contentType: 'application/json',
             data: JSON.stringify(ApprovalDto),
             success: function(response) {
+                console.log('임시저장이 완료되었습니다.');
                 alert('임시저장이 완료되었습니다.');
             },
+            complete : function(){
+	        	location.href='/approval/newapproval';
+	        },
             error: function(error) {
                 console.error('임시저장 중 오류가 발생했습니다.', error);
             }
@@ -869,7 +911,10 @@
 	        data: JSON.stringify(ApprovalDto),
 	        success: function (response) {
 	            console.log('문서가 결재상신 되었습니다.');
-	            alert('문서가 결재 상신되었습니다.');
+	            alert('문서가 결재상신 되었습니다.');	            
+	        },
+	        complete : function(){
+	        	location.href='/approval/newapproval';
 	        },
 	        error: function (error) {
 	            console.error('결재상신 중 오류가 발생했습니다.');
