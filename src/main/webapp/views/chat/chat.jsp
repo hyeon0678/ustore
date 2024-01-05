@@ -388,11 +388,8 @@
     let clickCnt = 0;
     // 
 	$(document).ready(function(){
-		headerOnReady(function (){
-			stompClient.subscribe('/topic/chatRoom', function(){
-				callChatRoomList();
-			})
-		});
+		
+		headerOnReady()
 		console.log("socket connection");
 		getCurrentTime()
 		$('#send-msg').prop('disabled', true);
@@ -611,6 +608,7 @@
 				$('.chat-msg-tool-bar').css({'display':'flex'});
 				participantsList();
 				quitRoom();
+				callChatRoomList();
 			}
 			
 		});
@@ -636,20 +634,20 @@
 	
 	function drawChatHistory(data){
 		$('#msg-content').empty();
+		console.log(data);
 		for(let message of data){
 			content = ""
 			let date = getCurrentTime(message.sendDate)
 			console.log("chat history")
-			if(message.sender == 'system'){
-				continue;
-			}
-			if(message.sender == username){
+			if(message.sender == 'system' && message.data != null){
+				content += "<div class='fs-5 menu-title' style='text-align:center;margin:50px 0px; color:#78829D'>"+message.data+"</div>"
+			}else if(message.sender == username){
 				content+="<div class='d-flex justify-content-end mb-10'>"
 				content+="<div class='d-flex flex-column align-items-end'>"
 				content+="<div class='d-flex align-items-center mb-2'>"
 				content+="<div class='me-3'><a class='fs-5 fw-bold text-gray-900 ms-1'>"
 				content+="나 </a></div></div>"
-				content+="<div class='p-5 rounded bg-light-primary text-gray-900 fw-semibold mw-lg-400px text-end' data-kt-element='message-text'>" 
+				content+="<div class='p-5 rounded bg-light-success text-gray-900 fw-semibold mw-lg-400px text-end' data-kt-element='message-text'>" 
 				content+=message.data+"</div><p>"+date+"</p></div></div>"
 			}else{
 				content += "<div class='d-flex justify-content-start mb-10'>"
@@ -694,10 +692,9 @@
 			content = ""
 			let date = getCurrentTime(message.sendDate)
 			console.log("chat history")
-			if(message.sender == 'system' && data != ''){
-				content += "<p>"+message.data+"</p>"
-			}
-			if(message.sender == username){
+			if(message.sender == 'system' && message.data != null){
+				content += "<div class='fs-5 menu-title' style='text-align:center;margin:50px 0px; color:#78829D'>"+message.data+"</div>"
+			}else if(message.sender == username){
 				content+="<div class='d-flex justify-content-end mb-10'>"
 				content+="<div class='d-flex flex-column align-items-end'>"
 				content+="<div class='d-flex align-items-center mb-2'>"
@@ -790,7 +787,7 @@
 	}
 
 	function quitRoom(){
-		subscription.unsubscribe('/topic/chat/'+roomNum);
+		
 		$('.quit-room').on('click', function(){
 			$.ajax({
 				data:{
@@ -806,6 +803,7 @@
 					$('.chat-msg-tool-bar').css({'display':'none'});
 					$('#send-msg').prop('disabled', true);
 					$('#msg-box').prop('readonly', true);
+					subscription.unsubscribe('/topic/chat/'+roomNum);
 					callChatRoomList()
 				},error:function(error){
 					console.log(error);				

@@ -1,5 +1,7 @@
 package com.ustore.main.dto;
 
+import java.sql.Date;
+
 public class EmployeeUserDto {
 	private String empIdx;
 	private String empPw;
@@ -10,8 +12,22 @@ public class EmployeeUserDto {
 	private String position;
 	private String department;
 	private String name;
+	private String empQuit;
+	private Date empChangepwDate; 
 	
 	
+	public Date getEmpChangepwDate() {
+		return empChangepwDate;
+	}
+	public void setEmpChangepwDate(Date empChangepwDate) {
+		this.empChangepwDate = empChangepwDate;
+	}
+	public String getEmpQuit() {
+		return empQuit;
+	}
+	public void setEmpQuit(String empQuit) {
+		this.empQuit = empQuit;
+	}
 	public EmployeeUserDto(String empIdx, String empPw) {
 		this.empIdx = empIdx;
 		this.empPw = empPw;

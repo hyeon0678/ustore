@@ -27,13 +27,6 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		registry.setUserDestinationPrefix("/user");
 	}
 
-//
-//	@Bean
-//	public CsrfTokenRepository csrfTokenRepository() {
-//		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-//		repository.setSessionAttributeName("_csrf");
-//		return repository;
-//	}
 
 
 }
