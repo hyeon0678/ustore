@@ -203,12 +203,29 @@ public class OrderController {
 		return orderListModal;
 	}
 	
-	
-	@GetMapping(value = "/modal")
-	public String modaltest() {
+	@GetMapping(value = "order/orderdriver/list")
+	@ResponseBody
+	public ArrayList<OrderDto> driverList(HttpSession session,Model model){
+		
+		String birthdateString  = (String) session.getAttribute("birthdate");
+		if (birthdateString == null) {
+		    birthdateString = "01/01/2100";
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		
+		LocalDate birthdate = LocalDate.parse(birthdateString, formatter);
+		
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String formattedBirthdate = birthdate.format(outputFormatter);
 		
 		
+		ArrayList<OrderDto> list3 = service.driveList(formattedBirthdate); // 배달기사 리스트
+
 		
-		return "products/order2";
+		return list3;
 	}
+	
 }
+
+

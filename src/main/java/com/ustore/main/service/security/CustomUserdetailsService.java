@@ -29,6 +29,9 @@ public class CustomUserdetailsService implements UserDetailsService{
 		EmployeeUserDto customUser = employeeUserDao.getUser(username);
 		if(customUser == null)
 			throw new UsernameNotFoundException("아이디에 해당하는 사용자를 찾을 수 없습니다");
+		else if(customUser.getEmpQuit().equals("Y")) {
+			throw new UsernameNotFoundException("아이디에 해당하는 사용자를 찾을 수 없습니다");
+		}
 		
 		CustomUserDetails customUserDetails = new CustomUserDetails();
 		customUserDetails.setUsername(customUser.getEmpIdx());

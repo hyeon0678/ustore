@@ -1,5 +1,6 @@
  <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -23,6 +24,9 @@
 	<!--begin::Body-->
 	<body>
 		<!--begin::Header-->
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="principal"/>
+		</sec:authorize>
 					<div style="height: 90; background-color: #255000;">
 					<div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
 						<!--begin::Container-->
@@ -168,34 +172,7 @@
 													role="tabpanel">
 													<!--begin::Items-->
 													<div class="scroll-y mh-325px my-5 px-8" style="height: 500px;" id="alarm-box">
-														<!--====================알림 리스트가 그려지는 시작 공간============================-->
-
-														<!--begin::Item >>> 리스트 예시 -->
-														<div class="d-flex flex-stack py-4">
-															<!--begin::Section-->
-															<div class="d-flex align-items-center">
-																<!--begin::Title-->
-																<div class="mb-0 me-2">
-																	<a href="#"
-																		class="fs-6 text-gray-800 text-hover-primary fw-bold">라면이
-																		들어오는 일정</a>
-
-																	<div class="text-gray-500 fs-7">오뚜기 라면 예정 13:00이니까
-																		준비를 해야.....</div>
-																</div>
-																<!--end::Title-->
-															</div>
-															<!--end::Section-->
-															<!--begin::Label-->
-															<div class="mb-0 me-2">
-																<span style="float: right; margin-bottom: 5px;"
-																	class="badge badge-light fs-8 read-alarm">X</span><br>
-																<span style="display:none">알림 번호</span>
-																<span class="badge badge-light fs-8">YYYY.MM.DD.HH:mm</span>
-																<!--end::Label-->
-															</div>
-														</div>
-														<!--end::Item >>> 리스트 예시 끝-->
+														
 													</div>
 													<!--end::Items-->
 
@@ -231,9 +208,9 @@
 													<!--begin::Username 유저의 이름과 소속-->
 													<!--================================유저 모달창 이름과 소속 들어갈 부분================================================-->
 													<div class="d-flex flex-column">
-														<div class="fw-bold d-flex align-items-center fs-5">곽두팔 
+														<div class="fw-bold d-flex align-items-center fs-5">${principal.name} 
 														</div>
-														<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">매장관리팀(팀장)</a>
+														<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">${principal.department}(${principal.position})</a>
 													</div>
 													<!--end::Username-->
 												</div>
@@ -262,8 +239,8 @@
 				</div>
 					<!--end::Header-->					
 		<!--begin::Javascript-->
- 		<script>var hostUrl = "resource/assets/";</script>
-		<!-- begin::Global Javascript Bundle(mandatory for all pages) -->
+		
+		<script>var hostUrl = "resource/assets/";</script>
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
@@ -272,21 +249,35 @@
 	<script type="text/javascript">
 	let socket = null;
     let stompClient = null;
-    
-   	function headerOnReady(){
+    let user = '${principal.username}'
+   	
+    function headerOnReady(){
    		socket = new SockJS('http://localhost:80/ws');
+   		console.log('user : '+user);
 	    stompClient = Stomp.over(socket);
 	    stompClient.connect({}, function(frame){
 	    	console.log("webSocket is connected");
-	    	stompClient.subscribe('/user/alarm',alarmReceived);
-		    stompClient.subscribe('/user/chatAlarm',chatReceived);
+	    	stompClient.subscribe('/topic/'+user, function (message) {
+	    		console.log('-------------------');
+	    		alarmReceived(message);
+	    	});
+	    	console.log(window.location.pathname);
+	    	if(window.location.pathname == '/chat'){
+	    		stompClient.subscribe('/topic/chatRoom', function(){
+					callChatRoomList();
+				})	
+	    	}
 	    }, onError);
+	    
+	    return 'ok';
 	    
    	}
     
     function alarmReceived(payload){
-		var message = JSON.parse(payload.body);
-		if(message == 'EXIST'){
+		var message = payload.body;
+		if(message == 'ALARMEXIST'){
+			console.log('alarm'+message);
+		}else if(message == 'CHATEXIST'){
 			console.log('alarm'+message);
 		}else{
 			console.log('alarm'+message);
@@ -317,6 +308,10 @@
 			}
 		})
 	})
+	
+	$('#alarm-box').on('click',function(){
+		
+	})
 	$('.read-alarm').on('click', function(){
 		// parent -> next -> parent
 		$(this)
@@ -331,6 +326,7 @@
 			}
 		})
 	})
+	
 	
 	</script>
 	<script>
@@ -376,8 +372,5 @@
 	}
 
 </script>
-
-
- 
 	
 </html>

@@ -15,4 +15,28 @@
 	UPDATE total_point SET total_point =#{param1} WHERE member_idx =#{param2}
 </update>
 
+<!-- 카트 정보 가져오기 -->
+<select id="payCart" resultType="com.ustore.pos.dto.PosDto">
+	SELECT pc.product_id , pc.quantity, p2.selling_price FROM payment_cart pc LEFT JOIN products p2 ON pc.product_id =p2.product_id 
+	WHERE member_id = #{param1}
+</select>
+
+<!-- 결제 상세 값 넣기 -->
+<insert id="inPaymentsDetail">
+		INSERT INTO payments_detail (payment_id, product_id, selling_price, quantity)
+		 VALUES
+	<foreach collection="list" item="item" separator=",">
+       (#{merchant_uid}, #{item.productId}, #{item.sellingPrice}, #{item.quantity})
+	</foreach>
+</insert>
+
+<!-- 재고 감소 -->
+<update id="stockDown">
+	UPDATE products SET stock =((SELECT stock FROM products WHERE product_id =#{param1})-#{param2}) WHERE product_id =#{param1}
+</update>
+
+<!-- 장바구니 초기화 -->
+<delete id="delCart">
+	DELETE FROM payment_cart WHERE member_id = #{param1}
+</delete>
 </mapper>

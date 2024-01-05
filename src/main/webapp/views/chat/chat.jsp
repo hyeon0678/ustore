@@ -84,10 +84,10 @@
 			<!--begin::Wrapper-->
 			<div class="wrapper d-flex flex-column flex-row-fluid"
 				id="kt_wrapper">
-
+			<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 				<!--================================메인 내용들어가는부분================================================-->
 				<!--begin::Content-->
-				<div class="content fs-6 d-flex flex-column flex-column-fluid"
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"
 					id="kt_content"
 					style="margin-top: 10px; background-color: #fffff8;">
 					<!--<h1 class="text-gray-900 fw-bold my-1 fs-2">채팅</h1>-->
@@ -388,19 +388,16 @@
     let clickCnt = 0;
     // 
 	$(document).ready(function(){
-		headerOnReady();
+		
+		headerOnReady()
 		console.log("socket connection");
 		getCurrentTime()
 		$('#send-msg').prop('disabled', true);
 		$('#msg-box').prop('readonly', true);
-		stompClient.subscribe('/user/chatRoom', function(){
-			callChatRoomList();
-		});
-		//connect();
-	    if(stompClient.connected){
-	    	console.log("websocket connected");
-	    }
+		
 	});
+	
+	
 	$('#search-btn').on('click', function(){
 		let keyword = $('#search-input').val();
 		searchTreeData = [];
@@ -611,6 +608,7 @@
 				$('.chat-msg-tool-bar').css({'display':'flex'});
 				participantsList();
 				quitRoom();
+				callChatRoomList();
 			}
 			
 		});
@@ -636,20 +634,20 @@
 	
 	function drawChatHistory(data){
 		$('#msg-content').empty();
+		console.log(data);
 		for(let message of data){
 			content = ""
 			let date = getCurrentTime(message.sendDate)
 			console.log("chat history")
-			if(message.sender == 'system'){
-				continue;
-			}
-			if(message.sender == username){
+			if(message.sender == 'system' && message.data != null){
+				content += "<div class='fs-5 menu-title' style='text-align:center;margin:50px 0px; color:#78829D'>"+message.data+"</div>"
+			}else if(message.sender == username){
 				content+="<div class='d-flex justify-content-end mb-10'>"
 				content+="<div class='d-flex flex-column align-items-end'>"
 				content+="<div class='d-flex align-items-center mb-2'>"
 				content+="<div class='me-3'><a class='fs-5 fw-bold text-gray-900 ms-1'>"
 				content+="나 </a></div></div>"
-				content+="<div class='p-5 rounded bg-light-primary text-gray-900 fw-semibold mw-lg-400px text-end' data-kt-element='message-text'>" 
+				content+="<div class='p-5 rounded bg-light-success text-gray-900 fw-semibold mw-lg-400px text-end' data-kt-element='message-text'>" 
 				content+=message.data+"</div><p>"+date+"</p></div></div>"
 			}else{
 				content += "<div class='d-flex justify-content-start mb-10'>"
@@ -681,12 +679,12 @@
 	
 	function onMessageReceived(payload){
 		var message = JSON.parse(payload.body);
+		console.log(message);
 		setRead(message.roomNum, message.chatIdx);
 		console.log(message);
 		let data = [];
 		data.push(message);
 		drawReceivedData(data);
-		//callChatRoomList();
 	}
 	
 	function drawReceivedData(data){
@@ -694,10 +692,9 @@
 			content = ""
 			let date = getCurrentTime(message.sendDate)
 			console.log("chat history")
-			if(message.sender == 'system'){
-				continue;
-			}
-			if(message.sender == username){
+			if(message.sender == 'system' && message.data != null){
+				content += "<div class='fs-5 menu-title' style='text-align:center;margin:50px 0px; color:#78829D'>"+message.data+"</div>"
+			}else if(message.sender == username){
 				content+="<div class='d-flex justify-content-end mb-10'>"
 				content+="<div class='d-flex flex-column align-items-end'>"
 				content+="<div class='d-flex align-items-center mb-2'>"
@@ -790,6 +787,7 @@
 	}
 
 	function quitRoom(){
+		
 		$('.quit-room').on('click', function(){
 			$.ajax({
 				data:{
@@ -805,6 +803,7 @@
 					$('.chat-msg-tool-bar').css({'display':'none'});
 					$('#send-msg').prop('disabled', true);
 					$('#msg-box').prop('readonly', true);
+					subscription.unsubscribe('/topic/chat/'+roomNum);
 					callChatRoomList()
 				},error:function(error){
 					console.log(error);				

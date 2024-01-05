@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.ustore.dashboard.dao.DashboardDao">
+
+<select id="accountingDashboard" resultType="DashboardDto">
+SELECT products.product_name, SUM(payments_detail.selling_price) AS selling_price, payments.payment_date
+FROM payments_detail
+INNER JOIN products ON payments_detail.product_id = products.product_id
+INNER JOIN payments ON payments_detail.payment_id = payments.payment_id
+GROUP BY products.product_name, payments.payment_date
+ORDER BY selling_price DESC
+LIMIT 5;
+
+</select>
+
+<select id="accountingDashboardDay" resultType="DashboardDto">
+SELECT products.product_name, SUM(payments_detail.selling_price) AS selling_price, payments.payment_date
+FROM payments_detail
+INNER JOIN products ON payments_detail.product_id = products.product_id
+INNER JOIN payments ON payments_detail.payment_id = payments.payment_id
+WHERE payments.payment_date BETWEEN #{trfirstSelectedDate} AND #{trlastSelectedDate}
+GROUP BY products.product_name, payments.payment_date
+ORDER BY selling_price DESC
+LIMIT 5;
+
+</select>
+
+    
+   
+
+</mapper>

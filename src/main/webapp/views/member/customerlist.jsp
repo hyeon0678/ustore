@@ -51,7 +51,7 @@
 		<!--end::Theme mode setup on page load-->
 		<!--begin::Main-->
 		<!--begin::Root-->
-		<div class="d-flex flex-column flex-root">
+		<div class="d-flex flex-column flex-root" >
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid" style="background-color: white;">
 				<!--begin::Wrapper-->

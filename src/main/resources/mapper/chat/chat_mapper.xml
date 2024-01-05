@@ -19,26 +19,14 @@
 
 <select id="selectChatRoomList" resultType="chatRoomDto">
 	SELECT cr.chat_room_idx, cr.chat_room_name, cr.is_individual,
-	CASE WHEN (
-        (SELECT MAX(csh.chat_date) 
+	(SELECT MAX(csh.chat_date) 
         FROM chat_sent_history csh
-        WHERE csh.chat_room_idx = cp.chat_room_idx) IS NULL)
-    THEN 0
-    ELSE (SELECT MAX(csh.chat_date) 
-        FROM chat_sent_history csh
-        WHERE csh.chat_room_idx = cp.chat_room_idx) END AS max_sent_date,
-    CASE WHEN (
-        (SELECT MAX(csh.chat_date)
+        WHERE csh.chat_room_idx = cp.chat_room_idx) AS max_sent_date,
+    (SELECT MAX(csh.chat_date)
         FROM chat_sent_history csh 
         LEFT OUTER JOIN chat_received_history crh 
         ON crh.chat_room_idx = csh.chat_room_idx  
-        WHERE crh.chat_room_idx = cp.chat_room_idx) IS NULL)
-    THEN 0
-    ELSE (SELECT MAX(csh.chat_date)
-        FROM chat_sent_history csh 
-        LEFT OUTER JOIN chat_received_history crh 
-        ON crh.chat_room_idx = csh.chat_room_idx  
-        WHERE crh.chat_room_idx = cp.chat_room_idx) END AS max_received_date,
+        WHERE crh.chat_room_idx = cp.chat_room_idx) AS max_received_date,
 	(SELECT COUNT(crh.`read`) 
 		FROM chat_received_history crh
 		WHERE crh.chat_room_idx = cp.chat_room_idx and crh.receiver like #{param1} and crh.`read` like 'N') read_cnt
@@ -77,6 +65,28 @@
 	LEFT OUTER JOIN common c
 	ON e.position = c.common_idx
 	WHERE cp.chat_room_idx = #{param1}
+</select>
+
+<select id="selectUser" resultType="Participant">
+	SELECT cp.emp_idx, e.emp_name AS name, d.dept_name AS department,CONCAT(e.emp_name,'(',d.dept_name,c.common_type,')') AS empInfo
+	FROM chat_participants cp 
+	LEFT OUTER JOIN employee e
+	ON cp.emp_idx = e.emp_idx
+	LEFT OUTER JOIN department d
+	ON e.dept_id = d.dept_id
+	LEFT OUTER JOIN common c
+	ON e.position = c.common_idx
+	WHERE cp.chat_room_idx = #{param1}
+</select>
+
+<select id="selectUserInfo" resultType="String">
+	SELECT CONCAT(e.emp_name,'(',d.dept_name,c.common_type,')')
+	FROM employee e
+	LEFT OUTER JOIN department d
+	ON e.dept_id = d.dept_id
+	LEFT OUTER JOIN common c
+	ON e.position = c.common_idx
+	WHERE e.emp_idx = #{param1}
 </select>
 
 <insert id="insertSendMsg"

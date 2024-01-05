@@ -43,6 +43,7 @@
 <script>
 	// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }
 </script>
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -83,21 +84,56 @@
 
 			<div class="wrapper d-flex flex-column flex-row-fluid"
 				id="kt_wrapper">
-				<!--begin::Content-->
-				<div class="content fs-6 d-flex flex-column flex-column-fluid"
-					id="kt_content"
-					style="margin-top: 90px; background-color: #fffff8;">
+				<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 					<h1 class="text-gray-900 fw-bold my-1 fs-2"
 						style="margin-left: 50px;">발주 리스트</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--사이드바 넣는곳  -->
-					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
+					
 
 					<!-- 사이드바 닫는곳 -->
 
 					<!--begin::Post-->
 					<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
-						<!--begin::Container-->
+						<!--begin::Container--><div class="card card-flush mb-0" data-kt-sticky="false" data-kt-sticky-name="inbox-aside-sticky" data-kt-sticky-offset="{default: false, xl: '100px'}" data-kt-sticky-height="300px" data-kt-sticky-width="{lg: '275px'}" data-kt-sticky-left="auto" data-kt-sticky-top="100px" data-kt-sticky-animation="false" data-kt-sticky-zindex="95">
+											<!--begin::Aside content-->
+											<div class="card-body">
+												<!--==========================================서브 사이드바 컨텐츠 리스트==================================================================-->											
+													<!--begin::Menu-->
+													<div class="menu menu-column menu-rounded menu-state-bg menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary ">
+														<!--begin::Menu item-->
+														
+														<!--end::Menu item-->
+														<!--begin::Menu item-->
+														<div class="menu-item mb-3" onclick="location.href='/order/list';">
+															<!--begin::Inbox  href="/customer/general" -->
+															<span class="menu-link" >
+																<span class="menu-icon"><img src="resource/assets/media/icon/side_products.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"></span>
+																
+																<span class="menu-title fw-bold">발주</span>
+															</span>
+															<!--end::Inbox-->
+														</div>
+														<div class="menu-item mb-3">
+															<!--begin::Inbox-->
+															<span class="menu-link active">
+																<span class="menu-icon"><img src="resource/assets/media/icon/side_products.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"></span>
+																
+																<span class="menu-title fw-bold">발주 리스트</span>
+															</span>
+															<!--end::Inbox-->
+														</div>
+														<!--end::Menu item-->
+														<!--begin::Menu item-->
+														
+														<!--end::Menu item-->
+													</div>
+													<!--end::Menu-->
+													
+											</div>
+											<!--end::Aside content-->
+										</div>
 						<div class="container-xxl">
 							<!--begin::Category-->
 							<div class="card card-flush">
@@ -134,7 +170,7 @@
 										<thead>
 											<tr class="text-start fw-bold fs-7 text-uppercase gs-0"
 												style="color: #c6da52;">
-												<th class="w-150px pe-2">입고 예정일</th>
+												<th class="w-150px pe-2">입고 날짜</th>
 												<th class="min-w-150px">발주 번호</th>
 												<th class="min-w-650px">차량 번호</th>
 												<th class="text-end min-w-70px">배송기사

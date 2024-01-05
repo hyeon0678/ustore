@@ -51,7 +51,7 @@ insert into schedule(
 </insert>
 
 <select id="profilecalendar" resultType="Map" parameterType="String">
-	select * from schedule 
+	select * from schedule where emp_idx = #{empIdx}
 </select>
 
 <insert id="attendance" parameterType="EmpProrileDto">
@@ -67,7 +67,7 @@ insert into schedule(
 	, reg_by
 	)
 	values(
-	'테스트'
+	#{emp_idx}
 	, #{event_start_date}
 	, #{event_start_date}
 	, '출근'
@@ -92,7 +92,7 @@ insert into schedule(
 	, reg_by
 	)
 	values(
-	'테스트'
+	#{emp_idx}
 	, #{event_start_date}
 	, #{event_start_date}
 	, '퇴근'
@@ -104,31 +104,6 @@ insert into schedule(
 	)
 </insert>
 
-<!-- <insert id="attSet" parameterType="EmpProrileDto">
-insert into schedule(
-	emp_idx
-	, sch_start_date
-	, sch_end_date
-	, sch_content
-	, sch_subject
-	, sch_start_time 
-	, sch_end_time 
-	, sch_type 
-	, reg_by
-	)
-	values(
-	#{emp_idx}
-	, #{event_start_date}
-	, #{event_start_date}
-	, '출근 정보 미입력'
-	, '출근 정보 미입력'
-	, #{event_start_time}
-	, #{event_start_time}
-	, -12
-	, #{emp_idx}
-	)
-</insert> -->
-
 <delete id="employeDel">
 	DELETE FROM schedule WHERE sch_idx = #{param1}
 </delete>
@@ -138,15 +113,21 @@ insert into schedule(
 </delete>
 
 <select id="attCheck" resultType="Integer">
-SELECT COUNT(*) FROM schedule WHERE sch_subject = '출근' AND DATE(sch_start_date) = CURDATE()
+SELECT COUNT(*) FROM schedule WHERE sch_subject = '출근' AND DATE(sch_start_date) = CURDATE() and emp_idx = #{emp_idx}
 </select>
 
 <select id="levCheck" resultType="Integer">
-SELECT COUNT(*) FROM schedule WHERE sch_subject = '퇴근' AND DATE(sch_start_date) = CURDATE()
+SELECT COUNT(*) FROM schedule WHERE sch_subject = '퇴근' AND DATE(sch_start_date) = CURDATE() and emp_idx = #{emp_idx}
 </select>
 
-<select id="homeProfileDetail" resultType="EmployeeDto">
-select * from employee where emp_idx = #{param1}
+<select id="homeProfileDetail" resultType="EmpProrileDto">
+select emp_idx, e.emp_name, d.dept_name, e.emp_ext_no, c.common_type, e.emp_join_date, e.emp_phone, e.emp_email, e.emp_roadAddr, e.emp_detailAddr 
+from employee e 
+inner join department d
+on d.dept_id = e.dept_id
+inner join common c 
+on c.common_idx = e.`position`
+where e.emp_idx = #{param1}
 </select>
 
 </mapper>

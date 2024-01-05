@@ -1,37 +1,31 @@
 package com.ustore.employee.controller;
 
-import java.net.http.HttpRequest;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.junit.runners.Parameterized.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ustore.employee.dto.EmpProrileDto;
 import com.ustore.employee.dto.EmployeeDto;
 import com.ustore.employee.service.EmpProfileService;
-import com.ustore.main.service.security.CustomUserDetails;
-import com.ustore.main.service.security.CustomUserdetailsService;
 
 @EnableScheduling
 @Controller
@@ -49,18 +43,47 @@ public class EmpProfileController {
 	
 	
 	@GetMapping("/employee/home")
-	public ModelAndView home(Principal principal) {
-		String empIdx = principal.getName();
-		
-		logger.info("로그인 아이디 : "+empIdx);
-		
-		EmployeeDto dto = service.homeProfileDetail(empIdx);
-		
+	public ModelAndView home(Principal principal, HttpSession session)throws Exception {
+
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("employee", dto);
-		mav.setViewName("employee/profile");
+
+		try {
+			String emp_idx = principal.getName();
+			
+			logger.info("emp_idx = " + emp_idx);
+			logger.info("session = " + session);
+			
+			EmpProrileDto dto = service.homeProfileDetail(emp_idx);
+			
+			session.setAttribute("emp_idx", dto.getEmp_idx());
+			String empidx = (String) session.getAttribute("emp_idx");
+			
+			session.setAttribute("dept_id", dto.getDeptname());
+			String deptId = (String) session.getAttribute("dept_id");
+			
+			session.setAttribute("position", dto.getCommontype());
+			String position = (String) session.getAttribute("position");
+			
+			logger.info("직원 이름 : " + empidx);
+			logger.info("직원 부서 : " + deptId);
+			logger.info("로그인 아이디 : "+emp_idx);
+			logger.info("직원 직급 : " + position);
+			
+			mav.addObject("employee", dto);
+			mav.setViewName("employee/profile");
+			
+			logger.info("로그인 성공");
+			
+			return mav;
 		
-		return mav;
+		}catch(NullPointerException e){
+			e.printStackTrace();
+			mav.setViewName("main/login");
+			logger.info("로그인 실패");
+			return mav;
+		}finally {
+			logger.info("로그인");
+		}
 	}
 	
 	@RequestMapping(value = "/employee/addevent", method = {RequestMethod.GET, RequestMethod.POST})
@@ -118,8 +141,12 @@ public class EmpProfileController {
 	
 	@RequestMapping(value = "/profilecalendar", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Map<String, Object>> profilecalendar(){
-		List<Map<String, Object>> list = service.profilecalendar();
+	public List<Map<String, Object>> profilecalendar(Principal principal){
+		String empIdx = principal.getName();
+		
+		logger.info("캘린더 접속자 : " + empIdx);
+		
+		List<Map<String, Object>> list = service.profilecalendar(empIdx);
 		
 		JSONObject jsonObj = new JSONObject();
 		JSONArray jsonArr = new JSONArray();

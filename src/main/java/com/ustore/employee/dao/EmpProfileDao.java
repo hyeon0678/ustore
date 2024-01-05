@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ustore.employee.dto.EmpProrileDto;
 import com.ustore.employee.dto.EmployeeDto;
 
 @Mapper
@@ -16,15 +17,11 @@ public interface EmpProfileDao {
 	
 	void addalarmevent(Map<String, String> params);
 	
-	/* int attSet(HashMap<String, String> params); */
-	
-	/* int attendance(Map<String, String> params); */
-	
 	int attendance(Map<String, String> params);
 	
 	int leavework(Map<String, String> params);
 
-	List<Map<String, Object>> profilecalendar();
+	List<Map<String, Object>> profilecalendar(String empIdx);
 
 	int employeDel(String sch_idx);
 
@@ -34,7 +31,7 @@ public interface EmpProfileDao {
 	
 	int levCheck(String string);
 	
-	EmployeeDto homeProfileDetail(String empIdx);
+	EmpProrileDto homeProfileDetail(String emp_idx);
 
 
 	

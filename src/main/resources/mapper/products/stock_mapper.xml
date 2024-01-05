@@ -107,6 +107,7 @@ FROM `order`
 JOIN delivery_driver ON `order`.driver_idx = delivery_driver.driver_idx
 JOIN order_detail ON `order`.order_idx = order_detail.order_idx
 WHERE order_detail.conf_status = 'N'
+ORDER BY `order`.order_idx  DESC;
 </select>
 
 <select id="incomModalList" resultType="OrderDto">
@@ -151,9 +152,9 @@ select driver_idx from `order` where order_idx = #{orderIdx}
 <select id="dateIdx" resultType="String">
 select exp_arrival_date from `order`where order_idx = #{orderIdx}
 </select>
-<delete id="driverDelete" parameterType="OrderDto">
-delete from driver_schedule where driver_idx = #{driverIdx} and delivery_date = #{expArrivalDate}
-</delete>
+<update id="driverDelete" parameterType="OrderDto">
+update driver_schedule set  delivery_check = 'N' where driver_idx = #{driverIdx} and delivery_date = #{expArrivalDate}
+</update>
 
 <select id="addIncomingList" resultType="OrderDto">
 SELECT od.receipt_date, od.quantity, p.unit_quantity

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ustore.employee.dao.EmpProfileDao;
+import com.ustore.employee.dto.EmpProrileDto;
 import com.ustore.employee.dto.EmployeeDto;
 
 @Service
@@ -19,9 +20,9 @@ public class EmpProfileService {
 	
 	@Autowired EmpProfileDao dao;
 
-	public EmployeeDto homeProfileDetail(String empIdx) {
+	public EmpProrileDto homeProfileDetail(String emp_idx) {
 
-		return dao.homeProfileDetail(empIdx);
+		return dao.homeProfileDetail(emp_idx);
 	}
 	
 	@Transactional
@@ -31,13 +32,14 @@ public class EmpProfileService {
 		dao.addalarmevent(params);
 	}
 
-	public List<Map<String, Object>> profilecalendar() {
-		return dao.profilecalendar();
+	public List<Map<String, Object>> profilecalendar(String empIdx) {
+		return dao.profilecalendar(empIdx);
 	}
 
 	public String attendance(Map<String, String> params) {
 		String msg = "출근 데이터 입력";
-		if(dao.attCheck(params.get("sch_subject"))==0) {
+		
+		if(dao.attCheck(params.get("emp_idx"))==0) {
 			logger.info("출근 데이터 : " + params);
 			int row = dao.attendance(params);
 			logger.info("출근 입력 성공");
@@ -49,7 +51,7 @@ public class EmpProfileService {
 	
 	public String leavework(Map<String, String> params) {
 		String msg = "퇴근 데이터 입력";
-		if(dao.levCheck(params.get("sch_subject"))==0) {
+		if(dao.levCheck(params.get("emp_idx"))==0) {
 			logger.info("퇴근 데이터 : "+params);
 			int row = dao.leavework(params);
 			logger.info("퇴근 입력 성공");

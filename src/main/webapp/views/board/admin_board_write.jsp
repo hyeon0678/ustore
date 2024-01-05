@@ -45,7 +45,7 @@
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">글쓰기</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
@@ -58,7 +58,11 @@
 								</div>
 							</div>
 						</div>
-						<form action="multi.do" method="post" enctype="multipart/form-data">
+						<form action="adboard/Write" method="post" enctype="multipart/form-data">
+							<div>
+								<input type="text" value="${sessionScope.emp_idx}" name="emp_idx"/>
+								<input type="text" value="${sessionScope.dept_id}" name="dept_id"/>
+							</div>
 							<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
 								<div class="container-xxl" style="background-color: white;margin: 20px;">
 									<div style="margin-top:20px">

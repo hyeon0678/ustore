@@ -35,12 +35,11 @@ public class ChatController {
 	
 	private ChatService chatService;
 	private WebSocketConfig config;
-	private SimpMessageSendingOperations messageTemplete;
 	
-	public ChatController(SimpMessageSendingOperations messageTemplete, ChatService chatService, WebSocketConfig config) {
+	
+	public ChatController(ChatService chatService, WebSocketConfig config) {
 		this.chatService = chatService;
 		this.config = config;
-		this.messageTemplete = messageTemplete;
 	}
 	
 	@GetMapping()
@@ -101,7 +100,9 @@ public class ChatController {
 	@ResponseBody
 	public HashMap<String, Object> quitRoom(@RequestParam int roomNum, Principal principal){
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		chatService.quitRoom(roomNum, principal.getName());
+		ChatDto dto = chatService.quitRoom(roomNum, principal.getName());
+		
+		logger.info("send");
 		return result;
 	}
 	

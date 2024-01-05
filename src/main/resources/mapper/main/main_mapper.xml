@@ -5,7 +5,8 @@
 <mapper namespace="com.ustore.main.dao.EmployeeUserDao">
 	<select id="getUser" resultType="EmployeeUserDto">
 		SELECT e.emp_idx, e.emp_pw, e.dept_id, c.common_type AS position, d.dept_name AS department, e.emp_name AS name,
-		d.parent_dept_id, CONCAT('ROLE_',  d.dept_name) AS dept_name, CONCAT('ROLE_', c.common_type) AS position_name
+		d.parent_dept_id, CONCAT('ROLE_',  d.dept_name) AS dept_name, CONCAT('ROLE_', c.common_type) AS position_name, e.emp_quit
+		, e.emp_changepw_date
 		FROM employee e
 		LEFT OUTER JOIN department d
 		ON e.dept_id = d.dept_id 

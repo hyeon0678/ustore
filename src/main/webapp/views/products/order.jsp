@@ -97,7 +97,7 @@ button i.bi {
 				id="kt_wrapper">
 				<!--begin::Content-->
 
-				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;"> 
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 				<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">발주</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--사이드바 넣는곳  -->
@@ -106,7 +106,43 @@ button i.bi {
 					<!-- 사이드바 닫는곳 -->
 					<!--begin::Post-->
 					<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
-						<!--begin::Container-->
+						<!--begin::Container--><div class="card card-flush mb-0" data-kt-sticky="false" data-kt-sticky-name="inbox-aside-sticky" data-kt-sticky-offset="{default: false, xl: '100px'}" data-kt-sticky-width="{lg: '275px'}" data-kt-sticky-left="auto" data-kt-sticky-top="100px" data-kt-sticky-animation="false" data-kt-sticky-zindex="95">
+											<!--begin::Aside content-->
+											<div class="card-body">
+												<!--==========================================서브 사이드바 컨텐츠 리스트==================================================================-->											
+													<!--begin::Menu-->
+													<div class="menu menu-column menu-rounded menu-state-bg menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary ">
+														<!--begin::Menu item-->
+														
+														<!--end::Menu item-->
+														<!--begin::Menu item--><div class="menu-item mb-3">
+															<!--begin::Inbox-->
+															<span class="menu-link active">
+																<span class="menu-icon"><img src="resource/assets/media/icon/side_products.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"></span>
+																<span class="menu-title fw-bold">발주</span>
+															</span>
+															<!--end::Inbox-->
+														</div>
+														<div class="menu-item mb-3" onclick="location.href='/orderlist/list';">
+															<!--begin::Inbox  href="/customer/general" -->
+															<span class="menu-link" >
+																<span class="menu-icon"><img src="resource/assets/media/icon/side_products.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"></span>
+																
+																<span class="menu-title fw-bold">발주 리스트</span>
+															</span>
+															<!--end::Inbox-->
+														</div>
+														
+														<!--end::Menu item-->
+														<!--begin::Menu item-->
+														
+														<!--end::Menu item-->
+													</div>
+													<!--end::Menu-->
+													
+											</div>
+											<!--end::Aside content-->
+										</div>
 						<div class="container-xxl">
 							<!--begin::Category-->
 							<div class="card card-flush">
@@ -267,7 +303,7 @@ button i.bi {
 														<div class="w-150px">
 															배송기사 선택 <select class="form-select form-select-solid"
 																data-control="select2" data-dropdown-css-class="w-200px"
-																data-placeholder="배송기사를 선택 해주세요!" data-hide-search="true">
+																data-placeholder="배송기사를 선택 해주세요!" data-hide-search="true" id="orderDriverList">
 														<c:forEach items="${list3}" var="order3">
 																<option value="${order3.driverIdx}" selected>${order3.driverName}</option>
 												</c:forEach>
@@ -418,9 +454,37 @@ button i.bi {
     
  $(document).ready(function() {
     $('#kt_modal_scrollable_2').on('show.bs.modal', function (e) {
-        fetchData();
+    	fetchDriverList();
+    	fetchData();
     });
+    function fetchDriverList() {
+        // 새로운 드라이버 리스트 가져오기
+        $.ajax({
+            url: '/order/orderdriver/list',
+            method: 'GET',
+            dataType: 'json',
+            success: function(driverList, textStatus, xhr) {
+                renderDriverList(driverList);
+            },
+            error: function(e) {
+                console.error('드라이버 리스트 에러....:', e);
+            }
+        });
+    }
 
+    function renderDriverList(driverList) {
+        // 드라이버 리스트를 비우고 새로운 드라이버 리스트를 추가
+        var selectElement = $('#orderDriverList'); // 실제 사용하는 ID로 변경
+        selectElement.empty();
+
+        if (driverList.length === 0) {
+            selectElement.append('<option value="" selected>드라이버 없음</option>');
+        } else {
+            $.each(driverList, function(index, driver) {
+                selectElement.append('<option value="' + driver.driverIdx + '">' + driver.driverName + '</option>');
+            });
+        }
+    }
     function fetchData() {
         $.ajax({
             url: '/order/ordercart/list',
