@@ -41,6 +41,8 @@
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
+		<%-- <jsp:include page="/views/common/header.jsp"></jsp:include> --%>
+				
 		<!--begin::Main-->
 		<!--begin::Root-->
 		<div class="d-flex flex-column flex-root">
@@ -49,8 +51,9 @@
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px">
 					<!--================================메인 내용들어가는부분================================================-->
+					<%-- <jsp:include page="/views/common/sidebar.jsp"></jsp:include> --%>
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
@@ -143,7 +146,7 @@
 									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
 										<span class="text-center">결 재 선</span>
 									</div>
-									<div class="apprline d-flex flex-column scroll" id="apprline" style="height: 250px;">
+									<div class="apprline d-flex flex-column scroll" id="apprlineTable" style="height: 250px;">
 										<div style="overflow: auto;">
 											<table class="signature-table mr-3 w-100">
 												<thead>
@@ -155,7 +158,7 @@
 														<th style="width: 30px;"></th>
 													</tr>
 												</thead>
-												<tbody id="approverTableBody">											
+												<tbody>											
 												</tbody>
 											</table>
 										</div>
@@ -166,7 +169,7 @@
 									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
 										<span class="text-center">수 신 자</span>
 									</div>										
-									<div class="d-flex flex-column receiver scroll" id="receiver" style="height: 200px;">
+									<div class="d-flex flex-column receiver scroll" id="receiverTable" style="height: 200px;">
 										<div style="overflow: auto;">
 											<table class="signature-table mr-3 w-100">
 												<thead>
@@ -177,7 +180,7 @@
 														<th style="width: 30px;"></th>
 													</tr>
 												</thead>
-												<tbody id="receiverTableBody">														
+												<tbody>														
 												</tbody>
 											</table>
 										</div>										
@@ -188,11 +191,11 @@
 						<!-- 아래쪽 div -->
 						<c:if test="${commentsExist}">
 							<div>
-								<div class="apprreceiver border"  style="align-items: center; margin: 5px;">
+								<div class="comment border"  style="align-items: center; margin: 5px;">
 									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
 										<span class="text-center">결재의견(반려, 수정)</span>
 									</div>										
-									<div class="d-flex flex-column receiver scroll" id="receiver" style="height: 100px;">
+									<div class="d-flex flex-column commentTable scroll" id="comment" style="height: 100px;">
 										<div style="overflow: auto;">
 											<table class="w-100">
 												<thead>
@@ -267,270 +270,100 @@
             }
         });
         
+        
         function setValues(apprTypeIdx) {
+        	
+        	var apprSubject = "${content.apprSubject}";
+        	$("#apprSubject").val(apprSubject);
+        	
+        	approvalLines = ${apprline};
+        	console.log(approvalLines);
+        	        	
+       	    // 가공된 데이터를 테이블에 동적으로 추가
+		    var tbody = document.getElementById('apprlineTable').getElementsByTagName('tbody')[0];
+		    tbody.innerHTML = ""; // 테이블 내용 비우기
+	
+		    // 새로운 테이블 내용 추가
+		    for (var i = approvalLines.length - 1; i >= 0; i--) {
+		        var newRow = tbody.insertRow(-1);
+		        var cell1 = newRow.insertCell(0);
+		        var cell2 = newRow.insertCell(1);
+		        var cell3 = newRow.insertCell(2);
+		        var cell4 = newRow.insertCell(3);
+		        var cell5 = newRow.insertCell(4);
+	
+		        cell1.innerHTML = approvalLines[i].appr_type;
+		        cell2.innerHTML = approvalLines[i].approver;
+		        cell3.innerHTML = approvalLines[i].positionType;
+		        cell4.innerHTML = approvalLines[i].dept_name;
+	
+		        var deleteIcon = document.createElement('i');
+		        deleteIcon.className = 'fa fa-trash';
+		        deleteIcon.onclick = function () {
+		            newRow.remove();
+		            removeEmpFromApprLines(approvalLines[i]);
+		        };
+		        cell5.appendChild(deleteIcon);
+		        cell5.style.width = '30px';
+	
+		        // newRow.setAttribute('data-node', JSON.stringify(approvalLines[i]));
+		    }
+       	    
+       	    
+       	 	
+		    receivers = ${receiver};
+		    console.log(receivers);
+       	    // 받아온 데이터를 가공하여 리스트에 저장
+       	 	
+        	// 가공된 데이터를 테이블에 동적으로 추가
+		    var tbody = document.getElementById('receiverTable').getElementsByTagName('tbody')[0];
+		    tbody.innerHTML = ""; // 테이블 내용 비우기
+	
+		    // 새로운 테이블 내용 추가
+		    for (var i = receivers.length - 1; i >= 0; i--) {
+		        var newRow = tbody.insertRow(-1);
+		        var cell1 = newRow.insertCell(0);
+		        var cell2 = newRow.insertCell(1);
+		        var cell3 = newRow.insertCell(2);
+		        var cell4 = newRow.insertCell(3);
+	
+		        cell1.innerHTML = receivers[i].receiver;
+		        cell2.innerHTML = receivers[i].positionType;
+		        cell3.innerHTML = receivers[i].dept_name;
+	
+		        var deleteIcon = document.createElement('i');
+		        deleteIcon.className = 'fa fa-trash';
+		        deleteIcon.onclick = function () {
+		            newRow.remove();
+		            removeEmpFromApprLines(receivers[i]);
+		        };
+		        cell4.appendChild(deleteIcon);
+		        cell4.style.width = '30px';
+	
+		        // newRow.setAttribute('data-node', JSON.stringify(approvalLines[i]));
+		    }
+       	 	
+        	
+        	       	
         	switch (apprTypeIdx) {
-            case '30':
-            	var apprlineData = ${apprline};
-           	    // 받아온 데이터를 가공하여 approvalLines 리스트에 저장
-           	    for (var i = 0; i < apprlineData.length; i++) {
-           	        var row = apprlineData[i];
-           	        var processedData = {};
-           	        processedData.approverType = row.appr_type;
-           	        processedData.approverName = row.approver;
-           	     	processedData.approverDept = row.dept_name;
-           	  		processedData.approverPos = row.positionType;
-           	  		approvalLines.push(processedData);
-           	    }
-
-           	    // 가공된 데이터를 테이블에 동적으로 추가
-           	    var apprTableBody = document.getElementById('approverTableBody');
-				var existingRows = apprTableBody.innerHTML;
-           	    for (var j = 0; j < approvalLines.length; j++) {
-           	        var rowData = approvalLines[j];
-					
-           	     	var deleteIcon = document.createElement('i');
-	     			deleteIcon.className = 'fa fa-trash';
-	     			deleteIcon.onclick = function () {
-	     				newRow.remove();
-	     				removeEmpFromApprLines(approvalData);
-	     			};
-           	        
-           	        var rowHtml = '<tr>' +
-           	            '<td>' + rowData.approverType + '</td>' +
-           	            '<td>' + rowData.approverName + '</td>' +
-           	            '<td>' + rowData.approverDept + '</td>' +
-           	            '<td>' + rowData.approverPos + '</td>' +
-           	         	'<td style="width=30px;">'+ deleteIcon +'</td>' +
-           	            '</tr>';
-					existingRows = rowHtml + existingRows;
-           	    }
-           	 	apprTableBody.innerHTML = existingRows;
-           	 	
-            	var receiverData = ${receiver};
-           	    // 받아온 데이터를 가공하여 리스트에 저장
-           	    for (var i = 0; i < receiverData.length; i++) {
-           	        var row = receiverData[i];
-           	        var processedData = {};
-           	        processedData.recvName = row.receiver;
-           	     	processedData.recvDept = row.dept_name;
-           	  		processedData.recvPos = row.positionType;
-           	  		receivers.push(processedData);
-           	    }
-           	    
-           	 	var inputReceiver = document.getElementById("inputReceiver");
-
-		        // 이름들을 쉼표로 구분하여 문자열로 만듭니다.
-		        var namesString = receivers.map(function(item) {
-		            return item.recvName+'('+item.recvDept+')';
-		        }).join(', ');
-		
-		        inputReceiver.value = namesString;
-
-           	    // 가공된 데이터를 테이블에 동적으로 추가
-           	    var recvTableBody = document.getElementById('receiverTableBody');
-				var existingRows = recvTableBody.innerHTML;
-           	    for (var j = 0; j < receivers.length; j++) {
-           	        var rowData = receivers[j];
-					
-	           	    var deleteIcon = document.createElement('i');
-	     			deleteIcon.className = 'fa fa-trash';
-	     			deleteIcon.onclick = function () {
-	     				newRow.remove();
-	     				removeEmpFromReceiver(receiverData);
-	     			};
-           	        
-           	        var rowHtml = '<tr>' +
-           	            '<td>' + rowData.recvName + '</td>' +
-           	            '<td>' + rowData.recvDept + '</td>' +
-           	            '<td>' + rowData.recvPos + '</td>' +
-           	         	'<td style="width=30px;">'+ deleteIcon +'</td>' +
-           	            '</tr>';
-					existingRows = rowHtml + existingRows;
-           	    }
-           	 	recvTableBody.innerHTML = existingRows;
-           	 	
-            	var apprSubject = "${content.apprSubject}";
-            	apprContent = "${content.apprContent}";
-            	$("#apprSubject").val(apprSubject);
+            case '30':            	
+            	apprContent = "${content.apprContent}";            	
                 break;
-            case '31':
-            	var apprlineData = ${apprline};
-           	    // 가공된 데이터를 저장할 리스트
-           	    var apprline = [];
-           	    // 받아온 데이터를 가공하여 리스트에 저장
-           	    for (var i = 0; i < apprlineData.length; i++) {
-           	        var row = apprlineData[i];
-           	        var processedData = {};
-           	        processedData.approverName = row.approver;
-           	     	processedData.approverDept = row.dept_name;
-           	  		processedData.approverPos = row.positionType;
-           	        apprline.push(processedData);
-           	    }
-
-           	    // 가공된 데이터를 테이블에 동적으로 추가
-           	    var apprTableBody = document.getElementById('approverTableBody');
-				var existingRows = apprTableBody.innerHTML;
-           	    for (var j = 0; j < apprline.length; j++) {
-           	        var rowData = apprline[j];
-
-           	     var deleteIcon = document.createElement('i');
-	     			deleteIcon.className = 'fa fa-trash';
-	     			deleteIcon.onclick = function () {
-	     				newRow.remove();
-	     				removeEmpFromApprLines(approvalData);
-	     			};
-        	        
-        	        var rowHtml = '<tr>' +
-        	            '<td></td>' +
-        	            '<td>' + rowData.approverName + '</td>' +
-        	            '<td>' + rowData.approverDept + '</td>' +
-        	            '<td>' + rowData.approverPos + '</td>' +
-        	         	'<td style="width=30px;">'+ deleteIcon +'</td>' +
-        	            '</tr>';
-					existingRows = rowHtml + existingRows;
-           	    }
-           	 	apprTableBody.innerHTML = existingRows;
-           	 	
-            	var receiverData = ${receiver};
-            	var recvline = [];
-           	    // 받아온 데이터를 가공하여 리스트에 저장
-           	    for (var i = 0; i < receiverData.length; i++) {
-           	        var row = receiverData[i];
-           	        var processedData = {};
-           	        processedData.recvName = row.receiver;
-           	     	processedData.recvDept = row.dept_name;
-           	  		processedData.recvPos = row.positionType;
-           	  		recvline.push(processedData);
-           	    }
-           	    
-           	 	var inputReceiver = document.getElementById("inputReceiver");
-
-		        // 이름들을 쉼표로 구분하여 문자열로 만듭니다.
-		        var namesString = recvline.map(function(item) {
-		            return item.recvName+'('+item.recvDept+')';
-		        }).join(', ');
-		
-		        inputReceiver.value = namesString;
-
-           	    // 가공된 데이터를 테이블에 동적으로 추가
-           	    var recvTableBody = document.getElementById('receiverTableBody');
-				var existingRows = recvTableBody.innerHTML;
-           	    for (var j = 0; j < recvline.length; j++) {
-           	        var rowData = recvline[j];
-
-           	     	var deleteIcon = document.createElement('i');
-	     			deleteIcon.className = 'fa fa-trash';
-	     			deleteIcon.onclick = function () {
-	     				newRow.remove();
-	     				removeEmpFromReceiver(receiverData);
-	     			};
-        	        
-        	        var rowHtml = '<tr>' +
-        	            '<td>' + rowData.recvName + '</td>' +
-        	            '<td>' + rowData.recvDept + '</td>' +
-        	            '<td>' + rowData.recvPos + '</td>' +
-        	         	'<td style="width=30px;">'+ deleteIcon +'</td>' +
-        	            '</tr>';
-					existingRows = rowHtml + existingRows;
-           	    }
-           	 	recvTableBody.innerHTML = existingRows;
-            	var apprSubject = "${content.apprSubject}";
+                
+            case '31':            	
             	var orderNum = "${content.orderNum}";
-        	    var totalAmount = "${content.totalAmount}";
-            	$("#apprSubject").val(apprSubject);
+        	    var totalAmount = "${content.totalAmount}";            	
             	$("#orderNum").val(orderNum);
             	$("#totalAmount").val(totalAmount);
                 break;
-            case '32':
-            	var apprlineData = ${apprline};
-           	    // 가공된 데이터를 저장할 리스트
-           	    var apprline = [];
-           	    // 받아온 데이터를 가공하여 리스트에 저장
-           	    for (var i = 0; i < apprlineData.length; i++) {
-           	        var row = apprlineData[i];
-           	        var processedData = {};
-           	        processedData.approverName = row.approver;
-           	     	processedData.approverDept = row.dept_name;
-           	  		processedData.approverPos = row.positionType;
-           	        apprline.push(processedData);
-           	    }
-
-           	    // 가공된 데이터를 테이블에 동적으로 추가
-           	    var apprTableBody = document.getElementById('approverTableBody');
-				var existingRows = apprTableBody.innerHTML;
-           	    for (var j = 0; j < apprline.length; j++) {
-           	        var rowData = apprline[j];
-
-           	     var deleteIcon = document.createElement('i');
-	     			deleteIcon.className = 'fa fa-trash';
-	     			deleteIcon.onclick = function () {
-	     				newRow.remove();
-	     				removeEmpFromApprLines(approvalData);
-	     			};
-        	        
-        	        var rowHtml = '<tr>' +
-        	            '<td></td>' +
-        	            '<td>' + rowData.approverName + '</td>' +
-        	            '<td>' + rowData.approverDept + '</td>' +
-        	            '<td>' + rowData.approverPos + '</td>' +
-        	         	'<td style="width=30px;">'+ deleteIcon +'</td>' +
-        	            '</tr>';
-					existingRows = rowHtml + existingRows;
-           	    }
-           	 	apprTableBody.innerHTML = existingRows;
-           	 	
-            	var receiverData = ${receiver};
-            	var recvline = [];
-           	    // 받아온 데이터를 가공하여 리스트에 저장
-           	    for (var i = 0; i < receiverData.length; i++) {
-           	        var row = receiverData[i];
-           	        var processedData = {};
-           	        processedData.recvName = row.receiver;
-           	     	processedData.recvDept = row.dept_name;
-           	  		processedData.recvPos = row.positionType;
-           	  		recvline.push(processedData);
-           	    }
-           	    
-           	 	var inputReceiver = document.getElementById("inputReceiver");
-
-		        // 이름들을 쉼표로 구분하여 문자열로 만듭니다.
-		        var namesString = recvline.map(function(item) {
-		            return item.recvName+'('+item.recvDept+')';
-		        }).join(', ');
-		
-		        inputReceiver.value = namesString;
-
-           	    // 가공된 데이터를 테이블에 동적으로 추가
-           	    var recvTableBody = document.getElementById('receiverTableBody');
-				var existingRows = recvTableBody.innerHTML;
-           	    for (var j = 0; j < recvline.length; j++) {
-           	        var rowData = recvline[j];
-
-           	     	var deleteIcon = document.createElement('i');
-	     			deleteIcon.className = 'fa fa-trash';
-	     			deleteIcon.onclick = function () {
-	     				newRow.remove();
-	     				removeEmpFromReceiver(receiverData);
-	     			};
-        	        
-        	        var rowHtml = '<tr>' +
-        	            '<td>' + rowData.recvName + '</td>' +
-        	            '<td>' + rowData.recvDept + '</td>' +
-        	            '<td>' + rowData.recvPos + '</td>' +
-        	         	'<td style="width=30px;">'+ deleteIcon +'</td>' +
-        	            '</tr>';
-					existingRows = rowHtml + existingRows;
-           	    }
-           	 	recvTableBody.innerHTML = existingRows;
-            	var apprSubject = "${content.apprSubject}";
+                
+            case '32':            	
                 var leaveType = "${content.leaveType}";
                 var leaveStartDate = "${content.leaveStartDate}";
                 var leaveEndDate = "${content.leaveEndDate}";
                 var leaveDays = "${content.leaveDays}";
                 var leaveReason = "${content.leaveReason}";
-                console.log(apprSubject);
-
-                $("#apprSubject").val(apprSubject);
+                
                 $("#leaveType").val(leaveType);
                 $("#kt_daterangepicker_1").val(leaveStartDate + ' - ' + leaveEndDate);
                 $("#leaveStartDate").val(leaveStartDate);

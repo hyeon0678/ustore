@@ -262,8 +262,8 @@
 				</div>
 					<!--end::Header-->					
 		<!--begin::Javascript-->
-		<script>var hostUrl = "resource/assets/";</script>
-		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
+ 		<script>var hostUrl = "resource/assets/";</script>
+		<!-- begin::Global Javascript Bundle(mandatory for all pages) -->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
@@ -278,8 +278,8 @@
 	    stompClient = Stomp.over(socket);
 	    stompClient.connect({}, function(frame){
 	    	console.log("webSocket is connected");
-	    	stompClient.subscribe('/chat/alarm',alarmReceived);
-		    stompClient.subscribe('/chat/chatAlarm',chatReceived);
+	    	stompClient.subscribe('/user/alarm',alarmReceived);
+		    stompClient.subscribe('/user/chatAlarm',chatReceived);
 	    }, onError);
 	    
    	}

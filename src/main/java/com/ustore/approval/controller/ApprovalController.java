@@ -95,7 +95,7 @@ public class ApprovalController {
 		ObjectMapper objectMapper = new ObjectMapper();
 		String apprlineJson = objectMapper.writeValueAsString(apprline);
 		String receiverJson = objectMapper.writeValueAsString(receiver);
-		
+				
 		mav.addObject("apprIdx", apprIdx);
 		mav.addObject("content", content);
 		mav.addObject("apprline", apprlineJson);
@@ -211,7 +211,7 @@ public class ApprovalController {
     
     
     @PostMapping(value="/tempsaveappr") 
-	public String tempSave(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
+	public ResponseEntity<String> tempSave(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
 		 
 		String emp_idx = principal.getName(); 
 		dto.setEmpIdx(emp_idx);
@@ -223,18 +223,16 @@ public class ApprovalController {
 		}else {
 			service.updateTempDoc(dto);
 		}
-		rAttr.addFlashAttribute("msg",  "저장되었습니다.");
-		return "redirect:/approval/newapproval";  
+		return ResponseEntity.ok("문서가 저장되었습니다.");  
 	}      
 
 	@PostMapping(value="/sendappr") 
-	public String sendAppr(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
+	public ResponseEntity<String> sendAppr(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
 		 
 		 String emp_idx = principal.getName();
 		 dto.setEmpIdx(emp_idx);
 		 service.sendAppr(dto);
-		 rAttr.addFlashAttribute("msg",  "결재상신 되었습니다.");
-		 return "redirect:/approval/newapproval";
+		 return ResponseEntity.ok("문서가 결재상신 되었습니다.");
 	}	
 	 
 	
