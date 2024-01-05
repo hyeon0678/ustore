@@ -333,4 +333,51 @@
 	})
 	
 	</script>
+	<script>
+	function SuccessModal(message) {
+	    Swal.fire({
+	        text: message,
+	        icon: 'success',
+	        buttonsStyling: false,
+	        confirmButtonText: '확인',
+	        customClass: {
+	            confirmButton: 'btn btn-primary'
+	        }
+	    })
+	}
+
+</script>
+<script>
+	function FalseModal(message) {
+		Swal.fire({
+            text: message,
+            icon: 'error',
+            buttonsStyling: false,
+            confirmButtonText: '확인',
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            }
+        });
+	}
+
+</script>
+
+<script>
+	function InfoModal(message) {
+		Swal.fire({
+            text: message,
+            icon: 'info',
+            buttonsStyling: false,
+            confirmButtonText: '확인',
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            }
+        });
+	}
+
+</script>
+
+
+ 
+	
 </html>
