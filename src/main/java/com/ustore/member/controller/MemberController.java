@@ -1,7 +1,6 @@
 package com.ustore.member.controller;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +42,7 @@ public class MemberController {
 	public String home() {
 		logger.info("멤버쉽 페이지 들어가기");
 		
-		return "member/customerList";
+		return "member/customerlist";
 	}
 	
 	
@@ -186,6 +184,51 @@ public class MemberController {
 		return result; // 앞으로 보낸다
 	}
 	
+	// customer/detail.ajax/productlistcall
+		@RequestMapping(value = "/customer/detail.ajax/basicproduct")
+		@ResponseBody
+		public HashMap<String, Object> basicproduct(@RequestParam int memberidx, @RequestParam boolean weekbutton) {
+			logger.info(" 기본 구매이력 리스트 불러오기  호출하기");
+			logger.info("member idx : "+memberidx);
+			logger.info("weekbutton : "+weekbutton);
+			
+			String enddate = null;
+			String startdate = null;
+			DateCalculator datecal= new DateCalculator();
+			enddate = datecal.dateNow().toString();		
+			logger.info("enddate : "+enddate);		
+			
+			if (weekbutton == false) {
+				Calendar mon = Calendar.getInstance();
+				mon.add(Calendar.MONTH, -1);
+				 startdate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
+				logger.info("startdate"+startdate);
+				
+				logger.info("startdate : "+startdate);
+				logger.info("enddate : "+enddate);
+				
+			}else if (weekbutton == true) {
+			    Calendar week = Calendar.getInstance();    
+			    week.add(Calendar.DATE , -7);    
+			   startdate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(week.getTime());   
+				logger.info("startdate"+startdate);
+				
+				logger.info("startdate : "+startdate);
+				logger.info("enddate : "+enddate);
+			}
+			
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			
+			ArrayList<HashMap<String, String>> list = service.productlistcall(memberidx, startdate, enddate );
+			logger.info("num"+list.toString());
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+			
+			
+			
+			return result; // 앞으로 보낸다
+		}
 	
 	
 	

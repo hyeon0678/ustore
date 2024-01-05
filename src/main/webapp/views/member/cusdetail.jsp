@@ -276,10 +276,12 @@
 															  <div class="modal-content" style="width: 700px;">
 																<div class="modal-header">
 																	<h3>포인트 사용내역</h3>
+																	
+																	
 																	<label for="date" style="padding-left: 150px;">
-																        <input type="date" id="ufirstsearchdate" value="${beforeMonth}" />
+																        <input type="date" id="" value="${beforeMonth}" />
 																        ~
-																        <input type="date" id="ulastsearchdate" value="${nowdate}" />
+																        <input type="date" id="" value="${nowdate}" />ㄴ
 																        <input type="button" id="usearchButton" class="comm-btn" value="검색"
 																         style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" />
 																    </label>
@@ -331,7 +333,7 @@
 						<div class="card-footer pt-4" id="kt_chat_messenger_footer" style="display: flex; justify-content: flex-end;">
 							<!--begin::Actions-->
 							<div class="" style="margin-left: 10px; margin-right: 5px">
-								<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1"  onclick="productlistcall()" >
+								<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1"  onclick="basicproduct()" >
 									구매내역
 								</button>
 								<div class="modal fade" tabindex="-1" id="kt_modal_1">
@@ -339,10 +341,12 @@
 										<div class="modal-content" style="width:1110px; height:700px; position: fixed;  top: 50%;  left: 50%;  transform: translate(-50%, -50%);">
 											<div class="modal-header">
 												<h3>제품 구매 이력</h3>
-												<label for="date" style="padding-left: 500px;">
-											        <input type="date" id="ufirstsearchdate" value="${beforeMonth}" />
+												<label for="date" style="padding-left: 350px;">
+													<input type="button" class="comm-btn" value="최근 1주일" onclick="weekturn()"
+												        style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" />
+											       시작일 : <input type="date" id="ufirstsearchdate" value="" />
 											        ~
-											        <input type="date" id="ulastsearchdate" value="${nowdate}" />
+											         종료일 : <input type="date" id="ulastsearchdate" value="" />
 											        <input type="button" id="usearchButton" class="comm-btn" value="검색" onclick="productlistcall()"
 											         style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" />
 											    </label>
@@ -357,6 +361,7 @@
 											<div class="" style="margin-left: 5px; margin-right: 5px">
 												<div class="content_tree"
 													style="float: left; width: 300px; height: 550px; overflow-y: auto; border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
+													<tbody class="fw-semibold text-gray-600" id="cartlist"></tbody>
 													<h4>UStore</h4>
 													<h2 style="margin-bottom: 5px; ">100000원</h2>
 													<span style="float: right; margin-top: 10px">결제번호(abc2037592-bfja3949)</span>
@@ -620,6 +625,16 @@
 
 var memberidx= ${info.member_idx};
 var gradeidx = $('#membergrade').val();
+var weekbutton = false;
+
+	function weekturn(){
+		weekbutton = true;
+		basicproduct();
+	}    
+
+
+
+
 
 
 
@@ -645,29 +660,19 @@ var gradeidx = $('#membergrade').val();
 	}
 	
 	/* productlistcall  */
-	function productlistcall(){
-		console.log("제품 구매 이력 리스트 호출");
-		const startdate = document.getElementById('ufirstsearchdate').value;
-		const enddate = document.getElementById('ulastsearchdate').value;
-		//conesole.log(startdate);
-		//conesole.log(enddate);
-		
-		// var startdate= $('input[name="startdate"]').val();
-		// var enddate= $('input[name="enddate"]').val();
-		var memberidx= ${info.member_idx};
-			
+	function basicproduct(){
+		console.log(" 기본 제품 구매 이력 리스트 호출");
+		var memberidx= ${info.member_idx};			
 		$.ajax({
 			type:'post',
-			url:'customer/detail.ajax/productlistcall', 
-			data:{'startdate':startdate, 'enddate':enddate,'memberidx':memberidx},
+			url:'customer/detail.ajax/basicproduct', 
+			data:{'memberidx':memberidx,'weekbutton':weekbutton},
 			dataType:'JSON',
 			success:function(obj){
 				console.log(obj);
-				console.log("리스트 호출 뿌려주기");
-				
+				console.log("리스트 호출 뿌려주기");				
 				var content = '';
-				$('#paylist').empty();
-					
+				$('#paylist').empty();					
 				if (obj.size == 0) {					
 					 content = '<tr>';				 
 					 content += '<td style=" text-align: center; color: red;" colspan="5">구매이력이 존재하지 않습니다</td>';
@@ -677,7 +682,146 @@ var gradeidx = $('#membergrade').val();
 					
 				for (var i = 0; i < obj.size; i++) {
 					 	 content = '<tr class="text-start fw-bold fs-7 text-uppercase gs-0">';																	
-					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].payment_id+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;"><p class="paymentid">'+obj.list[i].payment_id+'</p></th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].payment_date+'</th>';
+					 	if(obj.list[i].payment_status == '90'){
+					 		content += '<th class="min-w-130px" style="text-align: center;">결제</th>'; 
+						 } else {
+							 content += '<th class="min-w-130px" style="text-align: center;">결제취소</th>';
+						}		
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].actual_amount+'</th>';
+					 	if(obj.list[i].payment_status == '91'){
+					 		content += '<th class="min-w-130px" style="text-align: center;">횐불됨</th>'; 
+						 } else {
+							content += '<th class="min-w-130px" style="text-align: center;">';
+							content += '<button id="refundBut" data-product-id="'+ obj.list[i].iamport_idx +'"style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;">';
+							content += '환불</button></th>';
+						}	
+						 content += '</tr>';				
+			            $('#paylist').append(content);
+				}
+				
+				bill();
+				};
+			},
+			error:function(e){
+				console.log(e);
+			}
+			});//	
+			
+			
+			
+			
+	}
+	
+	
+	function bill(){
+		
+		
+	$('.paymentid').on('click', function() {
+		console.log("영수증 리스트 호출");
+		
+		var idx = $(this).html();
+		console.log(idx);
+		
+		$.ajax({
+			type:'post',
+			url:'customer/detail.ajax/bill', 
+			data:{'paymentidx':idx},
+			dataType:'JSON',
+			success:function(obj){
+				console.log(obj);
+				console.log("영수증 호출 뿌려주기");				
+				var content = '';
+				$('#paylist').empty();					
+				if (obj.size == 0) {					
+					 content = '<tr>';				 
+					 content += '<td style=" text-align: center; color: red;" colspan="5">구매이력이 존재하지 않습니다</td>';
+					 content += '</tr>';				
+		            $('#paylist').append(content);
+				}else {
+					
+				for (var i = 0; i < obj.size; i++) {
+					 	 content = '<tr class="text-start fw-bold fs-7 text-uppercase gs-0">';																	
+					 	content += '<th class="min-w-130px" style="text-align: center;"><p class="paymentid">'+obj.list[i].payment_id+'</p></th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].payment_date+'</th>';
+					 	if(obj.list[i].payment_status == '90'){
+					 		content += '<th class="min-w-130px" style="text-align: center;">결제</th>'; 
+						 } else {
+							 content += '<th class="min-w-130px" style="text-align: center;">결제취소</th>';
+						}		
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].actual_amount+'</th>';
+					 	if(obj.list[i].payment_status == '91'){
+					 		content += '<th class="min-w-130px" style="text-align: center;">횐불됨</th>'; 
+						 } else {
+							content += '<th class="min-w-130px" style="text-align: center;">';
+							content += '<button id="refundBut" data-product-id="'+ obj.list[i].iamport_idx +'"style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;">';
+							content += '환불</button></th>';
+						}	
+						 content += '</tr>';				
+			            $('#paylist').append(content);
+				}
+				
+				bill();
+				};
+			},
+			error:function(e){
+				console.log(e);
+			}
+			});//	
+			
+			
+		
+		
+		
+		
+		
+		
+	})
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/* productlistcall  */
+	function productlistcall(){
+		console.log("제품 구매 이력 리스트 호출");
+		const startdate = document.getElementById('ufirstsearchdate').value;
+		const enddate = document.getElementById('ulastsearchdate').value;
+		var memberidx= ${info.member_idx};		
+		
+		if(startdate > enddate){
+			
+		 	 alert("해당 기간의 조회가 불가능합니다.");
+		 	 
+		 }else{
+			 
+		$.ajax({
+			type:'post',
+			url:'customer/detail.ajax/productlistcall', 
+			data:{'startdate':startdate, 'enddate':enddate,'memberidx':memberidx},
+			dataType:'JSON',
+			success:function(obj){
+				console.log(obj);
+				console.log("리스트 호출 뿌려주기");				
+				var content = '';
+				$('#paylist').empty();					
+				if (obj.size == 0) {					
+					 content = '<tr>';				 
+					 content += '<td style=" text-align: center; color: red;" colspan="5">구매이력이 존재하지 않습니다</td>';
+					 content += '</tr>';				
+		            $('#paylist').append(content);
+				}else {
+					
+				for (var i = 0; i < obj.size; i++) {
+					 	 content = '<tr class="text-start fw-bold fs-7 text-uppercase gs-0">';																	
+					 	content += '<th class="min-w-130px" style="text-align: center;" onclick" >'+obj.list[i].payment_id+'</th>';
 					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].payment_date+'</th>';
 					 	if(obj.list[i].payment_status == '90'){
 					 		content += '<th class="min-w-130px" style="text-align: center;">결제</th>'; 
@@ -696,19 +840,14 @@ var gradeidx = $('#membergrade').val();
 			            $('#paylist').append(content);
 				}
 				};
-				
-				
 			},
 			error:function(e){
 				console.log(e);
 			}
 			});//	
-		
-		
-		
-		
-		
+		 }
 	}
+
 
 
 	// 환불 버튼 클릭 요소 가져오기
