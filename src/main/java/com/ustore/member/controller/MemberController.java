@@ -44,7 +44,7 @@ public class MemberController {
 	public String home() {
 		logger.info("멤버쉽 페이지 들어가기");
 		
-		return "member/customerlist";
+		return "member/customerList";
 	}
 	
 	
