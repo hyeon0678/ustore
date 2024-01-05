@@ -33,7 +33,6 @@ public class WebSocketChatController {
 		logger.info(chat.toString());
 		logger.info("{}, {}, {}",chat.getRoomNum(), chat.getSender(), chat.getData());
 		ChatDto chatData = chatService.saveChat(chat);
-		messageTemplete.convertAndSendToUser("20230001","/user/chatRoom", "test");
 		messageTemplete.convertAndSend("/topic/chat/"+chat.getRoomNum(), chatData);
 	}
 }

@@ -72,8 +72,6 @@ public class ChatService {
 	}
 	
 	public List<ChatRoomDto> getChatRoomList(String emp_idx) {
-// 채팅 룸 sorting하기 읽지 않은 개수 확인하기 또한 보내는건 읽음표시가 되어야한다또한 룸에 들어가있는 사라
-//사람들의 읽음표시는 Y여야한다.
 		List<ChatRoomDto> list = chatDao.selectChatRoomList(emp_idx);
 		List<Participant> participant = null;
 		for(ChatRoomDto dto : list) {
@@ -128,8 +126,16 @@ public class ChatService {
 		return participants;
 	}
 
-	public void quitRoom(int roomNum, String name) {
+	public ChatDto quitRoom(int roomNum, String name) {
+		// -> 나가면 system 메시지 보내기
+		String userInfo = chatDao.selectUserInfo(name);
+		ChatDto leaveMsg = new ChatDto();
+		leaveMsg.setRoomNum(Integer.toString(roomNum));
+		leaveMsg.setSender("system");
+		leaveMsg.setData(userInfo+"님이 채팅방을 나가셨습니다");
+		saveChat(leaveMsg);
 		chatDao.deleteParticipants(roomNum,name);
+		return leaveMsg;
 	}
 
 	public void setRead(int roomNum, int chatIdx, String name) {
