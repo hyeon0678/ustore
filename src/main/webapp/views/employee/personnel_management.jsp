@@ -76,14 +76,13 @@ License: For each use you must have a valid license purchased only from above li
 													<span class="fw-bolder text-gray-900 fs-3">조직도</span>
 													<div class="d-flex mt-2">
 														<input type="text" class="form-control form-control-solid" placeholder="이름 입력" style="width: 200px; height: 40px;">
-            											<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+            											<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1" style="white-space:nowrap;">
 															부서관리
 														</button>
 													</div>
 												</h3>
 												<div class="card-toolbar">
 													<!--begin::Menu-->
-													</button>
 												</div>
 											</div>
 											<!--end::Header-->
