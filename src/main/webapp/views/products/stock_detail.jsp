@@ -120,7 +120,7 @@ h1 {
 			<div class="wrapper d-flex flex-column flex-row-fluid"
 				id="kt_wrapper">
 				<!--begin::Content-->
-				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;"> 
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 				<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">재고 상세보기</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--사이드바 넣는곳  -->
@@ -472,13 +472,26 @@ $(document).ready(function () {
                 return;
             }
 
-            isClickable = false;
-
             var operationType = $('select[data-control="select2"]').val();
             var quantity = $('input.form-control').val();
             var reason = $('textarea.form-control').val();
             var empIdx = ${principal.username};
             var productId = document.getElementById('productId').textContent;
+
+            // Check for empty values
+            if (operationType.trim() === '' || quantity.trim() === '' || reason.trim() === '') {
+                Swal.fire({
+                    text: '입력하지 않은 내용이 있습니다.',
+                    icon: 'info',
+                    confirmButtonText: '확인',
+                    customClass: {
+                        confirmButton: 'btn btn-danger'
+                    }
+                });
+                return;
+            }
+
+            isClickable = false;
 
             $.ajax({
                 url: '/stock/stockdetailhistory/insert',
@@ -502,12 +515,12 @@ $(document).ready(function () {
                         }
                     }).then((result) => {
                         if (result.isConfirmed) {
-                  
+                            // Reset input values
                             $('select[data-control="select2"]').val('');
                             $('input.form-control').val('');
                             $('textarea.form-control').val('');
 
-                         
+                            // Close modal
                             $('.btn[data-bs-dismiss="modal"]').click();
                             isClickable = true;
                             $('.btn-primary').off('click', registerButtonClickHandler); 
@@ -527,7 +540,7 @@ $(document).ready(function () {
                         }
                     }).then((result) => {
                         if (result.isConfirmed) {
-                         
+                            // Close modal
                             $('.btn[data-bs-dismiss="modal"]').click();
                             isClickable = true;
                             $('.btn-primary').off('click', registerButtonClickHandler); 
@@ -539,12 +552,9 @@ $(document).ready(function () {
             });
         }
 
-  
         $('.btn-primary').on('click', registerButtonClickHandler);
 
-        
         $('#kt_modal_2').on('hidden.bs.modal', function () {
-         
             $('.btn-primary').off('click', registerButtonClickHandler);
         });
     });

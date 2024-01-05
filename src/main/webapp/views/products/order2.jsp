@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
 <!--begin::Head-->
@@ -43,7 +43,6 @@
 <!--end::Global Stylesheets Bundle-->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
-
 <style>
 .custom-input-group {
 	position: absolute;
@@ -78,7 +77,8 @@ button i.bi {
 <!--begin::Body-->
 <body id="kt_body"
 	class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
-	
+	<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal" var="principal"/>
 	<!--begin::Theme mode setup on page load-->
 	<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 	<!--end::Theme mode setup on page load-->
@@ -87,9 +87,232 @@ button i.bi {
 	<!--end::Header 헤더 닫기-->
 	<!--begin::Main-->
 	<!--begin::Root-->
-<button id="myButton">ㅎㅇㅎㅇ</button>
-<button id="faButton">실퍀ㅋ</button>
-<button id="ifButton">경고</button>
+	<div class="d-flex flex-column flex-root">
+		<!--begin::Page-->
+
+		<div class="page d-flex flex-row flex-column-fluid">
+			<!--begin::Wrapper-->
+
+			<div class="wrapper d-flex flex-column flex-row-fluid"
+				id="kt_wrapper">
+				<!--begin::Content-->
+
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
+				<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">발주</h1>
+					<!--================================메인 내용들어가는부분================================================-->
+					<!--사이드바 넣는곳  -->
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
+
+					<!-- 사이드바 닫는곳 -->
+					<!--begin::Post-->
+					<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
+						<!--begin::Container-->
+						<div class="container-xxl">
+							<!--begin::Category-->
+							<div class="card card-flush">
+								<!--begin::Card header-->
+								<div class="card-header align-items-center py-5 gap-2 gap-md-5">
+									<!--begin::Card title-->
+									<div class="card-title">
+										<!--begin::Search-->
+										<div class="d-flex align-items-center position-relative my-1"
+											id="searchContainer">
+											<i
+												class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+												<span class="path1"></span> <span class="path2"></span>
+											</i> <input type="text"
+												data-kt-ecommerce-category-filter="search"
+												class="form-control form-control-solid w-250px ps-12"
+												placeholder="내용을 입력하세요" />
+										</div>
+
+										<!--end::Search-->
+									</div>
+
+									<div class="mb-0">
+										<label class="form-label">입고 희망 날짜</label> 
+									       <!-- Date Input -->
+    <input class="form-control form-control-solid" placeholder="날짜를 선택 해주세요." id="kt_daterangepicker_3" name ="birthdate"/>
+ 
+							    	 		
+									    	
+									    	 	
+									</div>
+									<!--end::Card title-->
+									<!--begin::Card toolbar-->
+									<!--begin::Add product-->
+
+									<!--end::Card toolbar-->
+								</div>
+								<!--end::Card header-->
+								<!--begin::Card body-->
+								<div class="card-body pt-0">
+									<!--begin::Table-->
+									<table class="table align-middle table-row-dashed fs-6 gy-5"
+										id="kt_ecommerce_category_table">
+										<thead>
+											<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
+												<th class="w-550px pe-2">제품 이름</th>
+												<th class="min-w-350px">제품 번호</th>
+												<th class="min-w-350px">분류(대분류>중분류)</th>
+												<th class="min-w-200px">제품 개수
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+											</tr>
+										</thead>
+										<tbody class="fw-semibold text-gray-600">
+											<c:forEach items="${list}" var="order">
+												<tr>
+													<td>${order.productName} <input type="hidden"
+														name="productId" value="${order.productId}">
+													</td>
+													<td>${order.productId}</td>
+													<td><c:choose>
+															<c:when
+																test="${order.categoryName eq '주류' or order.categoryName eq '가공' or order.categoryName eq '신선'}">
+            식품 > ${order.categoryName}
+        </c:when>
+															<c:when
+																test="${order.categoryName eq '주방' or order.categoryName eq '청소' or order.categoryName eq '생활잡화'}">
+            생필품 > ${order.categoryName}
+        </c:when>
+															<c:when
+																test="${order.categoryName eq '가전' or order.categoryName eq '컴퓨터' or order.categoryName eq '디지털'}">
+            전자제품 > ${order.categoryName}
+        </c:when>
+															<c:otherwise>
+            기타 > ${order.categoryName}
+        </c:otherwise>
+														</c:choose></td>
+
+													<td style="text-align: center;">
+														<div class="input-group w-md-200px" data-kt-dialer="true"
+															data-kt-dialer-currency="true" data-kt-dialer-min="0"
+															data-kt-dialer-max="9999999999999999999"
+															data-kt-dialer-step="1" data-kt-dialer-prefix="">
+
+															<!-- begin::Decrease control -->
+															<button
+																class="btn btn-icon btn-outline btn-active-color-primary"
+																type="button" data-kt-dialer-control="decrease">
+																<i class="ki-duotone ki-minus fs-2"></i>
+															</button>
+															<!-- end::Decrease control -->
+
+															<!-- begin::Input control -->
+															<input type="text" class="form-control"
+																placeholder="Amount" value="0"
+																data-kt-dialer-control="input" name="count" />
+															<!-- end::Input control -->
+															
+
+															<!-- begin::Increase control -->
+															<button
+																class="btn btn-icon btn-outline btn-active-color-primary"
+																type="button" data-kt-dialer-control="increase">
+																<i class="ki-duotone ki-plus fs-2"></i>
+															</button>
+															<button type="button" onclick="submitForm(this)"
+																id="kt_docs_sweetalert_basic" class="btn btn-primary">추가</button>
+															<!-- end::Increase control -->
+
+														</div>
+
+													</td>
+												</tr>
+											</c:forEach>
+
+
+
+
+										</tbody>
+										<!--end::Table body-->
+
+									</table>
+									<!--end::Table-->
+
+								</div>
+
+								<button type="button" class="btn btn-primary"
+									data-bs-toggle="modal" data-bs-target="#kt_modal_scrollable_2"
+									style="position: absolute; bottom: 0; right: 0;">발주할
+									물품 목록</button>
+
+							</div>
+
+							<div class="modal fade" tabindex="-1" id="kt_modal_scrollable_2">
+								<div class="modal-dialog modal-dialog-scrollable modal-lg">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1>발주할 물품</h1>
+
+
+											<!--begin::Close-->
+											<div
+												class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+												data-bs-dismiss="modal" aria-label="Close">
+												<i class="ki-duotone ki-cross fs-2x"><span class="path1"></span><span
+													class="path2"></span></i>
+
+											</div>
+
+											<!--end::Close-->
+										</div>
+
+										<div class="modal-body">
+
+
+
+												<div class="py-5">
+													<div class="table-responsive">
+														<div class="w-150px">
+															배송기사 선택 <select class="form-select form-select-solid"
+																data-control="select2" data-dropdown-css-class="w-200px"
+																data-placeholder="배송기사를 선택 해주세요!" data-hide-search="true">
+														<c:forEach items="${list3}" var="order3">
+																<option value="${order3.driverIdx}" selected>${order3.driverName}</option>
+												</c:forEach>
+															</select>
+														
+														</div>
+														
+														<table
+															class="table table-row-dashed table-row-gray-300 gy-7" id="orderModal">
+															<thead>
+															<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
+															<th class="min-w-125px">삭제</th>
+															<th class="min-w-125px">물품 명</th>
+															<th class="min-w-125px">발주할 물품 개수(파레트)</th>
+															<th class="min-w-125px">낱개 개수(총합)</th>
+															</tr>
+															</thead>
+															<tbody id="orderModalBody">
+</tbody>
+														</table>	
+	
+													</div>
+												</div>
+											</div>
+	
+											<div class="modal-footer">
+	
+												<button type="button" class="btn btn-primary" id="orderBtn">발주 하기</button>
+	
+											</div>
+	
+										</div>
+									</div>
+								</div>
+							</div>
+						<!--end::Container-->
+					</div>
+				</div>
+				<!--end::Content-->
+			</div>
+			<!--end::Wrapper-->
+		</div>
+		<!--end::Page-->
+	</div>
+	<!--end::Root-->
 
 	<!--begin::Javascript-->
 	<script>var hostUrl = "/";</script>
@@ -336,36 +559,7 @@ if(msg != ""){
 
 
 </script>
-	<script>
-
-	  document.getElementById('myButton').addEventListener('click', function() {
-		   
-	        
-		  SuccessModal('모달불러오기 완료');
-	     });
-
-</script>
-
-
-<script>
-
-	  document.getElementById('faButton').addEventListener('click', function() {
-		   
-	        
-		  FalseModal('모달불러오기 완료');
-	     });
-
-</script>
-<script>
-
-	  document.getElementById('ifButton').addEventListener('click', function() {
-		   
-	        
-		  InfoModal('모달불러오기 완료');
-	     });
-
-</script>
-
+</sec:authorize>
 </body>
 <!--end::Body-->
 </html>

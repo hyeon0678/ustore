@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <!--begin::Head-->
-<head>
+<head> 	
 <base href="../../../" />
 <title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by
 	KeenThemes</title>
@@ -105,10 +105,12 @@
 				id="kt_wrapper">
 					
 				<!--begin::Content-->
-				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;"> 
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 				<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">재고 관리</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--사이드바 넣는곳  -->
+					
+					
 					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 
 					<!-- 사이드바 닫는곳 -->
@@ -147,7 +149,7 @@
 										<div class="modal-dialog modal-dialog-scrollable">
 											<div class="modal-content">
 												<div class="modal-header">
-													<h5 class="modal-title"></h5>
+													<h2 class="modal-title" style=" color: #c6da52;">물품 항목 추가</h2>
 
 													<!--begin::Close-->
 													<div
@@ -158,9 +160,10 @@
 													</div>
 													<!--end::Close-->
 												</div>
-												<form action="stock/stockmanagement/insert" method="post">
+												<form id="myForm" action="stock/stockmanagement/insert" method="post">
+													
 													<div class="modal-body">
-														<h2 style=" color: #c6da52;">물품 항목 추가</h2>
+														
 														<div class="table-responsive">
 
 															<table
@@ -180,7 +183,7 @@
 																		<td class="min-w-125px" style="vertical-align: bottom;">분류</td>
 																		<td>대분류 <select
 																			class="form-select form-select-solid"
-																			data-control="select2" data-placeholder="생필품"
+																			data-control="select2" data-placeholder="선택"
 																			data-hide-search="true" name="Bselect" id="Bselect">
 																				<option></option>
 																				<option value="식품">식품</option>
@@ -190,7 +193,7 @@
 																		</td>
 																		<td >중분류 <select
 																			class="form-select form-select-solid"
-																			data-control="select2" data-placeholder="생활 잡화"
+																			data-control="select2" data-placeholder="선택"
 																			data-hide-search="true" name="categoryId"
 																			id="Sselect">
 																				<option></option>
@@ -221,7 +224,7 @@
 													</div>
 
 													<div class="modal-footer">
-														<button class="btn btn-primary">항목 추가</button>
+														<button id="submitButton" class="btn btn-primary">항목 추가</button>
 
 													</div>
 												</form>
@@ -257,14 +260,14 @@
             </div>
         </td>
 													<td><c:choose>
-                <c:when test="${stock.stock gt 0}">
-                    <c:set var="roundedStock" value="${fn:substringBefore(fn:substringAfter(stock.stock / stock.unitQuantity, '.'), '0') + 1}" />
-                    ${roundedStock}
-                </c:when>
-                <c:otherwise>
-                    0
-                </c:otherwise>
-            </c:choose>/${stock.stock}</td>
+    <c:when test="${stock.stock gt 0}">
+        <c:set var="roundedStock" value="${fn:substringBefore(fn:replace(Math.ceil(stock.stock / stock.unitQuantity), '\\\\.0', ''), '.')}" />
+        ${roundedStock}
+    </c:when>
+    <c:otherwise>
+        0
+    </c:otherwise>
+</c:choose>/ ${stock.stock}</td>
 
 													<td ><button class="btn btn-primary" onclick="confirmDelete('${stock.productId}')">delete</button></td>
 												</tr>
@@ -395,6 +398,47 @@
 		
 		
 	</script>
+<script>
+    // 폼 제출 이벤트 리스너
+    document.getElementById('myForm').addEventListener('submit', function (event) {
+        // 필드 값 가져오기
+        var productName = document.querySelector('[name="productName"]').value;
+        var Bselect = document.querySelector('[name="Bselect"]').value;
+        var categoryId = document.querySelector('[name="categoryId"]').value;
+        var unitQuantity = document.querySelector('[name="unitQuantity"]').value;
+        var purchasePrice = document.querySelector('[name="purchasePrice"]').value;
+
+        // 필드 유효성 검사
+        if (productName.trim() === '' || Bselect.trim() === '' || categoryId.trim() === '' || unitQuantity.trim() === '' || purchasePrice.trim() === '') {
+            // 입력되지 않은 내용이 있을 경우 메시지 표시
+            Swal.fire({
+                text: '입력되지 않은 내용이 있습니다.',
+                icon: 'info',
+                confirmButtonText: '확인',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                }
+            });
+
+            // 폼 제출 중단
+            event.preventDefault();
+        } else {
+            // SweetAlert로 성공 메시지 표시
+            event.preventDefault();
+            Swal.fire({
+                text: '물품이 추가 되었습니다.',
+                icon: 'success',
+                confirmButtonText: '확인',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                }
+            }).then(function () {
+                // 확인 버튼 클릭 시 서버로 폼 제출
+                document.getElementById('myForm').submit();
+            });
+        }
+    });
+</script>
 </sec:authorize>
 </body>
 <!--end::Body-->
