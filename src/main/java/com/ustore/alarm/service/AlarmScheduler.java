@@ -26,19 +26,19 @@ public class AlarmScheduler {
 		this.dao = dao;
 	}
 	// 등록이 되었습니다 -> 모달로
-	//@Scheduled(cron = "0 0/1 * * * ?")
+	@Scheduled(cron = "0 0/1 * * * ?")
 	public void getUnReadAlarm() {
 		List<String> employeeList = dao.selectEmployees();
 		for(String e : employeeList) {
 			int unReadSchedule = dao.selectUnReadSchedule(e);
 			int unReadChat = dao.selectUnReadChat(e);
 			if(unReadChat>0) {
-				operations.convertAndSendToUser(e, "/topic/chatAlarm", "EXIST");
+				operations.convertAndSend("/topic/"+e, "EXIST");
 			}
 			if(unReadSchedule > 0) {
-				operations.convertAndSendToUser(e, "/topic/alarm", "EXIST");
+				operations.convertAndSend("/topic/"+e, "EXIST");
 			}else if(unReadSchedule <= 0) {
-				operations.convertAndSendToUser(e, "/topic/alarm", "NONE");
+				operations.convertAndSend("/topic/"+e, "NONE");
 			}
 		}
 		System.out.println("------- alarm scheduler");
