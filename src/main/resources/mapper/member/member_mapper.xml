@@ -25,7 +25,7 @@
 		</insert>
 		
 		<insert id="pointinsert" parameterType="Integer">
-			insert into total_point (member_idx, total_point) values(#{param1},0)
+			insert into total_point (member_idx, total_point) values(#{param1}, 0)
 		</insert>
 		
 		
