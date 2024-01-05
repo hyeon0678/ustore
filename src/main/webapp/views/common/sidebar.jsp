@@ -313,7 +313,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/stock/stockmanagement/list">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -325,7 +325,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/order/list">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -337,7 +337,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/stock/incoming/list">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -408,7 +408,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/accountingdashboard">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
