@@ -278,8 +278,8 @@
 	    stompClient = Stomp.over(socket);
 	    stompClient.connect({}, function(frame){
 	    	console.log("webSocket is connected");
-	    	stompClient.subscribe('/chat/alarm',alarmReceived);
-		    stompClient.subscribe('/chat/chatAlarm',chatReceived);
+	    	stompClient.subscribe('/user/alarm',alarmReceived);
+		    stompClient.subscribe('/user/chatAlarm',chatReceived);
 	    }, onError);
 	    
    	}
@@ -333,4 +333,51 @@
 	})
 	
 	</script>
+	<script>
+	function SuccessModal(message) {
+	    Swal.fire({
+	        text: message,
+	        icon: 'success',
+	        buttonsStyling: false,
+	        confirmButtonText: '확인',
+	        customClass: {
+	            confirmButton: 'btn btn-primary'
+	        }
+	    })
+	}
+
+</script>
+<script>
+	function FalseModal(message) {
+		Swal.fire({
+            text: message,
+            icon: 'error',
+            buttonsStyling: false,
+            confirmButtonText: '확인',
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            }
+        });
+	}
+
+</script>
+
+<script>
+	function InfoModal(message) {
+		Swal.fire({
+            text: message,
+            icon: 'info',
+            buttonsStyling: false,
+            confirmButtonText: '확인',
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            }
+        });
+	}
+
+</script>
+
+
+ 
+	
 </html>

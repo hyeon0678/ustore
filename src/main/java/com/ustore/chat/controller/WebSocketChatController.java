@@ -18,7 +18,7 @@ import com.ustore.chat.service.ChatService;
 public class WebSocketChatController {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired
+	
 	private SimpMessageSendingOperations messageTemplete;
 	private ChatService chatService;
 	
@@ -33,8 +33,7 @@ public class WebSocketChatController {
 		logger.info(chat.toString());
 		logger.info("{}, {}, {}",chat.getRoomNum(), chat.getSender(), chat.getData());
 		ChatDto chatData = chatService.saveChat(chat);
-		
-		messageTemplete.convertAndSendToUser(chat.getSender(), "/topic/chat"+chat.getRoomNum(), "EXIST");
+		messageTemplete.convertAndSendToUser("20230001","/user/chatRoom", "test");
 		messageTemplete.convertAndSend("/topic/chat/"+chat.getRoomNum(), chatData);
 	}
 }

@@ -246,7 +246,7 @@
 								<!--begin:Menu item-->
 								<div class="menu-item">
 									<!--begin:Menu link-->
-									<a class="menu-link" href="index.html">
+									<a class="menu-link" href="/chat">
 										<span class="menu-icon">
 											<img src="resource/assets/media/icon/side_chat.svg" class="ki-duotone ki-fingerprint-scanning fs-2" style="opacity:.3"/>
 										</span>
