@@ -60,7 +60,7 @@
 								<div class="menu-item">
 									<!--begin:Menu link-->
 									<!--====================프로필 페이지 링크 달기===== 활성화 코드>> class="menu-link active"=========================-->
-									<a class="menu-link" href="index.html">
+									<a class="menu-link" href="/employee/home">
 										<span class="menu-icon">
 											<img src="resource/assets/media/icon/side_home.svg" class="ki-duotone ki-calendar-8 fs-2 " style="opacity:.3"/>
 										</span>
@@ -217,7 +217,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/adboard/list">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -230,7 +230,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/anboard/list">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>

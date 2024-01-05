@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
+import org.apache.ibatis.annotations.Param;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -40,18 +43,47 @@ public class EmpProfileController {
 	
 	
 	@GetMapping("/employee/home")
-	public ModelAndView home(Principal principal) {
-		String emp_idx = principal.getName();
-		
-		logger.info("로그인 아이디 : "+emp_idx);
-		
-		EmpProrileDto dto = service.homeProfileDetail(emp_idx);
-		
+	public ModelAndView home(Principal principal, HttpSession session)throws Exception {
+
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("employee", dto);
-		mav.setViewName("employee/profile");
+
+		try {
+			String emp_idx = principal.getName();
+			
+			logger.info("emp_idx = " + emp_idx);
+			logger.info("session = " + session);
+			
+			EmpProrileDto dto = service.homeProfileDetail(emp_idx);
+			
+			session.setAttribute("emp_idx", dto.getEmp_idx());
+			String empidx = (String) session.getAttribute("emp_idx");
+			
+			session.setAttribute("dept_id", dto.getDeptname());
+			String deptId = (String) session.getAttribute("dept_id");
+			
+			session.setAttribute("position", dto.getCommontype());
+			String position = (String) session.getAttribute("position");
+			
+			logger.info("직원 이름 : " + empidx);
+			logger.info("직원 부서 : " + deptId);
+			logger.info("로그인 아이디 : "+emp_idx);
+			logger.info("직원 직급 : " + position);
+			
+			mav.addObject("employee", dto);
+			mav.setViewName("employee/profile");
+			
+			logger.info("로그인 성공");
+			
+			return mav;
 		
-		return mav;
+		}catch(NullPointerException e){
+			e.printStackTrace();
+			mav.setViewName("main/login");
+			logger.info("로그인 실패");
+			return mav;
+		}finally {
+			logger.info("로그인");
+		}
 	}
 	
 	@RequestMapping(value = "/employee/addevent", method = {RequestMethod.GET, RequestMethod.POST})
@@ -109,8 +141,12 @@ public class EmpProfileController {
 	
 	@RequestMapping(value = "/profilecalendar", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Map<String, Object>> profilecalendar(){
-		List<Map<String, Object>> list = service.profilecalendar();
+	public List<Map<String, Object>> profilecalendar(Principal principal){
+		String empIdx = principal.getName();
+		
+		logger.info("캘린더 접속자 : " + empIdx);
+		
+		List<Map<String, Object>> list = service.profilecalendar(empIdx);
 		
 		JSONObject jsonObj = new JSONObject();
 		JSONArray jsonArr = new JSONArray();

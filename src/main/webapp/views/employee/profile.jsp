@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <!--
 Author: Keenthemes
@@ -39,6 +40,10 @@ License: For each use you must have a valid license purchased only from above li
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+	<sec:authorize access="isAuthenticated()">
+		<sec:authentication property="principal" var="principal"/>
+	</sec:authorize>
+	
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
@@ -53,7 +58,7 @@ License: For each use you must have a valid license purchased only from above li
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<!--begin::Post-->
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
@@ -62,7 +67,6 @@ License: For each use you must have a valid license purchased only from above li
 						
 							<!--begin::Container-->
 							<div class="container-xxl">
-							<input type="button" onclick="location.href='/adboard/list'" value="임시 게시글 이동 버튼"/>
 								<!--begin::Navbar-->
 								<div class="card mb-5 mb-xl-10">
 									<div class="card-body pt-9 pb-0">
@@ -81,12 +85,12 @@ License: For each use you must have a valid license purchased only from above li
 												<div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
 													<div class="d-flex flex-column">
 														<div class="d-flex align-items-center mb-2">
-															<p class="text-gray-900 fs-2 fw-bold me-1">이름</p>
+															<p class="text-gray-900 fs-2 fw-bold me-1">${employee.empName}</p>
 														</div>
 														<div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
 															<a href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
 															<i class="ki-duotone ki-profile-circle fs-4 me-1">
-															</i>${employee.empName}</a>
+															</i>${principal.username}</a>
 														</div>
 													</div>
 													

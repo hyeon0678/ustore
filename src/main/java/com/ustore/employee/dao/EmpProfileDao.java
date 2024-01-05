@@ -21,7 +21,7 @@ public interface EmpProfileDao {
 	
 	int leavework(Map<String, String> params);
 
-	List<Map<String, Object>> profilecalendar();
+	List<Map<String, Object>> profilecalendar(String empIdx);
 
 	int employeDel(String sch_idx);
 

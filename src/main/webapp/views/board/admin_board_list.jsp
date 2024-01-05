@@ -56,7 +56,7 @@
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 					<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">공지사항</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 						<!--begin::Toolbar-->
@@ -75,7 +75,7 @@
 									<!--end::Col-->
 									<input type="text" class="form-control form-control-solid" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
 									<button type="button" class="btn btn-primary" style="margin: 10px;">검색</button>
-									<button onclick="location.href='board/WriteForm'" class="btn btn-primary">글작성</button>
+									<button onclick="location.href='adboard/WriteForm'" class="btn btn-primary">글작성</button>
 								</div>
 								<!--end::Actions-->
 							</div>
