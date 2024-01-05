@@ -689,7 +689,7 @@ var gradeidx = $('#membergrade').val();
 					 		content += '<th class="min-w-130px" style="text-align: center;">횐불됨</th>'; 
 						 } else {
 							content += '<th class="min-w-130px" style="text-align: center;">';
-							content += '<button style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;">';
+							content += '<button id="refundBut" data-product-id="'+ obj.list[i].iamport_idx +'"style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;">';
 							content += '환불</button></th>';
 						}	
 						 content += '</tr>';				
@@ -711,7 +711,37 @@ var gradeidx = $('#membergrade').val();
 	}
 
 
-
+	// 환불 버튼 클릭 요소 가져오기
+    $(document).on('click', '#refundBut', function() {
+        var iamportIdx = $(this).data('product-id');
+		console.log('환불 버튼 클릭시 포트 번호 요소 가져오기 확인 : ',iamportIdx);
+        refund(iamportIdx);
+    });
+	
+    // 환불 요청
+	function refund(iamportIdx){
+		$.ajax({
+	        type: 'get',
+	        url: 'request/refund.ajax',
+	        data: {
+	            'iamportIdx': iamportIdx
+	        },
+	        dataType: 'json',
+	        success: function (data) {
+				console.log(data);
+				if(data){					
+				productlistcall();
+				}else{
+					alert('환불이 실패했습니다.');
+				}
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+    }
+	
+	
 
 
 	var msg = "${msg}";

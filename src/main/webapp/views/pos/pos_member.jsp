@@ -50,7 +50,7 @@ License: For each use you must have a valid license purchased only from above li
 
 					
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" style="width: 100%;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="background-color: #fffff8;"> 
 						
 						<!--begin::Post-->
 						<div class="post fs-6 d-flex flex-column-fluid" style="margin-left: 30px; margin-right: 30px;">
@@ -99,9 +99,7 @@ License: For each use you must have a valid license purchased only from above li
 
 
 								</div>
-								<div class="card-footer">
-									Footer
-								</div>
+								
 							</div>
 						</div>
 						<!--end::Post-->
