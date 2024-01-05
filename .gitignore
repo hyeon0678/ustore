@@ -33,6 +33,4 @@ build/
 #####
 ### VS Code ###
 .vscode/
-./src/main/resources/application.properties
-./src/main/resources/assets/media
-
+src/main/resources/application.properties
