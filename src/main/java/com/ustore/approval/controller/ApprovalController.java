@@ -75,7 +75,7 @@ public class ApprovalController {
 	// 임시저장 detail보기
 	@Transactional(isolation = Isolation.DEFAULT)
 	@GetMapping(value="/approval/tempapproval/detail")
-	public ModelAndView tempDetail(@RequestParam int apprIdx, @RequestParam int apprTypeIdx) throws JsonProcessingException {
+	public ModelAndView tempDetail(@RequestParam Integer apprIdx, @RequestParam int apprTypeIdx) throws JsonProcessingException {
 		ModelAndView mav = new ModelAndView("approval/tempSaveApprDocDetail");
 		logger.info("apprIdx : "+apprIdx);
 		logger.info("apprTypeIdx : "+apprTypeIdx);
@@ -215,6 +215,7 @@ public class ApprovalController {
 		 
 		String emp_idx = principal.getName(); 
 		dto.setEmpIdx(emp_idx);
+		logger.info("문서번호 : "+dto.getApprIdx());	
 		
 		boolean recordExists = service.chkRecordExists(dto.getApprIdx());
 		logger.info("번호 중복여부 : "+recordExists);

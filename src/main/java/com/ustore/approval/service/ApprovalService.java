@@ -34,6 +34,7 @@ public class ApprovalService {
 		
 		List<Map<String, String>> apprlist = dto.getApprovalLines();
 		for (Map<String, String> emp : apprlist) {
+			dto.setEmpIdx(emp.get("empIdx"));
 			dto.setApprover(emp.get("name"));
 			dto.setApprOrder(Integer.parseInt(emp.get("apprOrder")));
 			dto.setApprConfirm(emp.get("apprConfirm"));
@@ -45,6 +46,7 @@ public class ApprovalService {
 		}
 		List<Map<String, String>> recvlist = dto.getReceivers();
 		for (Map<String, String> recv : recvlist) {
+			dto.setEmpIdx(recv.get("empIdx"));
 			dto.setReceiver(recv.get("name"));
 			dto.setPositionType(recv.get("positionType"));
 			dto.setDeptName(recv.get("department"));
@@ -60,6 +62,7 @@ public class ApprovalService {
 		
 		List<Map<String, String>> apprlist = dto.getApprovalLines();
 		for (Map<String, String> emp : apprlist) {
+			dto.setEmpIdx(emp.get("empIdx"));
 			dto.setApprover(emp.get("name"));
 			dto.setApprOrder(Integer.parseInt(emp.get("apprOrder")));
 			dto.setApprConfirm(emp.get("apprConfirm"));
@@ -71,6 +74,7 @@ public class ApprovalService {
 		}
 		List<Map<String, String>> recvlist = dto.getReceivers();
 		for (Map<String, String> recv : recvlist) {
+			dto.setEmpIdx(recv.get("empIdx"));
 			dto.setReceiver(recv.get("name"));
 			dto.setPositionType(recv.get("positionType"));
 			dto.setDeptName(recv.get("department"));

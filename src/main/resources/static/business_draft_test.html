@@ -161,17 +161,22 @@
 	</body>
 <!--end::Body-->
 <script>
+
 var myEditor;
-ClassicEditor
-	.create(document.querySelector('#kt_docs_ckeditor_classic'))
-	.then(editor => {
-		console.log(editor);
-		myEditor = editor;
-		// myEditor.setData(apprContent);
-	})
-	.catch(error => {
-		console.error(error);
-	});
+  // CKEditor 초기화 코드
+  ClassicEditor
+     .create(document.querySelector('#kt_docs_ckeditor_classic'))
+     .then(editor => {
+    	 myEditor = editor;
+        // 메인 페이지에서 받아온 데이터를 사용하여 CKEditor에 설정
+        if (apprContent) {
+           myEditor.setData(apprContent);
+        }
+     })
+     .catch(error => {
+        console.error(error);
+     });
+
 
 // set the dropzone container id
 	const id = "#kt_dropzonejs_example_2";
