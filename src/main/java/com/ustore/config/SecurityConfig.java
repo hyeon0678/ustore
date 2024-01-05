@@ -30,7 +30,6 @@ import com.ustore.main.service.security.CustomUserdetailsService;
 // 주석
 @Component
 @EnableWebSecurity
-@EnableScheduling
 public class SecurityConfig {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	

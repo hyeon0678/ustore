@@ -23,5 +23,6 @@ public interface ChatDao {
 	void updateToRead(int roomNum, String emp_idx);
 	void setRead(int roomNum, int chatIdx, String name);
 	List<String> unReadUser(int roomNum, int chatIdx);
+	String selectUserInfo(String userInfo);
 
 }

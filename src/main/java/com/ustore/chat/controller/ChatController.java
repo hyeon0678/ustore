@@ -101,7 +101,9 @@ public class ChatController {
 	@ResponseBody
 	public HashMap<String, Object> quitRoom(@RequestParam int roomNum, Principal principal){
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		chatService.quitRoom(roomNum, principal.getName());
+		ChatDto dto = chatService.quitRoom(roomNum, principal.getName());
+		//messageTemplete.convertAndSend("/topic/chat/"+roomNum,dto);
+		logger.info("send");
 		return result;
 	}
 	

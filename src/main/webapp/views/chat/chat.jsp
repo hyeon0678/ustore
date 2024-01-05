@@ -84,10 +84,10 @@
 			<!--begin::Wrapper-->
 			<div class="wrapper d-flex flex-column flex-row-fluid"
 				id="kt_wrapper">
-
+			<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 				<!--================================메인 내용들어가는부분================================================-->
 				<!--begin::Content-->
-				<div class="content fs-6 d-flex flex-column flex-column-fluid"
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"
 					id="kt_content"
 					style="margin-top: 10px; background-color: #fffff8;">
 					<!--<h1 class="text-gray-900 fw-bold my-1 fs-2">채팅</h1>-->
@@ -388,19 +388,19 @@
     let clickCnt = 0;
     // 
 	$(document).ready(function(){
-		headerOnReady();
+		headerOnReady(function (){
+			stompClient.subscribe('/topic/chatRoom', function(){
+				callChatRoomList();
+			})
+		});
 		console.log("socket connection");
 		getCurrentTime()
 		$('#send-msg').prop('disabled', true);
 		$('#msg-box').prop('readonly', true);
-		stompClient.subscribe('/user/chatRoom', function(){
-			callChatRoomList();
-		});
-		//connect();
-	    if(stompClient.connected){
-	    	console.log("websocket connected");
-	    }
+		
 	});
+	
+	
 	$('#search-btn').on('click', function(){
 		let keyword = $('#search-input').val();
 		searchTreeData = [];
@@ -681,12 +681,12 @@
 	
 	function onMessageReceived(payload){
 		var message = JSON.parse(payload.body);
+		console.log(message);
 		setRead(message.roomNum, message.chatIdx);
 		console.log(message);
 		let data = [];
 		data.push(message);
 		drawReceivedData(data);
-		//callChatRoomList();
 	}
 	
 	function drawReceivedData(data){
@@ -694,8 +694,8 @@
 			content = ""
 			let date = getCurrentTime(message.sendDate)
 			console.log("chat history")
-			if(message.sender == 'system'){
-				continue;
+			if(message.sender == 'system' && data != ''){
+				content += "<p>"+message.data+"</p>"
 			}
 			if(message.sender == username){
 				content+="<div class='d-flex justify-content-end mb-10'>"
@@ -790,6 +790,7 @@
 	}
 
 	function quitRoom(){
+		subscription.unsubscribe('/topic/chat/'+roomNum);
 		$('.quit-room').on('click', function(){
 			$.ajax({
 				data:{
