@@ -29,7 +29,6 @@ public class EmployeeDto {
 	private String major;
 	private int leaveIncdec;  // 연차 갯수
 
-
 	private String newFileName;
 	private String extension;
 	
@@ -196,7 +195,5 @@ public class EmployeeDto {
 	public void setMajor(String major) {
 		this.major = major;
 	}
-	
-	
 	
 }

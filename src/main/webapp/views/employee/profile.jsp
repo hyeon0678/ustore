@@ -207,30 +207,8 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Label-->
 											<!--begin::Col-->
  											<div class="col-lg-8 fv-row">
-    											<%
-    											
-    												String department = "";
-    												String deptId = (String) request.getAttribute("employee.deptId"); // employee.deptId 값을 가져옵니다.
-													
-    												System.out.print("!!!부서 아이디2!!! : " + deptId);
-    												
-    												// deptId 값에 따라 부서를 결정합니다.
-    												if ("1".equals(deptId)) {
-        												department = "회계팀";
-											    	} else if ("2".equals(deptId)) {
-        												department = "인사팀";
-    												} else if ("3".equals(deptId)) {
-        												department = "매장 관리팀";
-    												} else {
-														department = "다른 부서";
-    												}
-    												
-    											%>
-    											<span class="fw-bold fs-6 text-gray-800"><%= department %></span>
+												<span class="fw-bold fs-6 text-gray-800">${employee.deptname}</span>
 											</div>
-											<%-- <div class="col-lg-8 fv-row">
-												<span class="fw-bold fs-6 text-gray-800">${employee.deptId}</span>
-											</div>--%>
 											<!--end::Col-->
 										</div>
 										<!--end::Input group-->
@@ -253,7 +231,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-8">
-												<span class="fw-bold fs-6 text-gray-800">${employee.position}</span>
+												<span class="fw-bold fs-6 text-gray-800">${employee.commontype}</span>
 											</div>
 											<!--end::Col-->
 										</div>
@@ -366,6 +344,9 @@ License: For each use you must have a valid license purchased only from above li
 														</div>
 														
 													</div>
+													<div hidden="true">
+														<input type="text" value="${employee.empIdx}" name="emp_idx"/>
+													</div>
 													<div class="fv-row mb-9">
 														<label class="fs-6 fw-semibold mb-2">일정</label>
 														<input type="text" class="form-control form-control-solid" placeholder="" name="calendar_event_name" />
@@ -414,8 +395,8 @@ License: For each use you must have a valid license purchased only from above li
 														</div>
 													</div>
 													<div hidden="true">
-														<input type="text" value="${sessionScope.loginId}" name="emp_idx" />
-														<input type="text" value="${sessionScope.loginId}" name="reg_by" />
+														<input type="text" value="${employee.empIdx}" name="emp_idx" />
+														<input type="text" value="${employee.empName}" name="reg_by" />
 													</div>
 												</div>
 												<div class="modal-footer flex-center">
@@ -648,6 +629,10 @@ License: For each use you must have a valid license purchased only from above li
 			}
 		});
 	}; */
+	
+	
+	
+	
 	
 	var msg = "${msg}"; // msg값을 받아와서 msg에 넣고
 	console.log(msg);

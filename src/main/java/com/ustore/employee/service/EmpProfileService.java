@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ustore.employee.dao.EmpProfileDao;
+import com.ustore.employee.dto.EmpProrileDto;
 import com.ustore.employee.dto.EmployeeDto;
 
 @Service
@@ -19,9 +20,9 @@ public class EmpProfileService {
 	
 	@Autowired EmpProfileDao dao;
 
-	public EmployeeDto homeProfileDetail(String empIdx) {
+	public EmpProrileDto homeProfileDetail(String emp_idx) {
 
-		return dao.homeProfileDetail(empIdx);
+		return dao.homeProfileDetail(emp_idx);
 	}
 	
 	@Transactional
