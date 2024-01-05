@@ -69,7 +69,7 @@
 		</select>
 		
 		<select id="productlistcall" resultType="map">
-			select payment_id , payment_date , payment_status , actual_amount   from payments  
+			select payment_id , payment_date , payment_status , actual_amount, iamport_idx from payments  
 			where member_id =#{param1} and payments_type =92 and payment_date BETWEEN #{param2} and #{param3}
 		</select>
 		

@@ -25,4 +25,12 @@ public class RequestController {
 		logger.info("결제 성공후 값 도착 파람 : "+ params);
 		return requestService.pay(params);
 	}
+	
+	// 환불 요청 ajax
+	@RequestMapping("/refund.ajax")
+	@ResponseBody
+	public boolean refund(@RequestParam String iamportIdx) {
+		boolean cancel = UtilToken.main(iamportIdx);
+		return cancel;
+	}
 }

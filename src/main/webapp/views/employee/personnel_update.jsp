@@ -58,7 +58,7 @@ License: For each use you must have a valid license purchased only from above li
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content">
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 						<!--begin::Post-->
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
 							<!--begin::Container-->

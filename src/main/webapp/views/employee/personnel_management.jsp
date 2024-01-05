@@ -50,7 +50,7 @@ License: For each use you must have a valid license purchased only from above li
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 						
 						<!--begin::Post-->
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
@@ -74,16 +74,15 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="card-header align-items-center border-0 mt-5">
 												<h3 class="card-title align-items-start flex-column">
 													<span class="fw-bolder text-gray-900 fs-3">조직도</span>
-													<div class="d-flex mt-2">
+												
 														<input type="text" class="form-control form-control-solid" placeholder="이름 입력" style="width: 200px; height: 40px;">
-            											<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+            											<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1" style="white-space:nowrap;">
 															부서관리
 														</button>
-													</div>
+													
 												</h3>
 												<div class="card-toolbar">
 													<!--begin::Menu-->
-													</button>
 												</div>
 											</div>
 											<!--end::Header-->
