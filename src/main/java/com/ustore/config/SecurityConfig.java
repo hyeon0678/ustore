@@ -53,6 +53,7 @@ public class SecurityConfig {
 		.antMatchers("/", "/main/**").permitAll()
 		.antMatchers("/resource/**").permitAll()
         .antMatchers("/ws/**").permitAll()
+        .antMatchers("/**").authenticated()
         .and()
 		.formLogin()	
 			.loginPage("/") 	//로그인 페이지를 보여주는 url
@@ -64,7 +65,7 @@ public class SecurityConfig {
 			.and()
 			.logout()
 			.logoutUrl("/logout")
-			.logoutSuccessUrl("/main/loginform"); // 로그아웃 성공 시 url
+			.logoutSuccessUrl("/"); // 로그아웃 성공 시 url
 
 		
 
