@@ -59,7 +59,8 @@
 
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px; background-color: #fffff8;"> 
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">Membership</h1>
 						
 						<!--begin::Toolbar-->
