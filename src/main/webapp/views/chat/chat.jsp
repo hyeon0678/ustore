@@ -393,6 +393,9 @@
 		getCurrentTime()
 		$('#send-msg').prop('disabled', true);
 		$('#msg-box').prop('readonly', true);
+		stompClient.subscribe('/user/chatRoom', function(){
+			callChatRoomList();
+		});
 		//connect();
 	    if(stompClient.connected){
 	    	console.log("websocket connected");
@@ -683,7 +686,7 @@
 		let data = [];
 		data.push(message);
 		drawReceivedData(data);
-		callChatRoomList();
+		//callChatRoomList();
 	}
 	
 	function drawReceivedData(data){
