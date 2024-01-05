@@ -267,7 +267,6 @@
 			<sec:authentication property="principal" var="principal"/>
 		</sec:authorize>
 		<script>var hostUrl = "resource/assets/";</script>
-		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
@@ -388,8 +387,5 @@
 	}
 
 </script>
-
-
- 
 	
 </html>

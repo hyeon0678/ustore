@@ -54,8 +54,8 @@
 <!--end::Head-->
 <!--begin::Body-->
 
-<body id="kt_body"
-	class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+<body id="kt_body"	class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+	<jsp:include page="/views/common/header.jsp"></jsp:include>
 	<!--begin::Theme mode setup on page load-->
 	<script>var defaultThemeMode = "light"; var themeMode; if (document.documentElement) { if (document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if (localStorage.getItem("data-bs-theme") !== null) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 	<!--end::Theme mode setup on page load-->
@@ -69,8 +69,8 @@
 
 				<!--================================메인 내용들어가는부분================================================-->
 				<!--begin::Content-->
-				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content"
-					style="margin-top: 90px; background-color: #fffff8;">
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 					<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">Membership</h1>
 
 					<!--begin::details View-->
