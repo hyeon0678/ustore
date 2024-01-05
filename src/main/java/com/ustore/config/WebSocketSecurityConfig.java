@@ -1,24 +1,20 @@
 package com.ustore.config;
 
-import java.nio.channels.Channel;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.messaging.support.ChannelInterceptor;
+import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;
+import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-import com.ustore.handler.MyWebSocketHandler;
-
-@Configuration
-@EnableWebSocketMessageBroker
-public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer{
+//@Configuration
+//@EnableWebSocketMessageBroker
+public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
+	
+Logger logger = LoggerFactory.getLogger(getClass());
+	
 	
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -26,6 +22,10 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer{
 		
 	}
 	
+  @Override
+    protected boolean sameOriginDisabled() {
+        return true;
+    }
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -34,7 +34,10 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer{
 		registry.setUserDestinationPrefix("/user");
 	}
 
+	@Override
+	protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
+		messages.simpMessageDestMatchers("/user/**").authenticated();
+	}	
 	
-
-
+	
 }

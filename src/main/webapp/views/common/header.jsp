@@ -278,8 +278,8 @@
 	    stompClient = Stomp.over(socket);
 	    stompClient.connect({}, function(frame){
 	    	console.log("webSocket is connected");
-	    	stompClient.subscribe('/chat/alarm',alarmReceived);
-		    stompClient.subscribe('/chat/chatAlarm',chatReceived);
+	    	stompClient.subscribe('/user/alarm',alarmReceived);
+		    stompClient.subscribe('/user/chatAlarm',chatReceived);
 	    }, onError);
 	    
    	}

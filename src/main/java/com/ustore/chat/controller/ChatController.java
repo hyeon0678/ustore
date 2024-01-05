@@ -35,10 +35,12 @@ public class ChatController {
 	
 	private ChatService chatService;
 	private WebSocketConfig config;
+	private SimpMessageSendingOperations messageTemplete;
 	
 	public ChatController(SimpMessageSendingOperations messageTemplete, ChatService chatService, WebSocketConfig config) {
 		this.chatService = chatService;
 		this.config = config;
+		this.messageTemplete = messageTemplete;
 	}
 	
 	@GetMapping()
@@ -80,6 +82,7 @@ public class ChatController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		List<ChatDto> chatList = chatService.getChatData(roomNum, principal.getName());
 		result.put("chatdata", chatList);
+		
 		return result;
 	}
 	
