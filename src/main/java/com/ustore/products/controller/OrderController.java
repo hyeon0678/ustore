@@ -209,6 +209,6 @@ public class OrderController {
 		
 		
 		
-		return "products/alertModal";
+		return "products/order2";
 	}
 }
