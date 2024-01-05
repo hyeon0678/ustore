@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +21,20 @@ import com.ustore.config.WebSocketConfig;
 @Service
 public class ChatService {
 	Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired
-	private ChatDao chatDao;
-	@Autowired 
-	WebSocketConfig config;
+	
+	private final ChatDao chatDao;
+	private final WebSocketConfig config;
+	private final SimpMessageSendingOperations messageTemplete;
+	
+	
+	
+	public ChatService(ChatDao chatDao, WebSocketConfig config, SimpMessageSendingOperations messageTemplete) {
+		super();
+		this.chatDao = chatDao;
+		this.config = config;
+		this.messageTemplete = messageTemplete;
+	}
+
 	@Transactional
 	public ChatDto saveChat(ChatDto chat) {
 		// 발신 히스토리 쌓기
@@ -76,26 +87,10 @@ public class ChatService {
 		List<Participant> participant = null;
 		for(ChatRoomDto dto : list) {
 			participant = chatDao.selectParticipants(dto.getChatRoomIdx());
-			if(dto.getIsIndividual().equals("Y")) {
-				for(int i=0; i<participant.size(); i++) {
-					if(!participant.get(i).getEmpIdx().equals(emp_idx)) {
-						dto.setChatRoomName(participant.get(i).getEmpInfo());
-					}
-				}
-			}else {
-				String roomName="";
-				for(int i=0; i<3; i++) {
-					roomName+=participant.get(i).getEmpInfo();
-					if(i != 2) {
-						roomName+=",";
-					}
-				}
-				if(participant.size()>3) {
-					roomName+=" 외 "+(participant.size()-3)+"명";
-				}
-				dto.setChatRoomName(roomName);
-			}
+			String roomName = setRoomName(participant, dto.getIsIndividual(), emp_idx);
+			dto.setChatRoomName(roomName);
 		}
+	
 		for(ChatRoomDto dto : list) {
 			int i = dto.getMaxSentDate().compareTo(dto.getMaxReceivedDate());
 			long maxSentDate = dto.getMaxSentDate().getTime();
@@ -109,11 +104,38 @@ public class ChatService {
 				dto.setLastMsgTime(maxSentDate);
 			}
 		}
+		
 		Collections.sort(list);
 		config.printSubscription();
 		return list;
 	}
 
+	public String setRoomName(List<Participant> participant, String isIndividual, String emp_idx) {
+		String roomName = "";
+		if(isIndividual.equals("Y")) {
+			for(int i=0; i<participant.size(); i++) {
+				if(!participant.get(i).getEmpIdx().equals(emp_idx)) {
+					return participant.get(i).getEmpInfo();
+				}
+			}
+		}else {
+			for(int i=0; i<participant.size(); i++) {
+				if(i == 3) {
+					break;
+				}
+				roomName+=participant.get(i).getEmpInfo();					
+				if(i != 2) {
+					roomName+=",";
+				}
+			}
+			
+		}
+		if(participant.size()>3) {
+			roomName+=" 외 "+(participant.size()-3)+"명";
+		}
+		
+		return roomName;
+	}
 	
 	public List<ChatDto> getChatData(int roomNum, String emp_idx) {
 		chatDao.updateToRead(roomNum, emp_idx);
@@ -135,6 +157,7 @@ public class ChatService {
 		leaveMsg.setData(userInfo+"님이 채팅방을 나가셨습니다");
 		saveChat(leaveMsg);
 		chatDao.deleteParticipants(roomNum,name);
+		messageTemplete.convertAndSend("/topic/chat/"+roomNum,leaveMsg);
 		return leaveMsg;
 	}
 
