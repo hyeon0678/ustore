@@ -1,5 +1,6 @@
  <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -262,8 +263,10 @@
 				</div>
 					<!--end::Header-->					
 		<!--begin::Javascript-->
- 		<script>var hostUrl = "resource/assets/";</script>
-		<!-- begin::Global Javascript Bundle(mandatory for all pages) -->
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="principal"/>
+		</sec:authorize>
+		<script>var hostUrl = "resource/assets/";</script>
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
@@ -272,21 +275,29 @@
 	<script type="text/javascript">
 	let socket = null;
     let stompClient = null;
+    let user = '${principal.username}'
     
-   	function headerOnReady(){
+   	function headerOnReady(callBack){
    		socket = new SockJS('http://localhost:80/ws');
+   		console.log('user : '+user);
 	    stompClient = Stomp.over(socket);
 	    stompClient.connect({}, function(frame){
 	    	console.log("webSocket is connected");
-	    	stompClient.subscribe('/user/alarm',alarmReceived);
-		    stompClient.subscribe('/user/chatAlarm',chatReceived);
+	    	stompClient.subscribe('/topic/'+user, function (message) {
+	    		console.log('-------------------');
+	    		alarmReceived(message);
+	    	});
 	    }, onError);
+	    
+	    callBack('ok');
 	    
    	}
     
     function alarmReceived(payload){
-		var message = JSON.parse(payload.body);
-		if(message == 'EXIST'){
+		var message = payload.body;
+		if(message == 'ALARMEXIST'){
+			console.log('alarm'+message);
+		}else if(message == 'CHATEXIST'){
 			console.log('alarm'+message);
 		}else{
 			console.log('alarm'+message);
@@ -376,8 +387,5 @@
 	}
 
 </script>
-
-
- 
 	
 </html>
