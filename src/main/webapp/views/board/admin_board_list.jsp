@@ -73,7 +73,7 @@
 								<div style="display: flex; align-items: center; height: 30px;">
 									<!--begin::Col 드롭박스 >> 회원 상태-->
 									<!--end::Col-->
-									<input type="text" class="form-control form-control-solid" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
+									<input type="text" class="form-control form-control-solid" name="adListSerch" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
 									<button type="button" class="btn btn-primary" style="margin: 10px;">검색</button>
 									<button onclick="location.href='adboard/WriteForm'" class="btn btn-primary">글작성</button>
 								</div>
@@ -98,7 +98,7 @@
 									<!--begin::Card body-->
 									<div class="card-body pt-0">
 										<!--begin::Table-->
-										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
+										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_adList_table">
 											<thead>
 												<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
 													<th class="min-w-125px">제목</th>
@@ -107,58 +107,12 @@
 													<th class="min-w-125px">작성일</th>
 												</tr>
 											</thead>
-											<tbody class="fw-semibold text-gray-600">
-												<tr>
-													<td>
-														<a href="#" class="text-danger text-hover-primary mb-1">공지사항1</a>
-													</td>
-													<td>
-														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
-													</td>
-													<td>0</td>
-													<td>2025.01.12</td>
-												</tr>
-												<tr>
-													<td>
-														<a href="#" class="text-danger text-hover-primary mb-1">공지사항2</a>
-													</td>
-													<td>
-														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
-													</td>
-													<td>0</td>
-													<td>2025.01.12</td>
-												</tr>
-												<tr>
-													<td>
-														<a href="#" class="text-danger text-hover-primary mb-1">공지사항3</a>
-													</td>
-													<td>
-														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
-													</td>
-													<td>0</td>
-													<td>2025.01.12</td>
-												</tr>
-												<tr>
-													<td>
-														<a href="#" class="text-danger text-hover-primary mb-1">공지사항4</a>
-													</td>
-													<td>
-														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
-													</td>
-													<td>0</td>
-													<td>2025.01.12</td>
-												</tr>
-												<tr>
-													<td>
-														<a href="#" class="text-danger text-hover-primary mb-1">공지사항5</a>
-													</td>
-													<td>
-														<a href="#" class="text-gray-600 text-hover-primary mb-1">도재학</a>
-													</td>
-													<td>0</td>
-													<td>2025.01.12</td>
-												</tr>
+											
+											
+											<tbody class="fw-semibold text-gray-600" id = "list">
+												
 											</tbody>
+											
 										</table>
 										<!--end::Table-->
 									</div>
@@ -184,13 +138,62 @@
 			<!--end::Page-->
 		<!--end::Root-->
 								
+								
+										
+								
+								
+								
 		<!--begin::Javascript-->
 		<script>var hostUrl = "resource/assets/";</script>
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
-		
-		
 	</body>
 	<!--end::Body-->
+		
+		
+		<script>
+		console.log("리스트 호출 시작")
+		adList();
+		
+		
+		function adList(){
+			console.log("리스트 호출");
+			$.ajax({
+				type:'get',
+				url:'adboard/list.ajax',
+				data:{},
+				dataType:'JSON',
+				success:function(data){
+					console.log(data);
+					console.log("리스트 호출 뿌리기");
+					drawlist(data.list);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		};
+
+		console.log("listcall : "+ adList);
+		
+		function drawlist(list){
+			console.log("drawlist : " + list);
+			var content = '';
+			
+			list.forEach(function(item, notice_idx){
+				content += '<tr>'
+				content += '<td><a href="adboard/detail?notice_idx='+item.notice_idx+'" class="text-danger text-hover-primary mb-1">' + item.notice_subject + '</a></td>';
+				content += '<td><a href="empprifile/detail?emp_idx='+item.emp_idx+'" class="text-danger text-hover-primary mb-1">' + item.emp_name + '</a></td>';
+				content += '<td>' + item.notice_hit + '</td>';
+				content += '<td>' + item.reg_date + '</a></td>';
+				content += '</tr>';
+				
+			});
+				$('#list').empty();
+				$('#list').append(content);
+			}
+			
+		</script>
+		
 </html>

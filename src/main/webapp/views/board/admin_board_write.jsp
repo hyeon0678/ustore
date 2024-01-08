@@ -72,7 +72,7 @@
 									
 									<div style="margin-top:20px">
 										파일
-										<input type="file" name ="files" multiple ="multiple" class="form-control"/>
+										<input type="file" name ="photos" id="file" multiple ="multiple" class="form-control" />										
 									</div>
 									
 									<div style="margin-top:20px">

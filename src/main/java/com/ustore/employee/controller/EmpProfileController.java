@@ -57,7 +57,7 @@ public class EmpProfileController {
 			
 			EmpProrileDto dto = service.homeProfileDetail(emp_idx);
 			
-			session.setAttribute("emp_idx", dto.getEmp_idx());
+			session.setAttribute("emp_idx", emp_idx);
 			String empidx = (String) session.getAttribute("emp_idx");
 			
 			session.setAttribute("dept_id", dto.getDeptname());

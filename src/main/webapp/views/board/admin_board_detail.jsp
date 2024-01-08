@@ -76,46 +76,62 @@
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 					<!--================================메인 내용들어가는부분================================================-->
-						<div style="margin-top: 100px; margin-left: 50px;"><h1>공지사항 입니다.</h1></div>
+						<div style="margin-top: 100px; margin-left: 50px;">
+							<h1>${board.notice_subject}</h1>
+							!!!!! ${board.notice_idx} !!!!!
+						</div>
 						
 						<div class="text-end">
-							<button type="button"  style="background-color: #C6DA52; position: absolute; width:70px; height: 40px; top:200px; right:200px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
-    목록으로
-</button>
-</div>
-<div style="text-align: left; margin-top: 100px; margin-left: 50px;"><p><i class="ki-duotone ki-user fs-2">
-												<span class="path1"></span>
-												<span class="path2"></span>
-											</i> <i>json </i>2023-12-10 14:28 <div class="form-check" style="margin-left: 640px;">
-    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-    <label class="form-check-label" for="flexCheckDefault">
-        상단 고정 여부
-    </label>
-</div></p><div style="text-align: right; margin-top: -48px; margin-right: 380px;">
+							<button type="button" onclick="topfixsave()" style="background-color: #C6DA52; position: absolute; width:70px; height: 40px; top:200px; right:200px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
+    							목록으로
+							</button>
+						</div>
+						<div style="text-align: left; margin-top: 100px; margin-left: 50px;">
+						<p>
+						<i class="ki-duotone ki-user fs-2">
+							<span class="path1"></span>
+							<span class="path2"></span>
+						</i> 
+						<i>${board.emp_name}</i>
+						<i>${board.reg_date}</i>
+						<div class="form-check" style="margin-left: 640px;">
+    						<input class="form-check-input" type="checkbox" value="Y" name="top_fixed" id="flexCheckDefault" />
+    						<label class="form-check-label" for="flexCheckDefault">
+        						상단 고정 여부
+    						</label>
+						</div>
+						</p>
+						<div style="text-align: right; margin-top: -48px; margin-right: 380px;">
     
-												<button type="button" class="btn btn-light">
-    <i class="ki-duotone ki-basket fs-2 text-gray-600">
-        <span class="path1"></span>
-        <span class="path2"></span>
-        <span class="path3"></span>
-        <span class="path4"></span>
-    </i>
+						<!-- <button type="button" class="btn btn-light">
+						<i class="ki-duotone ki-basket fs-2 text-gray-600">
+        					<span class="path1"></span>
+      						<span class="path2"></span>
+        					<span class="path3"></span>
+        					<span class="path4"></span>
+    					</i> -->
+						<button class="btn btn-primary"  data-kt-element="send" onclick="adboardDel()">삭제하기</button>
+    					
 	
-</button>
+						<!-- </button> -->
 
-	<div style="width: 800px; height: 200px; overflow: auto; border: solid lightgrey;">
-    <p style="text-align: left;width: 100%;">공지사항 입니다.</p>
-</div>
-<div style="text-align: left;">조회수 : 1 </div>
-<div style="margin-right:150px;"><p>file:&nbsp; img.jpg&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (0.1mb)&nbsp;&nbsp;
-	<button type="button"  style="background-color: #C6DA52; position: absolute; width:60px; height: 20px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
-    다운로드</button></p></div>
+						<div style="width: 800px; height: 200px; overflow: auto; border: solid lightgrey;">
+    						<p style="text-align: left;width: 100%;">${board.notice_content}</p>
+						</div>
+						<div style="text-align: left;">조회수 : ${board.notice_hit}</div>
+						<div style="margin-right:150px;">
+						<p>file:
+						<button type="button"  style="background-color: #C6DA52; position: absolute; width:60px; height: 20px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
+    						다운로드
+    					</button>
+    					</p>
+    					</div>
 
-<hr color="black" width="100%">
+						<hr color="black" width="100%">
 
 
 
-</div>
+					</div>
 					</div>
 				<!--end::Content--> 
     			</div>
@@ -153,4 +169,38 @@
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
+	
+	<script>
+	console.log("글 삭제하기");
+	var notice_idx = ${board.notice_idx};
+	console.log("삭제 글 아이디 : " + notice_idx);
+	
+	function adboardDel(){
+		console.log("글 삭제");
+		location.href='adboard/delete?notice_idx='+notice_idx;
+	}
+	
+	function topfixsave() {
+    	console.log ("topfixsave start");
+        var topfix = $("input[checkbox=top_fixed]").val();
+    		$.ajax({
+    			type:'post',
+    			url:'adboard/update.ajax',
+    			data:{'notice_idx':notice_idx,'top_fixed':top_fixed},    			
+    			dataType:'JSON',
+    			success:function(data){			
+    				console.log(data);
+    				location.href='redirect:/adboard/list';    	
+    			},
+    			error:function(e){
+    				console.log(e);
+    			}	
+    		});//		
+    			
+		};
+	
+	
+	</script>
+	
+	
 </html>

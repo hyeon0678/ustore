@@ -9,6 +9,25 @@ insert into notice (emp_idx, notice_subject, notice_content)
 values (#{emp_idx},#{notice_subject},#{notice_content})
 </insert>
 
+<select id="adList" resultType="map">
+	select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , n.reg_date , n.notice_del  from notice n inner join employee e on n.emp_idx = e.emp_idx and n.notice_del ='n'
+</select>
+
+<select id="adboardDetail" resultType="map">
+select n.notice_idx, n.notice_subject , n.notice_content , e.emp_name , n.notice_hit , n.reg_date , n.top_fixed  from notice n inner join employee e on n.emp_idx = e.emp_idx where notice_idx = #{param1}
+</select>
+
+<update id="adboardHit">
+	UPDATE notice SET notice_hit = notice_hit+1 WHERE notice_idx = #{param1}
+</update>
+
+<update id="adboardDelete">
+	UPDATE notice set notice_del ='Y' where notice_idx = #{param1}
+</update>
+
+<update id="adboardTopFix">
+	UPDATE notice set top_fixed = #{top_fixed} WHERE notice_idx = #{notice_idx}
+</update>
 
 
 </mapper>
