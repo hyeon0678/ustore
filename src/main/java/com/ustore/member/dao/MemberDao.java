@@ -35,6 +35,18 @@ public interface MemberDao {
 	ArrayList<HashMap<String, String>> productlistcall(int memberidx, String startdate, String enddate);
 
 	void pointinsert(int cusnum);
+
+	int cuscount();
+
+	int findnum(int idx);
+
+	ArrayList<HashMap<String, String>> pointlistcall(int memberidx, String startdate, String enddate);
+
+	String sumpoint(int idx);
+
+	ArrayList<HashMap<String, String>> detailbill(String paymentidx);
+
+	HashMap<String, String> billlist(String paymentidx);
 	
 
 }

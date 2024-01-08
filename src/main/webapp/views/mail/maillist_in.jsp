@@ -51,6 +51,7 @@
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
@@ -62,11 +63,12 @@
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
+						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
+							<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">받은 메일함</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 						<div class="container flex-column flex-lg-row ">
 							<div class="comm-head">
-								<h2>받은 메일함</h2>
 							</div>
 							<div class="mail-comm">
 								<div class="comm-left">
@@ -75,7 +77,7 @@
 								<div class="comm-right">
 									<input type="text" class="form-control" placeholder="이름을 입력해주세요" style="width: 200px; height: 40px;">
 									<button type="button" class="btn btn-primary span-search-button" style="margin-left: 10px;">검색</button>
-									<button class="img-button" style="margin-left: 10px;"><img src="assets/media/iconl/gen027.svg" onclick=""/></button>
+									<button class="img-button" style="margin-left: 10px;"><img src="resource/assets/media/icon/gen027.svg" onclick=""/></button>
 								</div>
 							</div>
 						</div>
@@ -84,7 +86,7 @@
 								<table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5 ">
 									<thead>
 										<tr class="fw-semibold fs-6 text-center">
-											<th><input type="checkbox"/></th>
+											<th><input type="checkbox" value="" /></th>
 											<th>제목</th>
 											<th>발신자(팀명)</th>
 											<th>발신일</th>

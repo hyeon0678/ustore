@@ -39,10 +39,17 @@ public class MemberController {
 	
 	
 	@GetMapping(value = "/customer/home")
-	public String home() {
+	public ModelAndView home() {
 		logger.info("멤버쉽 페이지 들어가기");
 		
-		return "member/customerlist";
+		ModelAndView mav = new ModelAndView("member/customerlist");
+		
+		int cuscount = service.cuscount();
+		
+		logger.info("cuscount : "+cuscount);
+		mav.addObject("cuscount",cuscount);
+		
+		return mav;
 	}
 	
 	
@@ -86,6 +93,26 @@ public class MemberController {
 			result.put("size", list.size());
 			logger.info("result : " +result);	
 			
+		return result;
+	}
+	
+	@RequestMapping(value = "customer/detail.ajax/bill")
+	@ResponseBody
+	public HashMap<String, Object> bill(@RequestParam String paymentidx) {
+		logger.info("영수증 리스트 호출하기");
+		logger.info("paymentidx : "+paymentidx);
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+			logger.info("회원리스트 == 등록된 회원 리스트");
+			ArrayList<HashMap<String, String>> list = service.detailbill(paymentidx);
+			HashMap<String, String> map = service.billlist(paymentidx);
+				
+			
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+			logger.info("map : " +map);	
+			result.put("map", map);
 		return result;
 	}
 	
@@ -139,6 +166,8 @@ public class MemberController {
 		MemberDto dto = new MemberDto();
 		
 		HashMap<String, String> file = service.filefind(idx);
+		int point = service.findnum(idx);
+		
 		logger.info("file : "+file);
 		
 		DateCalculator datecal= new DateCalculator();
@@ -148,15 +177,21 @@ public class MemberController {
 		mon.add(Calendar.MONTH, -1);
 		String beforeMonth = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
 		logger.info("beforeMonth"+beforeMonth);
-		
-		
-		
 		HashMap<String,String> map= service.detail(idx);
+		String sumpoint = service.sumpoint(idx);
+		logger.info("누적 포인트 : "+sumpoint);
+		if (sumpoint == null) {
+			sumpoint = "0";
+		}
+		logger.info("누적 포인트 : "+sumpoint);
 		ModelAndView mav = new ModelAndView("member/cusdetail");
 		mav.addObject("info",map);
 		mav.addObject("file",file);
 		mav.addObject("nowdate",nowdate);
 		mav.addObject("beforeMonth",beforeMonth);
+		mav.addObject("totalpoint", point);
+		mav.addObject("sumpoint", sumpoint);
+				
 		//mav.addObject("membertype",membertype);
 		//mav.addObject("grade",grade);
 		return mav;
@@ -229,6 +264,37 @@ public class MemberController {
 			
 			return result; // 앞으로 보낸다
 		}
+		
+		
+				@RequestMapping(value = "/customer/detail.ajax/basicpointlist")
+				@ResponseBody
+				public HashMap<String, Object> basicpointlist(@RequestParam int memberidx) {
+					logger.info(" 포인트이력 리스트 불러오기  호출하기");
+					logger.info("member idx : "+memberidx);
+					DateCalculator datecal= new DateCalculator();
+					
+					
+					Calendar mon = Calendar.getInstance();
+					mon.add(Calendar.MONTH, -1);
+					String enddate = datecal.dateNow().toString();	
+					String startdate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
+					logger.info("enddate : "+enddate);		
+					
+					 startdate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(mon.getTime());
+					logger.info("startdate"+startdate);
+					
+					HashMap<String, Object> result = new HashMap<String, Object>();
+					
+					ArrayList<HashMap<String, String>> list = service.pointlistcall(memberidx,startdate, enddate);
+					logger.info("num"+list.toString());
+					result.put("list", list);
+					result.put("size", list.size());
+					logger.info("result : " +result);	
+					
+					
+					
+					return result; // 앞으로 보낸다
+				}
 	
 	
 	

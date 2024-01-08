@@ -33,12 +33,14 @@ public class AlarmScheduler {
 			int unReadSchedule = dao.selectUnReadSchedule(e);
 			int unReadChat = dao.selectUnReadChat(e);
 			if(unReadChat>0) {
-				operations.convertAndSend("/topic/"+e, "EXIST");
+				operations.convertAndSend("/topic/"+e, "CHATEXIST");
+			}else if(unReadChat<0) {
+				operations.convertAndSend("/topic/"+e, "CHATNONE");
 			}
 			if(unReadSchedule > 0) {
-				operations.convertAndSend("/topic/"+e, "EXIST");
+				operations.convertAndSend("/topic/"+e, "ALARMEXIST");
 			}else if(unReadSchedule <= 0) {
-				operations.convertAndSend("/topic/"+e, "NONE");
+				operations.convertAndSend("/topic/"+e, "ALARMNONE");
 			}
 		}
 		System.out.println("------- alarm scheduler");

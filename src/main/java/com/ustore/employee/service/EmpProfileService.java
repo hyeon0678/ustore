@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ustore.employee.dao.EmpProfileDao;
 import com.ustore.employee.dto.EmpProrileDto;
 import com.ustore.employee.dto.EmployeeDto;
+import com.ustore.utils.defineEnums.FileTypeEnum;
 
 @Service
 public class EmpProfileService {
@@ -60,22 +61,6 @@ public class EmpProfileService {
 		}
 		return msg;
 	}
-		
-//	public void attendance(Map<String, String> params) {
-//		logger.info("service_attendance : " + params);
-//		dao.attendance(params);
-//	}
-	
-//	public int attendance(HashMap<String, String> params) {
-//		int attendance = 0;
-//		logger.info("출근 정보 등록 : " + params);
-//		attendance = dao.attendance(params);
-//		logger.info("출근 정보 등록 2 : " + attendance);
-//		
-//		return attendance;
-//	}
-
-	
 
 	public int employeDel(String sch_idx) {
 		logger.info("일정 삭제 service " + sch_idx);
@@ -87,18 +72,8 @@ public class EmpProfileService {
 		return dao.scheduleDel(sch_idx);
 	}
 
-	
-
-	
-
-	/*
-	 * public int attendancesetting(HashMap<String, String> params) { int attSet =
-	 * 0; logger.info("attSetting_params : " + params); attSet = dao.attSet(params);
-	 * logger.info("attSetting_params2 : " + attSet);
-	 * 
-	 * return attSet; }
-	 */
-
-	
-	
+	public EmployeeDto getEmpUpdateData(String name) {
+		EmployeeDto empInfo= dao.selectEmpUpdateData(FileTypeEnum.findDefindCode("employee"),name);
+		return empInfo;
+	}
 }

@@ -30,9 +30,13 @@
 		}
 		.signature-table td {
 			border: 1px solid #ddd;
-			padding: 10px;
 			text-align: center;
 		}		
+		.signature-table th{
+			border: 1px solid #ddd;
+			text-align: center;
+			height: 25px;
+		}
 	</style>
 	</head>
 	<!--end::Head-->
@@ -263,7 +267,9 @@
                 // 로드한 HTML을 동적으로 추가
                 $('.loadApprDoc').html(data);  
                 console.log(apprTypeIdx);
-                setValues(apprTypeIdx);                
+                setValues(apprTypeIdx);     
+                generateApproverRow();
+                generateSignatureRow();
             },
             error: function (error) {
                 console.error('페이지 로드 중 오류가 발생했습니다.');
@@ -276,6 +282,7 @@
         	var apprSubject = "${content.apprSubject}";
         	$("#apprSubject").val(apprSubject);
         	
+        	// 결재자 정보 불러오기
         	approvalLines = ${apprline};
         	console.log(approvalLines);
         	        	
@@ -306,14 +313,16 @@
 		        cell5.appendChild(deleteIcon);
 		        cell5.style.width = '30px';
 	
-		        // newRow.setAttribute('data-node', JSON.stringify(approvalLines[i]));
-		    }
-       	    
-       	    
-       	 	
+		        newRow.setAttribute('data-node', JSON.stringify(approvalLines[i]));
+		    }       	    	   		    
+		    		
+			$("#apprListTable #approverRow").html(generateApproverRow());
+			$("#apprListTable tr:last").html(generateSignatureRow());
+		    
+			
+			// 수신자 정보 불러오기
 		    receivers = ${receiver};
 		    console.log(receivers);
-       	    // 받아온 데이터를 가공하여 리스트에 저장
        	 	
         	// 가공된 데이터를 테이블에 동적으로 추가
 		    var tbody = document.getElementById('receiverTable').getElementsByTagName('tbody')[0];
@@ -322,6 +331,7 @@
 		    // 새로운 테이블 내용 추가
 		    for (var i = receivers.length - 1; i >= 0; i--) {
 		        var newRow = tbody.insertRow(-1);
+		        newRow.setAttribute('data-node', JSON.stringify(receivers[i]));
 		        var cell1 = newRow.insertCell(0);
 		        var cell2 = newRow.insertCell(1);
 		        var cell3 = newRow.insertCell(2);
@@ -335,19 +345,37 @@
 		        deleteIcon.className = 'fa fa-trash';
 		        deleteIcon.onclick = function () {
 		            newRow.remove();
-		            removeEmpFromApprLines(receivers[i]);
+		            removeEmpFromReceiver(receivers[i]);
 		        };
 		        cell4.appendChild(deleteIcon);
-		        cell4.style.width = '30px';
-	
-		        // newRow.setAttribute('data-node', JSON.stringify(approvalLines[i]));
+		        cell4.style.width = '30px';		        
 		    }
        	 	
+		    if (receivers.length > 0) {
+           	 // 수신자 이름들을 담을 배열
+               var receiverNames = [];
+
+               // 각 수신자의 이름을 배열에 추가
+               receivers.forEach(function(recv) {
+               	var receiver = recv.receiver +'('+ recv.dept_name +' '+ recv.positionType +')'; 
+               
+                   receiverNames.push(receiver);
+               });
+
+               // 수신자 이름들을 쉼표로 구분하여 문자열로 변환
+               var receiversString = receiverNames.join(', ');
+
+               // 결재양식의 수신자 input 태그에 수신자 이름 넣기
+               document.getElementById('inputReceiver').value = receiversString;
+           } else {
+               document.getElementById('inputReceiver').value = '내부결재';
+           }
+		    
         	
         	       	
         	switch (apprTypeIdx) {
             case '30':            	
-            	apprContent = "${content.apprContent}";            	
+            	apprContent = "${content.apprContent}";              
                 break;
                 
             case '31':            	
@@ -371,9 +399,24 @@
                 $("#leaveDays").text(leaveDays);
                 $("#leaveReason").val(leaveReason);
                 break;
-        	}
-            
+        	}            
         }
+        
+        function generateApproverRow() {
+		    var rowHtml = "";
+		    for (var i = 0; i < approvalLines.length; i++) {
+		      rowHtml += "<td>" + approvalLines[i].approver + "</td>";
+		    }
+		    return rowHtml;
+		}
+		// 결재자 사인구역 위치할 행				  
+		function generateSignatureRow() {
+		    var rowHtml = "";
+		    for (var i = 0; i < approvalLines.length; i++) {
+		      rowHtml += "<td></td>";
+		    }
+		    return rowHtml;
+		}
     }
     
     
@@ -480,9 +523,6 @@
 	});
 	
 	
-	// 결재선 정보 및 수신자 정보 설정(결재정보 저장)
-	var approvalLines = [];
-	var receivers = [];	
 	
 	// 조직도에서 결재선에 추가하는 버튼 함수
 	function addApprovalLine() {
@@ -499,10 +539,8 @@
 	            var nextApprOrder = getNextApprOrder();
 	            
 	            var approvalData = {
-	                type: '결재',
-	                approverIdx: employeeInfo.empIdx,
+	                apprType: '결재',
 	                name: employeeInfo.empName,
-	                position: employeeInfo.position,
 	                positionType: employeeInfo.positionType,
 	                department: employeeInfo.deptName,
 	                apprOrder: nextApprOrder,  // 결재순서 추가
@@ -550,7 +588,8 @@
 		    var cell4 = newRow.insertCell(3);
 		    var cell5 = newRow.insertCell(4);
 	
-		    cell1.innerHTML = approvalData.type;
+		 		        
+	        cell1.innerHTML = approvalData.apprType;
 		    cell2.innerHTML = approvalData.name;
 		    cell3.innerHTML = approvalData.positionType;
 		    cell4.innerHTML = approvalData.department;
@@ -562,8 +601,8 @@
 		        removeEmpFromApprLines(approvalData);
 		    };
 		    cell5.appendChild(deleteIcon);	
-		    cell5.style.width='30px';
-		    
+		    cell5.style.width='30px';		    
+		 		    
 		 	// 선택한 노드 정보를 행에 저장 (data-node 필요)
 		    newRow.setAttribute('data-node', JSON.stringify(approvalData));
 	    }else{
@@ -571,18 +610,60 @@
 	    }
 	}
 
-	function removeEmpFromApprLines(empToRemove){
-		var index = -1;
+	function removeEmpFromApprLines(empToRemove) {
+	    var index = -1;
 	    for (var i = 0; i < approvalLines.length; i++) {
-	        if (JSON.stringify(approvalLines[i]) == JSON.stringify(empToRemove)) {
+	        if (JSON.stringify(approvalLines[i]) === JSON.stringify(empToRemove)) {
 	            index = i;
 	            break;
 	        }
 	    }
-	    if (index != -1) {
+
+	    if (index !== -1) {
+	        // 결재 순서 변경
+	        for (var i = index + 1; i < approvalLines.length; i++) {
+	            var currentOrder = parseInt(approvalLines[i].apprOrder, 10);
+	            approvalLines[i].apprOrder = (currentOrder - 1).toString();
+	        }
+
 	        approvalLines.splice(index, 1);
-	        console.log("삭제 후 결재선 :", approvalLines);
-	    }	
+	        console.log("삭제 후 결재선:", approvalLines);
+
+	        // 테이블 UI 업데이트
+	        updateApprLineTable();
+	    }
+	}
+	
+	// 결재선 테이블의 UI를 업데이트하는 함수
+	function updateApprLineTable() {
+	    var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
+	    tbody.innerHTML = ""; // 테이블 내용 비우기
+
+	    // 새로운 테이블 내용 추가
+	    for (var i = approvalLines.length - 1; i >= 0; i--) {
+	        var newRow = tbody.insertRow(-1);
+	        var cell1 = newRow.insertCell(0);
+	        var cell2 = newRow.insertCell(1);
+	        var cell3 = newRow.insertCell(2);
+	        var cell4 = newRow.insertCell(3);
+	        var cell5 = newRow.insertCell(4);
+
+	        cell1.innerHTML = approvalLines[i].apprType;
+	        cell2.innerHTML = approvalLines[i].name;
+	        cell3.innerHTML = approvalLines[i].positionType;
+	        cell4.innerHTML = approvalLines[i].department;
+
+	        var deleteIcon = document.createElement('i');
+	        deleteIcon.className = 'fa fa-trash';
+	        deleteIcon.onclick = function () {
+	            newRow.remove();
+	            removeEmpFromApprLines(approvalLines[i]);
+	        };
+	        cell5.appendChild(deleteIcon);
+	        cell5.style.width = '30px';
+
+	        newRow.setAttribute('data-node', JSON.stringify(approvalLines[i]));
+	    }
 	}
 	
 	
@@ -745,26 +826,8 @@
                 console.log(data.approvalLines);
                 console.log('결재선 정보가 성공적으로 저장되었습니다.'); 
                 
-                // 결재선 설정에 따라 결재 양식의 우상단에 결재 표시 구역 그리기
-                // 결재자명 위치할 행
-				function generateApproverRow() {
-				    var rowHtml = "";
-				    for (var i = 0; i < approvalLines.length; i++) {
-				      rowHtml += "<td>" + approvalLines[i].name + "</td>";
-				    }
-				    return rowHtml;
-				}
-				// 결재자 사인구역 위치할 행				  
-				function generateSignatureRow() {
-				    var rowHtml = "";
-				    for (var i = 0; i < approvalLines.length; i++) {
-				      rowHtml += "<td></td>";
-				    }
-				    return rowHtml;
-				}
-				
-				$("#apprListTable #approverRow").html(generateApproverRow());
-				$("#apprListTable tr:last").html(generateSignatureRow());
+                // 결재선 구역을 다시 그리기
+                drawApprLineArea(data.approvalLines);
                 
                 // 결재선 정보 저장 성공
 	            approvalSuccess = true;
@@ -792,27 +855,9 @@
             success: function (data) {
                 console.log(data.receivers);
                 console.log('수신자 정보가 성공적으로 저장되었습니다.');
-
                 
-                if (data.receivers && data.receivers.length > 0) {
-                	 // 수신자 이름들을 담을 배열
-                    var receiverNames = [];
-
-                    // 각 수신자의 이름을 배열에 추가
-                    data.receivers.forEach(function(receiver) {
-                    	var receiver = receiver.name +'('+ receiver.department +' '+ receiver.positionType +')'; 
-                    
-                        receiverNames.push(receiver);
-                    });
-
-                    // 수신자 이름들을 쉼표로 구분하여 문자열로 변환
-                    var receiversString = receiverNames.join(', ');
-
-                    // 결재양식의 수신자 input 태그에 수신자 이름 넣기
-                    document.getElementById('inputReceiver').value = receiversString;
-                } else {
-                    document.getElementById('inputReceiver').value = '내부결재';
-                }
+            	 // 수신자 구역을 다시 그리기
+                drawReceiverArea(data.receivers);
                 
              	// 수신자 정보 저장 성공
                 receiverSuccess = true;
@@ -831,17 +876,72 @@
         
     });
 	
+	function drawApprLineArea(approvalLines) {
+	    // 기존의 결재받는 구역을 지우는 작업
+	    $("#apprListTable #approverRow").html(""); 
+    	$("#apprListTable tr:last").html(""); 
+
+	    // 수정한 결재선 데이터로 결재받는 구역을 그리는 작업
+    	function generateApproverRow() {
+		    var rowHtml = "";
+		    for (var i = 0; i < approvalLines.length; i++) {
+		      rowHtml += "<td>" + approvalLines[i].approver + "</td>";
+		    }
+		    return rowHtml;
+		}
+		// 결재자 사인구역 위치할 행				  
+		function generateSignatureRow() {
+		    var rowHtml = "";
+		    for (var i = 0; i < approvalLines.length; i++) {
+		      rowHtml += "<td></td>";
+		    }
+		    return rowHtml;
+		}
+		
+		$("#apprListTable #approverRow").html(generateApproverRow());
+		$("#apprListTable tr:last").html(generateSignatureRow());
+	}
+
+	// 수신자 구역을 다시 그리는 함수
+	function drawReceiverArea(receivers) {
+	    // 기존의 양식 폼 내 수신자를 지우는 작업
+		 $("#receiverTable tbody").html("");
+	    // 새로운 수신자를 입력하는 작업
+	    if (receivers.length > 0) {
+           	 // 수신자 이름들을 담을 배열
+               var receiverNames = [];
+
+               // 각 수신자의 이름을 배열에 추가
+               receivers.forEach(function(recv) {
+               	var receiver = recv.receiver +'('+ recv.dept_name +' '+ recv.positionType +')'; 
+               
+                   receiverNames.push(receiver);
+               });
+
+               // 수신자 이름들을 쉼표로 구분하여 문자열로 변환
+               var receiversString = receiverNames.join(', ');
+
+               // 결재양식의 수신자 input 태그에 수신자 이름 넣기
+               document.getElementById('inputReceiver').value = receiversString;
+           } else {
+               document.getElementById('inputReceiver').value = '내부결재';
+           }
+	}
+	
 	// 임시저장
     $('#btnSaveTemp').on('click', function () {
     	
     	console.log('임시저장 버튼 클릭'); 
     	var ApprovalDto;
+    	var common_idx = $('#common_idx').val();
     	console.log(common_idx);
+    	var apprIdx = new URLSearchParams(window.location.search).get('apprIdx');
     	var apprSubject = $('#apprSubject').val();
     	
         if(common_idx=='30') {          		
         	var apprContent = myEditor.getData();
             ApprovalDto = {
+            			apprIdx : apprIdx,
                 	    commonIdx: common_idx,
                 	    apprSubject: apprSubject,
                 	    apprContent: apprContent,
@@ -852,6 +952,7 @@
         	var orderNum = $('#orderNum').val();
     	    var totalAmount = $('#totalAmount').val();
         	ApprovalDto = {
+        			apprIdx : apprIdx,
         		    commonIdx: common_idx,
         		    apprSubject: apprSubject,
         		    approvalLines: approvalLines,
@@ -870,6 +971,7 @@
             console.log(leaveEndDate);
             
         	ApprovalDto = {
+        			apprIdx : apprIdx,
             	    commonIdx: common_idx,
             	    apprSubject: apprSubject,
             	    approvalLines: approvalLines,
@@ -900,7 +1002,6 @@
 	
 	
 	// 결재상신
-
 	$('#btnSendApproval').on('click', function () {
 		
 		console.log('결재상신 버튼 클릭');
