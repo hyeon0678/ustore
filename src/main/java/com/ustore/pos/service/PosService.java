@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.ustore.member.dto.MemberDto;
 import com.ustore.pos.dao.PosDao;
 import com.ustore.pos.dto.PosDto;
+import com.ustore.utils.defineEnums.RequestEnum;
 
 
 @Service
@@ -68,8 +69,9 @@ public class PosService {
 	public PosDto payModal(HashMap<String, String> params) {
 		PosDto pos = new PosDto();
 		pos = posDao.payModal(params);
-		int point = posDao.payPoint(params);
-		pos.setEndPoint(point);
+		int maxpoint = posDao.payPoint(params);
+		int point = posDao.datePoint(params.get("memberId"),RequestEnum.findDefindCode("결제"));
+		pos.setEndPoint(maxpoint-point);
 		return pos;
 	}
 }

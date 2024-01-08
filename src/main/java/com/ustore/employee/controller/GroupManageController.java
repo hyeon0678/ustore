@@ -25,6 +25,7 @@ import com.ustore.employee.service.GroupManageService;
 import com.ustore.fileSystem.dao.FileDao;
 import com.ustore.fileSystem.dto.FileDto;
 import com.ustore.utils.SaveFile;
+import com.ustore.utils.defineEnums.FileEnum;
 
 
 
@@ -47,8 +48,9 @@ public class GroupManageController {
 			RedirectAttributes rattr, Principal principal) {
 		logger.info("params : " + params.getEmpBirth());
 		logger.info(principal.getName());
-		boolean success = groupManageService.insertEmp(params, principal.getName());
-		if(success) {
+		String success = groupManageService.insertEmp(params, principal.getName());
+		if(success != null) {
+			rattr.addFlashAttribute("success_empID",success);
 			return "redirect:/employee/management";
 		}
 		rattr.addFlashAttribute("msg","사원등록에 실패했습니다");
@@ -78,14 +80,16 @@ public class GroupManageController {
 	@RequestMapping("/modify")
 	public ModelAndView empModify(MultipartFile uploadFile, @RequestParam HashMap<String, String>params, Principal principal) throws IOException {
 		logger.info("수정 파람값 도착 확인"+params);
+		logger.info("수정 파람값 도착 확인 파일" + uploadFile);
 		params.put("principal", principal.getName());
-		if(uploadFile != null && !uploadFile.isEmpty()) {			
+		if(uploadFile != null && !uploadFile.isEmpty()) {		
+			logger.info("파일 저장까지 들어왔음");
 			// 파일 저장 코드
 			groupManageService.imgInfo(params.get("emp_idx"));
 			SaveFile saveFile = new SaveFile();
 			
 			FileDto file = new FileDto();
-			file = saveFile.returnFileList(uploadFile, 74, params.get("emp_idx"));
+			file = saveFile.returnFileList(uploadFile, FileEnum.findDefindCode("empoyee"), params.get("emp_idx"));
 			
 			
 			saveFile.saveFile(file);

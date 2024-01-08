@@ -31,6 +31,9 @@ public class RequestController {
 	@ResponseBody
 	public boolean refund(@RequestParam String iamportIdx) {
 		boolean cancel = UtilToken.main(iamportIdx);
+		if (cancel) {
+			requestService.refund(iamportIdx);
+		}
 		return cancel;
 	}
 }
