@@ -40,6 +40,9 @@
 				padding: 20px;
 
 			}
+			.min-w-50px sorting sorting_asc{
+			visibility: hidden;
+			}
 		</style>
 	</head>
 	<!--end::Head-->
@@ -106,6 +109,19 @@
 													<!--begin::Menu-->
 													<div class="menu menu-column menu-rounded menu-state-bg menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary ">
 														<!--begin::Menu item-->
+														<div class="menu-item ">
+															<!--begin::Inbox-->
+															<span class="">
+																<span class="menu-icon">																	
+																<h4>멤버쉽 가입회원 : ${cuscount} 명</h4>
+															</span>
+															<!--end::Inbox-->
+														</div>
+														<!--end::Menu item-->
+														
+														<hr style="border:1px color= silver;" width="90%">
+														
+														<!--begin::Menu item-->
 														<div class="menu-item mb-3">
 															<!--begin::Inbox-->
 															<span class="menu-link active">
@@ -165,13 +181,17 @@
 										<!--begin::Card-->
 										<div class="card">
 									<!--===============================================^ 카드의 시작===============================================================-->
-									<!--begin::Card body-->
-									<div class="card-body pt-0">
-										<!--begin::Table-->
-										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
-											<thead>
+							
+							
+							
+							<!--begin::Card body-->
+								<div class="card-body pt-0">
+									<!--begin::Table-->
+									<table class="table align-middle table-row-dashed fs-6 gy-5"
+										id="kt_datatable_zero_configuration_list" style="overflow-x: hidden;">
+										<thead>
 												<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
-													<th class="w-30px pe-2" ></th>
+													<th class="min-w-30px" >NO.</th>
 													<th class="min-w-125px">회원 번호</th>
 													<th class="min-w-125px">이름</th>
 													<th class="min-w-125px">멤버쉽 종류</th>
@@ -179,15 +199,16 @@
 													<th class="min-w-125px">연락처</th>
 													<th class="min-w-125px">만료날짜</th>
 												</tr>
-												
-											</thead>
-											<tbody class="fw-semibold text-gray-600" id="list">
-												
-											</tbody>
-										</table>
-										<!--end::Table-->
-									</div>
-									<!--end::Card body-->
+											</thead>	
+										<tbody class="fw-semibold text-gray-600"  id="list">
+										</tbody>
+										<!--end::Table body-->
+									</table>
+									<!--end::Table-->
+								</div>
+								<!--end::Card body-->
+									
+									
 									
 
 									<!--===============================================V 카드의 끝===============================================================-->
@@ -204,27 +225,6 @@
 						<!--========================================================서브 사이드바 끝==============================================================-->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-						
 						
 					</div>
 					<!--end::Content-->					
@@ -242,9 +242,14 @@
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
-		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		
 		<!--end::Vendors Javascript-->
+		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Javascript-->
+		<script>
+		$("#kt_daterangepicker_1").daterangepicker();
+	    </script>
+		
 	</body>
 	<!--end::Body-->
 	
@@ -253,10 +258,13 @@
 	console.log("페이지 읽기 시작");
 	listcall(showpage);
 	console.log("페이지 읽기 끝");
+	var table=$("#kt_datatable_zero_configuration_list");
 	
 	$('#pageState').change(function(){
-		//$('#pagination').twbsPagination('destroy');	
+		//$('#pagination').twbsPagination('destroy');
+		table.DataTable().destroy();
 		listcall(showpage);	
+		//table.DataTable().drow();
 	});
 	
 	
@@ -275,7 +283,9 @@
 					alert('이 페이지의 권한이 없습니다');
 					location.href='./';
 				}else {} */		
-				drawlist(data);			
+				
+				drawlist(data);		
+				
 			},
 			error:function(e){
 				console.log(e);
@@ -300,7 +310,7 @@
 				
 				for (var i = 0; i < obj.size; i++) {
 					 	content = '<tr>';
-					 	content += '<td></td>';
+					 	content += '<td class="w-30px " >'+i+'</td>';
 					 	content +='<td><a href="customer/detail?idx='+obj.list[i].member_idx+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].member_idx+'</a></td>';
 					 	content +='<td><a href="customer/detail?idx='+obj.list[i].member_idx+'" class="text-gray-600 text-hover-primary mb-1">'+obj.list[i].name+'</a></td>';
 					 	if(obj.list[i].member_type == '82'){
@@ -319,8 +329,10 @@
 						 content += '<td>' + dateStr + '</td>';
 						 content += '</tr>';				
 				         $('#list').append(content);
+				         
 				};
 				};
+				        // $("#kt_datatable_zero_configuration").DataTable();
 				/*
 				$('#pagination').twbsPagination({
 					startPage:showpage // 보여줄페이지>> 
@@ -331,13 +343,12 @@
 						if(showpage != page){
 						  	console.log(page);
 						  	showpage = page; // 클릭해서 다른 페이지를 보여주게 되면  현재 보고 있는 페이지 번호도 바꿔준다. 
-						  	listcall(page);
-							
-						}		
-					}
-					
+						  	listcall(page);}}
 				});//
 				*/
+				table.DataTable( {"ordering": false, "info": false} );
+				
+			     // $("#kt_datatable_zero_configuration_list").DataTable( {"ordering": false, "info": false} );
 			}
 			
 			function search(){

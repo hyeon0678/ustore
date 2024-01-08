@@ -142,6 +142,55 @@ public class MemberService {
 
 
 
+	public int cuscount() {
+		return dao.cuscount();
+	}
+
+
+
+
+
+	public int findnum(int idx) {
+		return dao.findnum(idx);
+	}
+
+
+
+
+
+	public ArrayList<HashMap<String, String>> pointlistcall(int memberidx, String startdate, String enddate) {
+		
+		return dao.pointlistcall(memberidx, startdate, enddate);
+	}
+
+
+
+
+
+	public String sumpoint(int idx) {
+		return dao.sumpoint(idx);
+	}
+
+
+
+
+
+	public ArrayList<HashMap<String, String>> detailbill(String paymentidx) {
+		return dao.detailbill(paymentidx);
+	}
+
+
+
+
+
+	public HashMap<String, String> billlist(String paymentidx) {
+		return dao.billlist(paymentidx);
+	}
+
+
+
+
+
 	
 	
 	

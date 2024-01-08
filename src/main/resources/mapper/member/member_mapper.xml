@@ -5,6 +5,10 @@
 <mapper namespace="com.ustore.member.dao.MemberDao">
 
 		
+		<select id="cuscount" resultType="Integer">
+			select count(member_idx) from members m ;
+		</select>
+		
 		<insert id="joinnum" parameterType="map">
 			INSERT into members 
 			( grade_idx ,member_type, name, contact_num, create_date, 
@@ -41,6 +45,19 @@
 			SELECT * FROM members m  where member_idx = #{param1}
 		 </select>
 		 
+		 <select id="sumpoint" resultType="String">
+		 	select sum(earned_points) as total from payments p where member_id = #{param1}
+		 </select>
+		 
+		 <select id="findnum" resultType="Integer">
+		 	select total_point from total_point where member_idx = #{param1}
+		 </select>
+		 
+		 <select id="pointlistcall" resultType="map">
+		 	select payment_status , payment_date , earned_points , used_points , remain_points from payments p  
+			where member_id =#{param1} and payment_date BETWEEN #{param2} and #{param3}	 			 	
+		 </select>
+		 
 		 <select id="cussearch" resultType="map">
 		 	SELECT * FROM members WHERE name LIKE CONCAT('%',#{param1},'%') and member_state =#{param2}
 		 </select>
@@ -73,8 +90,15 @@
 			where member_id =#{param1} and payments_type =92 and payment_date BETWEEN #{param2} and #{param3}
 		</select>
 		
+		<select id="detailbill" resultType="map">
+				select  p.payment_id , p.product_id , p.quantity , p.selling_price , d.product_name 
+                from payments_detail as p inner join products as d on p.product_id = d.product_id where payment_id = #{param1}
+		</select>
 		
-		
+		<select id="billlist" resultType="map">
+			select  payment_title , actual_amount  as cash, payment_id , earned_points , used_points , remain_points , payment_date 
+			from payments as p where payment_id = #{param1}
+		</select>
 		
 		
 		

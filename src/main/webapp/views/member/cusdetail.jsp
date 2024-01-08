@@ -263,8 +263,8 @@
 									<!--end::Label-->
 									<!--begin::Col-->
 									<div class="col-lg-3" style="display: flex; width: 390px;">
-										<span class="fw-bold fs-6 text-gray-800">12005268 포인트</span>
-										<button class="" data-bs-toggle="modal" data-bs-target="#kt_modal_2" 
+										<span class="fw-bold fs-6 text-gray-800">${totalpoint} 포인트</span>
+										<button class="" data-bs-toggle="modal" data-bs-target="#kt_modal_2" onclick="basicpointlist()"
 										style="margin:0px 20px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" >포인트 내역</button>
 									</div>
 									<!--end::Col-->
@@ -272,16 +272,17 @@
 								<!--end::Row-->
 								<!-- 모달 시작하는부분 -->
 								<div class="modal fade" id="kt_modal_2" tabindex="-1"  >
-															<div class="modal-dialog">
-															  <div class="modal-content" style="width: 700px;">
+															<div class="modal-dialog" style="position: fixed; top: 15%; bottom: 0; left: 0; left: 0; right: 0; margin: auto;">
+															  <div class="modal-content" style="width: 700px;
+															   ">
 																<div class="modal-header">
 																	<h3>포인트 사용내역</h3>
 																	
 																	
 																	<label for="date" style="padding-left: 150px;">
-																        <input type="date" id="" value="${beforeMonth}" />
+																        <input type="date" id="" value="" />
 																        ~
-																        <input type="date" id="" value="${nowdate}" />ㄴ
+																        <input type="date" id="" value="" />
 																        <input type="button" id="usearchButton" class="comm-btn" value="검색"
 																         style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" />
 																    </label>
@@ -293,30 +294,31 @@
 																	</div>
 																	<!--end::Close-->
 																</div>
-																	<div>
 																	
-																		<div class="content_tree" style="border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
-																			<!--begin::Table-->
-																				<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
-																					<thead>
-																						<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">																							
-																							<th class="min-w-100px" style="text-align: center;">종류</th>
-																							<th class="min-w-100px" style="text-align: center;">포인트</th>
-																							<th class="min-w-100px" style="text-align: center;">총포인트</th>
-																							<th class="min-w-100px" style="text-align: center;">변경날짜</th>
-																						</tr>
-																						
-																					</thead>
-																					<tbody class="fw-semibold text-gray-600" id="list">
-																						
-																					</tbody>
-																				</table>
-																				<!--end::Table-->
-																		</div>
-																	</div>													
+																	
+																<div class="content_tree" style="border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto; height: 500px;">
+																	<!--begin::Table-->
+																		<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
+																			<thead>
+																				<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">																							
+																					<th class="min-w-100px" style="text-align: center;">종류</th>
+																					<th class="min-w-100px" style="text-align: center;">적립포인트</th>
+																					<th class="min-w-100px" style="text-align: center;">사용포인트</th>
+																					<th class="min-w-100px" style="text-align: center;">총포인트</th>
+																					<th class="min-w-100px" style="text-align: center;">변경날짜</th>
+																				</tr>
+																				
+																			</thead>
+																			<tbody class="fw-semibold text-gray-600" id="pointlist">
+																				
+																			</tbody>
+																		</table>
+																		<!--end::Table-->
+																</div>
+																													
 																<div class="modal-footer">
 																	<!-- <button type="button" class="btn btn-primary" data-bs-dismiss="modal">완료</button> -->
-																	<h3>누적포인트 : 5000000점</h3>
+																	<h3>누적포인트 : ${sumpoint} 점</h3>
 															  </div>
 															</div>
 														  </div>
@@ -360,61 +362,9 @@
 											</div>
 											<div class="" style="margin-left: 5px; margin-right: 5px">
 												<div class="content_tree"
-													style="float: left; width: 300px; height: 550px; overflow-y: auto; border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
-													<tbody class="fw-semibold text-gray-600" id="cartlist"></tbody>
-													<h4>UStore</h4>
-													<h2 style="margin-bottom: 5px; ">100000원</h2>
-													<span style="float: right; margin-top: 10px">결제번호(abc2037592-bfja3949)</span>
-													<!--begin::Table-->
-													<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
-														<thead>
-															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" style=" color: #c6da52;">																							
-																<th class="min-w-100px" style="text-align: center;">상품명(상품번호)</th>
-																<th class="min-w-80px" style="text-align: center;">단위수량</th>
-																<th class="min-w-100px" style="text-align: center;">금액</th>
-															</tr>
-															
-														</thead>
-														<tbody class="fw-semibold text-gray-600" id="cartlist">
-															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
-																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
-																<th class="min-w-80px" style="text-align: center;">2개</th>
-																<th class="min-w-100px" style="text-align: center;">10400 원</th>
-															</tr>
-															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
-																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
-																<th class="min-w-80px" style="text-align: center;">2개</th>
-																<th class="min-w-100px" style="text-align: center;">10400 원</th>
-															</tr>
-															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
-																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
-																<th class="min-w-80px" style="text-align: center;">2개</th>
-																<th class="min-w-100px" style="text-align: center;">10400 원</th>
-															</tr>
-															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
-																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
-																<th class="min-w-80px" style="text-align: center;">2개</th>
-																<th class="min-w-100px" style="text-align: center;">10400 원</th>
-															</tr>
-															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
-																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
-																<th class="min-w-80px" style="text-align: center;">2개</th>
-																<th class="min-w-100px" style="text-align: center;">10400 원</th>
-															</tr>
-															<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >																							
-																<th class="min-w-100px" style="text-align: center;">발렌타인(A010001)</th>
-																<th class="min-w-80px" style="text-align: center;">2개</th>
-																<th class="min-w-100px" style="text-align: center;">10400 원</th>
-															</tr>
-														</tbody>
-													</table>
-													<!--end::Table-->
-													<span style="float: right; margin-top: 10px">결제수단 : 신한카드(4404)</span>
-													<span style="float: right; margin-top: 10px">포인트 사용 : 0원</span>
-													<span style="float: right; margin-top: 10px">포인트 적립 : 0원</span>
-													<span style="float: right; margin-top: 10px">결제 후 남은 포인트 : 0원</span>
-													<span style="float: right; margin-top: 10px">결제일시 : 2023.12.01</span>
+													style="float: left; width: 300px; height: 550px; overflow-y: auto; border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto; overflow-x: hidden;"  id="cartlist">
 													
+													<!-- <tbody class="fw-semibold text-gray-600" id="cartlist"></tbody> -->
 													
 												</div>
 												<div class="content_tree"
@@ -523,45 +473,6 @@
 										data-bs-target="#kt_modal_3">
 										재연장
 									</button>
-									<div class="modal fade" tabindex="-1" id="kt_modal_4">
-										<div class="modal-dialog">
-											<div class="modal-content">
-												<div class="modal-header">
-													<div style="display: flex; align-items: center;">
-														<input type="text" class="form-control form-control-solid"
-															placeholder="이름을 입력하세요"
-															style="width:200px; height:30px; " />
-														<button type="button" class="btn btn-primary"
-															style="margin: 5px;">검색</button>
-													</div>
-													<!--begin::Close-->
-													<div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-														data-bs-dismiss="modal" aria-label="Close">
-														<i class="ki-duotone ki-cross fs-1"><span
-																class="path1"></span><span class="path2"></span></i>
-													</div>
-													<!--end::Close-->
-												</div>
-												<div class="">
-													<div class="content_tree"
-														style="float: left; width: 280px; height: 400px; overflow-y: auto;">
-														<!-- 조직도 그리기 -->
-														<!-- <span>여기에 조직도를 그려주세요</span> -->
-													</div>
-													<div class="content_tree"
-														style="float:left;width: 280px; height: 400px; border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
-														<span>홍길동(인사팀 팀장)</span><br />
-														<span>홍길동(인사팀 팀장)</span>
-														</div>
-													</div>
-	
-													<div class="modal-footer">
-														<button type="button" class="btn btn-primary"
-															data-bs-dismiss="modal" onclick="newdate()">변경</button>
-													</div>
-												</div>
-											</div>
-										</div>
 									</div>
 								
 								<!--end::Actions-->
@@ -714,10 +625,93 @@ var weekbutton = false;
 			
 	}
 	
+	function basicpointlist(){
+		
+		$.ajax({
+			type:'post',
+			url:'customer/detail.ajax/basicpointlist', 
+			data:{'memberidx':memberidx},
+			dataType:'JSON',
+			success:function(obj){
+				console.log(obj);
+				console.log("포인트 내역 호출 뿌려주기");				
+				var content = '';
+				$('#pointlist').empty();					
+				if (obj.size == 0) {					
+					 content = '<tr>';				 
+					 content += '<td style=" text-align: center; color: red;" colspan="5">포인트 내용이 존재하지 않습니다</td>';
+					 content += '</tr>';				
+		            $('#pointlist').append(content);
+				}else {
+				
+				for (var i = 0; i < obj.size; i++) {
+					 	 content = '<tr class="text-start fw-bold fs-7 text-uppercase gs-0">';																	
+					 	if(obj.list[i].payment_status == '90'){
+					 		content += '<th class="min-w-130px" style="text-align: center;">결제</th>'; 
+						 } else {
+							 content += '<th class="min-w-130px" style="text-align: center;">결제취소</th>';
+						}		
+					 	content += '<th class="min-w-130px" style="text-align: center;"><p class="paymentid">'+obj.list[i].earned_points+'</p></th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].used_points+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].remain_points+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].payment_date+'</th>';
+						 content += '</tr>';				
+			            $('#pointlist').append(content);
+				}
+							
+				};
+			},
+			error:function(e){
+				console.log(e);
+			}
+			});//	
+	}
+	
+function datepoint(){
+		
+		$.ajax({
+			type:'post',
+			url:'customer/detail.ajax/datepoint', 
+			data:{'memberidx':memberidx},
+			dataType:'JSON',
+			success:function(obj){
+				console.log(obj);
+				console.log("날짜 포인트 내역 호출 뿌려주기");				
+				var content = '';
+				$('#pointlist').empty();					
+				if (obj.size == 0) {					
+					 content = '<tr>';				 
+					 content += '<td style=" text-align: center; color: red;" colspan="5">포인트 내용이 존재하지 않습니다</td>';
+					 content += '</tr>';				
+		            $('#pointlist').append(content);
+				}else {
+				
+				for (var i = 0; i < obj.size; i++) {
+					 	 content = '<tr class="text-start fw-bold fs-7 text-uppercase gs-0">';																	
+					 	if(obj.list[i].payment_status == '90'){
+					 		content += '<th class="min-w-130px" style="text-align: center;">결제</th>'; 
+						 } else {
+							 content += '<th class="min-w-130px" style="text-align: center;">결제취소</th>';
+						}		
+					 	content += '<th class="min-w-130px" style="text-align: center;"><p class="paymentid">'+obj.list[i].earned_points+'</p></th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].used_points+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].remain_points+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].payment_date+'</th>';
+						 content += '</tr>';				
+			            $('#pointlist').append(content);
+				}
+							
+				};
+			},
+			error:function(e){
+				console.log(e);
+			}
+			});//	
+	}
+	
+	
 	
 	function bill(){
-		
-		
 	$('.paymentid').on('click', function() {
 		console.log("영수증 리스트 호출");
 		
@@ -725,7 +719,7 @@ var weekbutton = false;
 		console.log(idx);
 		
 		$.ajax({
-			type:'post',
+			type:'get',
 			url:'customer/detail.ajax/bill', 
 			data:{'paymentidx':idx},
 			dataType:'JSON',
@@ -733,37 +727,41 @@ var weekbutton = false;
 				console.log(obj);
 				console.log("영수증 호출 뿌려주기");				
 				var content = '';
-				$('#paylist').empty();					
+				$('#cartlist').empty();					
 				if (obj.size == 0) {					
 					 content = '<tr>';				 
 					 content += '<td style=" text-align: center; color: red;" colspan="5">구매이력이 존재하지 않습니다</td>';
 					 content += '</tr>';				
-		            $('#paylist').append(content);
+		            $('#cartlist').append(content);
+		            
+		            // obj.list[i].payment_id
 				}else {
-					
+					content ='<h4>'+obj.map.payment_title+'</h4>';
+					content +='<h2 style="margin-bottom: 5px; ">'+obj.map.cash+'원</h2>';
+					content +='<span style="float: right; margin-top: 10px">결제번호('+obj.map.payment_id+')</span>';
+					content +='<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">';
+					content +='<tr class="text-start fw-bold fs-8 text-uppercase gs-0" style=" color: #c6da52;">';
+					content +='<th class="min-w-100px" style="text-align: center;">상품명(상품번호)</th>';
+					content +='<th class="min-w-80px" style="text-align: center;">단위수량</th>';
+					content +='<th class="min-w-100px" style="text-align: center;">금액</th>';
+					content +='</tr>';
 				for (var i = 0; i < obj.size; i++) {
-					 	 content = '<tr class="text-start fw-bold fs-7 text-uppercase gs-0">';																	
-					 	content += '<th class="min-w-130px" style="text-align: center;"><p class="paymentid">'+obj.list[i].payment_id+'</p></th>';
-					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].payment_date+'</th>';
-					 	if(obj.list[i].payment_status == '90'){
-					 		content += '<th class="min-w-130px" style="text-align: center;">결제</th>'; 
-						 } else {
-							 content += '<th class="min-w-130px" style="text-align: center;">결제취소</th>';
-						}		
-					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].actual_amount+'</th>';
-					 	if(obj.list[i].payment_status == '91'){
-					 		content += '<th class="min-w-130px" style="text-align: center;">횐불됨</th>'; 
-						 } else {
-							content += '<th class="min-w-130px" style="text-align: center;">';
-							content += '<button id="refundBut" data-product-id="'+ obj.list[i].iamport_idx +'"style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;">';
-							content += '환불</button></th>';
-						}	
-						 content += '</tr>';				
-			            $('#paylist').append(content);
+					content +='<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >';
+					content +='<th class="min-w-100px" style="text-align: center;">'+obj.list[i].product_name+'('+obj.list[i].product_id+')</th>';
+					content +='<th class="min-w-80px" style="text-align: center;">'+obj.list[i].quantity+'개</th>';
+					content +='<th class="min-w-100px" style="text-align: center;">'+obj.list[i].selling_price+'원</th>';
+					content +='</tr>';
 				}
-				
-				bill();
+					content +='</table>';
+					content +='<p style="float: right; margin-top: 10px">결제수단 : 카카오페이(4404)</p>';
+					content +='<p style="float: right; margin-top: 10px">포인트 사용 : '+obj.map.used_points+'원</p>';
+					content +='<p style="float: right; margin-top: 10px">포인트 적립 : '+obj.map.earned_points+'원 / </p>';
+					content +='<p style="float: right; margin-top: 10px">결제 후 남은 포인트 : '+obj.map.remain_points+'원</p>';
+					content +='<p style="float: right; margin-top: 10px">결제일시 : '+obj.map.payment_date+'</p>';
+					console.log("영수증 호출 뿌려주기 진행끝");
+			     $('#cartlist').append(content);
 				};
+				
 			},
 			error:function(e){
 				console.log(e);
