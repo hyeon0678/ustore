@@ -130,4 +130,23 @@ on c.common_idx = e.`position`
 where e.emp_idx = #{param1}
 </select>
 
+<select id="selectEmpUpdateData">
+	SELECT e.emp_idx, e.emp_phone, e.emp_zipcode, e.emp_roadAddr, e.emp_detailAddr, e.emp_name, f.new_file_name, f.extension 
+	FROM employee e
+	LEFT OUTER JOIN file f
+	ON e.emp_idx  = f.conn_idx 
+	WHERE f.conn_idx  = #{param1} AND e.emp_idx LIKE #{param2}
+</select>
+
+<update id="updateEmpUpdateData">
+	update  employee 
+	SET emp_idx = empIdx 
+	, emp_phone = empPhone
+	, emp_zipcode = empZipcode
+	, emp_roadAddr = empRoadAddr
+	, emp_detailAddr = empDetailAddr
+	, emp_name = empName
+</update>
+
+
 </mapper>

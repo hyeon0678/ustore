@@ -36,7 +36,9 @@ public class EmpProfileController {
 	@Autowired EmpProfileService service;
 	
 	@GetMapping("/employee/correction")
-	public String correction() {
+	public String correction(Principal principal, Model model) {
+		EmployeeDto result = service.getEmpUpdateData(principal.getName());
+		model.addAttribute("empInfo",result);
 		return "employee/profile_correction";
 	}
 	
@@ -113,32 +115,6 @@ public class EmpProfileController {
 		return "redirect:/employee/home";
 	}
 	
-//	@RequestMapping(value = "/employee/attendance", method = {RequestMethod.GET, RequestMethod.POST})
-//	public String attendance(@RequestParam Map<String, String>params, Model model) {
-//		logger.info("attendance_params : "+ params);
-//		/* LocalDate now = LocalDate.now(); */
-//		
-//		service.attendance(params);
-//		
-//		logger.info("현재 날짜 : " + now);
-//		
-//		return "redirect:/employee/home";
-//	}
-	
-//	@RequestMapping(value = "/employee/attendance.ajax")
-//	@ResponseBody
-//	public HashMap<String, Object> attendance (@RequestParam HashMap<String, String> params){
-//		logger.info("reg_attendance_params : " + params);
-//		HashMap<String, Object> result = new HashMap<String, Object>();
-//		int attendance = service.attendance(params);
-//		logger.info("reg_attendance_params2 : "+params);
-//		result.put("success", attendance);
-//		return result;
-//	}
-	
-	
-	
-	
 	@RequestMapping(value = "/profilecalendar", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Map<String, Object>> profilecalendar(Principal principal){
@@ -186,33 +162,4 @@ public class EmpProfileController {
 		result.put("삭제 일정 번호 전달 success", employeDel);
 		return result;
 	}
-	
-//	@Scheduled(cron = "0 0/1 * * * *")
-//	public HashMap<String, Object> attendancesetting(@RequestParam HashMap<String, String>params) {		
-//		
-//		logger.info("attendancesetting_5min_params : "+params);
-//		
-//		HashMap<String, Object> result = new HashMap<String, Object>();
-//		int attSet = service.attendancesetting(params);
-//		
-//		logger.info("attendancesetting_5min_params : "+params);
-//		
-//		result.put("success", attSet);
-//				
-//		return result;
-//		
-//	}
-	
-//	@RequestMapping(value = "/employee/attendance.ajax")
-//	@ResponseBody
-//	public HashMap<String, Object> attendance (@RequestParam HashMap<String, String> params){
-//		logger.info("reg_attendance_params : " + params);
-//		HashMap<String, Object> result = new HashMap<String, Object>();
-//		int attendance = service.attendance(params);
-//		logger.info("reg_attendance_params2 : "+params);
-//		result.put("success", attendance);
-//		return result;
-//	}
-	
-	
 }
