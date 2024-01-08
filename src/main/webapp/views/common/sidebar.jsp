@@ -379,7 +379,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="#.jsp">
+											<a class="menu-link" href="/employee/registration">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
