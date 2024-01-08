@@ -76,16 +76,7 @@
 									<div class="card-header border-0 pt-6">						
 										<!--begin::Card toolbar-->
 										<div class="card-toolbar">
-											<!--begin::Toolbar-->
-											<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-												<!--begin::Filter-->
-												<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-												<i class="ki-duotone ki-filter fs-2">
-													<span class="path1"></span>
-													<span class="path2"></span>
-												</i>일괄결재</button>								
-											</div>
-											<!--end::Toolbar-->							
+																	
 										</div>
 										<!--end::Card toolbar-->
 									</div>
@@ -96,11 +87,6 @@
 										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
 											<thead>
 												<tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-													<th class="w-10px pe-2">
-														<div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-															<input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
-														</div>
-													</th>
 													<th class="min-w-125px">기안일자</th>
 													<th class="min-w-125px">결재양식</th>
 													<th class="min-w-125px">제목</th>
@@ -108,27 +94,29 @@
 												</tr>
 											</thead>
 											<tbody class="text-gray-600 fw-semibold">
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td class="d-flex align-items-center">										
-														<!--begin::기안일자-->
-														<div class="d-flex flex-column">
-															<span></span>
-														</div>										
-													</td>
-													<!--begin::결재양식-->
-													<td></td>
-													<!--begin::기안문 제목-->
-													<td>
-														<div class="badge badge-light fw-bold"><a href="" class="menu-link px-3"></a></div>
-													</td>
-													<!--begin::기안자-->
-													<td></td>
-												</tr>	
+												<c:if test="${reqapprlist.size()==0 }">
+													<tr><td colspan="5" style="text-align: center">게시물이 존재하지 않습니다.</td></tr>
+												</c:if>
+												<c:forEach items="${reqapprlist}" var="bbs">
+													<tr>
+														<td>${bbs.apprSubmitDate}</td>
+														<td>
+															<c:choose>
+												                <c:when test="${bbs.apprTypeIdx == 30}">
+												                    일반기안문
+												                </c:when>
+												                <c:when test="${bbs.apprTypeIdx == 31}">
+												                    대금지급결의서
+												                </c:when>
+												                <c:when test="${bbs.apprTypeIdx == 32}">
+												                    휴가신청서
+												                </c:when>
+												            </c:choose>
+														</td>
+														<td><a href="/approval/approvalreq/detail?apprIdx=${bbs.apprIdx}&apprTypeIdx=${bbs.apprTypeIdx}">${bbs.apprSubject}</a></td>														
+														<td>${bbs.empName}(${bbs.deptName})</td>														
+													</tr>
+												</c:forEach>
 											</tbody>
 										</table>
 										<!--end::Table-->

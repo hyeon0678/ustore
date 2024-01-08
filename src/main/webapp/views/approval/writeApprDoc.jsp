@@ -151,7 +151,7 @@
 									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
 										<span class="text-center">결 재 선</span>
 									</div>
-									<div class="apprline d-flex flex-column scroll" id="apprline" style="height: 250px;">
+									<div class="apprline d-flex flex-column scroll" id="apprlineTable" style="height: 250px;">
 										<div style="overflow: auto;">
 											<table class="signature-table mr-3 w-100">
 												<thead>
@@ -174,7 +174,7 @@
 									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
 										<span class="text-center">수 신 자</span>
 									</div>										
-									<div class="d-flex flex-column receiver scroll" id="receiver" style="height: 200px;">
+									<div class="d-flex flex-column receiver scroll" id="receiverTable" style="height: 200px;">
 										<div style="overflow: auto;">
 											<table class="signature-table mr-3 w-100">
 												<thead>
@@ -273,7 +273,9 @@
 	  getTreeData();
 	});  
 		
-		
+	
+    var readonly = false; /* ckEditor 있는 폼 불러올때, true이면 읽기전용(결재 상신중인 문서 확인시에는 수정 안되게 처리) */
+    
     // 동적으로 HTML 파일 로드하는 함수
     function loadFormPage(formPage, common_idx) {
         $.ajax({
@@ -356,7 +358,8 @@
 	// 결재선 정보 및 수신자 정보 설정(결재정보 저장)
 	var approvalLines = [];
 	var receivers = [];		
-
+	
+	// 로그인한 직원은 결재선에 기본으로 추가되어있게 하는 함수
     function addLoggedInEmpToApprLine(loggedInEmp_idx){
 		$.ajax({
 	        type: 'GET',
@@ -438,7 +441,7 @@
 	
 	// 결재정보 모달창 결재선 추가 테이블에 행을 추가하는 함수
 	function addRowToApprLineTable(approvalData) {
-	    var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
+	    var tbody = document.getElementById('apprlineTable').getElementsByTagName('tbody')[0];
 	    
 	    var isAlreadySelected = checkIfNodeExists(tbody, approvalData);
 	    
@@ -460,29 +463,29 @@
 		    if(approvalData.empIdx != loggedInEmp_idx){
 			    var deleteIcon = document.createElement('i');
 			    deleteIcon.className = 'fa fa-trash';
-			    deleteIcon.onclick = function () {
-			        newRow.remove();
-			        removeEmpFromApprLines(approvalData);
-			    };
+			    deleteIcon.onclick = createApprDeleteIconClickHandler(newRow, approvalData);
 			    cell5.appendChild(deleteIcon);	
 			    cell5.style.width='30px'; 
 		    }
 		 		    
 		 	// 선택한 노드 정보를 행에 저장 (data-node 필요)
-		    newRow.setAttribute('data-node', JSON.stringify(approvalData));
+		    newRow.dataset.node = JSON.stringify(approvalData);
 	    }else{
 	    	alert("이미 선택된 직원입니다.");
 	    }
 	}
+	
+	function createApprDeleteIconClickHandler(row, data) {
+	    return function () {
+	        row.remove();
+	        removeEmpFromApprLines(data);
+	    };
+	}
 
 	function removeEmpFromApprLines(empToRemove) {
-	    var index = -1;
-	    for (var i = 0; i < approvalLines.length; i++) {
-	        if (JSON.stringify(approvalLines[i]) === JSON.stringify(empToRemove)) {
-	            index = i;
-	            break;
-	        }
-	    }
+		var index = approvalLines.findIndex(function (emp) {
+	        return JSON.stringify(emp) === JSON.stringify(empToRemove);
+	    });
 
 	    if (index !== -1) {
 	        // 결재 순서 변경
@@ -495,13 +498,13 @@
 	        console.log("삭제 후 결재선:", approvalLines);
 
 	        // 테이블 UI 업데이트
-	        updateApprLineTable();
+	        updateApprLineTable(approvalLines);
 	    }
 	}
 	
 	// 결재선 테이블의 UI를 업데이트하는 함수
-	function updateApprLineTable() {
-	    var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
+	function updateApprLineTable(approvalLines) {
+	    var tbody = document.getElementById('apprlineTable').getElementsByTagName('tbody')[0];
 	    tbody.innerHTML = ""; // 테이블 내용 비우기
 
 	    // 새로운 테이블 내용 추가
@@ -520,14 +523,11 @@
 
 	        var deleteIcon = document.createElement('i');
 	        deleteIcon.className = 'fa fa-trash';
-	        deleteIcon.onclick = function () {
-	            newRow.remove();
-	            removeEmpFromApprLines(approvalLines[i]);
-	        };
+	        deleteIcon.onclick = createApprDeleteIconClickHandler(newRow, approvalLines[i]);
 	        cell5.appendChild(deleteIcon);
 	        cell5.style.width = '30px';
 
-	        newRow.setAttribute('data-node', JSON.stringify(approvalLines[i]));
+	        newRow.dataset.node = JSON.stringify(approvalLines[i]);
 	    }
 	}
 	
@@ -576,7 +576,7 @@
 	
 	// 결재정보 모달창 수신자 추가 테이블에 행을 추가하는 함수
 	function addRowToReceiverTable(receiverData) {
-		var tbody = document.getElementById('receiver').getElementsByTagName('tbody')[0];
+		var tbody = document.getElementById('receiverTable').getElementsByTagName('tbody')[0];
 		var isAlreadySelected = checkIfNodeExists(tbody, receiverData);
 		
 		if (!isAlreadySelected) {		
@@ -593,28 +593,28 @@
 			
 			var deleteIcon = document.createElement('i');
 			deleteIcon.className = 'fa fa-trash';
-			deleteIcon.onclick = function () {
-				newRow.remove();
-				removeEmpFromReceiver(receiverData);
-			};
+			deleteIcon.onclick = createRecvDeleteIconClickHandler(newRow, receiverData);			
 			cell4.appendChild(deleteIcon);
 			cell4.style.width='30px';
 			
 			// 선택한 노드 정보를 행에 저장 (data-node 필요)
-			newRow.setAttribute('data-node', JSON.stringify(receiverData));
+			newRow.dataset.node = JSON.stringify(receiverData);
 		}else{
 			alert("이미 선택된 직원입니다.");
 		}			
 	}    
 	
+	function createRecvDeleteIconClickHandler(row, data) {
+	    return function () {
+	        row.remove();
+	        removeEmpFromReceiver(data);
+	    };
+	}
+	
 	function removeEmpFromReceiver(empToRemove){
-		var index = -1;
-	    for (var i = 0; i < receivers.length; i++) {
-	        if (JSON.stringify(receivers[i]) == JSON.stringify(empToRemove)) {
-	            index = i;
-	            break;
-	        }
-	    }
+		var index = receivers.findIndex(function (emp) {
+	        return JSON.stringify(emp) === JSON.stringify(empToRemove);
+	    });
 
 	    if (index != -1) {
 	    	receivers.splice(index, 1);
@@ -628,16 +628,20 @@
 
 	    for (var i = 0; i < existingRows.length; i++) {
 	        var row = existingRows[i];
-	        var rowNodeString = row.getAttribute('data-node');
+	        var rowNodeString = row.dataset.node;
 	
 	        if (rowNodeString) {
-	            var rowNode = JSON.parse(rowNodeString);
-	
-	            if (rowNode.name === rowData.name &&
-                    rowNode.position === rowData.position &&
-                    rowNode.department === rowData.department) {
-	                return true;
-	            }
+	        	try{
+		            var rowNode = JSON.parse(rowNodeString);
+		
+		            if (rowNode.name === rowData.name &&
+	                    rowNode.positionType === rowData.positionType &&
+	                    rowNode.department === rowData.department) {
+		                return true;
+		            }	        		
+	        	}catch(e){
+	        		console.error(e);
+	        	}
 	        }
 	    }	
 	    return false;
@@ -668,7 +672,6 @@
 	function compareData(data1, data2) {
 	    return (
 	        data1.name === data2.name &&
-	        data1.position === data2.position &&
 	        data1.positionType === data2.positionType &&
 	        data1.department === data2.department
 	    );
@@ -779,7 +782,6 @@
 	
 
 	var apprContent;
-        
 	// 임시저장
     $('#btnSaveTemp').on('click', function () {
     	
@@ -810,7 +812,8 @@
         		};
         }else{
         	var leaveType = $('#leaveType option:selected').val();
-            var leaveDays = $('#leaveDays').html();
+            var leaveDays = $('#leaveDays').text();
+            console.log(leaveDays);
             var leaveReason = $('#leaveReason').val();
             var leaveStartDate =$('#leaveStartDate').val();
             var leaveEndDate = $('#leaveEndDate').val();
@@ -882,7 +885,8 @@
 	    		};
 	    }else{
 	    	var leaveType = $('#leaveType').val();
-            var leaveDays = $('#leaveDays').val();
+	    	var leaveDays = $('#leaveDays').text();
+            console.log(leaveDays);
             var leaveReason = $('#leaveReason').val();
             var leaveStartDate =$('#leaveStartDate').val();
             var leaveEndDate = $('#leaveEndDate').val();
@@ -909,7 +913,7 @@
 	        data: JSON.stringify(ApprovalDto),
 	        success: function (response) {
 	            console.log('문서가 결재상신 되었습니다.');
-	            alert('문서가 결재상신 되었습니다.');	            
+	            alert('문서가 결재상신 되었습니다.');	 
 	        },
 	        complete : function(){
 	        	location.href='/approval/newapproval';
@@ -918,10 +922,13 @@
 	            console.error('결재상신 중 오류가 발생했습니다.');
 	            alert('결재상신 중 오류가 발생했습니다.');
 	        }
-	    });
+	    });	    	      
+	    
+	    
+	    
 	});
 
-	
+		
 	// 뒤로가기 버튼 클릭 시의 동작
     $('#btnGoBack').on('click', function () {
     	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {

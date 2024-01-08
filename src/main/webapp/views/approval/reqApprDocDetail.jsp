@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<!--begin::Head-->
@@ -77,11 +78,11 @@
 									<span class="path1"></span>
 									<span class="path2"></span>
 								</i>반려하기</button>
-								<button type="button" class="btn btn-light-primary me-3" id="btnApprModify" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-bs-toggle="modal" data-bs-target="#kt_modal_3">
+								<!-- <button type="button" class="btn btn-light-primary me-3" id="btnApprModify" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-bs-toggle="modal" data-bs-target="#kt_modal_3">
 								<i class="ki-duotone ki-filter fs-2">
 									<span class="path1"></span>
 									<span class="path2"></span>
-								</i>수정하기</button>
+								</i>수정하기</button> -->
 								<button type="button" class="btn btn-light-primary me-3" id="btnApprInfo" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
 								<i class="ki-duotone ki-filter fs-2">
 									<span class="path1"></span>
@@ -97,12 +98,9 @@
 						</div>
 						<!--end::Toolbar-->
 						<!-- 결재 양식 들어오는 곳 -->		
-						<form id="docFormContainer" action="/saveDocument" method="post">	
-							<p>Selected Form: <%= request.getParameter("common_idx") %></p>
-							<div class="loadApprDoc">	
-							${htmlContent}				
-							</div>	
-						</form>					
+						<div class="loadApprDoc">	
+							<div style="pointer-events: none;">${htmlContent}</div>			
+						</div>				
 					</div>
 				<!--end::Content--> 
     			</div>
@@ -142,10 +140,6 @@
 								<div class="d-flex flex-column-fluid scroll px-5" style="max-height: 400px; overflow-y: auto;">
 									<div class="text-black" id="kt_docs_jstree_basic"></div>
 								</div>
-								<div style="position: absolute; bottom: 20px; text-align: center; left: 25%;">
-									<button id="addline" onclick="addApprovalLine()">결재선 추가</button>
-									<button id="addrecv" onclick="addReceiver()">수신자 추가</button>
-								</div>
 							</div>		
 
 							<!-- 오른쪽 div -->
@@ -154,15 +148,15 @@
 									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
 										<span class="text-center">결 재 선</span>
 									</div>
-									<div class="apprline d-flex flex-column scroll" id="apprline" style="height: 250px;">
+									<div class="apprline d-flex flex-column scroll" id="apprlineTable" style="height: 250px;">
 										<div style="overflow: auto;">
-											<table class="w-100">
+											<table class="signature-table mr-3 w-100">
 												<thead>
 													<tr>
 														<th>결재타입</th>
 														<th>이름</th>
 														<th>직책</th>
-														<th>부서</th>
+														<th style="width: 86.22222px;">부서</th>
 													</tr>
 												</thead>
 												<tbody>											
@@ -176,9 +170,9 @@
 									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
 										<span class="text-center">수 신 자</span>
 									</div>										
-									<div class="d-flex flex-column receiver scroll" id="receiver" style="height: 200px;">
+									<div class="d-flex flex-column receiver scroll" id="receiverTable" style="height: 200px;">
 										<div style="overflow: auto;">
-											<table class="w-100">
+											<table class="signature-table mr-3 w-100">
 												<thead>
 													<tr>
 														<th>이름</th>
@@ -197,11 +191,11 @@
 						<!-- 아래쪽 div -->
 						<c:if test="${commentsExist}">
 							<div>
-								<div class="apprreceiver border"  style="align-items: center; margin: 5px;">
+								<div class="comment border"  style="align-items: center; margin: 5px;">
 									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
 										<span class="text-center">결재의견(반려, 수정)</span>
 									</div>										
-									<div class="d-flex flex-column receiver scroll" id="receiver" style="height: 100px;">
+									<div class="d-flex flex-column commentTable scroll" id="comment" style="height: 100px;">
 										<div style="overflow: auto;">
 											<table class="w-100">
 												<thead>
@@ -225,7 +219,7 @@
 					</div>
 
 					<div class="modal-footer" style="display: flex; justify-content: center;">
-						<button type="button" class="btn btn-primary" id="saveApprLine">저장</button>
+						<button type="button" class="btn btn-primary" id="checkapprinfo">확인</button>
 					</div>
 				</div>
 			</div>
@@ -251,14 +245,14 @@
 								<thead>
 									<tr>										
 										<th>결재문서명</th>
-										<th colspan="2" style="text-align: left;"></th>
+										<th colspan="2" style="text-align: left;">${content.apprSubject}</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
 										<td>반려의견</td>
 										<td colspan="2" rowspan="5"style="text-align: left;">
-											<textarea cols="30" rows = "5" placeholder="반려 결재 의견 입력은 필수 입니다."></textarea>
+											<textarea cols="30" rows = "5" id="comment" name="comment" placeholder="반려 의견 입력은 필수 입니다."></textarea>
 										</td>								
 									</tr>
 								</tbody>
@@ -267,7 +261,7 @@
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary">반려</button>
+						<button type="button" class="btn btn-primary" onclick="rejectAppr()">반려</button>
 						<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
 					</div>
 				</div>
@@ -275,17 +269,17 @@
 		</div>
 		
 		<!--수정하기모달--> 
-		<div class="modal fade" tabindex="-1" id="kt_modal_3">
+		<!-- <div class="modal fade" tabindex="-1" id="kt_modal_3">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h1 class="modal-title">수정하기</h1>
 
-						<!--begin::Close-->
+						begin::Close
 						<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
 							<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
 						</div>
-						<!--end::Close-->
+						end::Close
 					</div>
 
 					<div class="modal-body">
@@ -315,8 +309,11 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="principal"/>
+		</sec:authorize>
 								
 		<!--begin::Javascript-->
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
@@ -331,21 +328,241 @@
 	</body>
 	<!--end::Body-->
 	<script>
+	var empIdx = ${principal.username};
+	var queryString = window.location.search;
+
+	// URLSearchParams를 사용하여 쿼리 문자열을 해석
+	var params = new URLSearchParams(queryString);
+
+	// apprIdx와 apprTypeIdx 값을 추출
+	var apprIdx = params.get('apprIdx');
+	var apprTypeIdx = params.get('apprTypeIdx');
+	console.log('apprIdx:', apprIdx);
+	console.log('apprTypeIdx:', apprTypeIdx);
 	
+	var common_idx=${common_idx};
+	console.log("common_idx : "+common_idx);
+	
+	
+	var apprContent;
+	var approvalLines = [];
+	var receivers = [];
+	var readonly = true;
+	
+    function loadFormPage(formPage, common_idx, apprTypeIdx) {
+        $.ajax({
+            type: 'GET',
+            url: "/gethtml?common_idx=" + common_idx,
+            success: function (data) {
+                // 로드한 HTML을 동적으로 추가
+                $('.loadApprDoc').html(data);  
+                console.log(apprTypeIdx);
+                setValues(apprTypeIdx);     
+                generateApproverRow();
+                generateSignatureRow();
+                
+                // 불러온 내용 수정 못하도록 처리
+             	// .card-body 클래스를 가진 요소를 찾음
+                var cardBody = document.querySelector('.card-bodyform');
+
+                // .card-body 클래스를 가진 요소의 자식 요소들을 찾음
+                var childElements = cardBody.querySelectorAll('*');
+
+                // 각 자식 요소에 대해 읽기 전용 속성 설정
+                childElements.forEach(function(element) {
+                    element.setAttribute('readonly', true);
+                });
+                
+                var selectElement = document.getElementById('leaveType');
+                if (selectElement) {
+                    selectElement.setAttribute('disabled', true);
+                }
+                
+            },
+            error: function (error) {
+                console.error('페이지 로드 중 오류가 발생했습니다.');
+            }
+        });
+        
+        
+        function setValues(apprTypeIdx) {
+        	
+        	var apprSubject = "${content.apprSubject}";
+        	$("#apprSubject").val(apprSubject);
+        	
+        	// 결재자 정보 불러오기
+        	var beforeConvertData = ${apprline};
+        	function convertData(secondData){
+        		return{
+        			empIdx: secondData.emp_idx,
+        	        apprType: secondData.appr_type,
+        	        name: secondData.approver,
+        	        positionType: secondData.positionType,
+        	        department: secondData.dept_name,
+        	        apprOrder: secondData.appr_order,
+        	        apprConfirm: secondData.appr_confirm
+        		};
+        	}
+        	
+        	approvalLines = beforeConvertData.map(convertData);
+        	console.log(approvalLines);
+        	        	
+       	    // 가공된 데이터를 테이블에 동적으로 추가
+		    var tbody = document.getElementById('apprlineTable').getElementsByTagName('tbody')[0];
+		    tbody.innerHTML = ""; // 테이블 내용 비우기
+	
+		    // 새로운 테이블 내용 추가
+		    for (var i = approvalLines.length - 1; i >= 0; i--) {
+		        var newRow = tbody.insertRow(-1);
+		        var cell1 = newRow.insertCell(0);
+		        var cell2 = newRow.insertCell(1);
+		        var cell3 = newRow.insertCell(2);
+		        var cell4 = newRow.insertCell(3);
+	
+		        cell1.innerHTML = approvalLines[i].apprType;
+		        cell2.innerHTML = approvalLines[i].name;
+		        cell3.innerHTML = approvalLines[i].positionType;
+		        cell4.innerHTML = approvalLines[i].department;
+		       
+		    }       	    	   		    
+		    		
+			$("#apprListTable #approverRow").html(generateApproverRow());
+			$("#apprListTable tr:last").html(generateSignatureRow());
+		    
+			
+			// 수신자 정보 불러오기
+		    
+		    var beforeConvertRecvData = ${receiver};
+        	function convertRecvData(secondData){
+        		return{
+        			empIdx: secondData.emp_idx,
+        	        name: secondData.receiver,
+        	        positionType: secondData.positionType,
+        	        department: secondData.dept_name
+        		};
+        	}
+        	
+        	receivers = beforeConvertRecvData.map(convertRecvData);
+        	console.log(receivers);
+       	 	
+        	// 가공된 데이터를 테이블에 동적으로 추가
+		    var tbody = document.getElementById('receiverTable').getElementsByTagName('tbody')[0];
+		    tbody.innerHTML = ""; // 테이블 내용 비우기
+	
+		    // 새로운 테이블 내용 추가
+		    for (var i = receivers.length - 1; i >= 0; i--) {
+		        var newRow = tbody.insertRow(-1);		        
+		        var cell1 = newRow.insertCell(0);
+		        var cell2 = newRow.insertCell(1);
+		        var cell3 = newRow.insertCell(2);
+	
+		        cell1.innerHTML = receivers[i].name;
+		        cell2.innerHTML = receivers[i].positionType;
+		        cell3.innerHTML = receivers[i].department;		        
+		    }
+       	 	
+		    if (receivers.length > 0) {
+           	 // 수신자 이름들을 담을 배열
+               var receiverNames = [];
+
+               // 각 수신자의 이름을 배열에 추가
+               receivers.forEach(function(recv) {
+               	var receiver = recv.name +'('+ recv.department +' '+ recv.positionType +')'; 
+               
+                   receiverNames.push(receiver);
+               });
+
+               // 수신자 이름들을 쉼표로 구분하여 문자열로 변환
+               var receiversString = receiverNames.join(', ');
+
+               // 결재양식의 수신자 input 태그에 수신자 이름 넣기
+               document.getElementById('inputReceiver').value = receiversString;
+           } else {
+               document.getElementById('inputReceiver').value = '내부결재';
+           }
+		    
+        	
+        	       	
+        	switch (apprTypeIdx) {
+            case '30':            	
+            	apprContent = "${content.apprContent}";              
+                break;
+                
+            case '31':            	
+            	var orderNum = "${content.orderNum}";
+        	    var totalAmount = "${content.totalAmount}";            	
+            	$("#orderNum").val(orderNum);
+            	$("#totalAmount").val(totalAmount);
+                break;
+                
+            case '32':            	
+                var leaveType = "${content.leaveType}";
+                var leaveStartDate = "${content.leaveStartDate}";
+                var leaveEndDate = "${content.leaveEndDate}";
+                var leaveDays = "${content.leaveDays}";
+                var leaveReason = "${content.leaveReason}";
+                
+                $("#leaveType").val(leaveType);
+                $("#kt_daterangepicker_1").val(leaveStartDate + ' - ' + leaveEndDate);
+                $("#leaveStartDate").val(leaveStartDate);
+                $("#leaveEndDate").val(leaveEndDate);
+                $("#leaveDays").text(leaveDays);
+                $("#leaveReason").val(leaveReason);
+                break;
+        	}            
+        }
+        
+        function generateApproverRow() {
+		    var rowHtml = "";
+		    for (var i = 0; i < approvalLines.length; i++) {
+		      rowHtml += "<td>" + approvalLines[i].name + "</td>";
+		    }
+		    return rowHtml;
+		}
+		// 결재자 사인구역 위치할 행				  
+		function generateSignatureRow() {
+		    var rowHtml = "";
+		    for (var i = 0; i < approvalLines.length; i++) {
+		    	// 결재자의 appr_confirm이 1이면 이름을 표시, 2이면 반려, 그렇지 않으면 빈칸		    	
+		        var signatureContent = "";
+		        if (approvalLines[i].apprConfirm === '1') {
+		            signatureContent = approvalLines[i].name;
+		        } else if (approvalLines[i].apprConfirm === '2') {
+		            signatureContent = '반려';
+		        }else{
+		        	signatureContent = "";
+		        }
+		        rowHtml += "<td>" + signatureContent + "</td>";
+		    }
+		    return rowHtml;
+		}
+    }
     
+    
+
     $(document).ready(function () {
-    	var common_idx=${common_idx};
+    	
+    	
     	// 초기에 선택된 양식에 대한 HTML 파일 로드
         var formPage = '<%= request.getAttribute("formPage") %>';
         if (formPage) {
-            loadFormPage(formPage, common_idx);
+            loadFormPage(formPage, common_idx, apprTypeIdx);
         }
         
-        
-    	 // 결재하기 버튼 클릭 시의 동작
+     	// 결재정보 버튼 클릭 시의 동작
+        $('#btnApprInfo').on('click', function () {
+            // 여기에 임시저장 버튼 클릭 시 수행할 동작 추가
+            console.log('결재정보 버튼 클릭');
+            var myModal1 = new bootstrap.Modal(document.getElementById('kt_modal_1'), {
+            });
+            myModal1.show();
+        });
+     
+    	// 결재하기 버튼 클릭 시의 동작
         $('#btnApproval').on('click', function () {
             // 여기에 결재상신 버튼 클릭 시 수행할 동작 추가
             console.log('결재하기 버튼 클릭');
+            signApprDoc();
         });
 
         // 반려하기 버튼 클릭 시의 동작
@@ -353,39 +570,26 @@
             // 여기에 결재정보 버튼 클릭 시 수행할 동작 추가
             console.log('반려하기 버튼 클릭');
             var myModal2 = new bootstrap.Modal(document.getElementById('kt_modal_2'), {
-                backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
-                keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
             });
-            myModal.show();
+            myModal2.show();
         });
-
+/*
         // 수정하기 버튼 클릭 시의 동작
         $('#btnApprModify').on('click', function () {
             // 여기에 임시저장 버튼 클릭 시 수행할 동작 추가
-            console.log('임시저장 버튼 클릭');
+            console.log('수정하기 버튼 클릭');
+            window.location.href = '/approval/approvalreq/modify'
             var myModal3 = new bootstrap.Modal(document.getElementById('kt_modal_3'), {
-                backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
-                keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
             });
             myModal3.show();
-        });
-        
-     	// 결재정보 버튼 클릭 시의 동작
-        $('#btnApprInfo').on('click', function () {
-            // 여기에 임시저장 버튼 클릭 시 수행할 동작 추가
-            console.log('임시저장 버튼 클릭');
-            var myModal1 = new bootstrap.Modal(document.getElementById('kt_modal_1'), {
-                backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
-                keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
-            });
-            myModal1.show();
-        });
+        });  
+*/            	
 
         // 뒤로가기 버튼 클릭 시의 동작
         $('#btnGoBack').on('click', function () {
         	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
                 // 사용자가 Yes를 클릭한 경우 /approvalReq 페이지로 이동
-                window.location.href = '/approvalReq';
+                window.location.href = '/approval/approvalreq';
             } else {
                 // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
                 console.log('뒤로가기 버튼 클릭 - 취소');
@@ -395,18 +599,33 @@
         $('#kt_modal_1').on('shown.bs.modal', function(){
 			getTreeData();
 		})
+		
+		$('#kt_modal_1').on('hidden.bs.modal', function () {
+		    $('.modal-backdrop').remove();
+		});
+		
+		$('#kt_modal_2').on('hidden.bs.modal', function () {
+		    $('.modal-backdrop').remove();
+		});
+        
+        $('#kt_modal_3').on('hidden.bs.modal', function () {
+		    $('.modal-backdrop').remove();
+		});
+        
+        $('#checkapprinfo').on('click', function(){
+			myModal.hide();
+		})
         
     });
 		
 	
-	function getTreeData(){
+    function getTreeData(){
 		$.ajax({
 			url:'/organizationChart.ajax',
 			method:'GET',
 			dataType:'JSON',
 			success:function(data){
 				console.log(data);
-				jsTreeData = data.treeData;
 				jsTree(data.treeData);
 			},error: function(error){
 				console.log(error);
@@ -414,7 +633,7 @@
 		})
 	}
 	
-	function jsTree(treeData){
+    function jsTree(treeData){
 		$('#kt_docs_jstree_basic').jstree({
 			"core" : {
 				"data" : treeData,
@@ -434,7 +653,6 @@
 			"plugins": ["types","search"]
 			,
 			"search":{
-				/* "show_only_matches" : true,  */
 				"show_only_matches_children" : true
 			}
 		});
@@ -461,7 +679,67 @@
 		console.log("select했을때", data.node);
 	});
 	
-
+	function signApprDoc(){
+		if(confirm("결재하시겠습니까?")){	
+			
+			var ApprovalDto={
+				commonIdx : common_idx,	
+				apprIdx : apprIdx,
+				apprTypeIdx : apprTypeIdx,
+				approvalLines : approvalLines
+			}			
+			
+			$.ajax({
+		        type: 'POST',
+		        url: '/signapprdoc',
+		        data: JSON.stringify(ApprovalDto),
+		        contentType:'application/json; charset=utf-8',		 
+		        success: function (data) {
+		            console.log('결재 처리 성공');
+		            alert('결재하였습니다.');
+		            location.href = '/approval/approvalreq';
+		        },
+		        error: function (xhr, textStatus, errorThrown) {
+	                console.error('결재 처리 실패', textStatus);
+	                console.log('에러 상태:', xhr.status);
+	                console.log('에러 내용:', xhr.responseText);
+		        }
+		    });			
+		}else {
+            // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
+            console.log('뒤로가기 버튼 클릭 - 취소');
+        }  
+	}
+	
+	
+	function rejectAppr(){
+		if(confirm("반려하시겠습니까?")){
+			
+			console.log(common_idx);
+			var comment = $('#comment').val();
+			console.log(comment);
+			
+			$.ajax({
+		        type: 'POST',
+		        url: '/rejectapprdoc',
+		        data: { apprIdx:apprIdx, comment:comment, common_idx:common_idx},
+		        success: function (data) {
+		            console.log('반려 처리 성공');
+		            alert('반려하였습니다.');
+		            location.href = '/approval/approvalreq';
+		            
+		        },
+		        error: function (xhr, textStatus, errorThrown) {
+	                console.error('결재 처리 실패', textStatus);
+	                console.log('에러 상태:', xhr.status);
+	                console.log('에러 내용:', xhr.responseText);
+		        }
+		    });
+		}else {
+            // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
+            console.log('뒤로가기 버튼 클릭 - 취소');
+        }  
+	}
 
 	</script>
 </html>

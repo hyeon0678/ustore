@@ -258,7 +258,7 @@
 	var apprContent;
 	var approvalLines = [];
 	var receivers = [];
-	
+	var readonly = false; /* ckEditor 있는 폼 불러올때, true이면 읽기전용(결재 상신중인 문서 확인시에는 수정 안되게 처리) */
     function loadFormPage(formPage, common_idx, apprTypeIdx) {
         $.ajax({
             type: 'GET',
@@ -283,7 +283,20 @@
         	$("#apprSubject").val(apprSubject);
         	
         	// 결재자 정보 불러오기
-        	approvalLines = ${apprline};
+        	var beforeConvertData = ${apprline};
+        	function convertData(secondData){
+        		return{
+        			empIdx: secondData.emp_idx,
+        	        apprType: secondData.appr_type,
+        	        name: secondData.approver,
+        	        positionType: secondData.positionType,
+        	        department: secondData.dept_name,
+        	        apprOrder: secondData.appr_order,
+        	        apprConfirm: secondData.appr_confirm
+        		};
+        	}
+        	
+        	approvalLines = beforeConvertData.map(convertData);
         	console.log(approvalLines);
         	        	
        	    // 가공된 데이터를 테이블에 동적으로 추가
@@ -299,21 +312,20 @@
 		        var cell4 = newRow.insertCell(3);
 		        var cell5 = newRow.insertCell(4);
 	
-		        cell1.innerHTML = approvalLines[i].appr_type;
-		        cell2.innerHTML = approvalLines[i].approver;
+		        cell1.innerHTML = approvalLines[i].apprType;
+		        cell2.innerHTML = approvalLines[i].name;
 		        cell3.innerHTML = approvalLines[i].positionType;
-		        cell4.innerHTML = approvalLines[i].dept_name;
+		        cell4.innerHTML = approvalLines[i].department;
 	
-		        var deleteIcon = document.createElement('i');
-		        deleteIcon.className = 'fa fa-trash';
-		        deleteIcon.onclick = function () {
-		            newRow.remove();
-		            removeEmpFromApprLines(approvalLines[i]);
-		        };
-		        cell5.appendChild(deleteIcon);
-		        cell5.style.width = '30px';
+		        if (approvalLines[i].apprType !== "기안") {
+			        var deleteIcon = document.createElement('i');
+			        deleteIcon.className = 'fa fa-trash';	
+			        deleteIcon.onclick = createApprDeleteIconClickHandler(newRow, approvalLines[i]);
+			        cell5.appendChild(deleteIcon);
+			        cell5.style.width = '30px';		        	
+		        }
 	
-		        newRow.setAttribute('data-node', JSON.stringify(approvalLines[i]));
+		        newRow.dataset.node = JSON.stringify(approvalLines[i]);
 		    }       	    	   		    
 		    		
 			$("#apprListTable #approverRow").html(generateApproverRow());
@@ -321,8 +333,19 @@
 		    
 			
 			// 수신자 정보 불러오기
-		    receivers = ${receiver};
-		    console.log(receivers);
+		    
+		    var beforeConvertRecvData = ${receiver};
+        	function convertRecvData(secondData){
+        		return{
+        			empIdx: secondData.emp_idx,
+        	        name: secondData.receiver,
+        	        positionType: secondData.positionType,
+        	        department: secondData.dept_name
+        		};
+        	}
+        	
+        	receivers = beforeConvertRecvData.map(convertRecvData);
+        	console.log(receivers);
        	 	
         	// 가공된 데이터를 테이블에 동적으로 추가
 		    var tbody = document.getElementById('receiverTable').getElementsByTagName('tbody')[0];
@@ -330,25 +353,22 @@
 	
 		    // 새로운 테이블 내용 추가
 		    for (var i = receivers.length - 1; i >= 0; i--) {
-		        var newRow = tbody.insertRow(-1);
-		        newRow.setAttribute('data-node', JSON.stringify(receivers[i]));
+		        var newRow = tbody.insertRow(-1);		        
 		        var cell1 = newRow.insertCell(0);
 		        var cell2 = newRow.insertCell(1);
 		        var cell3 = newRow.insertCell(2);
 		        var cell4 = newRow.insertCell(3);
 	
-		        cell1.innerHTML = receivers[i].receiver;
+		        cell1.innerHTML = receivers[i].name;
 		        cell2.innerHTML = receivers[i].positionType;
-		        cell3.innerHTML = receivers[i].dept_name;
+		        cell3.innerHTML = receivers[i].department;
 	
 		        var deleteIcon = document.createElement('i');
 		        deleteIcon.className = 'fa fa-trash';
-		        deleteIcon.onclick = function () {
-		            newRow.remove();
-		            removeEmpFromReceiver(receivers[i]);
-		        };
+		        deleteIcon.onclick = createRecvDeleteIconClickHandler(newRow, receivers[i]);
 		        cell4.appendChild(deleteIcon);
-		        cell4.style.width = '30px';		        
+		        cell4.style.width = '30px';		
+		        newRow.dataset.node = JSON.stringify(receivers[i]);
 		    }
        	 	
 		    if (receivers.length > 0) {
@@ -357,7 +377,7 @@
 
                // 각 수신자의 이름을 배열에 추가
                receivers.forEach(function(recv) {
-               	var receiver = recv.receiver +'('+ recv.dept_name +' '+ recv.positionType +')'; 
+               	var receiver = recv.name +'('+ recv.department +' '+ recv.positionType +')'; 
                
                    receiverNames.push(receiver);
                });
@@ -405,7 +425,7 @@
         function generateApproverRow() {
 		    var rowHtml = "";
 		    for (var i = 0; i < approvalLines.length; i++) {
-		      rowHtml += "<td>" + approvalLines[i].approver + "</td>";
+		      rowHtml += "<td>" + approvalLines[i].name + "</td>";
 		    }
 		    return rowHtml;
 		}
@@ -435,12 +455,6 @@
             loadFormPage(formPage, common_idx, apprTypeIdx);
         }
         
-        
-    	 // 결재상신 버튼 클릭 시의 동작
-        $('#btnApproval').on('click', function () {
-            console.log('결재상신 버튼 클릭');
-        });
-
         // 결재정보 버튼 클릭 시의 동작
         $('#btnApprovalInfo').on('click', function () {
             console.log('결재정보 버튼 클릭');            
@@ -454,11 +468,6 @@
         
     });
 	
-	
-    var myModal = new bootstrap.Modal(document.getElementById('kt_modal_1'), {
-        backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
-        keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
-    });
 	
 	
     function getTreeData(){
@@ -539,6 +548,7 @@
 	            var nextApprOrder = getNextApprOrder();
 	            
 	            var approvalData = {
+	            	empIdx : employeeInfo.empIdx,
 	                apprType: '결재',
 	                name: employeeInfo.empName,
 	                positionType: employeeInfo.positionType,
@@ -575,7 +585,7 @@
 	
 	// 결재정보 모달창 결재선 추가 테이블에 행을 추가하는 함수
 	function addRowToApprLineTable(approvalData) {
-	    var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
+	    var tbody = document.getElementById('apprlineTable').getElementsByTagName('tbody')[0];
 	    
 	    var isAlreadySelected = checkIfNodeExists(tbody, approvalData);
 	    
@@ -596,28 +606,28 @@
 	
 		    var deleteIcon = document.createElement('i');
 		    deleteIcon.className = 'fa fa-trash';
-		    deleteIcon.onclick = function () {
-		        newRow.remove();
-		        removeEmpFromApprLines(approvalData);
-		    };
+		    deleteIcon.onclick = createApprDeleteIconClickHandler(newRow, approvalData);
 		    cell5.appendChild(deleteIcon);	
 		    cell5.style.width='30px';		    
 		 		    
 		 	// 선택한 노드 정보를 행에 저장 (data-node 필요)
-		    newRow.setAttribute('data-node', JSON.stringify(approvalData));
+		    newRow.dataset.node = JSON.stringify(approvalData);
 	    }else{
 	    	alert("이미 선택된 직원입니다.");
 	    }
 	}
 
+	function createApprDeleteIconClickHandler(row, data) {
+	    return function () {
+	        row.remove();
+	        removeEmpFromApprLines(data);
+	    };
+	}
+	
 	function removeEmpFromApprLines(empToRemove) {
-	    var index = -1;
-	    for (var i = 0; i < approvalLines.length; i++) {
-	        if (JSON.stringify(approvalLines[i]) === JSON.stringify(empToRemove)) {
-	            index = i;
-	            break;
-	        }
-	    }
+		var index = approvalLines.findIndex(function (emp) {
+	        return JSON.stringify(emp) === JSON.stringify(empToRemove);
+	    });
 
 	    if (index !== -1) {
 	        // 결재 순서 변경
@@ -630,13 +640,13 @@
 	        console.log("삭제 후 결재선:", approvalLines);
 
 	        // 테이블 UI 업데이트
-	        updateApprLineTable();
+	        updateApprLineTable(approvalLines);
 	    }
 	}
 	
 	// 결재선 테이블의 UI를 업데이트하는 함수
-	function updateApprLineTable() {
-	    var tbody = document.getElementById('apprline').getElementsByTagName('tbody')[0];
+	function updateApprLineTable(approvalLines) {
+	    var tbody = document.getElementById('apprlineTable').getElementsByTagName('tbody')[0];
 	    tbody.innerHTML = ""; // 테이블 내용 비우기
 
 	    // 새로운 테이블 내용 추가
@@ -653,16 +663,15 @@
 	        cell3.innerHTML = approvalLines[i].positionType;
 	        cell4.innerHTML = approvalLines[i].department;
 
-	        var deleteIcon = document.createElement('i');
-	        deleteIcon.className = 'fa fa-trash';
-	        deleteIcon.onclick = function () {
-	            newRow.remove();
-	            removeEmpFromApprLines(approvalLines[i]);
-	        };
-	        cell5.appendChild(deleteIcon);
-	        cell5.style.width = '30px';
+	        if (approvalLines[i].apprType !== "기안") {
+		        var deleteIcon = document.createElement('i');
+		        deleteIcon.className = 'fa fa-trash';
+		        deleteIcon.onclick = createApprDeleteIconClickHandler(newRow, approvalLines[i]);
+		        cell5.appendChild(deleteIcon);
+		        cell5.style.width = '30px';	        	
+	        }
 
-	        newRow.setAttribute('data-node', JSON.stringify(approvalLines[i]));
+	        newRow.dataset.node = JSON.stringify(approvalLines[i]);
 	    }
 	}
 	
@@ -681,7 +690,7 @@
 
 	            // 생성할 receiverData 객체를 만들어서 데이터 채우기
 	            var receiverData = {
-	            	recvIdx: employeeInfo.empIdx,
+	            	empIdx: employeeInfo.empIdx,
 	                name: employeeInfo.empName,
 	                position: employeeInfo.position,
 	                positionType: employeeInfo.positionType,
@@ -711,7 +720,7 @@
 	
 	// 결재정보 모달창 수신자 추가 테이블에 행을 추가하는 함수
 	function addRowToReceiverTable(receiverData) {
-		var tbody = document.getElementById('receiver').getElementsByTagName('tbody')[0];
+		var tbody = document.getElementById('receiverTable').getElementsByTagName('tbody')[0];
 		var isAlreadySelected = checkIfNodeExists(tbody, receiverData);
 		
 		if (!isAlreadySelected) {		
@@ -728,32 +737,32 @@
 			
 			var deleteIcon = document.createElement('i');
 			deleteIcon.className = 'fa fa-trash';
-			deleteIcon.onclick = function () {
-				newRow.remove();
-				removeEmpFromReceiver(receiverData);
-			};
+			deleteIcon.onclick = createRecvDeleteIconClickHandler(newRow, receiverData);
 			cell4.appendChild(deleteIcon);
 			cell4.style.width='30px';
 			
 			// 선택한 노드 정보를 행에 저장 (data-node 필요)
-			newRow.setAttribute('data-node', JSON.stringify(receiverData));
+			newRow.dataset.node = JSON.stringify(receiverData);
 		}else{
 			alert("이미 선택된 직원입니다.");
 		}			
 	}    
 	
+	function createRecvDeleteIconClickHandler(row, data) {
+	    return function () {
+	        row.remove();
+	        removeEmpFromReceiver(data);
+	    };
+	}
+	
 	function removeEmpFromReceiver(empToRemove){
-		var index = -1;
-	    for (var i = 0; i < receivers.length; i++) {
-	        if (JSON.stringify(receivers[i]) == JSON.stringify(empToRemove)) {
-	            index = i;
-	            break;
-	        }
-	    }
+		var index = receivers.findIndex(function (emp) {
+	        return JSON.stringify(emp) === JSON.stringify(empToRemove);
+	    });
 
 	    if (index != -1) {
 	    	receivers.splice(index, 1);
-	        console.log("approval array after removal:", receivers);
+	        console.log("receivers array after removal:", receivers);
 	    }	
 	}
 	
@@ -763,22 +772,26 @@
 
 	    for (var i = 0; i < existingRows.length; i++) {
 	        var row = existingRows[i];
-	        var rowNodeString = row.getAttribute('data-node');
+	        var rowNodeString = row.dataset.node;
 	
 	        if (rowNodeString) {
-	            var rowNode = JSON.parse(rowNodeString);
-	
-	            if (rowNode.name === rowData.name &&
-                    rowNode.position === rowData.position &&
-                    rowNode.department === rowData.department) {
-	                return true;
-	            }
+	        	try{
+		            var rowNode = JSON.parse(rowNodeString);
+		
+		            if (rowNode.name === rowData.name &&
+	                    rowNode.positionType === rowData.positionType &&
+	                    rowNode.department === rowData.department) {
+		                return true;
+		            }	        		
+	        	}catch(e){
+	        		console.error(e);
+	        	}
 	        }
 	    }	
 	    return false;
 	}
 	
-	// addr 배열에 중복 데이터가 있는지 확인하는 함수
+	// approvalLines 배열에 중복 데이터가 있는지 확인하는 함수
 	function isApprDuplicate(newData) {
 	    for (var i = 0; i < approvalLines.length; i++) {
 	        if (compareData(approvalLines[i], newData)) {
@@ -803,7 +816,6 @@
 	function compareData(data1, data2) {
 	    return (
 	        data1.name === data2.name &&
-	        data1.position === data2.position &&
 	        data1.positionType === data2.positionType &&
 	        data1.department === data2.department
 	    );
@@ -856,7 +868,7 @@
                 console.log(data.receivers);
                 console.log('수신자 정보가 성공적으로 저장되었습니다.');
                 
-            	 // 수신자 구역을 다시 그리기
+            	// 결재폼의 수신자 칸 다시 입력
                 drawReceiverArea(data.receivers);
                 
              	// 수신자 정보 저장 성공
@@ -885,7 +897,7 @@
     	function generateApproverRow() {
 		    var rowHtml = "";
 		    for (var i = 0; i < approvalLines.length; i++) {
-		      rowHtml += "<td>" + approvalLines[i].approver + "</td>";
+		      rowHtml += "<td>" + approvalLines[i].name + "</td>";
 		    }
 		    return rowHtml;
 		}
@@ -902,10 +914,10 @@
 		$("#apprListTable tr:last").html(generateSignatureRow());
 	}
 
-	// 수신자 구역을 다시 그리는 함수
+	// 결재폼의 수신자 칸 다시 입력
 	function drawReceiverArea(receivers) {
 	    // 기존의 양식 폼 내 수신자를 지우는 작업
-		 $("#receiverTable tbody").html("");
+		 $("#inputReceiver").val("");
 	    // 새로운 수신자를 입력하는 작업
 	    if (receivers.length > 0) {
            	 // 수신자 이름들을 담을 배열
@@ -913,7 +925,7 @@
 
                // 각 수신자의 이름을 배열에 추가
                receivers.forEach(function(recv) {
-               	var receiver = recv.receiver +'('+ recv.dept_name +' '+ recv.positionType +')'; 
+               	var receiver = recv.name +'('+ recv.department +' '+ recv.positionType +')'; 
                
                    receiverNames.push(receiver);
                });
@@ -922,10 +934,10 @@
                var receiversString = receiverNames.join(', ');
 
                // 결재양식의 수신자 input 태그에 수신자 이름 넣기
-               document.getElementById('inputReceiver').value = receiversString;
-           } else {
-               document.getElementById('inputReceiver').value = '내부결재';
-           }
+               $("#inputReceiver").val(receiversString);
+		    } else {
+		        $("#inputReceiver").val('내부결재');
+           };
 	}
 	
 	// 임시저장
@@ -991,8 +1003,10 @@
             contentType: 'application/json',
             data: JSON.stringify(ApprovalDto),
             success: function(response) {
+                console.log('임시저장이 완료되었습니다.');
                 alert('임시저장이 완료되었습니다.');
-            },
+                location.href='/approval/tempapproval';
+            },            
             error: function(error) {
                 console.error('임시저장 중 오류가 발생했습니다.', error);
             }
@@ -1006,6 +1020,7 @@
 		
 		console.log('결재상신 버튼 클릭');
 		var ApprovalDto;
+		var common_idx = $('#common_idx').val();
     	console.log(common_idx);
     	var apprSubject = $('#apprSubject').val();
     	
@@ -1058,9 +1073,12 @@
 	        data: JSON.stringify(ApprovalDto),
 	        success: function (response) {
 	            console.log('문서가 결재상신 되었습니다.');
-	        },
+	            alert('문서가 결재상신 되었습니다.');	 
+	            location.href='/approval/tempapproval';
+	        },	        
 	        error: function (error) {
 	            console.error('결재상신 중 오류가 발생했습니다.');
+	            alert('결재상신 중 오류가 발생했습니다.');
 	        }
 	    });
 	});

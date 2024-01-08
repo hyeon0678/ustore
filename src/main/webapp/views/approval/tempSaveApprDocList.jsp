@@ -140,8 +140,33 @@
 													</tr>
 												</c:forEach>													
 											</tbody>
+											<!-- <tr>
+												<td colspan="10" id="paging" style="padding-bottom: 30px; padding-top: 15px;"> 	
+														플러그인 사용	(twbsPagination)	- 이렇게 사용하라고 tutorial 에서 제공
+													<div class="container">									
+														<nav aria-label="Page navigation">
+															<ul class="pagination" id="pagination" style="display: block; text-align: center;"></ul>
+														</nav>					
+													</div><p><br>
+													<div id="searchDIV">
+														<select id="searchType" name="searchType">
+															<option value="member_id">아이디</option>
+															<option value="member_name">이름</option>
+															<option value="member_dongAddr">거주지(동)</option>
+														</select>
+														 <input type="text" id="searchKeyword" name="searchKeyword" placeholder="검색어 입력">
+										  				 <button id="search">검색</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									  				 </div>
+												</td>
+											</tr> -->
 										</table>
 										<!--end::Table-->
+										<!-- <span style="font-size: medium; font-weight: bold;">총 문서 수&nbsp;<span id="totalDocCount"></span>&nbsp;건</span>
+										<select id="pagePerNum" style="float: right;">
+											<option value="10">10</option>
+											<option value="15">15</option>
+											<option value="20">20</option>
+										</select> -->
 									</div>
 									<!--end::Card body-->
 								</div>
@@ -191,8 +216,123 @@
 	$('#delTempDoc').on('click', function(){
 	
 		
-		
 	})
+	
+	
+	/* $('#pagePerNum').change(function(){
+		// 페이지당 보여줄 게시물 갯수가 변경되면 페이징 처리 UI 를 지우고 다시 그려 준다.
+		// 안그럼 처음에 계산한 페이지 값을 그대로 들고 있게 된다.
+		$('#pagination').twbsPagination('destroy');
+		listCall(showPage, searchKeyword);
+	});
+	
+	$('#search').click(function(){	
+	    searchKeyword = $('input[name="searchKeyword"]').val();  
+	    console.log(searchKeyword);
+	    console.log(showPage);    
+	    $('#pagination').twbsPagination('destroy');
+	    listCall(showPage, searchKeyword);
+	});
+		
+	function listCall(page, searchKeyword){
+		$.ajax({
+			type:'get',
+			url:'memberList.do',
+			data:{
+				'pagePerNum':$('#pagePerNum').val(),
+				'page':page,
+	            'searchKeyword': searchKeyword,
+			},
+			dataType:'json',
+			success:function(data){
+				console.log(data);
+				if(data.success == -1){
+					alert('이 페이지에 접근할 수 없습니다.');
+					location.href="./";
+				}else{
+					console.log(data.pages);
+					drawList(data);
+					totalDocCount(searchKeyword);
+				}
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	
+	function drawList(obj) {
+		console.log(obj);
+		console.log(obj.currPage);
+		console.log(obj.pages);
+		var totalPages = obj.pages;
+	    var content = '';
+	    var totalDocCount = obj.list.length;
+	
+	    if (totalDocCount == 0) {
+	    		content = '<tr><td colspan="5">저장된 임시문서가 없습니다.</td></tr>';
+	    }else {
+	        obj.list.forEach(function (item) {
+	            content += '<tr>';
+	            content += '<td>' + item.member_idx + '</td>';
+	            content += '<td>' + item.member_id + '</td>';
+	            content += '<td>' + '<a href="./memberDetail?member_idx='+item.member_idx+'" class="highlight-link">'+ item.member_name +'</a>'+'</td>';
+	            content += '<td>' + item.member_phone + '</td>';
+	            content += '<td>' + item.member_email + '</td>';
+	            content += '</tr>';
+	        })
+	            
+	
+	    // 검색 결과가 있으면 페이징 UI 그리기
+	    $('#pagination').twbsPagination({
+	        startPage: showPage, // 시작시 보여줄 페이지
+	        totalPages: obj.pages, // 총 페이지 수 (총 갯수 / 페이지당 보여줄 게시물 수): 서버에서 계산해서 가져와야함
+	        visiblePages: 5, // [1][2][3][4][5]
+	        onPageClick: function (e, page) {
+	        	console.log(page);
+	            console.log(obj.currPage);
+	            console.log(obj.pages);
+	            if (showPage != page) {                
+	                if(page>obj.pages){
+						var lastPage = 0;
+						lastPage = obj.pages;
+						listCall(lastPage, searchKeyword);	
+					}else{
+						showPage=page;  // 클릭해서 다른 페이지를 보여주게 되면 현재 보고있는 페이지 번호도 변경해준다.
+						listCall(showPage, searchKeyword);
+					}                    
+	            }                
+	        }
+	    });
+	    };
+	    $('#list').empty();
+	    $('#list').append(content);
+	}
+	
+		
+	function totalDocCount(searchKeyword){
+		$.ajax({
+			type:'get',
+			url:'countUser.do',
+			data:{				
+	            'searchKeyword': searchKeyword
+			},
+			dataType:'json',
+			success:function(data){
+				console.log(data.cnt);			
+				$('#totalDocCount').html(data.cnt);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	var msg = "${msg}";
+	if(msg != ""){
+		alert(msg);
+	} */
 	
 	</script>
 </html>
