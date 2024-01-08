@@ -37,7 +37,7 @@ public enum PositionEnum {
 	
 	/**
 	 * 직책을 한글로 넘기면 그에 맞는 정의 코드를 반환합니다
-	 * 직책 한글명 예) 팀장, 메니저
+	 * 직책 한글명 예) 팀장, 매니저
 	 * @param position
 	 * @return 정의 코드
 	 */
@@ -51,6 +51,12 @@ public enum PositionEnum {
 		
 	}
 	
+	/**
+	 * 직책을 코드로 넘기면 코드에 맞는 한글을 반환합니다
+	 * 직책 코드 예) 20, 21
+	 * @param 정의 코드
+	 * @return 직책
+	 */
 	public static String findType(int position) {
 		PositionEnum positionEnum = PositionEnum.valueOf(POSITION_TPYE.get(position));
 		if(positionEnum == null) {
