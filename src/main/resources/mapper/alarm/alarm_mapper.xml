@@ -12,9 +12,11 @@ WHERE a.alarm_read like 'N' AND a.emp_idx like #{param1} and a.alarm_type=101 AN
 </select>
 
 <select id="selectUnReadChat" resultType="int">
-SELECT count(`read`) 
-FROM chat_received_history 
-WHERE receiver LIKE #{param1} AND `read` like 'N';
+SELECT count(crh.`read`) 
+FROM chat_participants cp 
+LEFT OUTER JOIN chat_received_history crh
+ON cp.chat_room_idx = crh.chat_room_idx 
+WHERE crh.receiver LIKE #{param1} AND cp.emp_idx like #{param1} AND crh.`read` like 'N';
 </select>
 
 <select id="selectEmployees" resultType="String">

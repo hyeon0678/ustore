@@ -32,6 +32,10 @@ public interface EmpProfileDao {
 	int levCheck(String string);
 	
 	EmpProrileDto homeProfileDetail(String emp_idx);
+	
+	EmployeeDto selectEmpUpdateData(int fileType, String empIdx);
+	
+	int insertEmpUpdateData(EmployeeDto dto);
 
 
 	
