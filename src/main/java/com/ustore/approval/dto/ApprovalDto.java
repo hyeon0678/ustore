@@ -12,16 +12,15 @@ public class ApprovalDto {
 	private Integer apprIdx; // 기안번호
 	private String approver; // 결재자
 	private int apprOrder; // 결재자의 결재단계(순서)
-	private String apprConfirm; // 결재여부
+	private String apprConfirm; // 해당 결재자의 apprConfirm(결재여부) :  0 미결재, 1 결재, 2 반려처리
 	private Date apprRecvDate; // 결재문서 받은날짜
 	private Date apprDate; // 결재날짜
-	private int docId; // 문서번호
+	private String docId; // 문서번호
 	private String comment; // 결재의견
 	private String receiver; // 수신자
 	private List<Map<String, String>> approvalLines; // 설정한 결재문서 결재선 리스트
 	private List<Map<String, String>> receivers;  // 설정한 결재문서 수신자 리스트
 	private int commonIdx; 	
-	// 직책 common_idx 20(점장), 21(팀장), 22(매니저), 23(사원)	
 	private String empIdx;	
 	private String empName;	
 	private int apprStatus; // 결재 문서상태 common_idx 40(결재중), 41(완료), 42(반려), 43(임시저장)
@@ -29,7 +28,7 @@ public class ApprovalDto {
 	private String deptId;
 	private int apprTypeIdx; // 결재 양식번호 common_idx 30(업무),31(대금),32(휴가)
 	private String positionType; // 직책 position(int) -> common_idx 20(점장), 21(팀장), 22(매니저), 23(사원)
-	
+	private String apprType; // 결재타입(기안, 결재)
 	private int docStep; // 문서의 결재단계(순서)
 	private Date apprSubmitDate; // 기안일자
 	
@@ -41,7 +40,11 @@ public class ApprovalDto {
 	private Date leaveStartDate; // 신청 휴가 시작일
 	private Date leaveEndDate; // 신청 휴가 종료일
 	private int leaveDays; // 신청일수
-	private String apprType; // 결재타입(기안, 결재)
+	private String leaveReason; // 신청 휴가 사유
+	// 대금지급결의서
+	private int orderNum; // 발주번호
+	private int totalAmount; // 합계금액
+	
 	
 	
 	public String getApprType() {
@@ -62,11 +65,6 @@ public class ApprovalDto {
 	public void setLeaveDays(int leaveDays) {
 		this.leaveDays = leaveDays;
 	}
-	private String leaveReason; // 신청 휴가 사유
-	// 대금지급결의서
-	private int orderNum; // 발주번호
-	private int totalAmount; // 합계금액
-	
 	public int getTotalAmount() {
 		return totalAmount;
 	}
@@ -150,12 +148,13 @@ public class ApprovalDto {
 	public void setApprDate(Date apprDate) {
 		this.apprDate = apprDate;
 	}
-	public int getDocId() {
+	
+	public String getDocId() {
 		return docId;
 	}
-	public void setDocId(int docId) {
+	public void setDocId(String docId) {
 		this.docId = docId;
-	}	
+	}
 	public String getComment() {
 		return comment;
 	}

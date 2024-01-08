@@ -94,84 +94,43 @@
 										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
 											<thead>
 												<tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-													<th class="w-10px pe-2">
-														<div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-															<input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
-														</div>
-													</th>
-													<th class="min-w-125px">기안일자</th>
+													<th class="w-10px pe-2">문서번호</th>
+													<th class="min-w-125px">결재일자</th>
 													<th class="min-w-125px">결재양식</th>
 													<th class="min-w-125px">제목</th>
 													<th class="min-w-125px">기안자</th>
 												</tr>
 											</thead>
 											<tbody class="text-gray-600 fw-semibold">
-												<tr>
-													<td>
-														<div class="form-check form-check-sm form-check-custom form-check-solid">
-															<input class="form-check-input" type="checkbox" value="1" />
-														</div>
-													</td>
-													<td class="d-flex align-items-center">										
-														<!--begin::기안일자-->
-														<div class="d-flex flex-column">
-															<span></span>
-														</div>										
-													</td>
-													<!--begin::결재양식-->
-													<td></td>
-													<!--begin::기안문 제목-->
-													<td>
-														<div class="badge badge-light fw-bold"><a href="" class="menu-link px-3">제목</a></div>
-													</td>
-													<!--begin::기안자-->
-													<td></td>
-												</tr>	
+												<c:if test="${templist.size()==0 }">
+													<tr><td colspan="5">게시물이 존재하지 않습니다.</td></tr>
+												</c:if>
+												<c:forEach items="${templist}" var="bbs">
+													<tr>
+														<td>${bbs.docId}</td>
+														<td>${bbs.apprDate}</td>
+														<td>
+															<c:choose>
+												                <c:when test="${bbs.apprTypeIdx == 30}">
+												                    일반기안문
+												                </c:when>
+												                <c:when test="${bbs.apprTypeIdx == 31}">
+												                    대금지급결의서
+												                </c:when>
+												                <c:when test="${bbs.apprTypeIdx == 32}">
+												                    휴가신청서
+												                </c:when>
+												            </c:choose>
+												        </td>
+														<td><a href="/approval/teamapproval/detail?apprIdx=${bbs.apprIdx}&apprTypeIdx=${bbs.apprTypeIdx}">${bbs.apprSubject}</a></td>
+														<td>${bbs.empName}</td>														
+													</tr>
+												</c:forEach>	
 											</tbody>
 										</table>
 										<!--end::Table-->
 									</div>
-									<!--end::Card body-->
-									<div class="row">
-										<div class="col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start">
-											<div class="dataTables_length" id="kt_customers_table_length">
-												<label>
-													<select name="kt_customers_table_length" aria-controls="kt_customers_table" class="form-select form-select-sm form-select-solid">
-														<option value="10">10</option>
-														<option value="25">20</option>
-													</select>
-												</label>
-											</div>
-										</div>
-										<div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end">
-											<div class="dataTables_paginate paging_simple_numbers" id="kt_customers_table_paginate">
-												<ul class="pagination">
-													<li class="paginate_button page-item previous disabled" id="kt_customers_table_previous">
-														<a href="#" aria-controls="kt_customers_table" data-dt-idx="0" tabindex="0" class="page-link">
-															<i class="previous"></i>
-														</a>
-													</li>
-													<li class="paginate_button page-item active">
-														<a href="#" aria-controls="kt_customers_table" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-													</li>
-													<li class="paginate_button page-item ">
-														<a href="#" aria-controls="kt_customers_table" data-dt-idx="2" tabindex="0" class="page-link">2</a>
-													</li>
-													<li class="paginate_button page-item ">
-														<a href="#" aria-controls="kt_customers_table" data-dt-idx="3" tabindex="0" class="page-link">3</a>
-													</li>
-													<li class="paginate_button page-item ">
-														<a href="#" aria-controls="kt_customers_table" data-dt-idx="4" tabindex="0" class="page-link">4</a>
-													</li>
-													<li class="paginate_button page-item next" id="kt_customers_table_next">
-														<a href="#" aria-controls="kt_customers_table" data-dt-idx="5" tabindex="0" class="page-link">
-															<i class="next"></i>
-														</a>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</div>
+									<!--end::Card body-->									
 								</div>
 								<!--end::Card-->
 							</div>

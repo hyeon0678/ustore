@@ -4,6 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ustore.approval.dao.ApprovalDao">
 
+	<!-- jstree node에서 직원정보 가져오기 -->
 	<select id="getEmployeeInfo" resultType="EmployeeDto">
 		SELECT
 		    e.*,
@@ -19,6 +20,8 @@
 		    e.emp_idx = #{param1};
 	</select>
 	
+	
+	<!-- 새로 임시저장 -->
 	<insert id="tempSaveContent" parameterType="ApprovalDto">
 		<selectKey keyProperty="apprIdx" order="AFTER" resultType="Integer">
 	       select lastval(appr_idx_sequence)
@@ -42,26 +45,55 @@
         </if>
 	</insert>
 	
+	
+	<!-- 임시저장된 문서 재저장시 중복되는 appr_idx찾기(중복값 있을시 아래의 update, 없을시 insert) -->
+	<select id="chkRecordExists">
+		SELECT count(*) 
+		FROM(
+		    SELECT appr_idx FROM business_draft WHERE appr_idx = #{apprIdx} AND appr_status = 43
+		    UNION
+		    SELECT appr_idx FROM payment_resolution WHERE appr_idx = #{apprIdx} AND appr_status = 43
+		    UNION
+		    SELECT appr_idx FROM req_vacation WHERE appr_idx = #{apprIdx} AND appr_status = 43
+		) AS CombinedResult;
+	</select>
+	
+	
+	<!-- 임시저장된 문서 다시 재저장 -->
 	<update id="updateTempDoc" parameterType="ApprovalDto">
 		<if test="commonIdx == 30">
-            UPDATE business_draft SET appr_subject=#{apprSubject}, appr_content=#{apprContent}	
+            UPDATE business_draft SET appr_subject=#{apprSubject}, appr_content=#{apprContent}, appr_submit_date=now()	
             WHERE appr_idx=#{apprIdx}            	
 	    </if>
         <if test="commonIdx == 31">
 	        UPDATE payment_resolution SET appr_subject=#{apprSubject}, 
-	        	appr_content=#{apprContent}, order_num=#{orderNum}
+	        	appr_content=#{apprContent}, order_num=#{orderNum}, appr_submit_date=now()
             WHERE appr_idx=#{apprIdx}            	
 	    </if>
         <if test="commonIdx == 32">
 	        UPDATE req_vacation SET appr_subject=#{apprSubject}, leave_type=#{leaveType},
-	        	leave_start_date=#{leaveStartDate},leave_end_date=#{leaveEndDate},leave_reason=#{leaveReason}
+	        	leave_start_date=#{leaveStartDate},leave_end_date=#{leaveEndDate},leave_reason=#{leaveReason}, appr_submit_date=now()
 	        WHERE appr_idx=#{apprIdx}
 	    </if>
 	</update>
-	   
+	
+	
+	<!-- 임시저장되었던 결재선과 수신자를 수정할시 초기화하기 위한 작업 -->
+	<delete id="delTempApprLine">
+		DELETE FROM approval_line WHERE appr_idx = #{apprIdx}
+	</delete>
+	
+	<delete id="delTempRecv">
+		DELETE FROM recipient WHERE appr_idx = #{apprIdx}
+	</delete>
+	
+	
+	<!-- 결재 상신 -->   
 	<insert id="saveContent" parameterType="ApprovalDto">
 		<selectKey keyProperty="apprIdx" order="AFTER" resultType="Integer">
-	       select lastval(appr_idx_sequence)  <!-- 잘못된 부분 -->
+	       select lastval(appr_idx_sequence)  
+	       <!-- selectKey안에는 마지막으로 생성된 키 값이 들어가고, order가 after니깐 이 쿼리가 실행된 후에 selectKey가 생성 -->
+	       <!-- 이 쿼리를 insert할때 appr_idx에 마지막 생성된 값 다음 값이 들어가고, insert종료 후에 appr_idx 값이 selectKey에 들어가니깐 중복안되고 맞는것같은데 -->
 	    </selectKey>
 		<if test="commonIdx == 30">
             INSERT INTO business_draft (appr_idx, emp_idx, appr_subject, appr_content,  
@@ -75,30 +107,28 @@
         </if>
         <if test="commonIdx == 32">
             INSERT INTO req_vacation (appr_idx, emp_idx, appr_subject, 
-                appr_status, doc_step, leave_type, leave_start_date, leave_end_date, leave_reason)
+                appr_status, doc_step, leave_type, leave_start_date, leave_end_date, leave_reason, leave_days)
             VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 40, 1, 
-            	#{leaveType}, #{leaveStartDate}, #{leaveEndDate}, #{leaveReason})
+            	#{leaveType}, #{leaveStartDate}, #{leaveEndDate}, #{leaveReason}, #{leaveDays})
         </if>
-	</insert>
-	
+	</insert>	
+		
+		
+	<!-- 결재선 저장 -->	
 	<insert id="saveApprLine" parameterType="ApprovalDto">    
 	        INSERT INTO approval_line (emp_idx, appr_idx, approver, appr_order, appr_confirm, appr_type)
 	        VALUES (#{empIdx}, #{apprIdx}, #{approver}, #{apprOrder}, #{apprConfirm}, #{apprType})
 	</insert>
 	
+	
+	<!-- 수신자 저장 -->
 	<insert id="saveApprRecv" parameterType="ApprovalDto">		    
 	        INSERT INTO recipient (emp_idx, appr_idx, receiver)
 	        VALUES (#{empIdx}, #{apprIdx}, #{receiver})	    
 	</insert>
 	
-	<select id="getOrderList" resultType="OrderDto">
-		SELECT DISTINCT o.order_date, o.order_idx, o.emp_idx 
-		FROM `order` o
-		JOIN order_detail od ON o.order_idx = od.order_idx 
-		WHERE o.order_date =#{orderDate} and od.conf_status = 'Y'	
-	</select>
 	
-
+	<!-- 임시저장 문서 list가져오기 -->
 	<select id="getTempList" resultType="ApprovalDto">
 		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
 		FROM business_draft
@@ -111,18 +141,23 @@
 		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
 		FROM req_vacation
 		WHERE emp_idx = #{emp_idx} AND appr_status = 43		
+		ORDER BY appr_submit_date DESC
 	</select>	
 	
-
+	
+	<!-- 문서 detail 결재선 가져오기 -->
 	<select id="getApprLine" resultType="map" parameterType="int">
-		SELECT al.emp_idx, al.appr_type, al.approver, c.common_type AS positionType, d.dept_name, al.appr_order, al.appr_confirm 
+		SELECT al.emp_idx, al.appr_type, al.approver, c.common_type AS positionType, d.dept_name, al.appr_order, al.appr_confirm, al.comment 
 	    FROM approval_line al
 	    JOIN employee e ON al.approver = e.emp_name
 	    LEFT JOIN department d ON e.dept_id = d.dept_id
 	    LEFT JOIN common c ON e.position = c.common_idx
 	    WHERE al.appr_idx = #{param1}
+	    ORDER BY al.appr_order
 	</select>
 	
+	
+	<!-- 문서 detail 수신자 가져오기 -->
 	<select id="getRecv" resultType="map" parameterType="int">
 		SELECT r.emp_idx, r.receiver, c.common_type AS positionType, d.dept_name 
 	    FROM recipient r
@@ -132,6 +167,8 @@
 	    WHERE r.appr_idx = #{param1}
 	</select>
 	
+	
+	<!-- 문서 detail 내용 가져오기 -->
 	<select id="getContent" resultType="ApprovalDto" parameterType="int">
 		<if test="common_idx == 30">
             SELECT appr_subject, appr_content, appr_status, doc_step 
@@ -151,61 +188,249 @@
         </if>
 	</select>
 	
-	<select id="chkRecordExists">
-		SELECT count(*) 
-		FROM(
-		    SELECT appr_idx FROM business_draft WHERE appr_idx = 3 AND appr_status = 43
-		    UNION
-		    SELECT appr_idx FROM payment_resolution WHERE appr_idx = 3 AND appr_status = 43
-		    UNION
-		    SELECT appr_idx FROM req_vacation WHERE appr_idx = 3 AND appr_status = 43
-		) AS CombinedResult;
+	
+	<!-- 대금지급결의서 발주번호 검색(modal) -> 특정 일자의 발주번호 리스트 가져오기 -->
+	<select id="getOrderList" resultType="OrderDto">
+		SELECT DISTINCT o.order_date, o.order_idx, o.emp_idx 
+		FROM `order` o
+		JOIN order_detail od ON o.order_idx = od.order_idx 
+		WHERE o.order_date =#{orderDate} and od.conf_status = 'Y'
+		ORDER BY o.order_date DESC
 	</select>
 	
-	
-	
-	<!-- <select id="getMyApprList" resultType="ApprovalDto" parameterType="map">
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+	<!-- 내결재문서(내가 결재 올린 문서) list가져오기 -->
+	<select id="getMyApprList" resultType="ApprovalDto">
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
 		FROM business_draft
 		WHERE emp_idx = #{emp_idx} AND appr_status in (40, 41, 42)
 		UNION
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
 		FROM payment_resolution
 		WHERE emp_idx = #{emp_idx} AND appr_status in (40, 41, 42)
 		UNION
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
 		FROM req_vacation
 		WHERE emp_idx = #{emp_idx} AND appr_status in (40, 41, 42)		
+		ORDER BY appr_submit_date DESC
 	</select>	
 	
-	<select id="getReqApprList" resultType="ApprovalDto" parameterType="map">
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
-		FROM business_draft
-		WHERE emp_idx = #{emp_idx} AND appr_status = 40
-		UNION
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
-		FROM payment_resolution
-		WHERE emp_idx = #{emp_idx} AND appr_status = 40
-		UNION
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
-		FROM req_vacation
-		WHERE emp_idx = #{emp_idx} AND appr_status = 40		
+	<!-- 결재문서 회수하기 -->
+	<update id="retrieveAppr">
+		<if test="common_idx == 30">
+		UPDATE business_draft
+		SET appr_status = 43 
+		WHERE appr_idx = #{apprIdx}
+		</if>
+        <if test="common_idx == 31">
+        UPDATE payment_resolution
+		SET appr_status = 43 
+		WHERE appr_idx = #{apprIdx}
+        </if>
+        <if test="common_idx == 32">
+        UPDATE req_vacation
+		SET appr_status = 43 
+		WHERE appr_idx = #{apprIdx}
+        </if>
+	</update>
+	
+	
+	<!-- 결재요청 문서(내 결재순서인 문서) list가져오기 -->
+	<select id="getReqApprList" resultType="ApprovalDto">
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date, emp_name, dept_name
+		FROM (SELECT bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.appr_submit_date, e.emp_name, d.dept_name
+			FROM business_draft bd
+			INNER JOIN approval_line al ON al.appr_idx = bd.appr_idx AND al.emp_idx= #{emp_idx} AND al.appr_type!='기안' AND appr_confirm = '0' AND al.appr_order = bd.doc_step
+			INNER JOIN employee e ON e.emp_idx = bd.emp_idx
+			INNER JOIN department d ON e.dept_id = d.dept_id
+			WHERE bd.appr_status = 40					
+			UNION
+			SELECT pr.appr_idx, pr.appr_subject, pr.appr_status, pr.appr_type_idx, pr.appr_submit_date, e.emp_name, d.dept_name
+			FROM payment_resolution pr
+			INNER JOIN approval_line al ON al.appr_idx = pr.appr_idx AND al.emp_idx= #{emp_idx} AND al.appr_type!='기안' AND appr_confirm = '0' AND al.appr_order = pr.doc_step
+			INNER JOIN employee e ON e.emp_idx = pr.emp_idx
+			INNER JOIN department d ON e.dept_id = d.dept_id
+			WHERE pr.appr_status = 40
+			UNION		
+			SELECT rv.appr_idx, rv.appr_subject, rv.appr_status, rv.appr_type_idx, rv.appr_submit_date, e.emp_name, d.dept_name
+			FROM req_vacation rv
+			INNER JOIN approval_line al ON al.appr_idx = rv.appr_idx AND al.emp_idx= #{emp_idx} AND al.appr_type!='기안' AND appr_confirm = '0' AND al.appr_order = rv.doc_step
+			INNER JOIN employee e ON e.emp_idx = rv.emp_idx
+			INNER JOIN department d ON e.dept_id = d.dept_id
+			WHERE rv.appr_status = 40
+			)AS combined_result			
+		ORDER BY appr_submit_date DESC
 	</select>
 	
-	<select id="getTeamApprList" resultType="ApprovalDto" parameterType="map">
-		SELECT bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.appr_submitdate
-		FROM business_draft bd
-		JOIN employee e ON bd.emp_idx = e.emp_idx
-		WHERE e.dept_id = (SELECT dept_id FROM employee WHERE emp_idx = #{emp_idx}) 
-		AND bd.appr_status = 41;
-		UNION
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
-		FROM payment_resolution
-		WHERE emp_idx = #{emp_idx} AND appr_status = 41
-		UNION
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submitdate
-		FROM req_vacation
-		WHERE emp_idx = #{emp_idx} AND appr_status = 41;		
-	</select> -->
+	<update id="updateAppr" parameterType="ApprovalDto">
+		<if test="commonIdx == 30">
+		UPDATE approval_line al
+		INNER JOIN business_draft bd ON bd.appr_idx = al.appr_idx AND bd.doc_step = al.appr_order
+		SET al.appr_confirm="1", al.appr_date = now()
+		WHERE bd.appr_idx = #{apprIdx}
+		</if>
+        <if test="commonIdx == 31">
+        UPDATE approval_line al
+		INNER JOIN payment_resolution pr ON pr.appr_idx = al.appr_idx AND pr.doc_step = al.appr_order
+		SET al.appr_confirm="1", al.appr_date = now()
+		WHERE pr.appr_idx = #{apprIdx}
+        </if>
+        <if test="commonIdx == 32">
+        UPDATE approval_line al
+		INNER JOIN req_vacation rv ON rv.appr_idx = al.appr_idx AND rv.doc_step = al.appr_order
+		SET al.appr_confirm="1", al.appr_date = now()
+		WHERE rv.appr_idx = #{apprIdx}
+		</if>
+	</update>
+	
+	<select id="chkRemainApprover" parameterType="ApprovalDto" resultType="int">
+		SELECT count(approver)
+		FROM approval_line 
+		WHERE appr_idx=#{apprIdx} AND appr_confirm=0
+	</select>
+	
+	
+	<update id="updateApprStatus" parameterType="ApprovalDto">
+		<if test="commonIdx == 30">
+			UPDATE business_draft
+            SET appr_status = #{apprStatus}, doc_id = #{docId}
+            WHERE appr_idx = #{apprIdx}
+        </if>
+        <if test="commonIdx == 31">
+        	UPDATE payment_resolution
+            SET appr_status = #{apprStatus}, doc_id = #{docId}
+            WHERE appr_idx = #{apprIdx}
+        </if>
+        <if test="commonIdx == 32">
+        	UPDATE req_vacation
+            SET appr_status = #{apprStatus}, doc_id = #{docId}
+            WHERE appr_idx = #{apprIdx}
+        </if>
+	</update>
+	
+	<update id="updateApprDocStep" parameterType="ApprovalDto">
+		<if test="commonIdx == 30">
+			UPDATE business_draft
+			SET doc_step=doc_step+1 
+			WHERE appr_idx = #{apprIdx}
+		</if>
+        <if test="commonIdx == 31">
+	        UPDATE payment_resolution
+			SET doc_step=doc_step+1
+			WHERE appr_idx = #{apprIdx}
+		</if>
+        <if test="commonIdx == 32">
+        	UPDATE req_vacation
+			SET doc_step=doc_step+1
+			WHERE appr_idx = #{apprIdx}
+		</if>
+	</update>
+	
+	<select id="getFnApprDate" resultType="Date">
+		SELECT appr_date 
+		FROM approval_line
+		WHERE emp_idx=#{fnApprEmp_idx} AND appr_idx=#{apprIdx}
+	</select>
+	
+	
+	<update id="rejectApprDoc">		
+		<if test="common_idx == 30">
+		UPDATE approval_line al
+		INNER JOIN business_draft bd ON bd.appr_idx = al.appr_idx AND bd.doc_step = al.appr_order
+		SET bd.appr_status=42, al.comment=#{comment}, al.appr_confirm='2' 
+		WHERE bd.appr_idx = #{apprIdx}
+		</if>
+        <if test="common_idx == 31">
+        UPDATE approval_line al
+        INNER JOIN payment_resolution pr ON pr.appr_idx = al.appr_idx AND pr.doc_step = al.appr_order
+		SET pr.appr_status=42, al.comment=#{comment}, al.appr_confirm='2'
+		WHERE pr.appr_idx = #{apprIdx}
+        </if>
+        <if test="common_idx == 32">
+        UPDATE approval_line al
+        INNER JOIN req_vacation rv ON rv.appr_idx = al.appr_idx AND rv.doc_step = al.appr_order
+		SET rv.appr_status=42, al.comment=#{comment}, al.appr_confirm='2' 
+		WHERE rv.appr_idx = #{apprIdx}
+		</if>
+	</update>
+	
+	
+	<!-- 부서문서(결재완료문서) list가져오기 -->
+	<select id="getTeamApprList" resultType="ApprovalDto">
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, emp_idx, doc_id, appr_date, dept_name
+		FROM (
+		    SELECT bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.emp_idx, bd.doc_id, al.appr_date, d.dept_name
+		    FROM business_draft bd
+		    JOIN employee e ON bd.emp_idx = e.emp_idx
+		    JOIN approval_line al ON al.appr_idx = bd.appr_idx
+		    JOIN recipient r ON r.appr_idx = bd.appr_idx
+		    JOIN department d ON e.dept_id = d.dept_id
+		    WHERE (
+		        e.dept_id = (SELECT dept_id FROM employee WHERE emp_idx = #{emp_idx})
+		        OR r.emp_idx = #{emp_idx}
+		    )
+		    AND bd.appr_status = 41
+		
+		    UNION
+		
+		    SELECT pr.appr_idx, pr.appr_subject, pr.appr_status, pr.appr_type_idx, pr.emp_idx, pr.doc_id, al.appr_date, d.dept_name
+		    FROM payment_resolution pr
+		    JOIN employee e ON pr.emp_idx = e.emp_idx
+		    JOIN approval_line al ON al.appr_idx = pr.appr_idx
+		    JOIN recipient r ON r.appr_idx = pr.appr_idx
+		    JOIN department d ON e.dept_id = d.dept_id
+		    WHERE (
+		        e.dept_id = (SELECT dept_id FROM employee WHERE emp_idx = #{emp_idx})
+		        OR r.emp_idx = #{emp_idx}
+		    )
+		    AND pr.appr_status = 41
+		
+		    UNION
+		
+		    SELECT rv.appr_idx, rv.appr_subject, rv.appr_status, rv.appr_type_idx, rv.emp_idx, rv.doc_id, al.appr_date, d.dept_name
+		    FROM req_vacation rv
+		    JOIN employee e ON rv.emp_idx = e.emp_idx
+		    JOIN approval_line al ON al.appr_idx = rv.appr_idx
+		    JOIN recipient r ON r.appr_idx = rv.appr_idx
+		    JOIN department d ON e.dept_id = d.dept_id
+		    WHERE (
+		        e.dept_id = (SELECT dept_id FROM employee WHERE emp_idx = #{emp_idx})
+		        OR r.emp_idx = #{emp_idx}
+		    )
+		    AND rv.appr_status = 41
+		) AS combined_results
+		ORDER BY appr_date DESC;
+	</select>
+
+	<delete id="apprDocDel">
+		<if test="common_idx == 30">
+		DELETE FROM business_draft
+		WHERE appr_idx = #{apprIdx}
+		</if>
+        <if test="common_idx == 31">
+        DELETE FROM payment_resolution
+		WHERE appr_idx = #{apprIdx}
+        </if>
+        <if test="common_idx == 32">
+        DELETE FROM req_vacation
+		WHERE appr_idx = #{apprIdx}
+		</if>
+	</delete>
+	
+	<select id="getMaxDocId" resultType="String">
+		SELECT MAX(doc_id)  
+		FROM (SELECT doc_id
+			FROM business_draft bd	
+			WHERE LEFT(doc_id, 4) = #{year} AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = #{iniDeptName} 					
+			UNION
+			SELECT doc_id
+			FROM payment_resolution pr
+			WHERE LEFT(doc_id, 4) = #{year} AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = #{iniDeptName} 	
+			UNION
+			SELECT doc_id
+			FROM req_vacation rv		
+			WHERE LEFT(doc_id, 4) = #{year} AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = #{iniDeptName} 		
+			)AS combined_result	
+	</select>
+
 
 </mapper>

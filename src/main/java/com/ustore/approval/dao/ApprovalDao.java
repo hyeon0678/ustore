@@ -1,5 +1,6 @@
 package com.ustore.approval.dao;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,42 @@ public interface ApprovalDao {
 	int chkRecordExists(Integer apprIdx);
 
 	List<OrderDto> getOrderList(String orderDate);
+
+	int delTempApprLine(ApprovalDto dto);
+
+	int delTempRecv(ApprovalDto dto);
+
+	ArrayList<ApprovalDto> getReqApprList(String emp_idx);
+
+	ArrayList<ApprovalDto> getMyApprList(String emp_idx);
+
+	ArrayList<ApprovalDto> getTeamApprList(String emp_idx);
+
+	int retrieveAppr(int apprIdx);
+
+	ArrayList<Integer> getApprOrder(String emp_idx);
+
+	void updateAppr(ApprovalDto dto);
+
+	int chkRemainApprover(ApprovalDto dto);
+
+	void rejectApprDoc(Integer apprIdx, String comment, int common_idx);
+
+	void apprDocDel(Integer apprIdx);
+
+	void updateApprStatus(ApprovalDto dto);
+
+	void updateApprDocStep(ApprovalDto dto);
+
+	String getMaxDocId(String iniDeptName, String year);
+
+	Date getFnApprDate(String fnApprEmp_idx, ApprovalDto dto);
+
+	Date getFnApprDate(String fnApprEmp_idx, Integer apprIdx);
+
+
+
+
 
 
 
