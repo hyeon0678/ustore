@@ -30,7 +30,7 @@
 					<div style="height: 90; background-color: #255000;">
 					<div id="kt_header" class="header" data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
 						<!--begin::Container-->
-						<div class="container-fluid d-flex align-items-stretch justify-content-between">
+						<div class="container-fluid d-flex align-items-stretch justify-content-between" style="background-color: #255000">
 							<!--begin::Logo bar-->
 							<div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
 								<!--begin::Aside Toggle-->
@@ -49,7 +49,7 @@
 							</div>
 							<!--end::Logo bar-->
 							<!--begin::Topbar-->
-							<div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
+							<div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1" style="background-color: #255000">
 								<!--begin::Search-->
 								<div class="d-flex align-items-stretch me-1">
 									<!--begin::Search-->

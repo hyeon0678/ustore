@@ -33,16 +33,13 @@
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
 		<!--begin::Main-->
-		<!--begin::Root-->
-		<div class="d-flex flex-column flex-root">
-			<!--begin::Page-->
-			<div class="page d-flex flex-row flex-column-fluid">
+		
 				<!--begin::Aside-->
 				<div id="kt_aside" class="aside aside-default aside-hoverable" data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
 					<!--begin::Brand-->
 					<div class="aside-logo flex-column-auto px-10 pt-9 pb-5" id="kt_aside_logo">
 						<!--begin::Logo-->
-						<a href="index.html">
+						<a href="employee/home">
 							<img alt="Logo" src="resource/assets/media/logos/mainLogo.svg" class="max-h-50px logo-default theme-light-show" />
 							<img alt="Logo" src="resource/assets/media/logos/mainLogo.svg" class="max-h-50px logo-default theme-dark-show" />
 							<img alt="Logo" src="resource/assets/media/logos/mainLogo.svg" class="max-h-50px logo-minimize" />
@@ -498,11 +495,7 @@
 					<!--end::Footer-->
 				</div>
 				<!--end::Aside-->
-			</div>
-			<!--end::Page-->
-		</div>
-		<!--end::Root-->
-		<!--begin::Scrolltop-->
+				<!--begin::Scrolltop-->
 		<div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
 			<i class="ki-duotone ki-arrow-up">
 				<span class="path1"></span>
@@ -510,15 +503,6 @@
 			</i>
 		</div>
 		<!--end::Scrolltop-->
-								
-		<!--begin::Javascript-->
-<!-- 		<script>var hostUrl = "resource/assets/";</script>
-		begin::Global Javascript Bundle(mandatory for all pages)
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="resource/assets/js/scripts.bundle.js"></script> -->
-		<!--end::Global Javascript Bundle-->
-		
-		
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
