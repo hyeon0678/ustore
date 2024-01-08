@@ -89,12 +89,34 @@
 												</c:if>
 												<c:forEach items="${myapprlist}" var="bbs">
 													<tr>
-														<td>${bbs.appr_submitdate}</td>
-														<td>${bbs.appr_type_idx}</td>
-														<td><a href="detail?appr_idx=${bbs.appr_idx}">${bbs.appr_subject}</a></td>														
-														<td>${bbs.doc_id}</td>
+														<td>${bbs.apprSubmitDate}</td>
 														<td>
-															<div class="badge badge-light fw-bold">${bbs.appr_status}</div>
+															<c:choose>
+												                <c:when test="${bbs.apprTypeIdx == 30}">
+												                    일반기안문
+												                </c:when>
+												                <c:when test="${bbs.apprTypeIdx == 31}">
+												                    대금지급결의서
+												                </c:when>
+												                <c:when test="${bbs.apprTypeIdx == 32}">
+												                    휴가신청서
+												                </c:when>
+												            </c:choose>
+														</td>
+														<td><a href="/approval/myapproval/detail?apprIdx=${bbs.apprIdx}&apprTypeIdx=${bbs.apprTypeIdx}">${bbs.apprSubject}</a></td>														
+														<td>${bbs.docId}</td>
+														<td>
+															<c:choose>
+												                <c:when test="${bbs.apprStatus == 40}">
+												                    <span class="badge badge-primary">진행중</span>
+												                </c:when>
+												                <c:when test="${bbs.apprStatus == 41}">
+												                    <span class="badge badge-success">결재완료</span>
+												                </c:when>
+												                <c:when test="${bbs.apprStatus == 42}">
+												                    <span class="badge badge-danger">반려</span>
+												                </c:when>
+												            </c:choose>
 														</td>														
 													</tr>
 												</c:forEach>
@@ -120,10 +142,12 @@
 								
 		<!--begin::Javascript-->
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="resource/assets/js/scripts.bundle.js"></script>
+		<script src="/resource/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="/resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
+	<script>
+	</script>
 </html>

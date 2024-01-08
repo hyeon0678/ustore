@@ -44,7 +44,7 @@
 			</div>
 			<!--end::Card header-->
 			<!--begin::Card body-->
-			<div class="card-body py-4">
+			<div class="card-bodyform py-4">
 				<div class="d-flex justify-content-end mb-4" style="margin-bottom: 30px;">
 					<!-- 결재자 테이블 -->
 					<table class="signature-table mr-3" id="apprListTable">
@@ -146,24 +146,20 @@
 		<!--end::Card-->	
 								
 		<!--begin::Javascript-->
-		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-		<!-- <script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="resource/assets/js/scripts.bundle.js"></script> -->
 		<!--end::Global Javascript Bundle-->
 		<!--CKEditor Build Bundles:: Only include the relevant bundles accordingly-->
 		<script src="/resource/assets/plugins/custom/ckeditor/ckeditor-classic.bundle.js"></script>
-		<script src="/resource/assets/plugins/custom/ckeditor/ckeditor-inline.bundle.js"></script>
+		<!-- <script src="/resource/assets/plugins/custom/ckeditor/ckeditor-inline.bundle.js"></script>
 		<script src="/resource/assets/plugins/custom/ckeditor/ckeditor-balloon.bundle.js"></script>
 		<script src="/resource/assets/plugins/custom/ckeditor/ckeditor-balloon-block.bundle.js"></script>
-		<script src="/resource/assets/plugins/custom/ckeditor/ckeditor-document.bundle.js"></script>
+		<script src="/resource/assets/plugins/custom/ckeditor/ckeditor-document.bundle.js"></script> -->
 		<!--end::Javascript-->
 	
 	</body>
 <!--end::Body-->
 <script>
-
 var myEditor;
-  // CKEditor 초기화 코드
+// CKEditor 초기화 코드
   ClassicEditor
      .create(document.querySelector('#kt_docs_ckeditor_classic'))
      .then(editor => {
@@ -172,10 +168,15 @@ var myEditor;
         if (apprContent) {
            myEditor.setData(apprContent);
         }
+        
+        if (readonly) {
+        	myEditor.enableReadOnlyMode('my-feature-id');
+        }
+        
      })
      .catch(error => {
         console.error(error);
-     });
+     }); 
 
 
 // set the dropzone container id
@@ -189,7 +190,7 @@ var myEditor;
 	previewNode.parentNode.removeChild(previewNode);
 
 	var myDropzone = new Dropzone(id, { // Make the whole body a dropzone
-		url: "https://keenthemes.com/scripts/void.php", // Set the url for your upload script location
+		url: "/",
 		parallelUploads: 20,
 		previewTemplate: previewTemplate,
 		maxFilesize: 10, // Max filesize in MB

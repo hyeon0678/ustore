@@ -45,7 +45,7 @@
 			</div>
 			<!--end::Card header-->
 			<!--begin::Card body-->
-			<div class="card-body py-4">
+			<div class="card-bodyform py-4">
 				<div class="d-flex justify-content-end mb-4" style="margin-bottom: 30px;">
 					<!-- 결재자 테이블 -->
 					<table class="signature-table mr-3" id="apprListTable">
@@ -181,6 +181,7 @@
 	</body>
 	<!--end::Body-->
 	<script>
+	// dateRangePicker는 readOnly하는 기능이 없는것 같습니다.
 	
 	var leaveStartDate;
 	var leaveEndDate;
@@ -192,12 +193,23 @@
 			cancelLabel : '취소',
 			timePicker : false		
 		}, function(start, end, label) {
-        leaveStartDate = start.format('YYYY-MM-DD');
-        leaveEndDate = end.format('YYYY-MM-DD'); 
-        console.log("시작일 : "+leaveStartDate);
-        console.log("종료일 : "+leaveEndDate);
-        $('#leaveStartDate').val(leaveStartDate);
-        $('#leaveEndDate').val(leaveEndDate);
+			
+		var today = moment().startOf('day');
+		if(start.isBefore(today)){
+			alert('시작일은 오늘 날짜 이후여야 합니다.')
+			$("#kt_daterangepicker_1").data('daterangepicker').setStartDate(today);
+	        leaveStartDate = today.format('YYYY-MM-DD');
+	        leaveEndDate = end.format('YYYY-MM-DD');
+	        $('#leaveStartDate').val(leaveStartDate);
+	        $('#leaveEndDate').val(leaveEndDate);
+		}else{
+	        leaveStartDate = start.format('YYYY-MM-DD');
+	        leaveEndDate = end.format('YYYY-MM-DD'); 
+	        console.log("시작일 : "+leaveStartDate);
+	        console.log("종료일 : "+leaveEndDate);
+	        $('#leaveStartDate').val(leaveStartDate);
+	        $('#leaveEndDate').val(leaveEndDate);			
+		}		
         
 	});
 
