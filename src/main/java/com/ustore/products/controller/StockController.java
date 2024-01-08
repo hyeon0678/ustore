@@ -152,17 +152,22 @@ public class StockController {
 			@RequestParam("quantity")String quantity,@RequestParam("reason")String reason,
 			@RequestParam("productId")String productId,@RequestParam("empIdx") String empIdx) {
 		
+		
+		String extractedQuantity = quantity.replaceAll("[^0-9]", "");
+		
+	
+		
 		logger.info("분류 코드 : " +operationType );
-		logger.info("수량 : " +quantity );
+		logger.info("수량 : " +extractedQuantity );
 		logger.info("사유 : " +reason );
 		logger.info("상품 번호 : " +productId );
 		logger.info("등록자 : " +empIdx );
 		
-		service.stockHistoryInsert(operationType,quantity,reason,productId,empIdx);
+		service.stockHistoryInsert(operationType,extractedQuantity,reason,productId,empIdx);
 		int minQuantity = service.minQuantity(productId);
 		
 		if(minQuantity != 0) {
-			int finalQuantity = Integer.parseInt(quantity);
+			int finalQuantity = Integer.parseInt(extractedQuantity);
 			
 			int finalminQuantity = minQuantity-finalQuantity;
 

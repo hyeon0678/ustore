@@ -75,4 +75,35 @@ DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		return service.accountingDashboardDay(TrfirstSelectedDate,TrlastSelectedDate);
 	}
 	
+	// dashboardpaymentsHistoryList
+	@GetMapping(value = "/accounting/dashboardday/list")
+	@ResponseBody
+	public ArrayList<DashboardDto> dashboardStockHistoryList() {
+		
+		logger.info("파손 컨트롤러 들어옴!!");
+		
+		
+		ArrayList<DashboardDto> list1 = service.dashboardStockHistoryList();
+		ArrayList<DashboardDto> list2 = service.dashboardOrderHistoryList();
+		ArrayList<DashboardDto> list3 = service.dashboardpaymentsHistoryList();
+		ArrayList<DashboardDto> combinedList = new ArrayList<>();
+		
+		combinedList.addAll(list1);
+		combinedList.addAll(list2);
+		combinedList.addAll(list3);
+		
+		
+		return combinedList;
+	}
+	
+	@GetMapping(value = "/accounting/dashboardline/list")
+	@ResponseBody
+	public ArrayList<DashboardDto> dashboardLineList(){
+		
+		
+		
+		
+		return service.dashboardLineList();
+	}
+	
 }

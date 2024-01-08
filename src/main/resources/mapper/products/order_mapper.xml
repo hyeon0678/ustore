@@ -105,7 +105,7 @@ JOIN
     </select>
     
     <select id="orderListModal" resultType="OrderDto">
-     SELECT od.quantity, p.product_name, p.unit_quantity
+     SELECT od.product_id,od.quantity, p.product_name, p.unit_quantity
 FROM order_detail od
 JOIN products p ON od.product_id = p.product_id
 WHERE od.order_idx = #{orderIdx}

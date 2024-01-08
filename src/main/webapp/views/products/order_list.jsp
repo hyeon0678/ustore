@@ -315,14 +315,13 @@
 																		var order = response[i];
 																		var html = '<tr>'
 																				+ '<td style="text-align: center;">'
-																				+ order.quantity
+																				+ order.productId
 																				+ '</td>'
 																				+ '<td style="text-align: center;">'
 																				+ order.productName
 																				+ '</td>'
 																				+ '<td style="text-align: center;">'
-																				+ order.unitQuantity
-																				+ '</td>'
+																				+  order.quantity +'/'+order.quantity * order.unitQuantity+'&emsp;'+'</td>' 
 																				+ '</tr>';
 																		modalTableBody
 																				.append(html);

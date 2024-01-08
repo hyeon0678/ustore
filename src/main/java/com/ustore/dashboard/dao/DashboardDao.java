@@ -20,6 +20,14 @@ public interface DashboardDao {
 
 	ArrayList<DashboardDto> accountingDashboardDay(String trfirstSelectedDate, String trlastSelectedDate);
 
+	ArrayList<DashboardDto> dashboardStockHistoryList();
+
+	ArrayList<DashboardDto> dashboardOrderHistoryList();
+
+	ArrayList<DashboardDto> dashboardpaymentsHistoryList();
+
+	ArrayList<DashboardDto> dashboardLineList();
+
 
 
 }

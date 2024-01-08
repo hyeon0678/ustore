@@ -12,7 +12,7 @@ INNER JOIN products ON payments_detail.product_id = products.product_id
 INNER JOIN payments ON payments_detail.payment_id = payments.payment_id
 GROUP BY products.product_name, payments.payment_date
 ORDER BY selling_price DESC
-LIMIT 5;
+LIMIT 5
 
 </select>
 
@@ -24,11 +24,53 @@ INNER JOIN payments ON payments_detail.payment_id = payments.payment_id
 WHERE payments.payment_date BETWEEN #{trfirstSelectedDate} AND #{trlastSelectedDate}
 GROUP BY products.product_name, payments.payment_date
 ORDER BY selling_price DESC
-LIMIT 5;
+LIMIT 5
 
 </select>
 
+    <select id="dashboardStockHistoryList" resultType="DashboardDto">
+   SELECT
+    SUM(price) AS total_price
+FROM
+    stock_history
+WHERE
+    reg_date BETWEEN CURDATE() - INTERVAL 5 DAY AND CURDATE()
+GROUP BY
+    DATE(reg_date)
+    </select>
     
+    <select id="dashboardOrderHistoryList" resultType="DashboardDto">
+    SELECT
+    SUM(od.purchase_price * od.quantity * p.unit_quantity) AS total_price_order
+FROM
+    order_detail od
+LEFT JOIN
+    products p ON od.product_id = p.product_id
+WHERE
+    od.receipt_date BETWEEN CURDATE() - INTERVAL 5 DAY AND CURDATE()
+GROUP BY
+    DATE(od.receipt_date)
+    </select>
    
+   <select id="dashboardpaymentsHistoryList" resultType="DashboardDto">
+     SELECT
+    SUM(COALESCE(p.used_points, 0)) AS total_used_points
+FROM
+    payments p
+WHERE
+    p.payment_date BETWEEN CURDATE() - INTERVAL 5 DAY AND CURDATE()
+GROUP BY
+    DATE(p.payment_date)
+   </select>
+   <select id="dashboardLineList" resultType="DashboardDto">
+ SELECT
+    SUM(COALESCE(p.used_points, 0)) AS total_all_price
+FROM
+    payments p
+WHERE
+    p.payment_date BETWEEN '2024-01-02' AND '2024-01-07' 
+GROUP BY
+    DATE(p.payment_date);
+   </select>
 
 </mapper>

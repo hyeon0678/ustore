@@ -38,4 +38,38 @@ public class DashboardService {
 		return dao.accountingDashboardDay(trfirstSelectedDate,trlastSelectedDate);
 	}
 
+
+
+
+	public ArrayList<DashboardDto> dashboardStockHistoryList() {
+		// TODO Auto-generated method stub
+		
+		
+		return dao.dashboardStockHistoryList();
+	}
+
+
+
+
+	public ArrayList<DashboardDto> dashboardOrderHistoryList() {
+	
+		return dao.dashboardOrderHistoryList();
+	}
+
+
+
+
+	public ArrayList<DashboardDto> dashboardpaymentsHistoryList() {
+		
+		return dao.dashboardpaymentsHistoryList();
+	}
+
+
+
+
+	public ArrayList<DashboardDto> dashboardLineList() {
+		
+		return dao.dashboardLineList();
+	}
+
 }

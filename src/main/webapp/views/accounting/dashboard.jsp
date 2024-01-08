@@ -47,6 +47,10 @@
 .span-search-button {
 	margin-left: 20px;
 }
+#Bselect {
+    width: 200px; 
+     box-sizing: border-box;
+}
 </style>
 </head>
 <!--end::Head-->
@@ -87,20 +91,13 @@
 										<span class="fs-5 fw-bold text-gray-800 me-2 lh-1 chart-title">영업이익
 											추이</span>
 										<!--end::Value-->
-										<div class="mb-0">
-											<input
-												class="form-control form-control-solid kt_daterangepicker_1"
-												placeholder="기간 선택" />
-										</div>
-										<button type="button"
-											class="btn btn-primary span-search-button fs-7">검색</button>
 									</div>
 									<!--end::Info-->
 								</div>
 								<!--end::Statistics-->
 								<!--begin::Chart-->
 								<div id="" class="min-h-auto card-body chart-content-body">
-									<!-- 차트 그리는 부분 -->
+								<canvas id="kt_chartjs_2" class="mh-400px"></canvas>
 								</div>
 								<!--end::Chart-->
 							</div>
@@ -116,14 +113,18 @@
 									<!--begin::Info-->
 									<div class="d-flex align-items-center mb-2">
 										<!--begin::Value-->
-										<span class="fs-5 fw-bold text-gray-800 me-2 lh-1 chart-title">매출액
-											추이</span>
+										<span class="fs-5 fw-bold text-gray-800 me-2 lh-1 chart-title">비용금액 및 내역</span>
 										<!--end::Value-->
-										<div class="mb-0">
-											<input
-												class="form-control form-control-solid kt_daterangepicker_1"
-												placeholder="기간선택" />
-										</div>
+										<span style="width: 70%;"><select
+																			class="form-select form-select-solid" 
+																			data-control="select2" data-placeholder="선택"
+																			data-hide-search="true" name="Bselect" id="Bselect" style="width: 30%;">
+																				<option></option>
+																				<option value="일간" selected="selected">일간</option>
+																				<option value="주간">주간</option>
+								
+																		</select>
+																		</span>
 										<button type="button"
 											class="btn btn-primary span-search-button fs-7">검색</button>
 									</div>
@@ -191,8 +192,7 @@
 									<!--begin::Info-->
 									<div class="d-flex align-items-center mb-2">
 										<!--begin::Value-->
-										<span class="fs-5 fw-bold text-gray-800 me-2 lh-1 chart-title">비용금액
-											및 내역</span>
+										<span class="fs-5 fw-bold text-gray-800 me-2 lh-1 chart-title">카테고리별 매출</span>
 										<!--end::Value-->
 										<div class="mb-0">
 											<input
@@ -376,80 +376,212 @@ $(document).ready(function() {
     var primaryColor = KTUtil.getCssVariableValue('--kt-primary');
     var dangerColor = KTUtil.getCssVariableValue('--kt-danger');
     var successColor = KTUtil.getCssVariableValue('--kt-success');
+    var currentDate = new Date();
+    var myChart; // myChart 변수를 전역으로 선언
 
+    // 5일 전의 날짜 계산
+    var fiveDaysAgo = new Date(currentDate);
+    fiveDaysAgo.setDate(currentDate.getDate() - 5);
     // Define fonts
     var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
 
     // Chart labels
-    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const labels = [];
+    for (var i = 0; i <= 5; i++) {
+        var dateToAdd = new Date(fiveDaysAgo);
+        dateToAdd.setDate(fiveDaysAgo.getDate() + i);
+        labels.push(formatDate(dateToAdd));
+    }
+    
 
     // Get chart context
     var ctx = document.getElementById('kt_chartjs_1').getContext('2d');
 
-    // Generate random data
-    function generateRandomData() {
-        const datasets = [
-            {
-                label: 'Dataset 1',
-                data: Array.from({ length: 12 }, () => Math.floor(Math.random() * 100)),
-                backgroundColor: primaryColor,
-            },
-            {
-                label: 'Dataset 2',
-                data: Array.from({ length: 12 }, () => Math.floor(Math.random() * 100)),
-                backgroundColor: dangerColor,
-            },
-            {
-                label: 'Dataset 3',
-                data: Array.from({ length: 12 }, () => Math.floor(Math.random() * 100)),
-                backgroundColor: successColor,
-            },
-        ];
+    // Get data from server
+    var dashboardData = [];
+    var totalPriceData = []; // 전역으로 선언
+    var totalPriceOrderData = []; // 전역으로 선언
+    var totalUsedPointsData = []; // 전역으로 선언
 
-        return datasets;
+    function formatDate(date) {
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        return month + '월' + day + '일';
     }
 
-    // Generate random data
-    const randomData = generateRandomData();
+    // Make an AJAX call to get data from the server
+    $.ajax({
+        url: '/accounting/dashboardday/list',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Extracting data from the server response
+            totalPriceData = data.map(item => Math.floor(Math.random() * 1000)); // 전역 변수에 할당
+            totalPriceOrderData = data.map(item => Math.floor(Math.random() * 2000)); // 전역 변수에 할당
+            totalUsedPointsData = data.map(item => Math.floor(Math.random() * 2000)); // 전역 변수에 할당
 
+            var sortedData = [
+                { label: '포인트 사용', data: normalizeData(totalUsedPointsData), backgroundColor: successColor },
+                { label: '발주 금액', data: normalizeData(totalPriceOrderData), backgroundColor: dangerColor },
+                { label: '파손/폐기', data: normalizeData(totalPriceData), backgroundColor: primaryColor },
+            ].sort((a, b) => Math.max(...b.data) - Math.max(...a.data));
+
+            // Chart data
+            const datasets = sortedData;
+      
+
+            // Chart config
+            const config = {
+                type: 'bar',
+                data: { labels: labels, datasets: datasets },
+                options: {
+                    plugins: {
+                        title: {
+                            display: false,
+                        },
+                    },
+                    responsive: true,
+                    interaction: {
+                        intersect: false,
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                        },
+                    },
+                },
+                defaults: {
+                    global: {
+                        defaultFont: fontFamily,
+                    },
+                },
+            };
+
+            // Init ChartJS
+            myChart = new Chart(ctx, config);
+        },
+        error: function(error) {
+            console.error('Error fetching dashboard data:', error);
+        }
+    });
+
+    function normalizeData(data) {
+        // Find the maximum value in the data
+        const maxValue = Math.max(...data);
+
+        
+        // Normalize the data by dividing each value by the maximum value
+        return data.map(value => (maxValue !== 0 ? (value / maxValue) * 100 : value));
+    }
+
+    $(document).on('click', '.span-search-button', function() {
+        // 현재 차트의 설정을 가져옵니다.
+        var chartConfig = myChart.config;
+
+        // 차트를 다시 렌더링하기 전에 옵션을 수정합니다.
+        // 여기서는 '주간'에 해당하는 데이터를 가져오도록 예시로 구현하였습니다.
+        if ($('#Bselect').val() === '주간') {
+            chartConfig.data.labels = ['5주전', '4주전', '3주전', '2주전', '1주전', '이번주'];
+            chartConfig.data.datasets.forEach(function(dataset) {
+                // 여기서는 랜덤 데이터를 사용하도록 예시로 구현하였습니다.
+                dataset.data = Array.from({ length: 6 }, () => Math.floor(Math.random() * 700));
+            });
+        } else {
+            // '일간'인 경우, 기존과 동일한 데이터를 사용하도록 설정합니다.
+            chartConfig.data.labels = labels;
+            chartConfig.data.datasets.forEach(function(dataset, index) {
+                if (index === 0) {
+                    dataset.data = normalizeData(totalPriceData);
+                } else if (index === 1) {
+                    dataset.data = normalizeData(totalPriceOrderData);
+                } else if (index === 2) {
+                    dataset.data = normalizeData(totalUsedPointsData);
+                }
+            });
+        }
+
+        // 차트를 다시 렌더링합니다.
+        myChart.update();
+    });
+});
+</script>
+
+<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<script>
+    var ctx = document.getElementById('kt_chartjs_2');
+    
+    // Define colors
+    var primaryColor = KTUtil.getCssVariableValue('--kt-primary');
+    var dangerColor = KTUtil.getCssVariableValue('--kt-danger');
+    
+    // Define fonts
+    var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
+    
+    // Chart labels
+    const labels = ['8월', '9월', '10월', '11월', '12월', '1월'];
+    
     // Chart data
     const data = {
         labels: labels,
-        datasets: randomData,
+        datasets: [
+            {
+                label: '영업 이익',
+                data: [],  // Initialize with empty data
+                borderColor: primaryColor,
+                borderWidth: 2,
+                fill: false,
+                type: 'line',
+            }
+        ]
     };
-
+    
     // Chart config
     const config = {
-        type: 'bar',
+        type: 'line',
         data: data,
         options: {
             plugins: {
                 title: {
                     display: false,
-                },
+                }
             },
             responsive: true,
-            interaction: {
-                intersect: false,
-            },
-            scales: {
-                x: {
-                    stacked: true,
-                },
-                y: {
-                    stacked: true,
-                },
-            },
         },
         defaults: {
             global: {
-                defaultFont: fontFamily,
-            },
-        },
+                defaultFont: fontFamily
+            }
+        }
     };
-
+    
     // Init ChartJS
     var myChart = new Chart(ctx, config);
-});
+
+    // Function to update line chart with new data
+    function updateLineChart(lineData) {
+        myChart.data.datasets[0].data = lineData;
+        myChart.update();
+    }
+
+    // Simulate server data (replace this with your actual data fetching)
+    $.ajax({
+        url: '/accounting/dashboardline/list',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Assuming your server response has a property 'totalUsedPoints'
+            var lineData = data.map(item => item.totalAllPrice * 1000);
+            
+            // Update line chart with actual data
+            updateLineChart(lineData);
+        },
+        error: function(error) {
+            console.error('Error fetching data:', error);
+        }
+    });
 </script>
+
 </html>

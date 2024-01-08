@@ -54,7 +54,12 @@ public class StockService {
 	public void stock_insert2(String proNum, Map<String, String> data) {
 		
 		StockDto dto = new StockDto();
-		int purchasePrice = Integer.parseInt(data.get("purchasePrice"));
+		
+		String finalPurchasePrice = data.get("purchasePrice").replaceAll("[^0-9]", "");
+		String finalUnitQuantity = data.get("unitQuantity").replaceAll("[^0-9]", "");
+		
+		int purchasePrice = Integer.parseInt(finalPurchasePrice);
+		
 		double sellingPriceDouble = purchasePrice * 1.3;
 		int sellingPrice = (int) Math.round(sellingPriceDouble);
 		sellingPrice = sellingPrice / 10 * 10;
@@ -62,10 +67,10 @@ public class StockService {
 		
 		dto.setProductId(proNum);
 		dto.setProductName(data.get("productName"));
-		dto.setPurchasePrice(Integer.parseInt(data.get("purchasePrice")));
+		dto.setPurchasePrice(Integer.parseInt(finalPurchasePrice));
 		dto.setSellingPrice(sellingPrice);
 		dto.setCategoryId(data.get("categoryId"));
-		dto.setUnitQuantity(Integer.parseInt(data.get("unitQuantity")));
+		dto.setUnitQuantity(Integer.parseInt(finalUnitQuantity));
 		dto.setRegBy(data.get("empIdx"));
 		
 		dao.stock_insert2(dto);
@@ -114,11 +119,11 @@ public class StockService {
 		
 	}
 
-	public void stockHistoryInsert(String operationType, String quantity, String reason, String productId,
+	public void stockHistoryInsert(String operationType, String extractedQuantity, String reason, String productId,
 			String empIdx) {
 		StockDto dto = new StockDto();
 		dto.setOperationType(Integer.parseInt(operationType));
-		dto.setQuantity(Integer.parseInt(quantity));
+		dto.setQuantity(Integer.parseInt(extractedQuantity));
 		dto.setReason(reason);
 		dto.setProductId(productId);
 		dto.setRegBy(empIdx);
