@@ -42,7 +42,7 @@
         </if>
 	</insert>
 	
-	<update id="updateTempSaveContent" parameterType="ApprovalDto">
+	<update id="updateTempDoc" parameterType="ApprovalDto">
 		<if test="commonIdx == 30">
             UPDATE business_draft SET appr_subject=#{apprSubject}, appr_content=#{apprContent}	
             WHERE appr_idx=#{apprIdx}            	
@@ -115,7 +115,7 @@
 	
 
 	<select id="getApprLine" resultType="map" parameterType="int">
-		SELECT al.approver, al.appr_order, al.appr_confirm, al.appr_type, d.dept_name, c.common_type AS positionType 
+		SELECT al.emp_idx, al.appr_type, al.approver, c.common_type AS positionType, d.dept_name, al.appr_order, al.appr_confirm 
 	    FROM approval_line al
 	    JOIN employee e ON al.approver = e.emp_name
 	    LEFT JOIN department d ON e.dept_id = d.dept_id
@@ -124,7 +124,7 @@
 	</select>
 	
 	<select id="getRecv" resultType="map" parameterType="int">
-		SELECT r.receiver, d.dept_name, c.common_type AS positionType 
+		SELECT r.emp_idx, r.receiver, c.common_type AS positionType, d.dept_name 
 	    FROM recipient r
 	    JOIN employee e ON r.receiver = e.emp_name
 	    LEFT JOIN department d ON e.dept_id = d.dept_id
@@ -152,14 +152,14 @@
 	</select>
 	
 	<select id="chkRecordExists">
-		SELECT count(*) FROM business_draft
-		WHERE appr_idx = #{apprIdx} AND appr_status = 43
-		UNION
-		SELECT count(*) FROM payment_resolution
-		WHERE appr_idx = #{apprIdx} AND appr_status = 43
-		UNION
-		SELECT count(*) FROM req_vacation
-		WHERE appr_idx = #{apprIdx} AND appr_status = 43;
+		SELECT count(*) 
+		FROM(
+		    SELECT appr_idx FROM business_draft WHERE appr_idx = 3 AND appr_status = 43
+		    UNION
+		    SELECT appr_idx FROM payment_resolution WHERE appr_idx = 3 AND appr_status = 43
+		    UNION
+		    SELECT appr_idx FROM req_vacation WHERE appr_idx = 3 AND appr_status = 43
+		) AS CombinedResult;
 	</select>
 	
 	

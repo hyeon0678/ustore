@@ -30,13 +30,10 @@
 		}
 		.signature-table td {
 			border: 1px solid #ddd;
-			padding: 10px;
 			text-align: center;
-			width: 80px;
 		}
 		.signature-table th{
 			border: 1px solid #ddd;
-			padding: 10px;
 			text-align: center;
 			height: 25px;
 		}
@@ -162,7 +159,7 @@
 														<th>결재타입</th>
 														<th>이름</th>
 														<th>직책</th>
-														<th style="width: 86.22222px;">부서</th>
+														<th style="width: 86px;">부서</th>
 														<th style="width: 30px;"></th>
 													</tr>
 												</thead>
@@ -254,28 +251,28 @@
         backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
         keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
     });
-	$(document).ready(function () {
-    	// 초기에 선택된 양식에 대한 HTML 파일 로드
-        var formPage = '<%= request.getAttribute("formPage") %>';
-        if (formPage) {
-            loadFormPage(formPage, common_idx);
-        }         	 	
-    	 
-        // 결재정보 버튼 클릭 시의 동작
-        $('#btnApprovalInfo').on('click', function () {
-            console.log('결재정보 버튼 클릭');            
-            myModal.show();
-            
-        });
-                
-        $('#kt_modal_1').on('shown.bs.modal', function(){
-			getTreeData();
-		})  
-		
-		var loggedInEmp_idx = ${principal.username};
-    	console.log(loggedInEmp_idx);
-		addLoggedInEmpToApprLine(loggedInEmp_idx);
+	
+	var loggedInEmp_idx = ${principal.username};
+	console.log(loggedInEmp_idx);
+	addLoggedInEmpToApprLine(loggedInEmp_idx);
+	
+	
+	
+    var formPage = '<%= request.getAttribute("formPage") %>';
+    if (formPage) {
+         loadFormPage(formPage, common_idx);
+    }         	 	
+  	 
+    // 결재정보 버튼 클릭 시의 동작
+    $('#btnApprovalInfo').on('click', function () {
+        console.log('결재정보 버튼 클릭');            
+        myModal.show();          
     });
+              
+    $('#kt_modal_1').on('shown.bs.modal', function(){
+	  getTreeData();
+	});  
+		
 		
     // 동적으로 HTML 파일 로드하는 함수
     function loadFormPage(formPage, common_idx) {
@@ -369,6 +366,7 @@
 
 	            // 생성할 approvalData 객체를 만들어서 데이터 채우기
 	            var approvalData = {
+	            	empIdx : loggedInEmp_idx,
 	                apprType: '기안',
 	                name: loggedInEmp.empName,
 	                position: loggedInEmp.position,
@@ -403,14 +401,13 @@
 	            var nextApprOrder = getNextApprOrder();
 	            
 	            var approvalData = {
-	                apprType: '결재',
-	                approverIdx: employeeInfo.empIdx,
+	            	empIdx : employeeInfo.empIdx,
+            		apprType: '결재',
 	                name: employeeInfo.empName,
-	                position: employeeInfo.position,
 	                positionType: employeeInfo.positionType,
 	                department: employeeInfo.deptName,
-	                apprOrder: nextApprOrder,  // 결재순서 추가
-	                apprConfirm: false  // 결재여부 추가
+	                apprOrder: nextApprOrder,
+	                apprConfirm: false
 	            };
 
 	            // 테이블에 데이터 추가
@@ -459,15 +456,17 @@
 		    cell2.innerHTML = approvalData.name;
 		    cell3.innerHTML = approvalData.positionType;
 		    cell4.innerHTML = approvalData.department;
-	
-		    var deleteIcon = document.createElement('i');
-		    deleteIcon.className = 'fa fa-trash';
-		    deleteIcon.onclick = function () {
-		        newRow.remove();
-		        removeEmpFromApprLines(approvalData);
-		    };
-		    cell5.appendChild(deleteIcon);	
-		    cell5.style.width='30px';		    
+		    cell4.style.width= style="86px";
+		    if(approvalData.empIdx != loggedInEmp_idx){
+			    var deleteIcon = document.createElement('i');
+			    deleteIcon.className = 'fa fa-trash';
+			    deleteIcon.onclick = function () {
+			        newRow.remove();
+			        removeEmpFromApprLines(approvalData);
+			    };
+			    cell5.appendChild(deleteIcon);	
+			    cell5.style.width='30px'; 
+		    }
 		 		    
 		 	// 선택한 노드 정보를 행에 저장 (data-node 필요)
 		    newRow.setAttribute('data-node', JSON.stringify(approvalData));
@@ -548,9 +547,8 @@
 
 	            // 생성할 receiverData 객체를 만들어서 데이터 채우기
 	            var receiverData = {
-	            	recvIdx: employeeInfo.empIdx,
+	            	empIdx : employeeInfo.empIdx,
 	                name: employeeInfo.empName,
-	                position: employeeInfo.position,
 	                positionType: employeeInfo.positionType,
 	                department: employeeInfo.deptName
 	            };
@@ -780,7 +778,7 @@
     });
 	
 
-	
+	var apprContent;
         
 	// 임시저장
     $('#btnSaveTemp').on('click', function () {
@@ -791,7 +789,7 @@
     	var apprSubject = $('#apprSubject').val();
     	
         if(common_idx=='30') {          		
-        	var apprContent = myEditor.getData();
+        	apprContent = myEditor.getData();
             ApprovalDto = {
                 	    commonIdx: common_idx,
                 	    apprSubject: apprSubject,
@@ -863,7 +861,7 @@
     	var apprSubject = $('#apprSubject').val();
     	
     	if(common_idx=='30') {  
-    		var apprContent = myEditor.getData();	
+    		apprContent = myEditor.getData();	
             ApprovalDto = {
             	    commonIdx: common_idx,
             	    apprSubject: apprSubject,
