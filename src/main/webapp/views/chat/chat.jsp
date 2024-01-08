@@ -223,64 +223,6 @@
 														<!--end::Menu-->
 													</div>
 													<!--end::Card toolbar-->
-													<!--begin::Card toolbar-->
-													<div class="card-toolbar">
-														<!-- ===============================체팅 참가인원 추가 아이콘======================================== -->
-														<!--begin::Menu-->
-														<div class="me-n3">
-															<button class="btn btn-sm btn-icon add-participant"
-																data-kt-menu-trigger="click"
-																data-kt-menu-placement="bottom-end"
-																style="margin-left: 5px; padding: 10px;">
-																<span class="ki-duotone ki-dots-square fs-2"><img src="resource/assets/media/icon/arr061.svg"/></span>
-																<!--end::Svg Icon-->
-															</button>
-															<!--begin::Menu 3-->
-															<div
-																class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px h-500px py-3"
-																data-kt-menu="true">
-																<!--begin::Heading-->
-																<div class="menu-item px-3">
-																	<div
-																		class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">인원추가</div>
-																</div>
-																<!--end::Heading-->
-
-																<!-- js트리 그리는 공간 -->
-																<div id="kt_docs_jstree_basic2">
-																	
-																</div>
-																<!-- js트리 끝나는 곳-->
-																<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_1"></button> -->
-																<button type="button" class="btn btn-primary"
-																	data-bs-toggle="modal" data-bs-target="#kt_modal_2">
-																	인원추가</button>
-															</div>
-															<!--end::Menu 3-->
-															<div class="modal fade" id="kt_modal_2" tabindex="-1">
-																<div class="modal-dialog">
-																	<div class="modal-content" style="width: 500px;">
-																		<div class="modal-header">
-																			<h3>추가된 참가자</h3>
-																		</div>
-																		<div>
-																			<div class="content_tree"
-																				style="border: 1px solid #c6da52; border-radius: 5px; overflow-y: auto;">
-																			</div>
-																		</div>
-																		<div class="modal-footer">
-																			<button type="button" class="btn btn-primary"
-																				data-bs-dismiss="modal">완료</button>
-																		</div>
-																	</div>
-																</div>
-															</div>
-
-														</div>
-														<!--end::Menu-->
-													</div>
-													<!--end::Card toolbar-->
-													<!--begin::Card toolbar-->
 													<div class="card-toolbar">
 														<!-- ===============================체팅 나가기 아이콘======================================== -->
 														<!--begin::Menu-->
@@ -450,9 +392,9 @@
 		for(let elem of list){
 			let date = getCurrentTime(elem.lastMsgTime)
 			console.log(elem.lastMsgTime);
-			
 			content ="<div class='chat-list-content-div bg-hover-light-primary text-hover-primary ' style='border: 1px solid #ffffca; height: 80px; border-radius: 5px;'>"
 			content +="<p style='display:none'>"+elem.chatRoomIdx+"</p>"
+			content +="<p class='individual' style='display:none'>"+elem.isIndividual+"</p>"
 			content +="<div class='d-flex flex-column' style='margin: 5px; height: 80px;'>"
 			content +="<div class='chatmain' style='display: flex; justify-content: space-between; margin-top: 10px;'>"
 			content +="<a class='fs-8 fw-bold text-gray-900 text-hover-primary room-name' style='margin: 0px;'>"+elem.chatRoomName+"</a>"
@@ -591,10 +533,17 @@
 		$('.chat-list-content-div').on('click', function(){
 			$('#send-msg').prop('disabled', false);
 			$('#msg-box').prop('readonly', false);
+			let isIndividual = $(this).children('p.individual').html();
 			let newRoomNum =  $(this).children('p').html();
 			let $roomName = $(this).children('div');
 			$roomName = $roomName.children('div');
 			let roomName = $roomName.children('a').text();
+			
+			if(isIndividual == 'Y'){
+				$('.quit-room').css({'visibility':'hidden'});
+			}else{
+				$('.quit-room').css({'visibility':'visible'});
+			}
 			
 			if(roomNum != newRoomNum){
 				if(subscription != null){
