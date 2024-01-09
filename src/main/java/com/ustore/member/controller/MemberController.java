@@ -340,7 +340,6 @@ public class MemberController {
 		
 		String msg = service.joinbis(params);
 		int cusnum = service.cusnum(params);
-		logger.info("cusnum값 : " + cusnum);
 		service.pointinsert(cusnum);
 		String idx = Integer.toString(cusnum);
 		if(photos != null && !photos.isEmpty()) {		
