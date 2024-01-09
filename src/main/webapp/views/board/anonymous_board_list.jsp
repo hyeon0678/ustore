@@ -73,9 +73,9 @@
 								<div style="display: flex; align-items: center; height: 30px;">
 									<!--begin::Col 드롭박스 >> 회원 상태-->
 									<!--end::Col-->
-									<input type="text" class="form-control form-control-solid" name = "anListSerch" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
-									<button type="button" class="btn btn-primary" style="margin: 10px;" onclick="search()">검색</button>
-									<button onclick="location.href='anboard/WriteForm'" class="btn btn-primary">글작성</button>
+									<input type="text" class="form-control form-control-solid" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
+									<button type="button" class="btn btn-primary" style="margin: 10px;">검색</button>
+									<button onclick="location.href='#'" class="btn btn-primary">글작성</button>
 								</div>
 								<!--end::Actions-->
 							</div>
@@ -106,8 +106,42 @@
 													<th class="min-w-125px">작성일</th>
 												</tr>
 											</thead>
-											<tbody class="fw-semibold text-gray-600" id = "list">
-												
+											<tbody class="fw-semibold text-gray-600">
+												<tr>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">익명글1</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
+												</tr>
+												<tr>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">익명글2</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
+												</tr>
+												<tr>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">익명글3</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
+												</tr>
+												<tr>
+													<td>
+														<a href="#" class="text-gray-600 text-hover-primary mb-1">익명글4</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
+												</tr>
+												<tr>
+													<td>
+														<a href="#" class="text-danger text-hover-primary mb-1">익명글5</a>
+													</td>
+													<td>0</td>
+													<td>2025.01.12</td>
+												</tr>
 											</tbody>
 										</table>
 										<!--end::Table-->
@@ -139,69 +173,4 @@
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 	</body>
-	
-	<script>
-	console.log("리스트 호출 시작")
-	anList();
-	
-	function anList(){
-		console.log("리스트 호출");
-		$.ajax({
-			type:'get',
-			url:'anboard/list.ajax',
-			data:{},
-			dataType:'JSON',
-			success:function(data){
-				console.log(data);
-				console.log("리스트 호출 뿌리기");
-				drawlist(data.list);
-			},
-			error:function(e){
-				console.log(e);
-			}
-		});
-	};
-
-	console.log("listcall : "+ anList);
-	
-	function drawlist(list){
-		console.log("drawlist : " + list);
-		var content = '';
-		
-		list.forEach(function(item, anony_idx){
-			content += '<tr>'
-			content += '<td><a href="anboard/detail?anony_idx='+item.anony_idx+'" class="text-danger text-hover-primary mb-1">' + item.anony_subject + '</a></td>';
-			content += '<td>' + item.anony_hit + '</td>';
-			content += '<td>' + item.reg_date + '</a></td>';
-			content += '</tr>';
-			
-		});
-			$('#list').empty();
-			$('#list').append(content);
-		}
-	
-	function search(){
-		console.log("검색 메서드  호출");
-		
-		// location.href='adminReportDetail?idx='+idx+'&&type='+type;
-		// var $state = $("input[type=checkbox][name=hisstate]:checked").val();
-	
-	var keyword = $('input[name="anListSerch"]').val();
-	$.ajax({
-		type:'get',
-		url:'anboard/listSearch.ajax', 
-		data:{'keyword':keyword},
-		dataType:'JSON',
-		success:function(data){
-			console.log(data);
-			console.log("리스트 호출 뿌려주기");
-			
-			drawlist(data.list);
-		},
-		error:function(e){
-			console.log(e);
-		}
-		});
-}
-	</script>
 </html>

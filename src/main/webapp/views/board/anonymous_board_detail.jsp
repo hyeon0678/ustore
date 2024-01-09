@@ -75,80 +75,57 @@
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 					<!--================================메인 내용들어가는부분================================================-->
-						<div style="margin-top: 100px; margin-left: 50px;">
-							<h1>${board.anony_subject}</h1>
-						</div>
+						<div style="margin-top: 100px; margin-left: 50px;"><h1>오늘점심 노맛...</h1></div>
 						
 						<div class="text-end">
-							<button type="button" onclick="location.href='/anboard/list'" style="background-color: #C6DA52; position: absolute; width:70px; height: 40px; top:200px; right:200px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
-    							목록으로
-							</button>
-						</div>
-						<div style="text-align: left; margin-top: 100px; margin-left: 50px;">
-						<p>
-						<i class="ki-duotone ki-user fs-2">
-							<span class="path1"></span>
-							<span class="path2"></span>
-						</i>
-						${board.reg_date}
-						</p>
-							<div style="text-align: right; margin-top: -40px; margin-right: 380px;">
-    						<button class="btn btn-primary"  data-kt-element="send" onclick="anboardDel()">삭제하기</button>
+							<button type="button"  style="background-color: #C6DA52; position: absolute; width:70px; height: 40px; top:200px; right:200px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
+    목록으로
+</button>
+</div>
+<div style="text-align: left; margin-top: 100px; margin-left: 50px;"><p><i class="ki-duotone ki-user fs-2">
+												<span class="path1"></span>
+												<span class="path2"></span>
+											</i>2023-12-10 14:28</p><div style="text-align: right; margin-top: -40px; margin-right: 380px;">
+    <button type="button" class="btn btn-light">
+    <i class="ki-duotone ki-basket fs-2 text-gray-600">
+        <span class="path1"></span>
+        <span class="path2"></span>
+        <span class="path3"></span>
+        <span class="path4"></span>
+    </i>
+</button>
 
-							<div style="width: 800px; height: 200px; overflow: auto; border: solid lightgrey;">
-    							<p style="text-align: left;width: 100%;">${board.anony_content}</p>
-							</div>
-							<div style="text-align: left;"><i class="ki-duotone ki-message-text-2 fs-2">
-								<span class="path1"></span>
-								<span class="path2"></span>
-								<span class="path3"></span>
-								</i>조회수 : ${board.anony_hit}</div>
-								<hr color="black" width="100%">
-								<thread>
-							<div style="margin-right: 60px;"><i class="ki-duotone ki-user fs-2">
-								<span class="path1"></span>
-								<span class="path2"></span>
-								</i>
-									<input type="text"style="width: 650px; text-align: left;" id="reply" placeholder="댓글을 입력 해주세요."/>
-									<button type="button" id="getreply" style="background-color: #C6DA52; width: 50px; height: 30px; font-size: 10px; border: 1px solid #C6DA52;  color: #FFFFFF;">
-    									작성
-									</button>
-									</div>
-									</thread>
-										
-										
-							</div>
-							<table>
-							<tr>
-								<tbody id = "list">
-		
-								</tbody>
-							<tr>
-							</table>
-							<!-- 
-								<hr color="black" width="100%">
-								<div style="text-align: left;">
-								<p>
-								<i class="ki-duotone ki-user fs-2">
-								<span class="path1"></span>
-								<span class="path2"></span>
-								</i>2023-12-10 14:28</p>그러게 말이에요..
-								</div>
-								<div style="margin-top: -30px;">
-								<button style="border-radius: 10px; height: 23px; background-color: white;">x</button>
-								</div>
-								<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-								<div style="text-align: left;">
-								<p>
-								<i class="ki-duotone ki-user fs-2">
-									<span class="path1"></span>
-									<span class="path2"></span>
-									</i>2023-12-10 14:28</p>그러게 말이에요..</div>
-								<div style="margin-top: -30px;">
-								<button style="border-radius: 10px; height: 23px; background-color: white;">x</button>
-								</div>
-							-->
-					</div>
+	<div style="width: 800px; height: 200px; overflow: auto; border: solid lightgrey;">
+    <p style="text-align: left;width: 100%;">오늘 점심이 맛이 없었어요..ㅠ</p>
+</div>
+<div style="text-align: left;"><i class="ki-duotone ki-message-text-2 fs-2">
+												<span class="path1"></span>
+												<span class="path2"></span>
+												<span class="path3"></span>
+											</i>댓글: 2개  조회수 : 1</div>
+<hr color="black" width="100%">
+<div style="margin-right: 60px;"><i class="ki-duotone ki-user fs-2">
+												<span class="path1"></span>
+												<span class="path2"></span>
+											</i><input type="text"style="width: 650px; text-align: left;" placeholder="댓글을 입력 해주세요."/>
+	<button type="button" style="background-color: #C6DA52; width: 50px; height: 30px; font-size: 10px; border: 1px solid #C6DA52; color: #FFFFFF;">
+    작성
+</button>
+	</div>
+<hr color="black" width="100%">
+<div style="text-align: left;"><p><i class="ki-duotone ki-user fs-2">
+												<span class="path1"></span>
+												<span class="path2"></span>
+											</i>2023-12-10 14:28</p>그러게 말이에요..</div>
+<div style="margin-top: -30px;"><button style="border-radius: 10px; height: 23px; background-color: white;">x</button></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+<div style="text-align: left;"><p><i class="ki-duotone ki-user fs-2">
+												<span class="path1"></span>
+												<span class="path2"></span>
+											</i>2023-12-10 14:28</p>그러게 말이에요..</div>
+<div style="margin-top: -30px;"><button style="border-radius: 10px; height: 23px; background-color: white;">x</button></div>
+
+</div>
 					</div>
 				<!--end::Content--> 
     			</div>
@@ -187,64 +164,4 @@
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
-	
-	<script>
-	console.log("글 삭제하기");
-	var anony_idx = ${board.anony_idx};
-	console.log("삭제 글 아이디 : " + anony_idx);
-	listCall();
-	
-	
-	function anboardDel(){
-		console.log("글 삭제");
-		location.href='anboard/delete.ajax?anony_idx='+anony_idx;
-	}
-	
-	$("#getreply").on("click", function(){
-		reply = $("#reply").val();
-		console.log($("#reply").val());
-		location.href="anboard/reply?anony_board_idx=" + anony_idx + '&repl_content=' + reply;
-		
-
-	});
-	
-	function listCall() {
-		
-		$.ajax({
-			type:'get',
-			url:'anboard/replyList',
-			data:{"anony_board_idx": anony_idx},
-			dataType:'JSON',
-			success:function(data){//data안들어옴
-				console.log("data들어오나? : "+data);
-				
-				drawlist(data.list);	
-				
-			},
-			eorror:function(e){
-				console.log(e);
-				
-			}
-		});
-	}
-	
-	function drawlist(list){
-		
-		console.log("drawlist : " + list);
-		var content='';
-
-		list.forEach(function(item,repl_idx){
-			content += '<tr>';
-			content += '<td>'+item.repl_content+'</td>';
-			content += '<td>'+item.reg_date+'</td>';	
-			content += '<td>'+'<div id="d" onclick='+"'location.href="+'"anboard/replyDel?anony_board_idx='+item.anony_board_idx+'&repl_idx='+item.repl_idx+'"'+"'>"+'삭제하기</div>'+'</td>';
-			content += '</tr>';
-			
-			console.log(content);
-		});
-		$('#list').empty();
-		$('#list').append(content);
-	}
-	</script>
-	
 </html>

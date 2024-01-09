@@ -2,6 +2,7 @@ package com.ustore.board.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -12,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ustore.board.dao.BoardDao;
 import com.ustore.board.dto.BoardDto;
-import com.ustore.fileSystem.dto.FileDto;
 
 
 @Service
@@ -31,22 +31,9 @@ public class BoardService {
 		
 			return row > 0 ? "공지사항 작성 성공.":"공지사항 작성 실패";
 	}
-	
-	public String anboardWrite(Map<String, String> params, String deptID, String emp_idx) {
-		logger.info("익명 게시판 작성");
-		logger.info("익명 게시판 파라메터 : " + params);
-		
-		int row = dao.anboardWrite(params);
-	
-		return row > 0 ? "익명게시판 작성 성공":"익명게시판 작성 실패";
-	}
 
 	public ArrayList<HashMap<String, String>> adList() {
 		return dao.adList();
-	}
-	
-	public ArrayList<HashMap<String, String>> anList() {
-		return dao.anList();
 	}
 
 	@Transactional
@@ -56,20 +43,11 @@ public class BoardService {
 		}
 		return dao.adboardDetail(notice_idx);
 	}
-	
-	@Transactional
-	public HashMap<String, String> anboardDetail(String anony_idx, boolean anony_hit) {
-		if(anony_hit) {
-			dao.anboardHit(anony_idx);
-		}
-		ArrayList<FileDto> photos = dao.getPhoto(anony_idx);
-		return dao.anboardDetail(anony_idx);
-	}
 
-//	public HashMap<String, String> fileservice(String notice_idx) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	public HashMap<String, String> fileservice(String notice_idx) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public String adboardDelete(int notice_idx) {
 		
@@ -77,65 +55,12 @@ public class BoardService {
 		
 		return row > 0 ? "삭제 성공":"삭제 실패";
 	}
-	
-	public String anboardDelete(int anony_idx) {
-		int row = dao.anboardDelete(anony_idx);
-		return row > 0 ? "삭제 성공":"삭제 실패";
-	}
 
 	public String adboardTopFix(HashMap<String, String> params) {
-		
-		
 		int row = dao.adboardTopFix(params);
 		
 		return row > 0 ? "상단 고정 성공":"상단 고정 실패";
 	}
-
-	public void anreply(String anony_board_idx, String repl_content) {
-		
-		dao.anreply(anony_board_idx, repl_content);
-		
-	}
-
-	public Map<String, Object> anboardReplyList(String anony_board_idx) {
-		
-		ArrayList<BoardDto> list = dao.anboardReplyList(Integer.parseInt(anony_board_idx));
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", list);
-		
-		return map;
-	}
-
-	public void delreply(String repl_idx) {
-		dao.delreply(repl_idx);
-	}
-
-	public ArrayList<HashMap<String, String>> adlistSearch(String keyword) {
-		return dao.adlistSearch(keyword);
-	}
-	
-	public ArrayList<HashMap<String, String>> anlistSearch(String keyword) {
-		return dao.anlistSearch(keyword);
-	}
-
-	public int adboardNum(Map<String, String> params) {
-		return dao.adboardNum(params);
-	}
-
-	public int anboardNum(Map<String, String> params) {
-		return dao.anboardNum(params);
-	}
-
-	
-
-	
-
-	
-
-	
-
-	
 
 	
 

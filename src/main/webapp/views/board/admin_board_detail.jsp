@@ -82,7 +82,7 @@
 						</div>
 						
 						<div class="text-end">
-							<button type="button" onclick="save()" style="background-color: #C6DA52; position: absolute; width:70px; height: 40px; top:200px; right:200px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
+							<button type="button" onclick="topfixsave()" style="background-color: #C6DA52; position: absolute; width:70px; height: 40px; top:200px; right:200px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
     							목록으로
 							</button>
 						</div>
@@ -95,7 +95,7 @@
 						<i>${board.emp_name}</i>
 						<i>${board.reg_date}</i>
 						<div class="form-check" style="margin-left: 640px;">
-    						<input class="form-check-input" type="checkbox" name="top_fixed" id="flexCheckDefault" value="Y"/>
+    						<input class="form-check-input" type="checkbox" value="Y" name="top_fixed" id="flexCheckDefault" />
     						<label class="form-check-label" for="flexCheckDefault">
         						상단 고정 여부
     						</label>
@@ -177,110 +177,27 @@
 	
 	function adboardDel(){
 		console.log("글 삭제");
-		location.href='adboard/delete.ajax?notice_idx='+notice_idx;
+		location.href='adboard/delete?notice_idx='+notice_idx;
 	}
 	
-	
-/* 	
-	function changeCheckbox() {
-        var isChecked = document.getElementById("flexCheckDefault").checked;
-        var checkboxValue = isChecked ? "Y" : "N";
-
-        $.ajax({
-            type: "POST",
-            url: "/adboard/update.ajax",
-            data: {"top_fixed":checkboxValue},
-            success: function(response) {
-                console.log("Value updated successfully:", response);
-            },
-            error: function(error) {
-                console.error("Error updating value:", error);
-            }
-        });
-    }
-	 */
-	
-	function save() {
+	function topfixsave() {
     	console.log ("topfixsave start");
-        var topfix = "";
-        
-        $('input:checkbox[name=top_fixed]').each(function() {
-            if ($(this).is(':checked')) {
-                topfix="Y";
-            } else {
-                topfix="N";
-            }
-        });
-        
-        console.log("topfix : " + topfix);
-        console.log("notice_idx : " + notice_idx);
+        var topfix = $("input[checkbox=top_fixed]").val();
     		$.ajax({
     			type:'post',
     			url:'adboard/update.ajax',
-    			data:{'notice_idx':notice_idx,'top_fixed':topfix},
+    			data:{'notice_idx':notice_idx,'top_fixed':top_fixed},    			
     			dataType:'JSON',
     			success:function(data){			
-    				console.log("success data : " + data);
-    				location.href='/adboard/list';
+    				console.log(data);
+    				location.href='redirect:/adboard/list';    	
     			},
     			error:function(e){
-    				console.log("error : " + e);
-    				location.href='/adboard/list';
+    				console.log(e);
     			}	
-    		});		
+    		});//		
     			
 		};
-
-		/* location.href='redirect:/adboard/list'; */
-		
-		/*function save() {
-    	console.log ("topfixsave start");
-        var topfix[];
-        $("input[name = 'top_fixed']:checked").each(fuction(i){
-        	topfix.push($(this).val());
-        });
-        console.log("topfix : " + topfix);
-        console.log("notice_idx : " + notice_idx);
-    		$.ajax({
-    			type:'post',
-    			url:'adboard/update.ajax',
-    			data:{'notice_idx':notice_idx,'top_fixed':topfix},
-    			dataType:'JSON',
-    			success:function(data){			
-    				console.log("success data : " + data);
-    				
-    			},
-    			error:function(e){
-    				console.log("error : " + e);
-    			}	
-    		});	
-    			
-		};	*/
-		
-		/* function save() {
-    	console.log ("topfixsave start");
-        var topfix[];
-        $("input[name = 'top_fixed']:checked").each(fuction(i){
-        	topfix.push($(this).val());
-        });
-        console.log("topfix : " + topfix);
-        console.log("notice_idx : " + notice_idx);
-    		$.ajax({
-    			type:'post',
-    			url:'adboard/update.ajax',
-    			data:{'notice_idx':notice_idx,'top_fixed':topfix},
-    			dataType:'JSON',
-    			success:function(data){			
-    				console.log("success data : " + data);
-    				
-    			},
-    			error:function(e){
-    				console.log("error : " + e);
-    			}	
-    		});	
-    			
-		};	*/
-		
 	
 	
 	</script>
