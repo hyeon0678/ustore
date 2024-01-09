@@ -37,6 +37,8 @@ public interface OrderDao {
 	ArrayList<OrderDto> orderHistoryList();
 
 	ArrayList<OrderDto> orderListModal(OrderDto dto);
+
+	ArrayList<OrderDto> driverSch();
 	
 
 	

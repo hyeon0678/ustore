@@ -29,11 +29,25 @@ public class OrderDto {
 	private int quantity;
 	private String confStatus;
 	private String receiptDate;
+	private int resourceIdx;
+	private String resourceName;
 
 	
 	
 	
 	
+	public int getResourceIdx() {
+		return resourceIdx;
+	}
+	public void setResourceIdx(int resourceIdx) {
+		this.resourceIdx = resourceIdx;
+	}
+	public String getResourceName() {
+		return resourceName;
+	}
+	public void setResourceName(String resourceName) {
+		this.resourceName = resourceName;
+	}
 	public String getReceiptDate() {
 		return receiptDate;
 	}

@@ -19,6 +19,8 @@ public class DashboardDto {
 	
 	
 	
+	
+	
 	public int getTotalAllPrice() {
 		return totalAllPrice;
 	}

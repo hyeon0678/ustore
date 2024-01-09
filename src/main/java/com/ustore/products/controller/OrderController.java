@@ -60,6 +60,9 @@ public class OrderController {
 		ArrayList<OrderDto> list3 = service.driveList(formattedBirthdate); // 배달기사 리스트
 		model.addAttribute("list3",list3);
 				logger.info("list3 : "+list3);
+				
+				ArrayList<OrderDto> list4 = service.driverSch();
+				model.addAttribute("list4",list4);
 		
 		
 		
@@ -137,12 +140,13 @@ public class OrderController {
 	
 	@PostMapping("/order/insert") //발주자 (사원	id 필요 emp_idx)
 	@ResponseBody
-	public String orderInsert(@RequestParam String driverIdx,@RequestParam String empIdx,HttpSession session ) {
+	public String orderInsert(@RequestParam String driverIdx,@RequestParam String empIdx,HttpSession session,@RequestParam String resourceIdx) {
 		
 		
 		boolean orderCheck = service.orderCartCheck();
 	    logger.info("장바구니에 값이 있나?  없으면 false : "+orderCheck);
 	    logger.info("empIdx 값 찍히는지 : "+empIdx);
+	    logger.info("resourceIdx : "+resourceIdx);
 		
 		String birthdateString  = (String) session.getAttribute("birthdate");
 		
@@ -156,7 +160,7 @@ public class OrderController {
 		logger.info("선택한 날짜  : "+formattedBirthdate);
 		logger.info("선택한 배송기사 : "+ driverIdx);
 		
-		service.orderInsert(formattedBirthdate,driverIdx,empIdx); // 여기에 emp_idx 필요 세션에서 가져오기
+		service.orderInsert(formattedBirthdate,driverIdx,empIdx,resourceIdx); // 여기에 emp_idx 필요 세션에서 가져오기
 		ArrayList<OrderDto> ProductCount = service.orderCartSelect();
 		
 		logger.info("상품 개수: "+ProductCount);
