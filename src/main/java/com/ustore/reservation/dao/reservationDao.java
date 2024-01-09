@@ -18,4 +18,5 @@ public interface reservationDao {
 
 	int delResource(String resourceIdx, String empIdx);
 
+
 }
