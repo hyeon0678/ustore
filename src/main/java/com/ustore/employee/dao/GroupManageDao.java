@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ustore.employee.dto.DeptDto;
 import com.ustore.employee.dto.EmployeeDto;
 
 @Mapper
@@ -35,5 +36,11 @@ public interface GroupManageDao {
 	void delImgInfo(String file_idx);
 
 	int empLeaveIncdec(String string);
+	
+	ArrayList<DeptDto> selectDeptList();
+
+	int getLeaf(int deptId);
+
+	int selectDeptEmpNum(int deptId);
 
 }

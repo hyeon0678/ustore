@@ -3,6 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ustore.fileSystem.dao.FileDao">
+	<!-- <update id="updateFile" parameterType="FileDto">
+	</update> -->
 	
 	<insert id="saveFile" parameterType="FileDto">
 		INSERT INTO file (file_type, file_name, conn_idx, extension, file_path, new_file_name)
