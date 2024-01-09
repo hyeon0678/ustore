@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ustore.reservation.dto.reservationDto;
 import com.ustore.reservation.service.reservationService;
@@ -22,8 +23,12 @@ public class reservationController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@RequestMapping("/equipment")
-	public String equipnent() {
-		return "reservation/reservation_equipment";
+	public ModelAndView equipnent() {
+		ModelAndView mav = new ModelAndView("reservation/reservation_equipment");
+		ArrayList<reservationDto>list = reservationService.resourceInfo();
+		mav.addObject("equipment", list);
+
+		return mav;
 	}
 	
 	@RequestMapping("/addResource.ajax")

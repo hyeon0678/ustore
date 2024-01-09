@@ -11,14 +11,13 @@
 	<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta property="og:locale" content="en_US" />
-		<meta property="og:type" content="article" />
-		<meta property="og:title" content="Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes" />
-		<meta property="og:url" content="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" />
-		<meta property="og:site_name" content="Craft by Keenthemes" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
 		<link rel="shortcut icon" href="/media/logos/favicon.ico" />
-
+		
+		<link rel="stylesheet" href="jquery.scheduler.css">
+		
+		
+		
     	<link rel="stylesheet" type="text/css" href="resource/scheduler/dist/css/style.min.css" />
 		<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 
@@ -409,8 +408,11 @@
 		<script src="resource/assets/js/custom/apps/ecommerce/catalog/categories.js"></script>
 		
 		
-		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-		<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript" language="javascript"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="<a href="https://www.jqueryscript.net/time-clock/">date</a>.format.min.js"></script>
+		<script src="jquery.scheduler.js"></script>
+		
+		
 		<script type="text/javascript" src="resource/scheduler/dist/js/jq.schedule.min.js"></script>
 		<script type="text/javascript">
 		
