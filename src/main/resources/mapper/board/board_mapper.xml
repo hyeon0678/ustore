@@ -9,25 +9,75 @@ insert into notice (emp_idx, notice_subject, notice_content)
 values (#{emp_idx},#{notice_subject},#{notice_content})
 </insert>
 
+<insert id="anboardWrite" parameterType="BoardDto">
+insert into anony_board (anony_subject, anony_content)
+values (#{anony_subject},#{anony_content})
+</insert>
+
 <select id="adList" resultType="map">
-	select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , n.reg_date , n.notice_del  from notice n inner join employee e on n.emp_idx = e.emp_idx and n.notice_del ='n'
+	select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , n.reg_date , n.notice_del  from notice n inner join employee e on n.emp_idx = e.emp_idx and n.notice_del ='n' order by top_fixed desc 
+</select>
+
+<select id="anList" resultType="map">
+	select anony_idx, anony_subject  , anony_hit , reg_date
+	from anony_board
 </select>
 
 <select id="adboardDetail" resultType="map">
 select n.notice_idx, n.notice_subject , n.notice_content , e.emp_name , n.notice_hit , n.reg_date , n.top_fixed  from notice n inner join employee e on n.emp_idx = e.emp_idx where notice_idx = #{param1}
 </select>
 
+<select id="anboardDetail" resultType="map">
+select anony_idx, anony_subject , anony_content , anony_hit , reg_date
+from anony_board  where anony_idx = #{param1}
+</select>
+
 <update id="adboardHit">
 	UPDATE notice SET notice_hit = notice_hit+1 WHERE notice_idx = #{param1}
+</update>
+
+<update id="anboardHit">
+	UPDATE anony_board SET anony_hit = anony_hit+1 WHERE anony_idx = #{param1}
 </update>
 
 <update id="adboardDelete">
 	UPDATE notice set notice_del ='Y' where notice_idx = #{param1}
 </update>
 
-<update id="adboardTopFix">
+<delete id="anboardDelete">
+	delete from anony_board where anony_idx = #{param1}
+</delete>
+
+<update id="adboardTopFix" parameterType="hashmap">
 	UPDATE notice set top_fixed = #{top_fixed} WHERE notice_idx = #{notice_idx}
 </update>
 
+<insert id="anreply" parameterType="String">
+	insert into repl (anony_board_idx,reg_date,repl_content)values(#{param1},now(),#{param2})
+</insert>
+
+<select id="anboardReplyList" resultType="map">
+	SELECT * FROM repl WHERE anony_board_idx=${param1}
+</select>
+
+<delete id="delreply">
+	delete from repl where repl_idx = #{param1}
+</delete>
+
+<select id="adlistSearch" resultType="map">
+	select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , n.reg_date , n.notice_del  from notice n inner join employee e on n.emp_idx = e.emp_idx and n.notice_del ='n' WHERE notice_subject LIKE CONCAT('%',#{param1},'%')
+</select>
+
+<select id="anlistSearch" resultType="map">
+	select anony_idx, anony_subject  , anony_hit , reg_date from anony_board WHERE anony_subject LIKE CONCAT('%',#{param1},'%')
+</select>
+
+<select id="adboardNum" resultType="Integer">
+	SELECT notice_idx FROM notice n where emp_idx = #{emp_idx} and notice_subject = #{notice_subject} and notice_content = #{notice_content} and reg_date = CURDATE()
+</select>
+
+<select id="anboardNum" resultType="Integer">
+	SELECT anony_idx FROM anony_board ab where anony_subject = #{anony_subject} and anony_content = #{anony_content} and reg_date = CURDATE()
+</select>
 
 </mapper>

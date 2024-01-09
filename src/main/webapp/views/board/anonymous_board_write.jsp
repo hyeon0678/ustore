@@ -55,20 +55,25 @@
 								</div>
 							</div>
 						</div>
-						<form action="" method="post">
+						<form action="anboard/Write" method="post" enctype="multipart/form-data">
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
 							<div class="container-xxl" style="background-color: white;margin: 20px;">
 								<div style="margin-top:20px">
 									제목
-									<input type="text" name="" class="form-control" placeholder="제목을 입력해주세요" />
+									<input type="text" name="anony_subject" class="form-control" placeholder="제목을 입력해주세요" />
 								</div>
 								
 								<div style="margin-top:20px">
-									<textarea class="form-control" placeholder="내용을 입력해주세요" style="height: 600px; resize: none;"></textarea>
+										파일
+										<input type="file" name ="photos" id="file" multiple ="multiple" class="form-control" />										
+									</div>
+								
+								<div style="margin-top:20px">
+									<textarea class="form-control" name="anony_content" placeholder="내용을 입력해주세요" style="height: 600px; resize: none;"></textarea>
 								</div>
 								<div class="card-footer d-flex justify-content-end py-6 px-9">
 									<button type="reset" class="btn btn-light btn-active-light-primary me-2">취소</button>
-									<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">작성</button>
+										<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">작성</button>
 								</div>
 							</div>
 						</div>
