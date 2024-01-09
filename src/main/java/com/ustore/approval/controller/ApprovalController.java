@@ -396,7 +396,7 @@ public class ApprovalController {
 				params.put("event_start_time", leaveStartHourString);
 				params.put("event_end_time", leaveEndHourString);
 				params.put("schedule_type", "14");
-				params.put("emp_idx", leaveReason);
+				params.put("reg_emp_idx", drafterEmpIdx);
 								
 				List<Date> dates = generateDateList(leaveStartDate, leaveEndDate);				
 				for (Date date : dates) {					

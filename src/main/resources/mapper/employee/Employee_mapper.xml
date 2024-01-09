@@ -170,7 +170,7 @@ insert into schedule(
 	, #{event_start_time}
 	, #{event_end_time}
 	, #{schedule_type}
-	, #{emp_idx}
+	, #{reg_emp_idx}
 	
 	)
 </insert>

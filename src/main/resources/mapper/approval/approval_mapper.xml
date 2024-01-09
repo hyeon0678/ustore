@@ -473,6 +473,8 @@
 	
 	<select id="getTotalLeaveDays" resultType="int">
 		SELECT leave_incdec FROM annual_leave WHERE emp_idx = #{drafterEmpIdx}
+		ORDER BY leave_date DESC
+		LIMIT 1
 	</select>
 	
 	
