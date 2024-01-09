@@ -398,9 +398,11 @@ public class ApprovalController {
 				params.put("schedule_type", "14");
 				params.put("reg_emp_idx", drafterEmpIdx);
 								
-				List<Date> dates = generateDateList(leaveStartDate, leaveEndDate);				
-				for (Date date : dates) {					
-					if(leaveType==50) {					
+				List<Date> dates = generateDateList(leaveStartDate, leaveEndDate);		
+				logger.info(dates.toString());
+				for (Date date : dates) {						
+					if(leaveType==50) {	
+						totalLeaveDays--;
 						service.insertAnnualLeaveInfo(drafterEmpIdx, date, leaveType, totalLeaveDays);
 						epservice.addLeaveEvent(params);
 					}else {

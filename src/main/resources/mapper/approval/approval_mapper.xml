@@ -481,7 +481,7 @@
 	<insert id="insertAnnualLeaveInfo">
 		INSERT INTO annual_leave
 		(emp_idx, leave_date, leave_type, leave_incdec, reg_by)
-		VALUES (#{drafterEmpIdx}, #{date}, #{leaveType}, #{totalLeaveDays}-1, #{drafterEmpIdx})
+		VALUES (#{drafterEmpIdx}, #{date}, #{leaveType}, #{totalLeaveDays}, #{drafterEmpIdx})
 	</insert>
 	
 	<insert id="insertOtherLeaveInfo">
