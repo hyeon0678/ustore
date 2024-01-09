@@ -147,7 +147,7 @@
 	
 	<!-- 문서 detail 결재선 가져오기 -->
 	<select id="getApprLine" resultType="map" parameterType="int">
-		SELECT al.emp_idx, al.appr_type, al.approver, c.common_type AS positionType, d.dept_name, al.appr_order, al.appr_confirm, al.comment 
+		SELECT al.emp_idx, al.appr_type, al.approver, c.common_type AS positionType, d.dept_name, al.appr_order, al.appr_confirm, al.comment, al.appr_date 
 	    FROM approval_line al
 	    JOIN employee e ON al.approver = e.emp_name
 	    LEFT JOIN department d ON e.dept_id = d.dept_id
@@ -200,15 +200,15 @@
 	
 	<!-- 내결재문서(내가 결재 올린 문서) list가져오기 -->
 	<select id="getMyApprList" resultType="ApprovalDto">
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date, ifnull(doc_id,'') AS doc_id
 		FROM business_draft
 		WHERE emp_idx = #{emp_idx} AND appr_status in (40, 41, 42)
 		UNION
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date, ifnull(doc_id,'') AS doc_id
 		FROM payment_resolution
 		WHERE emp_idx = #{emp_idx} AND appr_status in (40, 41, 42)
 		UNION
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date
+		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, appr_submit_date, ifnull(doc_id,'') AS doc_id
 		FROM req_vacation
 		WHERE emp_idx = #{emp_idx} AND appr_status in (40, 41, 42)		
 		ORDER BY appr_submit_date DESC
@@ -325,10 +325,29 @@
 		</if>
 	</update>
 	
-	<select id="getFnApprDate" resultType="Date">
+	<!-- 최종 결재자 결재일자 가져오기(문서번호 생성을 위해 연도만 뽑아내기 위함) -->
+	<select id="getFnApprDate" resultType="java.sql.Date">
 		SELECT appr_date 
 		FROM approval_line
 		WHERE emp_idx=#{fnApprEmp_idx} AND appr_idx=#{apprIdx}
+	</select>
+	
+	<!-- 최종결재일자 연도와 부서명이 같은 문서번호의 뒤의 숫자 4자리 max값 가져오기 -->
+	<select id="getMaxDocId" resultType="int">
+		SELECT MAX(CONVERT(SUBSTRING_INDEX(doc_id, '-', -1), UNSIGNED INTEGER)) AS doc_id
+		FROM (
+		    SELECT doc_id
+		    FROM business_draft bd
+		    WHERE LEFT(doc_id, 4) = '2024' AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = '매장'    
+		    UNION    
+		    SELECT doc_id
+		    FROM payment_resolution pr
+		    WHERE LEFT(doc_id, 4) = '2024' AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = '매장'    
+		    UNION    
+		    SELECT doc_id
+		    FROM req_vacation rv
+		    WHERE LEFT(doc_id, 4) = '2024' AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = '매장'
+		    )AS combined_result;
 	</select>
 	
 	
@@ -356,48 +375,79 @@
 	
 	<!-- 부서문서(결재완료문서) list가져오기 -->
 	<select id="getTeamApprList" resultType="ApprovalDto">
-		SELECT appr_idx, appr_subject, appr_status, appr_type_idx, emp_idx, doc_id, appr_date, dept_name
-		FROM (
-		    SELECT bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.emp_idx, bd.doc_id, al.appr_date, d.dept_name
-		    FROM business_draft bd
-		    JOIN employee e ON bd.emp_idx = e.emp_idx
-		    JOIN approval_line al ON al.appr_idx = bd.appr_idx
-		    JOIN recipient r ON r.appr_idx = bd.appr_idx
-		    JOIN department d ON e.dept_id = d.dept_id
-		    WHERE (
-		        e.dept_id = (SELECT dept_id FROM employee WHERE emp_idx = #{emp_idx})
-		        OR r.emp_idx = #{emp_idx}
-		    )
-		    AND bd.appr_status = 41
-		
-		    UNION
-		
-		    SELECT pr.appr_idx, pr.appr_subject, pr.appr_status, pr.appr_type_idx, pr.emp_idx, pr.doc_id, al.appr_date, d.dept_name
-		    FROM payment_resolution pr
-		    JOIN employee e ON pr.emp_idx = e.emp_idx
-		    JOIN approval_line al ON al.appr_idx = pr.appr_idx
-		    JOIN recipient r ON r.appr_idx = pr.appr_idx
-		    JOIN department d ON e.dept_id = d.dept_id
-		    WHERE (
-		        e.dept_id = (SELECT dept_id FROM employee WHERE emp_idx = #{emp_idx})
-		        OR r.emp_idx = #{emp_idx}
-		    )
-		    AND pr.appr_status = 41
-		
-		    UNION
-		
-		    SELECT rv.appr_idx, rv.appr_subject, rv.appr_status, rv.appr_type_idx, rv.emp_idx, rv.doc_id, al.appr_date, d.dept_name
-		    FROM req_vacation rv
-		    JOIN employee e ON rv.emp_idx = e.emp_idx
-		    JOIN approval_line al ON al.appr_idx = rv.appr_idx
-		    JOIN recipient r ON r.appr_idx = rv.appr_idx
-		    JOIN department d ON e.dept_id = d.dept_id
-		    WHERE (
-		        e.dept_id = (SELECT dept_id FROM employee WHERE emp_idx = #{emp_idx})
-		        OR r.emp_idx = #{emp_idx}
-		    )
-		    AND rv.appr_status = 41
-		) AS combined_results
+		SELECT bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.emp_idx, bd.doc_id, al.appr_date, d2.dept_name, drafter.emp_name
+		FROM business_draft bd
+		JOIN employee drafter ON bd.emp_idx = drafter.emp_idx
+		LEFT JOIN approval_line al ON bd.appr_idx = al.appr_idx
+		LEFT JOIN recipient r ON bd.appr_idx = r.appr_idx
+		LEFT JOIN employee receiver ON r.emp_idx = receiver.emp_idx
+		LEFT JOIN department d2 ON d2.dept_id = drafter.dept_id 
+		WHERE bd.appr_status = 41
+		  AND (drafter.dept_id = #{emp_idx}
+		       OR al.emp_idx = #{emp_idx}
+		       OR r.emp_idx = #{emp_idx}
+		       OR receiver.dept_id = #{emp_idx})
+		union all
+		SELECT pr.appr_idx, pr.appr_subject, pr.appr_status, pr.appr_type_idx, pr.emp_idx, pr.doc_id, al.appr_date, d3.dept_name, drafter2.emp_name
+		FROM payment_resolution pr
+		JOIN employee drafter2 ON pr.emp_idx = drafter2.emp_idx
+		LEFT JOIN approval_line al ON pr.appr_idx = al.appr_idx
+		LEFT JOIN recipient r ON pr.appr_idx = r.appr_idx
+		LEFT JOIN employee receiver ON r.emp_idx = receiver.emp_idx
+		LEFT JOIN department d3 ON d3.dept_id = drafter2.dept_id 
+		WHERE pr.appr_status = 41
+		  AND (drafter2.dept_id = #{emp_idx}
+		       OR al.emp_idx = #{emp_idx}
+		       OR r.emp_idx = #{emp_idx}
+		       OR receiver.dept_id = #{emp_idx})
+		union all
+		SELECT rv.appr_idx, rv.appr_subject, rv.appr_status, rv.appr_type_idx, rv.emp_idx, rv.doc_id, al.appr_date, d4.dept_name, drafter3.emp_name
+		FROM req_vacation rv
+		JOIN employee drafter3 ON rv.emp_idx = drafter3.emp_idx
+		LEFT JOIN approval_line al ON rv.appr_idx = al.appr_idx
+		LEFT JOIN recipient r ON rv.appr_idx = r.appr_idx
+		LEFT JOIN employee receiver ON r.emp_idx = receiver.emp_idx
+		LEFT JOIN department d4 ON d4.dept_id = drafter3.dept_id 
+		WHERE rv.appr_status = 41
+		  AND (drafter3.dept_id = #{emp_idx}
+		       OR al.emp_idx = #{emp_idx}
+		       OR r.emp_idx = #{emp_idx}
+		       OR receiver.dept_id = #{emp_idx})
+		  GROUP BY appr_idx
+	      ORDER BY appr_date DESC
+	</select>
+	
+	<!-- 점장이 로그인시 전체 결재완료 문서 가져오기 -->
+	<select id="getAllApprList" resultType="ApprovalDto">
+		SELECT distinct * 
+		FROM(
+			SELECT distinct bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.emp_idx, bd.doc_id, al.appr_date, d2.dept_name, drafter.emp_name
+			FROM business_draft bd
+			JOIN employee drafter ON bd.emp_idx = drafter.emp_idx
+			LEFT JOIN approval_line al ON bd.appr_idx = al.appr_idx
+			LEFT JOIN recipient r ON bd.appr_idx = r.appr_idx
+			LEFT JOIN employee receiver ON r.emp_idx = receiver.emp_idx
+			LEFT JOIN department d2 ON d2.dept_id = drafter.dept_id 
+			WHERE bd.appr_status = 41
+			union
+			SELECT distinct pr.appr_idx, pr.appr_subject, pr.appr_status, pr.appr_type_idx, pr.emp_idx, pr.doc_id, al.appr_date, d2.dept_name, drafter.emp_name
+			FROM payment_resolution pr
+			JOIN employee drafter ON pr.emp_idx = drafter.emp_idx
+			LEFT JOIN approval_line al ON pr.appr_idx = al.appr_idx
+			LEFT JOIN recipient r ON pr.appr_idx = r.appr_idx
+			LEFT JOIN employee receiver ON r.emp_idx = receiver.emp_idx
+			LEFT JOIN department d2 ON d2.dept_id = drafter.dept_id 
+			WHERE pr.appr_status = 41
+			union
+			SELECT distinct rv.appr_idx, rv.appr_subject, rv.appr_status, rv.appr_type_idx, rv.emp_idx, rv.doc_id, al.appr_date, d2.dept_name, drafter.emp_name
+			FROM req_vacation rv
+			JOIN employee drafter ON rv.emp_idx = drafter.emp_idx
+			LEFT JOIN approval_line al ON rv.appr_idx = al.appr_idx
+			LEFT JOIN recipient r ON rv.appr_idx = r.appr_idx
+			LEFT JOIN employee receiver ON r.emp_idx = receiver.emp_idx
+			LEFT JOIN department d2 ON d2.dept_id = drafter.dept_id 
+			WHERE rv.appr_status = 41) as combined_results
+		GROUP BY appr_idx 
 		ORDER BY appr_date DESC;
 	</select>
 
@@ -416,21 +466,29 @@
 		</if>
 	</delete>
 	
-	<select id="getMaxDocId" resultType="String">
-		SELECT MAX(doc_id)  
-		FROM (SELECT doc_id
-			FROM business_draft bd	
-			WHERE LEFT(doc_id, 4) = #{year} AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = #{iniDeptName} 					
-			UNION
-			SELECT doc_id
-			FROM payment_resolution pr
-			WHERE LEFT(doc_id, 4) = #{year} AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = #{iniDeptName} 	
-			UNION
-			SELECT doc_id
-			FROM req_vacation rv		
-			WHERE LEFT(doc_id, 4) = #{year} AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = #{iniDeptName} 		
-			)AS combined_result	
+	<!-- 기안자의 휴가신청 기안문 정보 가지고오기(결재완료시 신청일수 연차에서 차감 및 스케쥴에 반영 위함) -->
+	<select id="getEmpLeaveInfo" resultType="ApprovalDto">
+		SELECT * FROM req_vacation WHERE appr_idx = #{apprIdx} AND emp_idx = #{drafterEmpIdx}
 	</select>
+	
+	<select id="getTotalLeaveDays" resultType="int">
+		SELECT leave_incdec FROM annual_leave WHERE emp_idx = #{drafterEmpIdx}
+		ORDER BY leave_date DESC
+		LIMIT 1
+	</select>
+	
+	
+	<insert id="insertAnnualLeaveInfo">
+		INSERT INTO annual_leave
+		(emp_idx, leave_date, leave_type, leave_incdec, reg_by)
+		VALUES (#{drafterEmpIdx}, #{date}, #{leaveType}, #{totalLeaveDays}-1, #{drafterEmpIdx})
+	</insert>
+	
+	<insert id="insertOtherLeaveInfo">
+		INSERT INTO annual_leave
+		(emp_idx, leave_date, leave_type, leave_incdec, reg_by)
+		VALUES (#{drafterEmpIdx}, #{date}, #{leaveType}, #{totalLeaveDays}, #{drafterEmpIdx})
+	</insert>
 
 
 </mapper>

@@ -64,11 +64,19 @@ public interface ApprovalDao {
 
 	void updateApprDocStep(ApprovalDto dto);
 
-	String getMaxDocId(String iniDeptName, String year);
-
-	Date getFnApprDate(String fnApprEmp_idx, ApprovalDto dto);
+	int getMaxDocId(String iniDeptName, String fnApprYear);
 
 	Date getFnApprDate(String fnApprEmp_idx, Integer apprIdx);
+
+	ArrayList<ApprovalDto> getAllApprList();
+
+	ApprovalDto getEmpLeaveInfo(String drafterEmpIdx, Integer apprIdx);
+
+	void insertAnnualLeaveInfo(String drafterEmpIdx, Date date, int leaveType, int totalLeaveDays);
+
+	void insertOtherLeaveInfo(String drafterEmpIdx, Date date, int leaveType, int totalLeaveDays);
+
+	int getTotalLeaveDays(String drafterEmpIdx);
 
 
 

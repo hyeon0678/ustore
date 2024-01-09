@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.Principal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +42,7 @@ import com.ustore.approval.dto.ApprovalDto;
 import com.ustore.approval.service.ApprovalService;
 import com.ustore.employee.dao.GroupManageDao;
 import com.ustore.employee.dto.EmployeeDto;
+import com.ustore.employee.service.EmpProfileService;
 import com.ustore.products.dto.OrderDto;
 import com.ustore.utils.DateCalculator;
 
@@ -50,6 +53,7 @@ public class ApprovalController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired ApprovalService service;
 	@Autowired GroupManageDao gmdao;
+	@Autowired EmpProfileService epservice;
 	private DateCalculator dateCalc = new DateCalculator();
 	
 	// 새결재진행 (문서양식 선택 페이지)
@@ -115,7 +119,7 @@ public class ApprovalController {
             EmployeeDto empDto = service.getEmployeeInfo(emp_idx);
             return ResponseEntity.ok(empDto);
         } catch (Exception e) {
-            e.printStackTrace(); // 로그 출력
+            e.printStackTrace();
             return ResponseEntity.status(500).body(null);
         }
     }
@@ -126,7 +130,6 @@ public class ApprovalController {
         try {
             session.setAttribute("approvalLines", dto.getApprovalLines());
 
-            // 성공적으로 저장되었을 때의 응답
             Map<String, Object> response = new HashMap<>();
             response.put("message", "결재선 정보가 성공적으로 저장되었습니다.");
             logger.info("line : "+dto.getApprovalLines());            
@@ -134,7 +137,7 @@ public class ApprovalController {
             response.put("approvalLines", dto.getApprovalLines());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            e.printStackTrace(); // 로그 출력
+            e.printStackTrace(); 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     } 
@@ -334,36 +337,89 @@ public class ApprovalController {
 			logger.info("최종 결재자 : "+fnApprEmp_idx);	
 			Integer apprIdx = dto.getApprIdx();
 			Date finalApprDate = service.getFnApprDate(fnApprEmp_idx, apprIdx);
-			logger.info("최종 결재일자 : "+finalApprDate);
+			logger.info("최종 결재일자 : " + finalApprDate);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-			String curYear = sdf.format(new java.util.Date());
-			String year = sdf.format(finalApprDate);
-			
-			int maxDocId = service.getMaxDocId(year, iniDeptName);
-			logger.info("doc_id 가장 큰 값 : "+maxDocId);
-			String docNum = String.format("%04d", maxDocId+1);
-			
-			if(!curYear.equals(year)) {
-				docNum = "0001";			
-			}
-			
-			String docId = year+"-"+iniDeptName+"-"+docNum;
-			dto.setDocId(docId);
-			service.updateApprStatus(dto);
+			String fnApprYear = sdf.format(finalApprDate);			
 						
+			int maxDocId = service.getMaxDocId(fnApprYear, iniDeptName);			 
+			logger.info("해당 연도에 해당 부서에서 doc_id 가장 큰 값 : "+maxDocId);
+			String docNum = String.format("%04d", maxDocId+1);			
+			
+			String docId = fnApprYear+"-"+iniDeptName+"-"+docNum;
+			dto.setDocId(docId);
+			service.updateApprStatus(dto);						
 			
 			mav.addObject("docId", docId);  
 			
+						
+			// 2. 결재완료 문서가 휴가신청서라면 휴가 일자 차감처리			
+			if(dto.getApprTypeIdx()==32) {
+				// 기안자의 휴가신청 결재문서 기안번호에 대한 휴가신청서 내용 가져오기
+				ApprovalDto leaveDto = service.getEmpLeaveInfo(drafterEmpIdx, apprIdx);
+				int totalLeaveDays = service.getTotalLeaveDays(drafterEmpIdx);
+				
+				Date leaveStartDate = leaveDto.getLeaveStartDate(); // 캘린더에 전달할 값 = sch_start_date				
+				Date leaveEndDate = leaveDto.getLeaveEndDate(); // 캘린더에 전달할 값 = sch_end_date
+				String leaveStartDateString = leaveStartDate.toString();
+				String leaveEndDateString = leaveEndDate.toString();
+				logger.info(leaveStartDateString);
+				logger.info(leaveEndDateString);
+				
+				SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+				Timestamp leaveStartHour = new Timestamp(leaveStartDate.getTime());
+				Timestamp leaveEndHour = new Timestamp(leaveEndDate.getTime());
+				leaveStartHour.setHours(9);
+				leaveEndHour.setHours(18);
+				String leaveStartHourString = sdf2.format(leaveStartHour);
+				String leaveEndHourString = sdf2.format(leaveEndHour);
+				
+				String leaveReason = leaveDto.getLeaveReason(); // 캘린더에 전달할 값  = sch_content
+				// sch_type = 14(연차, 공가, 병가 포함) 캘린더에 전달
+				int leaveDays = leaveDto.getLeaveDays(); // 연차에서 차감할 갯수
+				logger.info("휴가사용일 : "+leaveDays);
+				int leaveType = leaveDto.getLeaveType();  // type이 50이면 연차 차감, 51, 52는 차감X 
+				String leaveSubject = "";
+				if(leaveType==50) {
+					leaveSubject = "연차";
+				}else if(leaveType==51) {
+					leaveSubject = "병가";
+				}else {
+					leaveSubject = "공가";
+				}
+				
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("emp_idx", drafterEmpIdx);
+				params.put("event_start_date", leaveStartDateString);
+				params.put("event_end_date", leaveEndDateString);
+				params.put("calendar_event_description", leaveReason);
+				params.put("calendar_event_name", leaveSubject);
+				params.put("event_start_time", leaveStartHourString);
+				params.put("event_end_time", leaveEndHourString);
+				params.put("schedule_type", "14");
+				params.put("reg_emp_idx", drafterEmpIdx);
+								
+				List<Date> dates = generateDateList(leaveStartDate, leaveEndDate);				
+				for (Date date : dates) {					
+					if(leaveType==50) {					
+						service.insertAnnualLeaveInfo(drafterEmpIdx, date, leaveType, totalLeaveDays);
+						epservice.addLeaveEvent(params);
+					}else {
+						service.insertOtherLeaveInfo(drafterEmpIdx, date, leaveType, totalLeaveDays);
+						epservice.addLeaveEvent(params);
+					}
+				}
+				
+				
+			}   
+			
 			// 결재가 완료되면 추가해야 할 것들
-			// 3. 대금지급결의서라면 해당 금액 -(지출) 처리
-			// 4. 휴가신청서라면 휴가 일자 차감처리
-			// 5. 수신자가 있는 경우, 해당 수신자의 팀 문서함에도 들어가게? 
+			// 1. 대금지급결의서라면 해당 금액 -(지출) 처리
+		/*	if(dto.getApprTypeIdx()==31) {
+							
+			} */
 			
 			// 더 해야할 것
-			// 파일 첨부, 다운로드
-			// 반려시 의견 결재정보에 보이게 하기
-			// 리스트 페이징 처리
-			
+			// 파일 첨부, 다운로드		
 			
 			
 		}else {
@@ -374,6 +430,19 @@ public class ApprovalController {
         return mav;
     }
 	
+	private List<Date> generateDateList(Date leaveStartDate, Date leaveEndDate) {
+		List<Date> dates = new ArrayList<>();
+        LocalDate localStartDate = leaveStartDate.toLocalDate();
+        LocalDate localEndDate = leaveEndDate.toLocalDate();
+
+        while (!localStartDate.isAfter(localEndDate)) {
+            dates.add(Date.valueOf(localStartDate));
+            localStartDate = localStartDate.plusDays(1);
+        }
+
+        return dates;
+    }
+
 	// 반려하기
 	@PostMapping(value="/rejectapprdoc")
     public ModelAndView rejectApprDoc(@RequestParam Integer apprIdx, @RequestParam String comment, @RequestParam int common_idx) {
@@ -443,8 +512,18 @@ public class ApprovalController {
 	@GetMapping(value="/approval/teamapproval")
 	public ModelAndView getTeamDocList(Principal principal) {
 		String emp_idx = principal.getName();
-		ArrayList<ApprovalDto> teamapprlist = service.getTeamApprList(emp_idx);
+		EmployeeDto empDto = service.getEmployeeInfo(emp_idx);
+		String DeptName = empDto.getDeptName();
+				
+		ArrayList<ApprovalDto> teamapprlist;
+		if("UStore".equals(DeptName)) {
+			teamapprlist = service.getAllApprList();
+		}else {			
+			teamapprlist = service.getTeamApprList(emp_idx);
+		}
+								
 		ModelAndView mav = new ModelAndView("approval/teamApprDocList");
+		mav.addObject("deptName", DeptName);
 		mav.addObject("teamapprlist", teamapprlist);
 		return mav;
 	}

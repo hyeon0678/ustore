@@ -76,4 +76,8 @@ public class EmpProfileService {
 		EmployeeDto empInfo= dao.selectEmpUpdateData(FileTypeEnum.findDefindCode("employee"),name);
 		return empInfo;
 	}
+
+	public void addLeaveEvent(Map<String, String> params) {
+		dao.addLeaveEvent(params);
+	}
 }
