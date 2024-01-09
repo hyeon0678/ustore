@@ -80,7 +80,7 @@ License: For each use you must have a valid license purchased only from above li
 												<div class="card-toolbar input-group mb-3">
 													<!--begin::Menu-->
 													<input type="text" class="form-control form-control-solid" placeholder="이름 입력" style="width: 20%; height: 40px;">
-            											<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1" style="white-space:nowrap;">
+            											<button type="button" class="btn btn-primary mx-2 deptmanagement-modal" data-bs-toggle="modal" data-bs-target="#kt_modal_1" style="white-space:nowrap;">
 															부서관리
 														</button>
 												</div>
@@ -286,19 +286,24 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Col-->
 								</div>
 								<!--end::Row-->
-
-
-
 								<!-- 부서 관리 모달창 공간-->
 								<div class="modal fade" tabindex="-1" id="kt_modal_1">
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-header">
-												<h3 class="modal-title">부서 관리</h3>
-
-												<!--begin::Close-->
-												<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-													<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+												<h3 class="modal-title"></h3>
+												<div style="display:flex">
+													<div class="me-n4 back-btn" style="display: none;">
+														<button class="btn btn-sm btn-icon back-btn" data-kt-menu-trigger="click" 
+															data-kt-menu-placement="bottom-end" style="margin-right: 10px; padding: 10px; ">
+															<span class="ki-duotone ki-dots-square fs-2">
+																<img src="resource/assets/media/icon/arr063.svg"/>
+															</span>
+														</button>
+													</div>
+													<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+														<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+													</div>
 												</div>
 												<!--end::Close-->
 											</div>
@@ -316,15 +321,8 @@ License: For each use you must have a valid license purchased only from above li
 																	<th class="text-end"></th>
 																</tr>
 															</thead>
-															<tbody>
-																<tr>
-																	<td style="padding-top: 30px;">인사팀</td>
-																	<td style="padding-top: 30px; padding-left: 20px;">3명</td>
-																	<td style="text-align: right;"><button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_2">
-																			상세보기
-																		</button></td>
-																		<td style="text-align: right;"><a href="#" class="btn btn-sm btn-primary">삭제하기</a></td>
-																</tr>
+															<tbody class="dept-tbody">
+																
 															</tbody>
 														</table>
 													</div>
@@ -333,76 +331,12 @@ License: For each use you must have a valid license purchased only from above li
 											</div>
 
 											<div class="modal-footer">
-												<input type="text" class="form-control form-control-solid" placeholder="부서명 입력" style="width: 200px; height: 40px;">
-												<button type="button" class="btn btn-primary">부서 만들기</button>
+												<input type="text" class="form-control form-control-solid dept-make-name" placeholder="부서명 입력" style="width: 200px; height: 40px;">
+												<button type="button" class="btn btn-primary dept-make">부서 만들기</button>
 											</div>
 										</div>
 									</div>
 								</div>
-								<!-- 부서 관리 모달창 종료-->
-
-								<!-- 부서 상세 모달창 공간-->
-								<div class="modal fade" tabindex="-1" id="kt_modal_2">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h3 class="modal-title">부서 상세보기</h3>
-
-												<!--begin::Close-->
-												<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-													<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-												</div>
-												<!--end::Close-->
-											</div>
-
-											<div class="modal-body">
-												<!-- 모달창 몸통 테이블 시작-->
-												<div class="py-5" style="margin-top: -40px;">
-													<div class="table-responsive">
-														<table class="table table-row-dashed table-row-gray-300 gy-7">
-															<thead>
-																<tr class="fw-bold fs-6 text-gray-800">
-																	<th>부서</th>
-																	<th>인원수</th>
-																	<th class="text-end"></th>
-																</tr>
-															</thead>
-															<tbody>
-																<tr>
-																	<td style="padding-top: 30px;">인사팀</td>
-																	<td style="padding-top: 30px; padding-left: 20px;">3명</td>
-																	<td class="text-end">
-																		<a href="#" class="btn btn-sm btn-primary">삭제하기</a>
-																	</td>
-																</tr>
-															</tbody>
-														</table>
-													</div>
-												</div>
-												<!-- 모달창 몸통 테이블 끝-->
-											</div>
-
-											<div class="modal-footer">
-												<input type="text" class="form-control form-control-solid" placeholder="부서명 입력" style="width: 200px; height: 40px;">
-												<button type="button" class="btn btn-primary">부서 만들기</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- 부서 상세 모달창 종료-->
-
-
-
-
-																					<!-- 작업 종료 공간-->
-
-
-
-
-
-
-																					
-										
 									</div>
 								</div>
 								<!--end::Navbar-->
@@ -485,6 +419,9 @@ License: For each use you must have a valid license purchased only from above li
 	<!--end::Body-->	
 	<script>
 		// document ready
+		let exitBtn = '';
+		let deptManagementStack = [];
+		
 		$(function(){
 			getTreeData();
 		})
@@ -591,7 +528,95 @@ License: For each use you must have a valid license purchased only from above li
 		    });
 		}
 		
+		$('.deptmanagement-modal').on('click', function(){
+			let deptIdx = 1;
+			$('.modal-title').html('부서 관리')
+			callDeptInfo(deptIdx);
+		});
 		
+		
+		$('.dept-make').on('click', function(){
+			deptIdx = deptManagementStack[deptManagementStack.length-1]
+			callDeptInfo(deptIdx);
+		});
+		
+		$('.back-btn').on('click', function(){
+			let deptIdx = 1;
+			if(deptManagementStack.length <= 0){
+				$('.modal-title').html('부서 관리')
+			}else{
+				$('.modal-title').html('부서 상세')
+				deptManagementStack.pop();
+				deptIdx = deptManagementStack[deptManagementStack.length-1]
+			}
+			callDeptInfo(deptIdx);
+		});
+		
+		function deptDetail(){
+			
+			$('.dept-detail').on('click', function(){
+				$('div.back-btn').css({"display":"inline"})
+				let $elem = $(this).closest('tr');
+				$elem = $elem.children('td.info')
+				let deptIdx = $elem.children().html()
+				console.log($elem);
+				$('.modal-title').html('부서 상세')
+				let success = callDeptInfo(deptIdx);
+				if(success == 'ok'){
+					deptManagementStack.push(deptIdx);
+				}
+			});
+		}
 
+		function deptDelete(){
+			$('.dept-delete').on('click', function(){
+				
+			})
+		}
+		
+		function callDeptInfo(deptIdx){
+			$.ajax({
+				type:'GET',
+				url:'/department/'+deptIdx,
+				data:{},
+				dataType:'JSON',
+				success:function(data){
+					console.log(data.deptList);
+					drawDeptManagement(data.deptList)
+					return 'ok';
+				},error:function(error){
+					console.log(error);
+				}
+			})
+		}
+		
+		function drawDeptManagement(deptData){
+			let deptElem = ''
+			$('.dept-tbody').empty();
+			if(deptData.length == 0){
+				deptElem += '<p>하위부서가 없습니다</p>'
+			}else{
+				for(data of deptData){
+					deptElem +='<tr>'
+					deptElem +='<td class="info" style="padding-top: 30px;">'
+					deptElem +='<p style="display: none;">'+data.deptId+'</p>'+data.deptName
+					deptElem +='</td><td style="padding-top: 30px; padding-left: 20px;">'
+					deptElem +=data.empCnt+'명'
+					deptElem +='</td><td style="text-align: right;">'
+					deptElem +='<button type="button" class="btn btn-sm btn-primary dept-detail">상세보기</button>'
+					deptElem +='</td><td style="text-align: right;">'
+					if(data.empCnt<=0){
+						deptElem +='<button type="button" class="btn btn-sm btn-primary dept-delete">삭제하기</button>'
+					}else{
+						deptElem +='<button type="button" class="btn btn-sm btn-primary" disabled>삭제하기</button>'
+					}
+					deptElem +='</td></tr>'	
+				}	
+			}
+			
+			$('.dept-tbody').append(deptElem);
+			deptDetail();
+			deptDelete();
+		}
 	</script>
 </html>

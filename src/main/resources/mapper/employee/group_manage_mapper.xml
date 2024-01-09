@@ -164,4 +164,34 @@
 		<delete id="delImgInfo">
 			DELETE FROM file WHERE file_idx =#{param1}
 		</delete>
+		
+	<select id="selectDeptList" resultType="DeptDto">
+		WITH RECURSIVE department_tree AS (
+		  SELECT dept_id, parent_dept_id, dept_name, dept_delete, 0 AS depth, CAST(dept_id AS CHAR(200)) AS path
+		  FROM department
+		  WHERE parent_dept_id = 1
+		  UNION ALL
+		  SELECT d.dept_id, d.parent_dept_id, d.dept_name, d.dept_delete, dt.depth + 1, CONCAT(dt.path, ',', d.dept_id)
+		  FROM department d
+		  INNER JOIN department_tree dt ON d.parent_dept_id = dt.dept_id
+		)
+		SELECT dept_id,parent_dept_id,dept_name,depth,path
+		FROM department_tree
+		WHERE dept_delete LIKE 'N'
+		ORDER BY path;
+	</select>
+	
+	<select id="getLeaf" resultType="int">
+		select count(dept_id)
+		from department 
+		where parent_dept_id = #{param1}
+	</select>
+	
+	<select id="selectDeptEmpNum" resultType="int">
+		SELECT count(dept_id) 
+		FROM employee 
+		WHERE dept_id = #{param1}
+	</select>
+	
+	
 </mapper>
