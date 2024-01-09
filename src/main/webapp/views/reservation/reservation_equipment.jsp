@@ -11,27 +11,22 @@
 	<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta property="og:locale" content="en_US" />
-		<meta property="og:type" content="article" />
-		<meta property="og:title" content="Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes" />
-		<meta property="og:url" content="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" />
-		<meta property="og:site_name" content="Craft by Keenthemes" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="/media/logos/favicon.ico" />
-
-    	<link rel="stylesheet" type="text/css" href="resource/scheduler/dist/css/style.min.css" />
-		<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-
+		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
+		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-
-		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+		<!--end::Fonts-->
+		<!--begin::Vendor Stylesheets(used for this page only)-->
 		
-		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		
-		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
+		<!--end::Vendor Stylesheets-->
+		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 
+		<!--end::Global Stylesheets Bundle-->
 
+<script src="resource/assets/js/date.format.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="resource/assets/js/jquery.scheduler.js"></script>
     <style>
         body {
             padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -103,7 +98,7 @@
 										<h2 class="card-title fw-bold">자원 예약</h2>
 									</div>
 									<div class="card-body">
-        								<div id="schedule"></div>
+        								<div id="scheduler" style="padding-top: 50px;"></div>
 									</div>
 								</div>
 									
@@ -412,197 +407,56 @@
 		</div>
 						
 
-		<script>var hostUrl = "/";</script>
-		
-		
+		<script>var hostUrl = "resource/assets/";</script>
+
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		
 		
-		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-		<script src="resource/assets/js/scripts.bundle.js"></script>
+
+				</body>
 		
-		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-		<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript" language="javascript"></script>
-		<script type="text/javascript" src="resource/scheduler/dist/js/jq.schedule.min.js"></script>
-		<script type="text/javascript">
+
+		<script>
 		
-		
-		
-		    function addLog(type, message){
-		        var $log = $('<tr />');
-		        $log.append($('<th />').text(type));
-        		$log.append($('<td />').text(message ? JSON.stringify(message) : ''));
-        		$("#logs table").prepend($log);
-    		}
-		    
-    		$(function(){
-        		$("#logs").append('<table class="table">');
-        		var isDraggable = false;
-        		var isResizable = false;
-        		var $sc = $("#schedule").timeSchedule({
-            		startTime: "00:00", // schedule start time(HH:ii)
-            		endTime: "24:00",   // schedule end time(HH:ii)
-            		widthTime: 60 * 30,  // cell timestamp example 10 minutes
-            		timeLineY: 60,       // height(px)
-            		verticalScrollbar: 20,   // scrollbar (px)
-            		timeLineBorder: 4,   // border(top and bottom)
-            		bundleMoveWidth: 6,  // width to move all schedules to the right of the clicked time line cell
-            		draggable: isDraggable,
-            		resizable: isResizable,
-            		resizableLeft: true,
-            		rows : {
-                		'0' : {
-                    		title : '1호차',
-                    		schedule:[
-                        		{
-                            		start: '09:00',
-                            		end: '12:00',
-                            		data: {
-                            		}
-                        		},
-                    		]
-                		},
-                		'1' : {
-                    		title : '2호차',
-                    		schedule:[
-                        		{
-                            		start: '15:00',
-                            		end: '16:00',
-                            		data: {
-                            		}
-                        		}
-                    		]
-                		},
-                		'2' : {
-                    		title : '3호차',
-                    		schedule:[
-                        		{
-                            		start: '17:00',
-                            		end: '18:00',
-                            		data: {
-                            		}
-                        		}
-                    		]
-                		},
-                		'3' : {
-                    		title : '4호차',
-                    		schedule:[
-                        		{
-                            		start: '19:00',
-                            		end: '20:00',
-                            		data: {
-                            		}
-                        		}
-                    		]
-                		}
-            		},
-            		onChange: function(node, data){
-                		addLog('onChange', data);
-            		},
-            		onInitRow: function(node, data){
-                		addLog('onInitRow', data);
-            		},
-            		onClick: function(node, data){
-                		addLog('onClick', data);
-                		console.log(data);
-                		$('#kt_modal_0_1').modal('show');
-            		},
-            		onAppendRow: function(node, data){
-                		addLog('onAppendRow', data);
-            		},
-            		onAppendSchedule: function(node, data){
-                		addLog('onAppendSchedule', data);
-                		if(data.data.class){
-                    		node.addClass(data.data.class);
-                		}
-                		if(data.data.image){
-                    		var $img = $('<div class="photo"><img></div>');
-                    		$img.find('img').attr('src', data.data.image);
-                    		node.prepend($img);
-                    		node.addClass('sc_bar_photo');
-                		}
-            		},
-            		
-            		// 이게 이제 상자 클릭시 예약 모달창이 발생
-            		onScheduleClick: function(node, time, timeline){
-                		console.log(time);
-                		$('#kt_modal_0').modal('show');
-                		var start = time;
-                		var end = $(this).timeSchedule('formatTime', $(this).timeSchedule('calcStringTime', time) + 3600);
-                		$(this).timeSchedule('addSchedule', timeline, {
-                    		start: start,
-                    		end: end,
-                    		text:'Insert Schedule',
-                    		data:{
-                        	class: 'sc_bar_insert'
-                        		
-                    		}
-                		});
-                		addLog('onScheduleClick', time + ' ' + timeline);
-            		},
-        		});
-        		$('#event_timelineData').on('click', function(){
-            		addLog('timelineData', $sc.timeSchedule('timelineData'));
-        		});
-        		$('#event_scheduleData').on('click', function(){
-            		addLog('scheduleData', $sc.timeSchedule('scheduleData'));
-        		});
-        		$('#event_resetData').on('click', function(){
-            		$sc.timeSchedule('resetData');
-            		addLog('resetData');
-        		});
-        		$('#event_resetRowData').on('click', function(){
-            		$sc.timeSchedule('resetRowData');
-            		addLog('resetRowData');
-        		});
-        		$('#event_setDraggable').on('click', function(){
-            		isDraggable = !isDraggable;
-            		$sc.timeSchedule('setDraggable', isDraggable);
-            		addLog('setDraggable', isDraggable ? 'enable' : 'disable');
-        		});
-        		$('#event_setResizable').on('click', function(){
-            		isResizable = !isResizable;
-            		$sc.timeSchedule('setResizable', isResizable);
-            		addLog('setResizable', isResizable ? 'enable' : 'disable');
-        		});
-        		$('.ajax-data').on('click', function(){
-            		$.ajax({url: './data/'+$(this).attr('data-target')})
-                		.done( (data) => {
-                    		addLog('Ajax GetData', data);
-                    		$sc.timeSchedule('setRows', data);
-                		});
-        		});
-        		$('#clear-logs').on('click', function(){
-            		$('#logs .table').empty();
-        		});
-    		});
-    	
-	let elemName = {
-			'':'예약 내용',
-	}
-	
-	// get elements value
-	function getElems(){
-		elements = [];
-		elements.push($('select[name=]'))
-		return elements;
-	}
-	
-	//validation
-	function validation(){
-		let elements = getElems();
-		console.log(elements);
-		for(let elem of elements){
-			console.log("elem" + elem);
-			console.log("elem value"+elem.val());
-			if(elem.val()==''){
-				let name = elemName[elem.attr('name')];
-				alert(name + '의 값을 입력해주세요!');
-				elem.focus();
-				return false;
-			}
-		}
-		return true;
+		var date = new Date(),
+	    day = date.getDate(),
+	    date1 = new Date(),
+	    date2 = new Date(),
+	    date3 = new Date();
+	date1.setDate(day);
+	date2.setDate(day + 1);
+	date3.setDate(day + 2);
+	date1 = date1.format('Y-m-d');
+	date2 = date2.format('Y-m-d');
+	date3 = date3.format('Y-m-d');
+
+	// 예약 예제 데이터 배열
+	var reservations = [
+	    { date: date3, start: '11:00', end: '13:00', row: 0 },
+	    { date: date1, start: '8:00', end: '16:00', row: 1 },
+	    { date: date1, start: '7:00', end: '9:00', row: 3 },
+	    { date: date1, start: '12:00', end: '20:00', row: 5 },
+	    { date: date2, start: '12:00', end: '18:00', row: 5 },
+	    { date: date3, start: '8:00', end: '18:00', row: 4 }
+	];
+
+	// 예제 항목 배열
+	var printers = ['jQuery', 'Script', 'Net', 'AngularJS', 'ReactJS', 'VueJS'];
+
+	// 초기화
+	$(document).ready(function() {
+    // 여기에 스케줄러 플러그인 초기화 코드를 넣으세요
+	$('#scheduler').scheduler({ items: printers, reservations: reservations, timeslotHeight: 70, timeslotWidth: 100 });
+    });
+
+	// 예약 삭제를 허용
+	$(document).on('click', ".reservation", function () {
+	    console.log(this);
+	});
+
+	// 각 예약 요소에 고유한 ID 추가
+	for (var i = 0; i < reservations.length; i++) {
+	    $(".reservation").eq(i).attr("id", "reservation-" + i);
 	}
 	
 	
@@ -684,5 +538,5 @@
 
 </script>
 		
-		</body>
+
 		</html>

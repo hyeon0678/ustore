@@ -4,6 +4,7 @@ public class reservationDto {
 	private String resourceName;
 	private String resourceType;
 	private String resourceIdx;
+	private String empIdx;
 	public String getResourceIdx() {
 		return resourceIdx;
 	}
