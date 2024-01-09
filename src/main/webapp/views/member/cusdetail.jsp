@@ -343,12 +343,12 @@
 										<div class="modal-content" style="width:1110px; height:700px; position: fixed;  top: 50%;  left: 50%;  transform: translate(-50%, -50%);">
 											<div class="modal-header">
 												<h3>제품 구매 이력</h3>
-												<label for="date" style="padding-left: 350px;">
+												<label for="date" style="padding-left: 35a0px;">
 													<input type="button" class="comm-btn" value="최근 1주일" onclick="weekturn()"
 												        style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" />
-											       시작일 : <input type="date" id="ufirstsearchdate" value="" />
+											      <span>시작일 : </span style="margin: 0px 5px;"><input type="date" id="ufirstsearchdate" value="" style="margin: 0px 5px;"/>
 											        ~
-											         종료일 : <input type="date" id="ulastsearchdate" value="" />
+											         <span style="margin: 0px 5px;">종료일 : </span ><input type="date" id="ulastsearchdate" value="" />
 											        <input type="button" id="usearchButton" class="comm-btn" value="검색" onclick="productlistcall()"
 											         style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" />
 											    </label>

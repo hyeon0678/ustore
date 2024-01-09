@@ -87,7 +87,7 @@
 									</div>
 									<!--end::Col-->
 									<input type="text" name="customersearch" class="form-control form-control-solid" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
-									<button type="button" class="btn btn-primary" style="margin: 10px;" onclick="search()">검색</button>
+									<button  id= "search"  class="btn btn-primary" style="margin: 10px;" >검색</button>
 								</div>
 								<!--end::Actions-->
 							</div>
@@ -190,14 +190,14 @@
 									<table class="table align-middle table-row-dashed fs-6 gy-5"
 										id="kt_datatable_zero_configuration_list" style="overflow-x: hidden;">
 										<thead>
-												<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
-													<th class="min-w-30px" >NO.</th>
-													<th class="min-w-125px">회원 번호</th>
-													<th class="min-w-125px">이름</th>
-													<th class="min-w-125px">멤버쉽 종류</th>
-													<th class="min-w-125px">회원등급</th>
-													<th class="min-w-125px">연락처</th>
-													<th class="min-w-125px">만료날짜</th>
+												<tr class="text-start fw-bold fs-7 text-uppercase gs-0 text-center" style=" color: #c6da52;">
+													<th class="min-w-30px text-center" >NO.</th>
+													<th class="min-w-125px text-center">회원 번호</th>
+													<th class="min-w-125px text-center">이름</th>
+													<th class="min-w-125px text-center">멤버쉽 종류</th>
+													<th class="min-w-125px text-center">회원등급</th>
+													<th class="min-w-125px text-center">연락처</th>
+													<th class="min-w-125px text-center">만료날짜</th>
 												</tr>
 											</thead>	
 										<tbody class="fw-semibold text-gray-600"  id="list">
@@ -346,10 +346,25 @@
 						  	listcall(page);}}
 				});//
 				*/
-				table.DataTable( {"ordering": false, "info": false} );
+				if (obj.size > 0) {
+					
+					table.DataTable( {"ordering": false, "info": false, "destroy": true, "pageLength": 10 , "lengthChange": false } );
+				}
 				
 			     // $("#kt_datatable_zero_configuration_list").DataTable( {"ordering": false, "info": false} );
 			}
+			
+			
+			// onclick="search()"
+			
+			$('#search').on('click',function(){
+				
+				table.DataTable().destroy();
+				search();
+			});
+			
+			
+			
 			
 			function search(){
 				console.log("검색 메서드  호출");
@@ -374,6 +389,7 @@
 							alert('이 페이지의 권한이 없습니다');
 							location.href='./';
 						}else {} */		
+						
 						drawlist(data);			
 					},
 					error:function(e){

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ustore.mail.dao.maildao">
+		
+		
+		<select id="maillist" resultType="map">
+				select sm.mail_idx as mailnum , sm.emp_idx as personnum, sm.mail_create_date , sm.mail_subject , sm.mail_content , rm.mail_del , rm.mail_read ,
+				CONCAT(e.emp_name,'(',d.dept_name ,')') as personname
+				from send_mail sm left join receive_mail rm on sm.mail_idx = rm.mail_idx left join employee e on sm.emp_idx =e.emp_idx left join department d on e.dept_id = d.dept_id 
+				where rm.emp_idx = #{param1}
+		
+		</select>
+		
+		<select id="searchlist" resultType="map">
+				select sm.mail_idx as mailnum , sm.emp_idx as personnum, sm.mail_create_date , sm.mail_subject , sm.mail_content , rm.mail_del , rm.mail_read ,
+				CONCAT(e.emp_name,'(',d.dept_name ,')') as personname 
+				from send_mail sm 
+				left join receive_mail rm on sm.mail_idx = rm.mail_idx 
+				left join employee e on sm.emp_idx =e.emp_idx 
+				left join department d on e.dept_id = d.dept_id 
+				where (rm.emp_idx = #{param1} and sm.mail_subject LIKE CONCAT('%',#{param2},'%')) or (rm.emp_idx = #{param1} and  e.emp_name LIKE CONCAT('%',#{param2},'%'));
+						
+		</select>
+		
+		
+		
+		
+		
+
+
+
+
+</mapper>
