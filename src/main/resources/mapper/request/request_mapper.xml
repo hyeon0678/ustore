@@ -39,4 +39,32 @@
 <delete id="delCart">
 	DELETE FROM payment_cart WHERE member_id = #{param1}
 </delete>
+
+<!-- 환불처리 -->
+<update id="refund">
+	UPDATE payments SET payment_status =#{param2} WHERE iamport_idx =#{param1}
+</update>
+
+<!-- 결제 상세 가져오기 -->
+<select id="refundPaymentsDetail" resultType="com.ustore.pos.dto.PosDto">
+	SELECT pd.product_id ,pd.quantity FROM payments_detail pd 
+	LEFT JOIN payments p ON pd.payment_id =p.payment_id 
+	WHERE p.iamport_idx =#{param1}
+GROUP BY pd.product_id ,pd.quantity
+</select>
+
+<!-- 환불 재고 상승 -->
+<update id="stockUp">
+	UPDATE products SET stock =((SELECT stock FROM products WHERE product_id =#{param1})+#{param2}) WHERE product_id =#{param1}
+</update>
+
+<!-- 환불 포인트 검색 -->
+<select id="refundPointSelect" resultType="map">
+	SELECT p2.earned_points,p2.member_id FROM payments p2 WHERE p2.iamport_idx =#{param1}
+</select>
+
+<!-- 포인트 감소 -->
+<update id="refundUpdatePoint">
+	UPDATE total_point SET total_point =((SELECT total_point WHERE member_idx=#{member_id})-#{earned_points}) WHERE member_idx =#{member_id}
+</update>
 </mapper>

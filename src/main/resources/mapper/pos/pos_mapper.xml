@@ -112,14 +112,14 @@
 		
 		<!-- 결제 포인트 적립 한도 검색 -->
 		<select id="payPoint" resultType="int">
-			SELECT (
-				CASE WHEN pm.payment_date BETWEEN m.create_date AND m.expiry_date AND sum(pm.earned_points) BETWEEN 0 AND mg.max_points
-					THEN  mg.max_points - sum(pm.earned_points)
-					ELSE 0
-					END
-			) AS end_point
-			FROM members m LEFT JOIN member_grade mg ON m.grade_idx = mg.grade_idx 
-			LEFT JOIN payments pm ON m.member_idx = pm.member_id 
-			WHERE m.member_idx = #{memberId}
+			SELECT mg.max_points FROM members m LEFT JOIN member_grade mg ON m.grade_idx = mg.grade_idx WHERE m.member_idx =#{memberId}
+		</select>
+		
+		<!-- 멤버쉽 기간 충천 포인트 검색 -->
+		<select id="datePoint" resultType="int">
+			SELECT COALESCE(SUM(p.earned_points), 0)  
+			FROM members m LEFT JOIN payments p ON m.member_idx = p.member_id 
+			WHERE m.member_idx =#{param1} AND p.payment_status = #{param2} 
+			AND p.payment_date BETWEEN m.create_date AND m.expiry_date
 		</select>
 </mapper>

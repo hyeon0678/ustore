@@ -77,7 +77,9 @@
 
 <body>
 <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
+		<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 		<div class="d-flex flex-column flex-root">
 			<div class="page d-flex flex-row flex-column-fluid">
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
@@ -90,7 +92,7 @@
 								</div>
 								<div class="card-toolbar">
 									<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">자원 추가하기</button>
-									<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_2">자원 삭제하기</button>
+									<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_2" id="delResourceModal">자원 삭제하기</button>
 								</div>
 							</div>
 						</div>
@@ -318,7 +320,7 @@
 															<thead>
 																<tr class="fw-bold fs-6 text-gray-800">
 																	<th>자원 종류</th>
-																	<th>물류 장비</th>
+																	<th id="resourceType">물류 장비</th>
 																	<th class="text-end"></th>
 																	<th class="text-end"></th>
 																</tr>
@@ -327,7 +329,7 @@
 																<tr>
 																	<td style="padding-top: 30px;">자원명</td>
 																	<td style="padding-top: 30px;">
-																		<input type="text" class="form-control" placeholder="자원명을 입력하세요" name="re"/>
+																		<input type="text" class="form-control" placeholder="자원명을 입력하세요" id="resourceName"/>
 																	</td>
 																</tr>
 															</tbody>
@@ -338,7 +340,7 @@
 											</div>
 
 											<div class="modal-footer">
-												<button type="button" class="btn btn-primary submit_btn">추가</button>
+												<button type="button" class="btn btn-primary submit_btn" id="addReservation">추가</button>
 												<button type="button" class="btn btn-light">취소</button>
 											</div>
 										</div>
@@ -380,7 +382,7 @@
 																	<td style="padding-top: 30px;">자원명</td>
 																	<td style="padding-top: 30px;">
 																	
-																		<select class="form-select" aria-label="Select example">
+																		<select class="form-select" aria-label="Select example" id="optionResourceName">
     																		<option value=""></option>
     																		<option value=""></option>
     																		<option value=""></option>
@@ -396,7 +398,7 @@
 											</div>
 
 											<div class="modal-footer">
-												<button type="button" class="btn btn-primary submit_btn">삭제</button>
+												<button type="button" class="btn btn-primary submit_btn" id="delResource">삭제</button>
 												<button type="button" class="btn btn-light">취소</button>
 											</div>
 										</div>
@@ -435,8 +437,8 @@
 		    
     		$(function(){
         		$("#logs").append('<table class="table">');
-        		var isDraggable = true;
-        		var isResizable = true;
+        		var isDraggable = false;
+        		var isResizable = false;
         		var $sc = $("#schedule").timeSchedule({
             		startTime: "00:00", // schedule start time(HH:ii)
             		endTime: "24:00",   // schedule end time(HH:ii)
@@ -520,6 +522,8 @@
                     		node.addClass('sc_bar_photo');
                 		}
             		},
+            		
+            		// 이게 이제 상자 클릭시 예약 모달창이 발생
             		onScheduleClick: function(node, time, timeline){
                 		console.log(time);
                 		$('#kt_modal_0').modal('show');
@@ -601,12 +605,82 @@
 		return true;
 	}
 	
-	$('.submit_btn').on('click', function(){
-		console.log('test')
-		if(validation() == true){
-			$('form').submit();
-		}
+	
+	
+	
+	$('#addReservation').on('click',function(){
+		var resourceName = $('#resourceName	').val();
+		var resourceType = $('#resourceType').text();
+		addReservation(resourceName,resourceType);
 	});
+	
+	function addReservation(resourceName,resourceType){
+		$.ajax({
+	        type: 'get',
+	        url: 'reservation/addResource.ajax',
+	        data: {
+	            'resourceName': resourceName,
+	            'resourceType': resourceType
+	        },
+	        dataType: 'json',
+	        success: function (data) {
+				console.log(data);
+				if(!data){
+					alert('자원 추가 실패 다시 확인해주세요');
+				}else{
+					$('#kt_modal_1').modal('hide');
+				}
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}
+	
+	$('#delResourceModal').on('click',function(){
+		resourceInfo();
+	});
+	
+	function resourceInfo(){
+		$.ajax({
+	        type: 'get',
+	        url: 'reservation/resourceInfo.ajax',
+	        dataType: 'json',
+	        success: function (data) {
+				console.log(data);
+				var content='';
+				data.forEach(function(item,idx){
+					content += '<option value="' + item.resourceIdx + '">' + item.resourceName + '</option>';
+				});
+				$('#optionResourceName').empty();
+				$('#optionResourceName').append(content);
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}
+	$('#delResource').on('click',function(){
+		delResource($('#optionResourceName').val());
+	})
+	
+	function delResource(resourceIdx){
+		$.ajax({
+	        type: 'get',
+	        url: 'reservation/delResource.ajax',
+	        data: {
+	            'resourceIdx': resourceIdx
+	        },
+	        dataType: 'json',
+	        success: function (data) {
+				console.log(data);
+				$('#kt_modal_2').modal('hide');
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}
 
 </script>
 		

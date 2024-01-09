@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ustore.pos.dto.PosDto;
 import com.ustore.request.dao.RequestDao;
+import com.ustore.utils.defineEnums.RequestEnum;
 
 @Service
 public class RequestService {
@@ -43,5 +44,17 @@ public boolean pay(HashMap<String, String> params) {
 	} else {
 		return true;
 	}
+}
+
+public void refund(String iamportIdx) {
+	requestDao.refund(iamportIdx,RequestEnum.findDefindCode("결제 취소"));
+	
+	ArrayList<PosDto> list = requestDao.refundPaymentsDetail(iamportIdx);
+	for (PosDto posDto : list) {
+		requestDao.stockUp(posDto.getProductId(),posDto.getQuantity());
+	}
+	HashMap<String, String>map = requestDao.refundPointSelect(iamportIdx);
+	logger.info("환불 포인트 맵 형식 값 확인 : "+map);
+	requestDao.refundUpdatePoint(map);
 }
 }

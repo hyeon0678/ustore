@@ -23,5 +23,15 @@ public interface RequestDao {
 
 	void delCart(String string);
 
+	void refund(String iamportIdx, int findDefindCode);
+
+	ArrayList<PosDto> refundPaymentsDetail(String iamportIdx);
+
+	void stockUp(String productId, String quantity);
+
+	HashMap<String, String> refundPointSelect(String iamportIdx);
+
+	void refundUpdatePoint(HashMap<String, String> map);
+
 
 }

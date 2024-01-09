@@ -36,7 +36,7 @@ public class GroupManageService {
 	AnnualSchedulerDao annualSchedulerDao;
 
 	@Transactional
-	public boolean insertEmp(EmployeeDto employee, String empIdx) {
+	public String insertEmp(EmployeeDto employee, String empIdx) {
 		employee.setRegBy(empIdx);
 		
 		
@@ -79,9 +79,9 @@ public class GroupManageService {
 		
 		
 		if(row>1) {
-			return true;
+			return empId;
 		}
-		return false;
+		return null;
 	}
 
 	public ArrayList<EmployeeDto> employeeInfo(String emp_idx) {

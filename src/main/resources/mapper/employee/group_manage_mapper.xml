@@ -88,7 +88,7 @@
 	
 	<!-- 연차 검색 -->
 	<select id="empLeaveIncdec" resultType="int">
-		SELECT SUM(leave_incdec) FROM annual_leave WHERE emp_idx =#{param1}
+		SELECT COALESCE(SUM(leave_incdec),0) FROM annual_leave WHERE emp_idx =#{param1}
 	</select>
 	
 	<!-- 직원 업데이트 Emp 테이블 -->

@@ -45,6 +45,7 @@ License: For each use you must have a valid license purchased only from above li
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" data-bs-spy="scroll" data-bs-target="#kt_account_settings" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
@@ -59,6 +60,7 @@ License: For each use you must have a valid license purchased only from above li
 					
 					<!--begin::Content-->
 				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
+						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<!--begin::Post-->
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
 							<!--begin::Container-->
@@ -229,10 +231,13 @@ License: For each use you must have a valid license purchased only from above li
 															<div class="col-lg-8 fv-row">
 																<!-- 셀렉트 박스 -->
 																<select class="form-select w-50" aria-label="Select option"  name = "dept_name" id="dept_name">
-																	<option value="매장관리팀" ${list.get(0).deptName eq '매장관리팀' ? 'selected' : ''}>매장관리팀</option>
 																    <option value="고객관리팀" ${list.get(0).deptName eq '고객관리팀' ? 'selected' : ''}>고객관리팀</option>
 																    <option value="회계팀" ${list.get(0).deptName eq '회계팀' ? 'selected' : ''}>회계팀</option>
 																    <option value="인사팀" ${list.get(0).deptName eq '인사팀' ? 'selected' : ''}>인사팀</option>
+																	<option value="매장관리팀" ${list.get(0).deptName eq '매장관리팀' ? 'selected' : ''}>매장관리팀</option>
+																	<option value="식품팀" ${list.get(0).deptName eq '식품팀' ? 'selected' : ''}>매장관리팀(식품팀)</option>
+																	<option value="생필품팀" ${list.get(0).deptName eq '생필품팀' ? 'selected' : ''}>매장관리팀(생필품팀)</option>
+																	<option value="전자제품팀" ${list.get(0).deptName eq '전자제품팀' ? 'selected' : ''}>매장관리팀(전자제품팀)</option>
 																</select>
 															</div>
 															<!--end::Col-->
@@ -249,6 +254,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
 																<select class="form-select w-50" aria-label="Select option" name = "common_type" id="common_type">
+																	<option value="점장" ${list.get(0).positionType eq '점장' ? 'selected' : ''}>점장</option>
 																	<option value="팀장" ${list.get(0).positionType eq '팀장' ? 'selected' : ''}>팀장</option>
 																	<option value="매니저" ${list.get(0).positionType eq '매니저' ? 'selected' : ''}>매니저</option>
 																	<option value="사원" ${list.get(0).positionType eq '사원' ? 'selected' : ''}>사원</option>
@@ -430,11 +436,11 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="col-lg-8 fv-row">
 																	<!-- 시작::입력 -->
 																	<div class="form-check form-check-custom form-check-solid" id="emp_gender">
-																	    <input class="form-check-input" type="radio" value="M" id="maleRadio" name="gender" ${list.get(0).empGender eq '남자' ? 'checked' : ''}/>
+																	    <input class="form-check-input" type="radio" value="M" id="maleRadio" name="gender" ${list.get(0).empGender eq 'M' ? 'checked' : ''}/>
 																	    <label class="form-check-label" for="maleRadio">
 																	        남자
 																	    </label>
-																	    <input class="form-check-input" type="radio" value="W" id="femaleRadio" name="gender" ${list.get(0).empGender eq '여자' ? 'checked' : ''} style="margin-left: 30px;"/>
+																	    <input class="form-check-input" type="radio" value="W" id="femaleRadio" name="gender" ${list.get(0).empGender eq 'W' ? 'checked' : ''} style="margin-left: 30px;"/>
 																	    <label class="form-check-label" for="femaleRadio">
 																	        여자
 																	    </label>
@@ -637,56 +643,9 @@ License: For each use you must have a valid license purchased only from above li
 	     
 	            
 	            $("#uploadForm").submit();
-	            
-				/*
-	            var emp_idx = $("#emp_idx").text();
-	            var education = $("#education").val();
-	            var school_name = $("#school_name").val();
-	            var major = $("#major").val();
-	            var emp_birth = $("#kt_datepicker_2").val();
-	            var emp_gender = $("input[name='gender']:checked").val() || "";
-	            var emp_phone = $("#emp_phone").val();
-	            var emp_emergency_phone = $("#emp_emergency_phone").val();
-	            var emp_ext_no = $("#emp_ext_no").val();
-	            var leave_incdec = $("#leave_incdec").val();
-	            var common_type = $("#common_type").val();
-	            var dept_name = $("#dept_name").val();
-	            
-	            var emp_name = $("#emp_name").text();
 
-	            var url = "employee/modify?education=" + education +
-	                "&school_name=" + school_name +
-	                "&major=" + major +
-	                "&emp_birth=" + emp_birth +
-	                "&emp_gender=" + emp_gender +
-	                "&emp_phone=" + emp_phone +
-	                "&emp_emergency_phone=" + emp_emergency_phone +
-	                "&emp_ext_no=" + emp_ext_no +
-	                "&leave_incdec=" + leave_incdec +
-	                "&common_type=" + common_type +
-	                "&dept_name=" + dept_name +
-	                "&emp_idx=" + emp_idx +
-	                "&emp_name=" + emp_name;
-
-	            window.location.href = url;
-*/
 	        });
 	    });
-/*
-	        document.getElementById('file-input').addEventListener('change', function(event) {
-	            var input = event.target;
-	            var preview = document.getElementById('blankImg');
-	            
-	            var reader = new FileReader();
-	            reader.onload = function() {
-	                preview.src = reader.result;
-	            };
-	            
-	            if (input.files && input.files[0]) {
-	                reader.readAsDataURL(input.files[0]);
-	            }
-	        });
-*/
 
 
 

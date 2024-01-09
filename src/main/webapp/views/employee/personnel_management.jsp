@@ -37,6 +37,7 @@ License: For each use you must have a valid license purchased only from above li
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
@@ -51,7 +52,7 @@ License: For each use you must have a valid license purchased only from above li
 					
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
-						
+						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<!--begin::Post-->
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
 							<!--begin::Container-->
@@ -72,17 +73,16 @@ License: For each use you must have a valid license purchased only from above li
 										<div class="card h-xl-100">
 											<!--begin::Header-->
 											<div class="card-header align-items-center border-0 mt-5">
-												<h3 class="card-title align-items-start flex-column">
-													<span class="fw-bolder text-gray-900 fs-3">조직도</span>
+                                              	<h3 class="fw-bolder text-gray-900 fs-3">조직도
+												</h3>
 												
-														<input type="text" class="form-control form-control-solid" placeholder="이름 입력" style="width: 200px; height: 40px;">
+											
+												<div class="card-toolbar input-group mb-3">
+													<!--begin::Menu-->
+													<input type="text" class="form-control form-control-solid" placeholder="이름 입력" style="width: 20%; height: 40px;">
             											<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1" style="white-space:nowrap;">
 															부서관리
 														</button>
-													
-												</h3>
-												<div class="card-toolbar">
-													<!--begin::Menu-->
 												</div>
 											</div>
 											<!--end::Header-->
@@ -488,7 +488,8 @@ License: For each use you must have a valid license purchased only from above li
 		$(function(){
 			getTreeData();
 		})
-	
+
+		
 		function getTreeData(){
 			$.ajax({
 				url:'/organizationChart.ajax',
@@ -518,29 +519,23 @@ License: For each use you must have a valid license purchased only from above li
 		}
 		
 		
+		
+		$(function(){
+		    var success_empID = '${success_empID}';
+
+		    if(success_empID != null && success_empID !== 'null'){
+		        console.log('회원값 들어오나 확인용', success_empID);
+		        drawEmployeeDetail(success_empID);
+		    }
+		});
+		
+		
+		
+		
+		
+		
 		$('#kt_docs_jstree_basic').bind("dblclick.jstree", function (e, data) {
-		    /*
-			// 더블클릭한 엘리먼트의 텍스트 가져오기
-		    var selectedNodeText = e.target.textContent || e.target.innerText;
-
-		    // 선택된 노드 텍스트를 출력하거나 다른 작업 수행
-		    console.log("선택된 노드 텍스트:", selectedNodeText);
-
-		    // 텍스트를 분할하고 빈 문자열을 제거하여 배열 생성
-		    var nodes = selectedNodeText.split(/[( )]/).filter(function (value) {
-		        return value !== '';
-		    });
-		    
-		    // 요소 뽑아서 가져오기
-		    var emp_name = nodes[0];
-		    var dept_name = nodes[1];
-		    var common_type = nodes[2];
-		    console.log("emp_name = ", emp_name);
-			console.log("dept_name = ", dept_name);
-			console.log("common_type = ", common_type);
-		    // 예시: 다른 요소에 값을 설정하기
-		    $('#selectedNodeInput').val("선택된 노드: " + selectedNodeText);
-		    */
+		   
 			console.log("emp_idx =",e.target.id.replace("_anchor",""));
 		    var emp_idx = e.target.id.replace("_anchor","");
 			drawEmployeeDetail(emp_idx);

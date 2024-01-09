@@ -35,4 +35,6 @@ public interface PosDao {
 
 	int payPoint(HashMap<String, String> params);
 
+	int datePoint(String string, int i);
+
 }
