@@ -12,6 +12,7 @@
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
+		<link rel="stylesheet" href="resource/assets/css/jquery.scheduler.css" />
 		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
@@ -23,10 +24,7 @@
 
 		<!--end::Global Stylesheets Bundle-->
 
-<script src="resource/assets/js/date.format.min.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="resource/assets/js/jquery.scheduler.js"></script>
     <style>
         body {
             padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -411,7 +409,10 @@
 
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		
-		
+		<script src="resource/assets/js/date.format.min.js"></script>
+
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+		<script src="resource/assets/js/jquery.scheduler.js"></script>
 
 				</body>
 		
