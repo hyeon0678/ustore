@@ -37,6 +37,8 @@ public interface EmpProfileDao {
 	
 	int insertEmpUpdateData(EmployeeDto dto);
 
+	void addLeaveEvent(Map<String, String> params);
+
 
 	
 

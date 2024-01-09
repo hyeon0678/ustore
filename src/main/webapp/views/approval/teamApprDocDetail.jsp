@@ -31,9 +31,32 @@
 		}
 		.signature-table td {
 			border: 1px solid #ddd;
-			padding: 10px;
 			text-align: center;
 		}		
+		.signature-table th{
+			border: 1px solid #ddd;
+			text-align: center;
+			height: 25px;
+		}	
+		@media print {
+        body * {
+            visibility: hidden;
+        }
+
+        .loadApprDoc, .loadApprDoc * {
+            visibility: visible;
+        }
+
+        .loadApprDoc {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 210mm; /* A4 가로 크기 */
+            height: 297mm; /* A4 세로 크기 */
+            margin: 0 auto; /* 중앙 정렬 */
+            padding: 20mm; /* 여백 설정 */
+        }
+    }	
 	</style>
 	</head>
 	<!--end::Head-->
@@ -179,33 +202,28 @@
 							</div>
 						</div>
 						<!-- 아래쪽 div -->
-						<c:if test="${commentsExist}">
-							<div>
-								<div class="comment border"  style="align-items: center; margin: 5px;">
-									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
-										<span class="text-center">결재의견(반려, 수정)</span>
+						<div>
+							<div class="comment border"  style="align-items: center; margin: 5px;">
+								<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
+									<span class="text-center">결재의견(반려, 수정)</span>
+								</div>										
+								<div class="d-flex flex-column commentTable scroll" id="comment" style="height: 100px;">
+									<div style="overflow: auto;">
+										<table class="w-100">
+											<thead>
+												<tr>
+													<th>결재자명</th>
+													<th>일시</th>
+													<th>의견</th>
+												</tr>
+											</thead>
+											<tbody>												
+											</tbody>
+										</table>
 									</div>										
-									<div class="d-flex flex-column commentTable scroll" id="comment" style="height: 100px;">
-										<div style="overflow: auto;">
-											<table class="w-100">
-												<thead>
-													<tr>
-														<th>결재자명</th>
-														<th>일시</th>
-														<th>의견</th>
-													</tr>
-												</thead>
-												<tbody>	
-													<tr>
-														<td colspan="3" style="text-align: center;">의견이 없습니다.</td>
-													</tr>													
-												</tbody>
-											</table>
-										</div>										
-									</div>
 								</div>
-							</div>	
-						</c:if>										
+							</div>
+						</div>										
 					</div>
 
 					<div class="modal-footer" style="display: flex; justify-content: center;">
@@ -214,6 +232,9 @@
 				</div>
 			</div>
 		</div>
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal" var="principal"/>
+		</sec:authorize>
 								
 		<!--begin::Javascript-->
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
@@ -295,7 +316,9 @@
         	        positionType: secondData.positionType,
         	        department: secondData.dept_name,
         	        apprOrder: secondData.appr_order,
-        	        apprConfirm: secondData.appr_confirm
+        	        apprConfirm: secondData.appr_confirm,
+        	        comment : secondData.comment,
+        	        apprDate : secondData.appr_date
         		};
         	}
         	
@@ -324,6 +347,36 @@
 			$("#apprListTable #approverRow").html(generateApproverRow());
 			$("#apprListTable tr:last").html(generateSignatureRow());
 		    
+			
+			// tbody 요소를 가져옴
+			var commentbody = document.querySelector("#comment tbody");
+
+			// approvalLines 배열 순회
+			approvalLines.forEach(function(data) {
+			    // comment가 있는 경우에만 처리
+			    if (data.comment !== null) {
+			        // tr 요소 생성
+			        var row = document.createElement("tr");
+
+			        // 각 컬럼에 데이터 추가
+			        var columns = ["name", "apprDate", "comment"];
+			        columns.forEach(function(column) {
+			            var cell = document.createElement("td");
+			            // 날짜 데이터의 경우 포맷 변경
+			            if (column === "apprDate") {
+			                var date = new Date(data[column]);
+			                cell.textContent = date.toLocaleDateString("ko-KR", { year: 'numeric', month: '2-digit', day: '2-digit' });
+			            } else {
+			                cell.textContent = data[column];
+			            }
+			            row.appendChild(cell);
+			        });
+
+			        // tbody에 행 추가
+			        commentbody.appendChild(row);
+			    }
+			});
+			
 			
 			// 수신자 정보 불러오기
 		    
@@ -443,6 +496,14 @@
 	
 	$(document).ready(function () {    	
     	
+		var common_idx=${common_idx};
+    	console.log("common_idx : "+common_idx);
+    	// 초기에 선택된 양식에 대한 HTML 파일 로드
+        var formPage = '<%= request.getAttribute("formPage") %>';
+        if (formPage) {
+            loadFormPage(formPage, common_idx, apprTypeIdx);
+        }
+		
         // 결재정보 버튼 클릭 시의 동작
         $('#btnApprovalInfo').on('click', function () {
             // 여기에 결재정보 버튼 클릭 시 수행할 동작 추가
@@ -460,7 +521,7 @@
 
         // 뒤로가기 버튼 클릭 시의 동작
         $('#btnGoBack').on('click', function () {
-        	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
+        	if (confirm('리스트 페이지로 이동하시겠습니까?')) {
                 // 사용자가 Yes를 클릭한 경우 /newapproval 페이지로 이동
                 window.location.href = '/approval/teamapproval';
             } else {

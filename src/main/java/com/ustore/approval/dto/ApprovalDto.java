@@ -31,6 +31,7 @@ public class ApprovalDto {
 	private String apprType; // 결재타입(기안, 결재)
 	private int docStep; // 문서의 결재단계(순서)
 	private Date apprSubmitDate; // 기안일자
+	private String formattedApprDate; // 변환된 날짜(java.util.date - > String 포맷 변환)
 	
 	// 업무기안문
 	private String apprSubject; // 제목
@@ -47,6 +48,12 @@ public class ApprovalDto {
 	
 	
 	
+	public String getFormattedApprDate() {
+		return formattedApprDate;
+	}
+	public void setFormattedApprDate(String formattedApprDate) {
+		this.formattedApprDate = formattedApprDate;
+	}
 	public String getApprType() {
 		return apprType;
 	}
@@ -142,13 +149,15 @@ public class ApprovalDto {
 	public void setApprConfirm(String apprConfirm) {
 		this.apprConfirm = apprConfirm;
 	}
+
+	
+	
 	public Date getApprDate() {
 		return apprDate;
 	}
 	public void setApprDate(Date apprDate) {
 		this.apprDate = apprDate;
 	}
-	
 	public String getDocId() {
 		return docId;
 	}
