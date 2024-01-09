@@ -24,13 +24,19 @@ public class StockDto {
 	private int finalminQuantity;
 	private String regDate;
 	private int orderIdx;
-	
+    private String resourceName;
 	
 	
 
 	
 	
 	
+	public String getResourceName() {
+		return resourceName;
+	}
+	public void setResourceName(String resourceName) {
+		this.resourceName = resourceName;
+	}
 	public int getOrderIdx() {
 		return orderIdx;
 	}

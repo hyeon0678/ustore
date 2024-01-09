@@ -72,7 +72,7 @@ select product_id from order_cart
     </select>
     
     <insert id="driverSchedule" parameterType="OrderDto">
-    insert into driver_schedule(driver_idx,delivery_date) values(#{driverIdx},#{expArrivalDate})
+    insert into driver_schedule(driver_idx,delivery_date,resource_idx) values(#{driverIdx},#{expArrivalDate},#{resourceIdx})
     </insert>
     
     <insert id="orderHistoryInsert" parameterType="String">
@@ -93,15 +93,19 @@ VALUES (
     select * from order_cart
     </select>
     <select id="orderHistoryList" resultType="OrderDto">
-    SELECT
+     SELECT
     o.order_idx,
     o.exp_arrival_date,
     d.driver_name,
-    d.car_num
+    r.resource_name
 FROM
     `order` o
 JOIN
     delivery_driver d ON o.driver_idx = d.driver_idx
+JOIN
+    driver_schedule ds ON o.driver_idx = ds.driver_idx
+JOIN
+    resource r ON ds.resource_idx = r.resource_idx;
     </select>
     
     <select id="orderListModal" resultType="OrderDto">
@@ -111,7 +115,9 @@ JOIN products p ON od.product_id = p.product_id
 WHERE od.order_idx = #{orderIdx}
     
     </select>
-    
+    <select id="driverSch" resultType="OrderDto">
+     select resource_idx ,resource_name  from resource where resource_del ="N";  
+    </select>
    
 
 </mapper>

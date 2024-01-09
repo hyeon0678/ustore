@@ -184,7 +184,7 @@
 													<td><a href="#" class="btn btn-link text-primary"
 														data-bs-toggle="modal" data-bs-target="#kt_modal_1"
 														data-order-idx="${List.orderIdx}"> ${List.orderIdx} </a></td>
-													<td>${List.carNum}</td>
+													<td>${List.resourceName}</td>
 
 													<td class="text-end">${List.driverName}
 														&nbsp;&nbsp;&nbsp;&nbsp;</td>

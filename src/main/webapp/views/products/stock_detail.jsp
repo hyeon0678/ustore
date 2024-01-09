@@ -181,7 +181,7 @@ h1 {
 								<c:forEach items="${incomingList}" var="incoming">
 									<tr>
 									<td>${incoming.receiptDate}</td>
-									<td>${incoming.quantity}/${incoming.unitQuantity}</td>
+									<td>${incoming.quantity}/${incoming.unitQuantity * incoming.quantity}</td>
 							</tr>
 							</c:forEach>
 								</tbody>

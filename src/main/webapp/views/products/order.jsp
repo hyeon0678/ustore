@@ -300,6 +300,7 @@ button i.bi {
 
 												<div class="py-5">
 													<div class="table-responsive">
+													<div style="display: flex;">
 														<div class="w-150px">
 															배송기사 선택 <select class="form-select form-select-solid"
 																data-control="select2" data-dropdown-css-class="w-200px"
@@ -310,7 +311,17 @@ button i.bi {
 															</select>
 														
 														</div>
+														<div class="w-150px">
+															배송차량 선택 <select class="form-select form-select-solid"
+																data-control="select2" data-dropdown-css-class="w-200px"
+																data-placeholder="배송차량을 선택 해주세요!" data-hide-search="true" id="orderCarNum">
+														<c:forEach items="${list4}" var="order4">
+																<option value="${order4.resourceIdx}" selected>${order4.resourceName}</option>
+												</c:forEach>
+															</select>
 														
+														</div>
+														</div>
 														<table
 															class="table table-row-dashed table-row-gray-300 gy-7" id="orderModal">
 															<thead>
@@ -565,16 +576,17 @@ orderButton.addEventListener('click', async function () {
                 if (result.isConfirmed) {
                 	var emp = '${principal.username}';
                     const selectedDriverIdx = $("select[data-control='select2']").val();
-
+                    const selectedResourceIdx = $("#orderCarNum").val();
                     $.ajax({
                         url: '/order/insert',
                         method: 'POST',
                         data: {
                             driverIdx: selectedDriverIdx,
-                            empIdx : emp
+                            empIdx : emp,
+                            resourceIdx :selectedResourceIdx 
                         },
                         success: function (response) {
-                          
+                          	
                             console.log('발주 성공:', response);
 
                          

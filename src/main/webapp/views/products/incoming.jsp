@@ -159,7 +159,7 @@
 										<tr>
 										<td>${List.expArrivalDate}</td>
 										<td><a href="#" class="btn btn-link text-primary confirmButton" data-order-idx="${List.orderIdx}" data-bs-toggle="modal" data-bs-target="#kt_modal_1">&emsp;${List.orderIdx}</a></td>
-										<td>${List.carNum}</td>
+										<td>${List.resourceName}</td>
 										<td class = "text-center">${List.driverName}</td>
 										</tr>
 										</c:forEach>

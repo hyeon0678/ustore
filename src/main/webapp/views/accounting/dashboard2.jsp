@@ -115,7 +115,7 @@
 										<!--begin::Value-->
 										<span class="fs-5 fw-bold text-gray-800 me-2 lh-1 chart-title">비용금액 및 내역</span>
 										<!--end::Value-->
-										<span style="width: 60%;"><select
+										<span style="width: 70%;"><select
 																			class="form-select form-select-solid" 
 																			data-control="select2" data-placeholder="선택"
 																			data-hide-search="true" name="Bselect" id="Bselect" style="width: 30%;">
@@ -372,12 +372,12 @@
 </script>
 <script>
 $(document).ready(function() {
+    // Define colors
     var primaryColor = KTUtil.getCssVariableValue('--kt-primary');
     var dangerColor = KTUtil.getCssVariableValue('--kt-danger');
     var successColor = KTUtil.getCssVariableValue('--kt-success');
     var currentDate = new Date();
     var myChart; // myChart 변수를 전역으로 선언
-    var isWeeklyClicked = false; // 주간 버튼 클릭 여부를 저장하는 변수
 
     // 5일 전의 날짜 계산
     var fiveDaysAgo = new Date(currentDate);
@@ -417,9 +417,9 @@ $(document).ready(function() {
         success: function(data) {
         	console.log('Received data from server:', data);
             // Extracting data from the server response
-            totalPriceData = data.list1.map(item => item.totalPrice);
-            totalPriceOrderData = data.list2.map(item => Math.floor(Math.random() * 2000)); // 전역 변수에 할당
-            totalUsedPointsData = data.list3.map(item => item.totalUsedPoints); // 전역 변수에 할당
+            totalPriceData = data.map(item => item.totalPrice); // 전역 변수에 할당
+            totalPriceOrderData = data.map(item => Math.floor(Math.random() * 2000)); // 전역 변수에 할당
+            totalUsedPointsData = data.map(item => Math.floor(Math.random() * 2000)); // 전역 변수에 할당
 
             var sortedData = [
                 { label: '포인트 사용', data: normalizeData(totalUsedPointsData), backgroundColor: successColor },
@@ -427,9 +427,12 @@ $(document).ready(function() {
                 { label: '파손/폐기', data: normalizeData(totalPriceData), backgroundColor: primaryColor },
             ].sort((a, b) => Math.max(...b.data) - Math.max(...a.data));
 
-            var datasets = sortedData;
+            // Chart data
+            const datasets = sortedData;
+      
 
-            var config = {
+            // Chart config
+            const config = {
                 type: 'bar',
                 data: { labels: labels, datasets: datasets },
                 options: {
@@ -470,6 +473,7 @@ $(document).ready(function() {
         // Find the maximum value in the data
         const maxValue = Math.max(...data);
 
+        
         // Normalize the data by dividing each value by the maximum value
         return data.map(value => (maxValue !== 0 ? (value / maxValue) * 100 : value));
     }
@@ -480,15 +484,13 @@ $(document).ready(function() {
 
         // 차트를 다시 렌더링하기 전에 옵션을 수정합니다.
         // 여기서는 '주간'에 해당하는 데이터를 가져오도록 예시로 구현하였습니다.
-        if ($('#Bselect').val() === '주간' && !isWeeklyClicked) {
-            isWeeklyClicked = true; // 주간 버튼 클릭 플래그를 true로 설정
+        if ($('#Bselect').val() === '주간') {
             chartConfig.data.labels = ['5주전', '4주전', '3주전', '2주전', '1주전', '이번주'];
             chartConfig.data.datasets.forEach(function(dataset) {
                 // 여기서는 랜덤 데이터를 사용하도록 예시로 구현하였습니다.
                 dataset.data = Array.from({ length: 6 }, () => Math.floor(Math.random() * 700));
             });
-        } else if ($('#Bselect').val() === '일간') {
-            isWeeklyClicked = false; // 주간 버튼 클릭 플래그를 false로 설정
+        } else {
             // '일간'인 경우, 기존과 동일한 데이터를 사용하도록 설정합니다.
             chartConfig.data.labels = labels;
             chartConfig.data.datasets.forEach(function(dataset, index) {
@@ -506,7 +508,6 @@ $(document).ready(function() {
         myChart.update();
     });
 });
-
 </script>
 
 <!-- ----------------------------------------------------------------------------------------------------------------- -->

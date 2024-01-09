@@ -3,6 +3,9 @@ package com.ustore.dashboard.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,96 +17,84 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ustore.dashboard.dto.DashboardDto;
 import com.ustore.dashboard.service.DashboardService;
-import com.ustore.products.dto.StockDto;
 
 @Controller
 public class DashboardController {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired DashboardService service;
+	@Autowired
+	DashboardService service;
 // ----------------------------------------------------dash board 임시 -------------------------------------------------------------
-	
+
 	@GetMapping(value = "/accountingdashboard")
 	public String dashboardList() {
-		
-		
-		
-		
+
 		return "accounting/dashboard";
 	}
-	
+
 	@GetMapping(value = "/accounting/dashboard/produtctlist")
-	@ResponseBody ArrayList<DashboardDto> accountingDashboard(){
-		
-		
+	@ResponseBody
+	ArrayList<DashboardDto> accountingDashboard() {
+
 		ArrayList<DashboardDto> DashDto = service.accountingDashboard();
-		
-		logger.info("DashDto : "+ DashDto);
-		
-		
+
+		logger.info("DashDto : " + DashDto);
+
 		return DashDto;
 	}
-	
+
 	@GetMapping(value = "/accounting/dashboard/produtctdaylist")
 	@ResponseBody
-	public ArrayList<DashboardDto> accountingDashbaordDay(@RequestParam("selectedDate") String selectedDate){
-		
-		logger.info("selectedDate :" +selectedDate);
-		
-		String firstSelectedDate = selectedDate.substring(0,10) ;
-		String lastSelectedDate = selectedDate.substring(13,23);
-		
-		
-		
+	public ArrayList<DashboardDto> accountingDashbaordDay(@RequestParam("selectedDate") String selectedDate) {
+
+		logger.info("selectedDate :" + selectedDate);
+
+		String firstSelectedDate = selectedDate.substring(0, 10);
+		String lastSelectedDate = selectedDate.substring(13, 23);
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-		
+
 		LocalDate birthdate = LocalDate.parse(firstSelectedDate, formatter);
-		
+
 		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String TrfirstSelectedDate = birthdate.format(outputFormatter);
-		
-DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-		
+
+		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
 		LocalDate birthdate2 = LocalDate.parse(lastSelectedDate, formatter);
-		
+
 		DateTimeFormatter outputFormatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String TrlastSelectedDate = birthdate2.format(outputFormatter);
-		
-		logger.info("TrlastSelectedDate : "+TrlastSelectedDate);
-		logger.info("TrfirstSelectedDate : "+TrfirstSelectedDate);
-		
-		return service.accountingDashboardDay(TrfirstSelectedDate,TrlastSelectedDate);
+
+		logger.info("TrlastSelectedDate : " + TrlastSelectedDate);
+		logger.info("TrfirstSelectedDate : " + TrfirstSelectedDate);
+
+		return service.accountingDashboardDay(TrfirstSelectedDate, TrlastSelectedDate);
 	}
-	
+
 	// dashboardpaymentsHistoryList
 	@GetMapping(value = "/accounting/dashboardday/list")
 	@ResponseBody
-	public ArrayList<DashboardDto> dashboardStockHistoryList() {
-		
-		logger.info("파손 컨트롤러 들어옴!!");
-		
-		
-		ArrayList<DashboardDto> list1 = service.dashboardStockHistoryList();
-		ArrayList<DashboardDto> list2 = service.dashboardOrderHistoryList();
-		ArrayList<DashboardDto> list3 = service.dashboardpaymentsHistoryList();
-		ArrayList<DashboardDto> combinedList = new ArrayList<>();
-		
-		combinedList.addAll(list1);
-		combinedList.addAll(list2);
-		combinedList.addAll(list3);
-		
-		
-		return combinedList;
+	public Map<String, ArrayList<DashboardDto>> dashboardDataList() {
+	    logger.info("파손 컨트롤러 들어옴!!");
+
+	    ArrayList<DashboardDto> list1 = service.dashboardStockHistoryList();
+	    ArrayList<DashboardDto> list2 = service.dashboardOrderHistoryList();
+	    ArrayList<DashboardDto> list3 = service.dashboardpaymentsHistoryList();
+
+	    Map<String, ArrayList<DashboardDto>> resultMap = new HashMap<>();
+	    resultMap.put("list1", list1);
+	    resultMap.put("list2", list2);
+	    resultMap.put("list3", list3);
+
+	    return resultMap;
 	}
-	
+
 	@GetMapping(value = "/accounting/dashboardline/list")
 	@ResponseBody
-	public ArrayList<DashboardDto> dashboardLineList(){
-		
-		
-		
-		
+	public ArrayList<DashboardDto> dashboardLineList() {
+
 		return service.dashboardLineList();
 	}
-	
+
 }

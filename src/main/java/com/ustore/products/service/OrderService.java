@@ -73,13 +73,14 @@ public class OrderService {
 		return msg;
 	}
 
-	public void orderInsert(String formattedBirthdate, String driverIdx, String empIdx) {
+	public void orderInsert(String formattedBirthdate, String driverIdx, String empIdx, String resourceIdx) {
 		
 		OrderDto dto = new OrderDto();
 		
 		dto.setDriverIdx(Integer.parseInt(driverIdx));
 		dto.setExpArrivalDate(formattedBirthdate);
 		dto.setEmpIdx(empIdx);
+		dto.setResourceIdx(Integer.parseInt(resourceIdx));
 		
 		
 		
@@ -134,6 +135,11 @@ public class OrderService {
 		
 	
 		return dao.orderListModal(dto);
+	}
+
+	public ArrayList<OrderDto> driverSch() {
+	
+		return dao.driverSch();
 	}
 
 	
