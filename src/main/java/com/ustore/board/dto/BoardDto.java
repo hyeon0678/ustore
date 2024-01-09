@@ -22,8 +22,22 @@ public class BoardDto {
 	
 	private String emp_name;
 	
+	private String anony_board_idx;
+	private int repl_idx;
+	private String repl_content;
 	
-	
+	public int getRepl_idx() {
+		return repl_idx;
+	}
+	public void setRepl_idx(int repl_idx) {
+		this.repl_idx = repl_idx;
+	}
+	public String getRepl_content() {
+		return repl_content;
+	}
+	public void setRepl_content(String repl_content) {
+		this.repl_content = repl_content;
+	}
 	public String getEmp_name() {
 		return emp_name;
 	}
@@ -113,6 +127,12 @@ public class BoardDto {
 	}
 	public void setReg_date(Date reg_date) {
 		this.reg_date = reg_date;
+	}
+	public String getAnony_board_idx() {
+		return anony_board_idx;
+	}
+	public void setAnony_board_idx(String anony_board_idx) {
+		this.anony_board_idx = anony_board_idx;
 	}
 	
 	

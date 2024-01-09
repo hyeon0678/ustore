@@ -74,7 +74,7 @@
 									<!--begin::Col 드롭박스 >> 회원 상태-->
 									<!--end::Col-->
 									<input type="text" class="form-control form-control-solid" name="adListSerch" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
-									<button type="button" class="btn btn-primary" style="margin: 10px;">검색</button>
+									<button type="button" class="btn btn-primary" style="margin: 10px;" onclick="search()">검색</button>
 									<button onclick="location.href='adboard/WriteForm'" class="btn btn-primary">글작성</button>
 								</div>
 								<!--end::Actions-->
@@ -186,13 +186,42 @@
 				content += '<td><a href="adboard/detail?notice_idx='+item.notice_idx+'" class="text-danger text-hover-primary mb-1">' + item.notice_subject + '</a></td>';
 				content += '<td><a href="empprifile/detail?emp_idx='+item.emp_idx+'" class="text-danger text-hover-primary mb-1">' + item.emp_name + '</a></td>';
 				content += '<td>' + item.notice_hit + '</td>';
-				content += '<td>' + item.reg_date + '</a></td>';
+				content += '<td>' + item.reg_date + '</td>';
 				content += '</tr>';
+				
+				console.log("content : " + content);
 				
 			});
 				$('#list').empty();
 				$('#list').append(content);
 			}
+		
+		function search(){
+			console.log("검색 메서드  호출");
+			
+			// location.href='adminReportDetail?idx='+idx+'&&type='+type;
+			// var $state = $("input[type=checkbox][name=hisstate]:checked").val();
+			
+			
+			
+			
+			var keyword = $('input[name="adListSerch"]').val();
+			$.ajax({
+				type:'get',
+				url:'adboard/listSearch.ajax', 
+				data:{'keyword':keyword},
+				dataType:'JSON',
+				success:function(data){
+					console.log(data);
+					console.log("리스트 호출 뿌려주기");
+					
+					drawlist(data.list);
+				},
+				error:function(e){
+					console.log(e);
+				}
+				});
+		}
 			
 		</script>
 		

@@ -39,6 +39,11 @@ public class BoardController {
 		return "/board/admin_board_list";
 	}
 	
+	@GetMapping(value = "/anboard/list")
+	public String anboardList() {
+		return "/board/anonymous_board_list";
+	}
+	
 	@RequestMapping(value = "/adboard/list.ajax")
 	@ResponseBody
 	public HashMap<String, Object> adList(){
@@ -51,6 +56,23 @@ public class BoardController {
 		result.put("list", list);
 		result.put("size", list.size());
 		logger.info("adlistsize : " + result);
+		
+		return result;
+		
+	}
+	
+	@RequestMapping(value = "/anboard/list.ajax")
+	@ResponseBody
+	public HashMap<String, Object> anList(){
+		
+		logger.info("익명게시판 리스트 호출");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		ArrayList<HashMap<String, String>> list = service.anList();
+		logger.info("anlistnum : " + list.toString());
+		result.put("list", list);
+		result.put("size", list.size());
+		logger.info("anlistsize : " + result);
 		
 		return result;
 		
@@ -74,6 +96,22 @@ public class BoardController {
 		return page;
 	}
 	
+	@RequestMapping(value = "/anboard/WriteForm")
+	public String anboardWirteForm(Model model, HttpSession session, Principal principal) {
+		
+		String emp_idx = principal.getName();
+		String empidx = (String) session.getAttribute("emp_idx");
+		String deptID = (String) session.getAttribute("dept_id");
+		String page = "redirect:/anboard/list";
+		
+			page = "/board/anonymous_board_write";
+			logger.info("공지사항 작성자 : " + emp_idx);
+			logger.info("작성자 부서 : " + deptID);
+			logger.info("작성자 세션 : " + empidx);
+				
+		return page;
+	}
+	
 	@RequestMapping(value = "/adboard/Write")
 	public ModelAndView adboardWrite(MultipartFile[] photos, @RequestParam Map<String, String> params, HttpSession session) throws Exception  {
 		
@@ -81,7 +119,6 @@ public class BoardController {
 		
 		String emp_idx = (String) session.getAttribute("emp_idx");
 		String deptID = (String) session.getAttribute("dept_id");
-		
 		
 		int empidx = Integer.parseInt(emp_idx);
 		
@@ -95,16 +132,15 @@ public class BoardController {
 		logger.info("params : " + params);
 				
 		service.adboardWrite(params, deptID, emp_idx);
+		int adboardNum = service.adboardNum(params);
 		
 		if(photos != null) {	
 			SaveFile saveFile = new SaveFile();
-			
 			logger.info("공지사항file : " + photos);
-
 			FileDto file = new FileDto();
 			for (MultipartFile photo : photos) {
 			if (photo != null && !photo.isEmpty()) {
-				file = (FileDto) saveFile.returnFileList(photo, 70, Integer.toString(empidx));
+				file = (FileDto) saveFile.returnFileList(photo, 70, Integer.toString(adboardNum));
 				logger.info("공지사항 file : "+file);			
 				saveFile.saveFile(file);			
 				filedao.saveFile(file);
@@ -116,6 +152,48 @@ public class BoardController {
 			}
 		}
 		mav.setViewName("redirect:/adboard/list");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/anboard/Write")
+	public ModelAndView anboardWrite(MultipartFile[] photos, @RequestParam Map<String, String> params, HttpSession session) throws Exception  {
+		
+		ModelAndView mav = new ModelAndView();
+		
+		String emp_idx = (String) session.getAttribute("emp_idx");
+		String deptID = (String) session.getAttribute("dept_id");
+		
+		int empidx = Integer.parseInt(emp_idx);
+		
+		logger.info("empidx int값 : " + empidx);
+		
+		mav.setViewName("redirect:/anboard/list");
+		
+		logger.info("익명게시판 작성 직원 부서 : " + deptID);
+		logger.info("익명게시판 작성자 : "+emp_idx);
+		logger.info("params : " + params);
+				
+		service.anboardWrite(params, deptID, emp_idx);
+		int anboardNum = service.anboardNum(params);
+
+		if(photos != null) {	
+			SaveFile saveFile = new SaveFile();
+			logger.info("익명게시판file : " + photos);
+			FileDto file = new FileDto();
+			for (MultipartFile photo : photos) {
+			if (photo != null && !photo.isEmpty()) {
+				file = (FileDto) saveFile.returnFileList(photo, 71, Integer.toString(anboardNum));
+				logger.info("익명게시판 file : "+file);			
+				saveFile.saveFile(file);			
+				filedao.saveFile(file);
+				Thread.sleep(1);
+					}else {
+						logger.info("사진 x");
+					}
+				}
+			}
+		
+		mav.setViewName("redirect:/anboard/list");
 		return mav;
 	}
 	
@@ -145,6 +223,32 @@ public class BoardController {
 		
 	}
 	
+	@RequestMapping(value = "/anboard/detail")
+	public ModelAndView anboardDetail(@RequestParam String anony_idx) {
+		ModelAndView mav = new ModelAndView();
+		
+		BoardDto dto = new BoardDto();
+		
+//		HashMap<String, String> file = filedao.anboardfile(anony_idx);
+//		logger.info("file : " + file);
+		
+		logger.info("글 상세보기 : " + anony_idx);
+		
+		HashMap<String, String> map = service.anboardDetail(anony_idx, true);
+		
+		logger.info("map 값 : " + map);
+		
+		mav.addObject("board", map);
+//		mav.addObject("file", file);
+		mav.setViewName("board/anonymous_board_detail");
+		
+		logger.info("mav 값 : " + mav);
+		logger.info("상세보기 이동");
+		
+		return mav;
+		
+	}
+	
 	@RequestMapping(value = "adboard/delete.ajax")
 	@ResponseBody
 	public ModelAndView adboardDelete(@RequestParam int notice_idx) {
@@ -152,11 +256,31 @@ public class BoardController {
 		logger.info("삭제 공지사항 : " + notice_idx);
 		
 		String msg = service.adboardDelete(notice_idx);
+		
 		logger.info("삭제 성공 : " + notice_idx);
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("msg", msg);
 		mav.setViewName("redirect:/adboard/list");
+		
+		logger.info("삭제 mav값 : " + mav);
+				
+		return mav;
+		
+	}
+	
+	@RequestMapping(value = "anboard/delete.ajax")
+	@ResponseBody
+	public ModelAndView anboardDelete(@RequestParam int anony_idx) {
+		
+		logger.info("삭제 공지사항 : " + anony_idx);
+		
+		String msg = service.anboardDelete(anony_idx);
+		logger.info("삭제 성공 : " + anony_idx);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("msg", msg);
+		mav.setViewName("redirect:/anboard/list");
 		
 		logger.info("삭제 mav값 : " + mav);
 				
@@ -171,6 +295,7 @@ public class BoardController {
 		logger.info("글 상단 고정");
 		logger.info("상단 고정 : " + params);
 		String msg = service.adboardTopFix(params);
+		logger.info("상단 고정 msg : " + msg);
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -183,5 +308,106 @@ public class BoardController {
 		
 		return mav;
 	}
+	
+//	@RequestMapping(value = "adboard/update.ajax")
+//	@ResponseBody
+//	public ModelAndView adboardTopFix(@RequestParam HashMap<String, String> params) {
+//		
+//		logger.info("글 상단 고정");
+//		logger.info("상단 고정 : " + params);
+//		String msg = service.adboardTopFix(params);
+//		logger.info("상단 고정 msg : " + msg);
+//		
+//		ModelAndView mav = new ModelAndView();
+//		
+//		mav.addObject("msg", msg);
+//		mav.addObject("notice_idx", params.get("notice_idx"));
+//		
+//		mav.setViewName("redirect:/adboard/list");
+//		
+//		logger.info("상단 고정 mav : " + mav);
+//		
+//		return mav;
+//	}
+	
+	// 댓글 기능
+	@RequestMapping(value = "/anboard/reply")
+	public String anreply(@RequestParam String anony_board_idx, @RequestParam String repl_content) {
+		
+		logger.info("댓글 작성 실행");
+		logger.info("anony_board_idx : " + anony_board_idx);
+		logger.info("repl_content : " + repl_content);
+		
+		service.anreply(anony_board_idx, repl_content);
+		
+		return "redirect:/anboard/detail?anony_idx="+anony_board_idx;
+	}
+	
+	
+	@RequestMapping(value = "anboard/replyList")
+	@ResponseBody
+	public Map<String, Object> anboardReplyList (@RequestParam String anony_board_idx){
+		
+		logger.info("댓글 작성 값 : "+service.anboardReplyList(anony_board_idx));
+		
+		return service.anboardReplyList(anony_board_idx);
+	}
+	
+	@RequestMapping(value = "anboard/replyDel")
+	@ResponseBody
+	public ModelAndView anboardreplyDel( @RequestParam String anony_board_idx, @RequestParam String repl_idx, HttpSession session) {
+		
+		logger.info("댓글 삭제 컨트롤러");
+		logger.info("anony_board_idx : " + anony_board_idx);
+		logger.info("repl_idx : " + repl_idx);
+		
+		ModelAndView mav = new ModelAndView();
+		
+		String deptID = (String) session.getAttribute("dept_id");
+		logger.info("댓글 삭제 부서 : " + deptID);
+		
+		if(deptID.equals("인사팀")) {
+			service.delreply(repl_idx);
+		}
+		
+		mav.setViewName("redirect:/anboard/detail?anony_idx="+anony_board_idx);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "adboard/listSearch.ajax")
+	@ResponseBody
+	public HashMap<String, Object> adlistSearch(@RequestParam String keyword) {
+		logger.info("회원 검색 리스트 호출하기");
+		logger.info("keyword : "+keyword);
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+			logger.info("공지사항 리스트");
+			ArrayList<HashMap<String, String>> list = service.adlistSearch(keyword);
+			logger.info("num"+list.toString());
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+			
+		return result;
+	}
+	
+	@RequestMapping(value = "anboard/listSearch.ajax")
+	@ResponseBody
+	public HashMap<String, Object> anlistSearch(@RequestParam String keyword) {
+		logger.info("회원 검색 리스트 호출하기");
+		logger.info("keyword : "+keyword);
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+			logger.info("공지사항 리스트");
+			ArrayList<HashMap<String, String>> list = service.anlistSearch(keyword);
+			logger.info("num"+list.toString());
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+			
+		return result;
+	}
+	
 	
 }
