@@ -11,17 +11,19 @@
         reservations    : []
     }
         
-    $.fn.scheduler = function(options) {
-        var settings = $.extend({}, defaults, options);
-        
-        return this.each(function() {
-            render.calendar($(this), settings);
-            setSize(settings.timeslotHeight, settings.timeslotWidth);
-            date.set(settings.startDate);   
-            attachEventListeners(settings);
-            loadRsvns(settings.startDate, settings.reservations, settings);
-        });
-    }        
+    $.fn.extend({
+	  scheduler: function(options) {
+	    var settings = $.extend({}, defaults, options);
+	
+	    return this.each(function() {
+	      render.calendar($(this), settings);
+	      setSize(settings.timeslotHeight, settings.timeslotWidth);
+	      date.set(settings.startDate);
+	      attachEventListeners(settings);
+	      loadRsvns(settings.startDate, settings.reservations, settings);
+	    });
+	  }
+	});       
         
     // Render html for scheduler
     var render = {
