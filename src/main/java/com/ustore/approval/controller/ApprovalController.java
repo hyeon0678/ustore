@@ -421,6 +421,8 @@ public class ApprovalController {
 		}else {
 			// 그게 아니라면 결재문서의 단계 상태 update
 			service.updateApprDocStep(dto);
+			
+			// 알람 처리(알람 테이블에 알람받을 emp_idx와 주소 넣어줘야 함, 알림 종류는 common_idx = 100)
 		}		
 		
         return mav;
