@@ -116,15 +116,20 @@
 						<!-- </button> -->
 
 						<div style="width: 800px; height: 200px; overflow: auto; border: solid lightgrey;">
+							<c:forEach items="${fileList}" var="fileList">
+							<img src="/ustor/photo/${fileList}" >
+							</c:forEach>
     						<p style="text-align: left;width: 100%;">${board.notice_content}</p>
 						</div>
 						<div style="text-align: left;">조회수 : ${board.notice_hit}</div>
 						<div style="margin-right:150px;">
-						<p>file:
+						<c:forEach items="${file}" var="file">
+						<p>file : ${file.orifilname}
 						<button type="button"  style="background-color: #C6DA52; position: absolute; width:60px; height: 20px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
     						다운로드
     					</button>
     					</p>
+    					</c:forEach>
     					</div>
 
 						<hr color="black" width="100%">
@@ -171,9 +176,13 @@
 	<!--end::Body-->
 	
 	<script>
-	console.log("글 삭제하기");
+	console.log("글 번호 호출");
 	var notice_idx = ${board.notice_idx};
-	console.log("삭제 글 아이디 : " + notice_idx);
+	console.log("번호값 : " + notice_idx);
+	
+	$(function(){headerOnReady()})
+	
+	
 	
 	function adboardDel(){
 		console.log("글 삭제");

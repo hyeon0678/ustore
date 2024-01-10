@@ -157,6 +157,8 @@
 		adList();
 		
 		
+		$(function(){headerOnReady()})
+		
 		function adList(){
 			console.log("리스트 호출");
 			$.ajax({

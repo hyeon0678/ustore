@@ -194,6 +194,7 @@
 	console.log("삭제 글 아이디 : " + anony_idx);
 	listCall();
 	
+	$(function(){headerOnReady()})
 	
 	function anboardDel(){
 		console.log("글 삭제");

@@ -2,6 +2,7 @@ package com.ustore.board.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -22,11 +23,11 @@ public interface BoardDao {
 
 	ArrayList<HashMap<String, String>> anList();
 	
-	HashMap<String, String> adboardDetail(String notice_idx);
+	HashMap<String, String> adboardDetail(int notice_idx);
 
 	HashMap<String, String> anboardDetail(String anony_idx);
 	
-	int adboardHit(String notice_idx);
+	int adboardHit(int notice_idx);
 
 	int anboardHit(String anony_idx);
 
@@ -50,7 +51,10 @@ public interface BoardDao {
 
 	int anboardNum(Map<String, String> params);
 
-	ArrayList<FileDto> getPhoto(String anony_idx);
+	List<HashMap<String, String>> adfile(int notice_idx);
+
+	List<HashMap<String, String>> adfileshow(int notice_idx);
+
 
 
 

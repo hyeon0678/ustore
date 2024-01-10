@@ -97,4 +97,11 @@
 		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 	</body>
 	<!--end::Body-->
+	<script>
+	
+	$(function(){headerOnReady()})
+	
+	</script>	
+	
+	
 </html>
