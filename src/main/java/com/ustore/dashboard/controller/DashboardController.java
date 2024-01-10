@@ -61,10 +61,10 @@ public class DashboardController {
 
 		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-		LocalDate birthdate2 = LocalDate.parse(lastSelectedDate, formatter);
+		LocalDate birthdate2 = LocalDate.parse(lastSelectedDate, formatter2);
 
 		DateTimeFormatter outputFormatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String TrlastSelectedDate = birthdate2.format(outputFormatter);
+		String TrlastSelectedDate = birthdate2.format(outputFormatter2);
 
 		logger.info("TrlastSelectedDate : " + TrlastSelectedDate);
 		logger.info("TrfirstSelectedDate : " + TrfirstSelectedDate);
@@ -96,5 +96,61 @@ public class DashboardController {
 
 		return service.dashboardLineList();
 	}
+  @GetMapping(value = "/accounting/dashboardcategory/list")
+  @ResponseBody
+  public ArrayList<DashboardDto> dashboardCategory(){
+	  
+	  logger.info("컨트롤러 접근");
+	  
+	  ArrayList<DashboardDto> cateDto = service.dashboardCategory();
+	  
+	  logger.info("cateDto : "+cateDto);
+	  
+	  return cateDto;
+  }	
+  
+  @GetMapping(value = "/accounting/dashboardcategory/update")
+  @ResponseBody
+  public ArrayList<DashboardDto> dashboardCategoryUpdate(@RequestParam("selectedCateDate") String selectedCateDate) {
+	  
+	  logger.info("카테고리 컨트롤러 들어옴 : "+selectedCateDate);
+		String firstSelectedDate = selectedCateDate.substring(0, 10);
+		String lastSelectedDate = selectedCateDate.substring(13, 23);
 
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+		LocalDate birthdate = LocalDate.parse(firstSelectedDate, formatter);
+
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String TrfirstSelectedDate = birthdate.format(outputFormatter);
+
+		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+		LocalDate birthdate2 = LocalDate.parse(lastSelectedDate, formatter2);
+
+		DateTimeFormatter outputFormatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String TrlastSelectedDate = birthdate2.format(outputFormatter2);
+	  
+		logger.info("TrfirstSelectedDate  :"+TrfirstSelectedDate);
+	  logger.info("TrlastSelectedDate  :"+TrlastSelectedDate);
+	
+	  ArrayList<DashboardDto> cateUpDto = service.dashboardCategoryUpdate(TrfirstSelectedDate,TrlastSelectedDate);
+	
+	  
+	  logger.info("데이터 : "+cateUpDto);
+	  if (cateUpDto != null && !cateUpDto.isEmpty()) {
+		    for (DashboardDto dto : cateUpDto) {
+		    	 if (dto == null) {
+		             logger.error("dto가 null입니다.");
+		             cateUpDto = service.dashboardCategory();
+		             break;
+		         }
+		    }
+		}
+
+	
+		return cateUpDto;
+  }
+  
+  
 }

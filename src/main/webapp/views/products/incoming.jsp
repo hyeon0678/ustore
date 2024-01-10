@@ -13,13 +13,6 @@
 <meta name="keywords"
 	content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta property="og:locale" content="en_US" />
-<meta property="og:type" content="article" />
-<meta property="og:title"
-	content="Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes" />
-<meta property="og:url"
-	content="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" />
-<meta property="og:site_name" content="Craft by Keenthemes" />
 <link rel="canonical" href="https://preview.keenthemes.com/craft" />
 <link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
 <!--begin::Fonts(mandatory for all pages)-->
@@ -252,8 +245,6 @@
 
  $(document).ready(function () {
 	  var dateRangePicker = $("#kt_daterangepicker_1");
-
-	 
 	    dateRangePicker.val('');
    
     $(document).on('click', '.confirmButton', function () {
@@ -347,6 +338,7 @@
             }
         });
     }
+	  headerOnReady();
 });
 	//-------------------------------------캘린더------------------------------
 	$(document).ready(function () {
@@ -369,7 +361,7 @@
                     var newRow = '<tr>' +
                         '<td>' + item.expArrivalDate + '</td>' +
                         '<td><a href="#" class="btn btn-link text-primary confirmButton" data-order-idx="' + item.orderIdx + '" data-bs-toggle="modal" data-bs-target="#kt_modal_1">' +'&emsp;'+item.orderIdx + '</a></td>' +
-                        '<td>' + item.carNum + '</td>' +
+                        '<td>' + item.resourceName + '</td>' +
                         '<td class = "text-center">' + item.driverName + '</td>' +
                         '</tr>';
                     tableBody.append(newRow);

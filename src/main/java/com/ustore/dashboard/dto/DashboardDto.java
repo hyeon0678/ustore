@@ -14,6 +14,9 @@ public class DashboardDto {
 	private int totalPriceOrder;
 	private int totalUsedPoints;
 	private int totalAllPrice;
+	private int food;
+	private int necessity;
+	private int electronics;
 	
 	
 	
@@ -21,6 +24,24 @@ public class DashboardDto {
 	
 	
 	
+	public int getFood() {
+		return food;
+	}
+	public void setFood(int food) {
+		this.food = food;
+	}
+	public int getNecessity() {
+		return necessity;
+	}
+	public void setNecessity(int necessity) {
+		this.necessity = necessity;
+	}
+	public int getElectronics() {
+		return electronics;
+	}
+	public void setElectronics(int electronics) {
+		this.electronics = electronics;
+	}
 	public int getTotalAllPrice() {
 		return totalAllPrice;
 	}
