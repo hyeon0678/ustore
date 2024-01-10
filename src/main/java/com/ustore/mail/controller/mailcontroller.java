@@ -34,7 +34,7 @@ public class mailcontroller {
 		
 		@RequestMapping(value = "mail/home.ajax/list")
 		@ResponseBody
-		public HashMap<String, Object> maillist(Principal Principal) {
+		public HashMap<String, Object> maillist(Principal Principal ) {
 			logger.info("메일 리스트 호출하기");
 			String  emproynum = Principal.getName();
 			logger.info("emproynum : "+emproynum);
@@ -57,7 +57,7 @@ public class mailcontroller {
 		@RequestMapping(value = "mail/home.ajax/search")
 		@ResponseBody
 		public HashMap<String, Object> search(Principal Principal,@RequestParam String keyword) {
-			logger.info("보낸 메일함 검색 리스트 호출하기");
+			logger.info("받은 메일함 검색 리스트 호출하기");
 			String  emproynum = Principal.getName();
 			logger.info("emproynum : "+emproynum);
 			logger.info("keyword : "+keyword);
@@ -83,11 +83,124 @@ public class mailcontroller {
 			logger.info("보낸메일 페이지 들어가기");
 			return "mail/maillist_out";
 		}
+		
+		@RequestMapping(value = "mail/out.ajax/list")
+		@ResponseBody
+		public HashMap<String, Object> outlist(Principal Principal) {
+			logger.info("보낸메일 메일 리스트 호출하기");
+			String  emproynum = Principal.getName();
+			logger.info("emproynum : "+emproynum);
+			
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			
+			
+			logger.info("메일 리스트 가져오기");
+			ArrayList<HashMap<String, String>> list = service.outlist(emproynum);
+			logger.info("num"+list.toString());
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+			
+			return result;
+		}
+		
+		// mail/home.ajax/search
+		
+		@RequestMapping(value = "mail/out.ajax/search")
+		@ResponseBody
+		public HashMap<String, Object> outsearch(Principal Principal,@RequestParam String keyword) {
+			logger.info("보낸 메일함 검색 리스트 호출하기");
+			String  emproynum = Principal.getName();
+			logger.info("emproynum : "+emproynum);
+			logger.info("keyword : "+keyword);
+			
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			
+			
+			logger.info("메일 리스트 가져오기");
+			ArrayList<HashMap<String, String>> list = service.outsearchlist(emproynum, keyword);
+			logger.info("num"+list.toString());
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+			
+			return result;
+		}
+		
+		
+		
 		@GetMapping(value = "/mail/del")
 		public String del() {
 			logger.info("휴지통 페이지 들어가기");
 			return "mail/maillist_del";
 		}
+		
+		@RequestMapping(value = "mail/del.ajax/list")
+		@ResponseBody
+		public HashMap<String, Object>dellist(Principal Principal , @RequestParam String pageState) {
+			logger.info("보낸메일 메일 리스트 호출하기");
+			String  emproynum = Principal.getName();
+			logger.info("emproynum : "+emproynum);
+			logger.info("pageState : "+ pageState);
+			
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			ArrayList<HashMap<String, String>> list;
+			
+			if (pageState.equals("RM")) {
+				logger.info("받은 메일함====  메일 리스트 가져오기");
+				// 받은 메일함
+				 list = service.dellistRM(emproynum);				
+			}else {
+				logger.info("보낸 메일함=====메일 리스트 가져오기");
+				// 보낸 메일함
+				 list = service.dellistSM(emproynum);				
+			}
+			
+			logger.info("num"+list.toString());
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+			
+			return result;
+		}
+		
+		
+		
+		@RequestMapping(value = "mail/del.ajax/search")
+		@ResponseBody
+		public HashMap<String, Object> delsearch(Principal Principal,@RequestParam String keyword, 
+				@RequestParam String pageState) {
+			logger.info("보낸 메일함 검색 리스트 호출하기");
+			String  emproynum = Principal.getName();
+			logger.info("emproynum : "+emproynum);
+			logger.info("keyword : "+keyword);
+			
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			
+			ArrayList<HashMap<String, String>> list ;
+			
+			if (pageState.equals("RM")) {
+				logger.info("받은 메일함====  검색");
+				// 받은 메일함
+				 list = service.delsearchRM(emproynum, keyword);				
+			}else {
+				logger.info("보낸 메일함=====검색");
+				// 보낸 메일함
+				 list = service.delsearchSM(emproynum, keyword);				
+			}
+			
+			logger.info("num"+list.toString());
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+			
+			return null;
+		}
+		
+		
+		
+		
+		
 		@GetMapping(value = "/mail/write")
 		public String write() {
 			logger.info("글쓰기 페이지 들어가기");
