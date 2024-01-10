@@ -102,18 +102,37 @@ select reg_date,operation_type,quantity,reason from stock_history where product_
 </select>
 
 <select id="incomingList" resultType="OrderDto">
-  SELECT DISTINCT 
-    `order`.exp_arrival_date, 
-    `order`.order_idx,
-    delivery_driver.driver_name,
-    resource.resource_name
-FROM `order`
-JOIN delivery_driver ON `order`.driver_idx = delivery_driver.driver_idx
-JOIN order_detail ON `order`.order_idx = order_detail.order_idx
-JOIN driver_schedule ON delivery_driver.driver_idx = driver_schedule.driver_idx
-JOIN resource ON driver_schedule.resource_idx = resource.resource_idx
-WHERE order_detail.conf_status = 'N'
-ORDER BY `order`.order_idx DESC;
+WITH RankedOrders AS (
+    SELECT
+        o.exp_arrival_date,
+        o.order_idx,
+        d.driver_name,
+        r.resource_name,
+        ROW_NUMBER() OVER (PARTITION BY o.order_idx ORDER BY o.exp_arrival_date, r.resource_name) AS row_num
+    FROM
+        `order` o
+    JOIN
+        delivery_driver d ON o.driver_idx = d.driver_idx
+    JOIN
+        order_detail od ON o.order_idx = od.order_idx
+    JOIN
+        driver_schedule ds ON d.driver_idx = ds.driver_idx
+    JOIN
+        resource r ON ds.resource_idx = r.resource_idx
+    WHERE
+        od.conf_status = 'N'
+)
+SELECT
+    exp_arrival_date,
+    order_idx,
+    driver_name,
+    resource_name
+FROM
+    RankedOrders
+WHERE
+    row_num = 1
+ORDER BY
+    order_idx DESC
 </select>
 
 <select id="incomModalList" resultType="OrderDto">
@@ -170,12 +189,38 @@ WHERE od.product_id = #{productId} AND od.conf_status = 'Y'
 </select>
 <select id="calendarList" resultType="OrderDto">
 
-SELECT DISTINCT `order`.exp_arrival_date, `order`.order_idx, delivery_driver.car_num, delivery_driver.driver_name
-FROM `order`
-JOIN delivery_driver ON `order`.driver_idx = delivery_driver.driver_idx
-JOIN order_detail ON `order`.order_idx = order_detail.order_idx
-WHERE order_detail.conf_status = 'N'
-  AND `order`.exp_arrival_date BETWEEN #{firstDate} AND #{lastDate}
+WITH RankedOrders AS (
+    SELECT
+        o.exp_arrival_date,
+        o.order_idx,
+        d.driver_name,
+        r.resource_name,
+        ROW_NUMBER() OVER (PARTITION BY o.order_idx ORDER BY o.exp_arrival_date DESC, r.resource_name) AS row_num
+    FROM
+        `order` o
+    JOIN
+        delivery_driver d ON o.driver_idx = d.driver_idx
+    JOIN
+        order_detail od ON o.order_idx = od.order_idx
+    JOIN
+        driver_schedule ds ON d.driver_idx = ds.driver_idx
+    JOIN
+        resource r ON ds.resource_idx = r.resource_idx
+    WHERE
+        od.conf_status = 'N'
+        AND o.exp_arrival_date BETWEEN #{firstDate} AND #{lastDate}
+)
+SELECT
+    exp_arrival_date,
+    order_idx,
+    driver_name,
+    resource_name
+FROM
+    RankedOrders
+WHERE
+    row_num = 1
+ORDER BY
+    order_idx DESC;
 
 </select>
 

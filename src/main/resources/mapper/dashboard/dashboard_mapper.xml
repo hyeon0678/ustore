@@ -6,25 +6,30 @@
 <mapper namespace="com.ustore.dashboard.dao.DashboardDao">
 
 <select id="accountingDashboard" resultType="DashboardDto">
-SELECT products.product_name, SUM(payments_detail.selling_price) AS selling_price, payments.payment_date
+SELECT products.product_name, SUM(payments_detail.selling_price) AS selling_price
 FROM payments_detail
 INNER JOIN products ON payments_detail.product_id = products.product_id
-INNER JOIN payments ON payments_detail.payment_id = payments.payment_id
-GROUP BY products.product_name, payments.payment_date
+GROUP BY products.product_name
 ORDER BY selling_price DESC
 LIMIT 5
 
 </select>
 
 <select id="accountingDashboardDay" resultType="DashboardDto">
-SELECT products.product_name, SUM(payments_detail.selling_price) AS selling_price, payments.payment_date
-FROM payments_detail
+SELECT
+    products.product_name,
+    SUM(payments_detail.selling_price) AS selling_price
+FROM
+    payments_detail
 INNER JOIN products ON payments_detail.product_id = products.product_id
 INNER JOIN payments ON payments_detail.payment_id = payments.payment_id
-WHERE payments.payment_date BETWEEN #{trfirstSelectedDate} AND #{trlastSelectedDate}
-GROUP BY products.product_name, payments.payment_date
-ORDER BY selling_price DESC
-LIMIT 5
+WHERE
+    payments.payment_date BETWEEN #{trfirstSelectedDate} AND #{trlastSelectedDate}
+GROUP BY
+    products.product_name
+ORDER BY
+    selling_price desc
+    limit 5
 
 </select>
 
@@ -70,7 +75,32 @@ FROM
 WHERE
     p.payment_date BETWEEN '2024-01-02' AND '2024-01-07' 
 GROUP BY
-    DATE(p.payment_date);
+    DATE(p.payment_date)
    </select>
-
+<select id="dashboardCategory" resultType="DashboardDto">
+SELECT
+    SUM(CASE WHEN category.parent_category = 'A' THEN payments_detail.selling_price ELSE 0 END) AS food,
+    SUM(CASE WHEN category.parent_category = 'B' THEN payments_detail.selling_price ELSE 0 END) AS necessity,
+    SUM(CASE WHEN category.parent_category = 'C' THEN payments_detail.selling_price ELSE 0 END) AS electronics
+FROM
+    payments_detail
+INNER JOIN products ON payments_detail.product_id = products.product_id
+INNER JOIN category ON products.category_id = category.category_id
+INNER JOIN payments ON payments_detail.payment_id = payments.payment_id
+WHERE
+    payments.payment_date = '2024-01-08'
+</select>
+<select id="dashboardCategoryUpdate" resultType="DashboardDto">
+   SELECT
+    SUM(CASE WHEN category.parent_category = 'A' THEN payments_detail.selling_price ELSE 0 END) AS food,
+    SUM(CASE WHEN category.parent_category = 'B' THEN payments_detail.selling_price ELSE 0 END) AS necessity,
+    SUM(CASE WHEN category.parent_category = 'C' THEN payments_detail.selling_price ELSE 0 END) AS electronics
+FROM
+    payments_detail
+INNER JOIN products ON payments_detail.product_id = products.product_id
+INNER JOIN category ON products.category_id = category.category_id
+INNER JOIN payments ON payments_detail.payment_id = payments.payment_id
+WHERE
+    payments.payment_date BETWEEN #{trfirstSelectedDate} AND #{trlastSelectedDate}
+</select>
 </mapper>

@@ -73,4 +73,21 @@ public class DashboardService {
 		return dao.dashboardLineList();
 	}
 
+
+
+
+	public ArrayList<DashboardDto> dashboardCategory() {
+		
+		
+		return dao.dashboardCategory();
+	}
+
+
+
+
+	public ArrayList<DashboardDto> dashboardCategoryUpdate(String trfirstSelectedDate, String trlastSelectedDate) {
+		
+		return dao.dashboardCategoryUpdate(trfirstSelectedDate,trlastSelectedDate);
+	}
+
 }
