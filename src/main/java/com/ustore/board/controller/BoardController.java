@@ -1,8 +1,11 @@
 package com.ustore.board.controller;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -10,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +35,7 @@ public class BoardController {
 
 	@Autowired BoardService service;
 	@Autowired FileDao filedao;
+	@Value("${spring.servlet.multipart.location}") private String root;
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -176,7 +181,7 @@ public class BoardController {
 		service.anboardWrite(params, deptID, emp_idx);
 		int anboardNum = service.anboardNum(params);
 
-		if(photos != null) {	
+		if(photos != null) {
 			SaveFile saveFile = new SaveFile();
 			logger.info("익명게시판file : " + photos);
 			FileDto file = new FileDto();
@@ -198,25 +203,74 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/adboard/detail")
-	public ModelAndView adboardDetail(@RequestParam String notice_idx) {
+	public ModelAndView adboardDetail(@RequestParam int notice_idx) {
+		
+		logger.info("공지사항 번호 : " + notice_idx);
+		
 		ModelAndView mav = new ModelAndView();
-		
+
 		BoardDto dto = new BoardDto();
+
+		List<HashMap<String, String>> adfile = service.adfile(notice_idx);
+		List<HashMap<String, String>> adfileshow = service.adfileshow(notice_idx);
 		
-//		HashMap<String, String> file = filedao.adboardfile(notice_idx);
-//		logger.info("file : " + file);
+		// adfileshow에서 가져온 파일 정보를 fileList에 추가
+		
+//		for (HashMap<String, String> fileData : adfileshow) {
+//		    String fileName = fileData.get("new_file_name"); // 파일 이름을 가져오는 방식에 따라 수정 필요
+//		    logger.info("FileName!!! : " + fileName);
+//		    fileList.add(fileName);
+//		}
+		
+		logger.info("adfileshow : " + adfileshow);
+		logger.info("adfile : " + adfile);
+		
+		List<String> fileList = new ArrayList<String>();
+		
+		logger.info("fileList : " + fileList);
+		File[] files = new File(root).listFiles();
+		logger.info("fileList : " + files);
+		for (File file : files) {
+			if(file.isFile()) {
+				fileList.add(file.getName());
+			}
+		}
+		
+//		for (HashMap<String, String> fileData : adfileshow) {
+//		    String fileName = fileData.get("new_file_name"); // 파일 이름을 가져오는 방식에 따라 수정 필요
+//		    
+//		    logger.info("fileName : " + fileName);
+//
+//		    // 파일 시스템에서 가져온 파일 목록(files)과 매칭되는 파일이 있는지 확인하고, 있으면 fileList에 추가
+//		    for (File file : files) {
+//		        if (file.isFile() && file.getName().equals(fileName)) {
+//		            fileList.add(fileName);
+//		            break; // 파일을 찾았으므로 더 이상 확인할 필요가 없음
+//		        }
+//		    }
+//		}
+		
+		
+//		for (File file : files) {
+//			if(file.isFile()) {
+//				fileList.add(file.getName());
+//			}
+//		}
+		
+		logger.info("공지사항파일 : " + adfile);
 		
 		logger.info("글 상세보기 : " + notice_idx);
 		
 		HashMap<String, String> map = service.adboardDetail(notice_idx, true);
 		
-		logger.info("map 값 : " + map);
+		logger.info("mapresult : " + map);
 		
 		mav.addObject("board", map);
-//		mav.addObject("file", file);
+		mav.addObject("file", adfile);
+		mav.addObject("fileList", fileList);
 		mav.setViewName("board/admin_board_detail");
 		
-		logger.info("mav 값 : " + mav);
+		logger.info("mavresult : " + mav);
 		logger.info("상세보기 이동");
 		
 		return mav;
@@ -225,6 +279,9 @@ public class BoardController {
 	
 	@RequestMapping(value = "/anboard/detail")
 	public ModelAndView anboardDetail(@RequestParam String anony_idx) {
+		
+		logger.info("익명 게시판");
+		
 		ModelAndView mav = new ModelAndView();
 		
 		BoardDto dto = new BoardDto();
@@ -308,27 +365,6 @@ public class BoardController {
 		
 		return mav;
 	}
-	
-//	@RequestMapping(value = "adboard/update.ajax")
-//	@ResponseBody
-//	public ModelAndView adboardTopFix(@RequestParam HashMap<String, String> params) {
-//		
-//		logger.info("글 상단 고정");
-//		logger.info("상단 고정 : " + params);
-//		String msg = service.adboardTopFix(params);
-//		logger.info("상단 고정 msg : " + msg);
-//		
-//		ModelAndView mav = new ModelAndView();
-//		
-//		mav.addObject("msg", msg);
-//		mav.addObject("notice_idx", params.get("notice_idx"));
-//		
-//		mav.setViewName("redirect:/adboard/list");
-//		
-//		logger.info("상단 고정 mav : " + mav);
-//		
-//		return mav;
-//	}
 	
 	// 댓글 기능
 	@RequestMapping(value = "/anboard/reply")

@@ -144,6 +144,8 @@
 	console.log("리스트 호출 시작")
 	anList();
 	
+	$(function(){headerOnReady()})
+	
 	function anList(){
 		console.log("리스트 호출");
 		$.ajax({

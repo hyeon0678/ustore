@@ -2,16 +2,21 @@ package com.ustore.board.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ustore.board.dao.BoardDao;
 import com.ustore.board.dto.BoardDto;
+import com.ustore.fileSystem.dao.FileDao;
 import com.ustore.fileSystem.dto.FileDto;
 
 
@@ -21,6 +26,7 @@ public class BoardService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired BoardDao dao;
+	@Autowired FileDao filedao;
 
 	public String adboardWrite(Map<String, String> params, String deptID, String emp_idx) {
 		
@@ -50,10 +56,12 @@ public class BoardService {
 	}
 
 	@Transactional
-	public HashMap<String, String> adboardDetail(String notice_idx, boolean notice_hit) {
+	public HashMap<String, String> adboardDetail(int notice_idx, boolean notice_hit) {
 		if(notice_hit) {
 			dao.adboardHit(notice_idx);
 		}
+		
+		
 		return dao.adboardDetail(notice_idx);
 	}
 	
@@ -62,14 +70,8 @@ public class BoardService {
 		if(anony_hit) {
 			dao.anboardHit(anony_idx);
 		}
-		ArrayList<FileDto> photos = dao.getPhoto(anony_idx);
 		return dao.anboardDetail(anony_idx);
 	}
-
-//	public HashMap<String, String> fileservice(String notice_idx) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 
 	public String adboardDelete(int notice_idx) {
 		
@@ -126,6 +128,19 @@ public class BoardService {
 	public int anboardNum(Map<String, String> params) {
 		return dao.anboardNum(params);
 	}
+
+	public List<HashMap<String, String>> adfile(int notice_idx) {
+		logger.info("filesearchservice : " + notice_idx);
+		
+		return dao.adfile(notice_idx);
+		
+	}
+
+	public List<HashMap<String, String>> adfileshow(int notice_idx) {
+		return dao.adfileshow(notice_idx);
+	}
+
+	
 
 	
 
