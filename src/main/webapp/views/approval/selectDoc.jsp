@@ -168,5 +168,10 @@
         // URL을 변경하여 페이지 이동
         location.href = '/approval/newapproval/write?common_idx=' + common_idx;
     }
+    
+	$(document).ready(function () {  	
+    	headerOnReady();
+	});
+    
 </script>
 </html>

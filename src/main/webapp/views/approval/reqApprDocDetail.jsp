@@ -42,7 +42,7 @@
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
-		<%-- <jsp:include page="/views/common/header.jsp"></jsp:include> --%>
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 				
 		<!--begin::Main-->
 		<!--begin::Root-->
@@ -54,7 +54,7 @@
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px">
 					<!--================================메인 내용들어가는부분================================================-->
-					<%-- <jsp:include page="/views/common/sidebar.jsp"></jsp:include> --%>
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
@@ -112,7 +112,7 @@
 
 		<!--begin::modal-->
 		<!--결재정보 모달-->
-		<div class="modal fade" tabindex="-1" id="kt_modal_1" role="dialog">
+		<div class="modal fade" tabindex="-1" id="kt_modal_1" role="dialog" data-bs-backdrop="false">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -194,14 +194,15 @@
 								<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
 									<span class="text-center">결재의견(반려, 수정)</span>
 								</div>										
-								<div class="d-flex flex-column commentTable scroll" id="comment" style="height: 100px;">
+								<div class="d-flex flex-column commentTable scroll" id="commentlist" style="height: 100px;">
 									<div style="overflow: auto;">
 										<table class="w-100">
 											<thead>
 												<tr>
 													<th>결재자명</th>
-													<th>일시</th>
-													<th>의견</th>
+													<th>결재타입</th>
+													<th>결재일시</th>
+													<th>결재의견</th>
 												</tr>
 											</thead>
 											<tbody>													
@@ -228,7 +229,7 @@
 						<h1 class="modal-title">반려하기</h1>
 
 						<!--begin::Close-->
-						<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+						<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modalreject" aria-label="Close">
 							<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
 						</div>
 						<!--end::Close-->
@@ -343,6 +344,7 @@
 	var approvalLines = [];
 	var receivers = [];
 	var readonly = true;
+	var orderIdx;
 	
     function loadFormPage(formPage, common_idx, apprTypeIdx) {
         $.ajax({
@@ -368,10 +370,12 @@
                     element.setAttribute('readonly', true);
                 });
                 
-                var selectElement = document.getElementById('leaveType');
-                if (selectElement) {
-                    selectElement.setAttribute('disabled', true);
+                var selectElementLeaveType = document.getElementById('leaveType');
+                if (selectElementLeaveType) {
+                	selectElementLeaveType.setAttribute('disabled', true);
                 }
+                
+                $('#orderNumSearch').hide();
                 
             },
             error: function (error) {
@@ -427,23 +431,39 @@
 			$("#apprListTable tr:last").html(generateSignatureRow());
 		    
 			// tbody 요소를 가져옴
-			var commentbody = document.querySelector("#comment tbody");
+			var commentbody = document.querySelector("#commentlist tbody");
 
 			// approvalLines 배열 순회
-			approvalLines.forEach(function(data) {
+			approvalLines.forEach(function(data, index) {
 			    // comment가 있는 경우에만 처리
 			    if (data.comment !== null) {
 			        // tr 요소 생성
 			        var row = document.createElement("tr");
 
 			        // 각 컬럼에 데이터 추가
-			        var columns = ["name", "apprDate", "comment"];
+			        var columns = ["name", "apprConfirm", "apprDate", "comment"];
 			        columns.forEach(function(column) {
 			            var cell = document.createElement("td");
 			            // 날짜 데이터의 경우 포맷 변경
 			            if (column === "apprDate") {
-			                var date = new Date(data[column]);
-			                cell.textContent = date.toLocaleDateString("ko-KR", { year: 'numeric', month: '2-digit', day: '2-digit' });
+			                var date = data[column] ? new Date(data[column]) : null;
+			                if(date){
+				                cell.textContent = date.toLocaleDateString("ko-KR", { year: 'numeric', month: '2-digit', day: '2-digit' });
+			                }else{
+			                	cell.textContent = '';
+			                }              	
+			                
+			            } else if(column === "apprConfirm") {
+			            	var confirmType = data[column]
+			            	if(confirmType==0){
+			            		cell.textContent = ''; 
+			            	}else if(confirmType==1 && index ===0){
+			            		cell.textContent = '기안';
+			            	}else if(confirmType==1){
+			            		cell.textContent = '결재';
+			            	}else{
+			            		cell.textContent = '반려';
+			            	}
 			            } else {
 			                cell.textContent = data[column];
 			            }
@@ -456,8 +476,7 @@
 			});
 			
 			
-			// 수신자 정보 불러오기
-		    
+			// 수신자 정보 불러오기		    
 		    var beforeConvertRecvData = ${receiver};
         	function convertRecvData(secondData){
         		return{
@@ -473,9 +492,8 @@
        	 	
         	// 가공된 데이터를 테이블에 동적으로 추가
 		    var tbody = document.getElementById('receiverTable').getElementsByTagName('tbody')[0];
-		    tbody.innerHTML = ""; // 테이블 내용 비우기
-	
-		    // 새로운 테이블 내용 추가
+		    tbody.innerHTML = ""; // 테이블 내용 비우기	
+		   
 		    for (var i = receivers.length - 1; i >= 0; i--) {
 		        var newRow = tbody.insertRow(-1);		        
 		        var cell1 = newRow.insertCell(0);
@@ -515,10 +533,9 @@
                 break;
                 
             case '31':            	
-            	var orderNum = "${content.orderNum}";
-        	    var totalAmount = "${content.totalAmount}";            	
-            	$("#orderNum").val(orderNum);
-            	$("#totalAmount").val(totalAmount);
+            	var orderIdx = "${content.orderIdx}";  
+            	getItemsForOrder(orderIdx); 
+            	
                 break;
                 
             case '32':            	
@@ -568,6 +585,7 @@
 
     $(document).ready(function () {
     	
+    	headerOnReady();
     	
     	// 초기에 선택된 양식에 대한 HTML 파일 로드
         var formPage = '<%= request.getAttribute("formPage") %>';
@@ -577,27 +595,20 @@
         
      	// 결재정보 버튼 클릭 시의 동작
         $('#btnApprInfo').on('click', function () {
-            // 여기에 임시저장 버튼 클릭 시 수행할 동작 추가
             console.log('결재정보 버튼 클릭');
-            var myModal1 = new bootstrap.Modal(document.getElementById('kt_modal_1'), {
-            });
-            myModal1.show();
+            $('#kt_modal_1').modal('show');
         });
      
     	// 결재하기 버튼 클릭 시의 동작
         $('#btnApproval').on('click', function () {
-            // 여기에 결재상신 버튼 클릭 시 수행할 동작 추가
             console.log('결재하기 버튼 클릭');
             signApprDoc();
         });
 
         // 반려하기 버튼 클릭 시의 동작
         $('#btnApprReject').on('click', function () {
-            // 여기에 결재정보 버튼 클릭 시 수행할 동작 추가
             console.log('반려하기 버튼 클릭');
-            var myModal2 = new bootstrap.Modal(document.getElementById('kt_modal_2'), {
-            });
-            myModal2.show();
+            $('#kt_modal_2').modal('show');
         });
 /*
         // 수정하기 버튼 클릭 시의 동작
@@ -624,23 +635,11 @@
         
         $('#kt_modal_1').on('shown.bs.modal', function(){
 			getTreeData();
-		})
-		
-		$('#kt_modal_1').on('hidden.bs.modal', function () {
-		    $('.modal-backdrop').remove();
-		});
-		
-		$('#kt_modal_2').on('hidden.bs.modal', function () {
-		    $('.modal-backdrop').remove();
-		});
-        
-        $('#kt_modal_3').on('hidden.bs.modal', function () {
-		    $('.modal-backdrop').remove();
 		});
         
         $('#checkapprinfo').on('click', function(){
-			myModal.hide();
-		})
+        	$('.btn[data-bs-dismiss="modal"]').click();
+		});
         
     });
 		
@@ -732,7 +731,6 @@
 		        }
 		    });			
 		}else {
-            // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
             console.log('뒤로가기 버튼 클릭 - 취소');
         }  
 	}
