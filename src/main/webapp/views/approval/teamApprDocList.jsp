@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<!--begin::Head-->
@@ -103,13 +104,11 @@
 										<div class="card-title">
 											<!--begin::Search-->
 											<div class="d-flex align-items-center position-relative my-1">
-												<i
-													class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+												<<i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
 													<span class="path1"></span> <span class="path2"></span>
-												</i> <input type="text"
-													data-kt-ecommerce-category-filter="search"
-													class="form-control form-control-solid w-250px ps-12"
-													placeholder="검색어를 입력 해주세요." />
+												</i> 
+												<input type="text" data-kt-ecommerce-category-filter="search" class="form-control form-control-solid w-250px ps-12"	placeholder="검색어를 입력 해주세요." />
+												<button id= "search" class="btn btn-primary" style="margin: 10px;" >검색</button>
 											</div>
 											<!--end::Search-->
 										</div>
@@ -126,18 +125,18 @@
 										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
 											<thead>
 												<tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-													<th class="w-10px pe-2">문서번호</th>
-													<th class="min-w-125px">결재일자</th>
-													<th class="min-w-125px">결재양식</th>
-													<th class="min-w-125px">제목</th>
-													<th class="min-w-125px">기안자</th>
+													<th class="min-w-120px">문서번호</th>
+													<th class="min-w-100px">결재일자</th>
+													<th class="min-w-100px">결재양식</th>
+													<th class="min-w-100px">제목</th>
+													<th class="min-w-100px">기안자</th>
 												</tr>
 											</thead>
 											<tbody class="text-gray-600 fw-semibold">
 												<c:forEach items="${teamapprlist}" var="bbs">
 													<tr>
 														<td>${bbs.docId}</td>
-														<td>${bbs.apprDate}</td>
+														<td><fmt:formatDate value="${bbs.apprDate}" pattern="yyyy-MM-dd" /></td>
 														<td>
 															<c:choose>
 												                <c:when test="${bbs.apprTypeIdx == 30}">
@@ -187,4 +186,9 @@
 		<!--end::Javascript-->
 	</body>
 	<!--end::Body-->
+	<script>
+	$(document).ready(function(){
+		headerOnReady();
+	});
+	</script>
 </html>

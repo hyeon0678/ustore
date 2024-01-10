@@ -100,13 +100,13 @@ public class ApprovalController {
         String formPage = null;
         switch (common_idx) {
             case 30: // 업무기안문
-                formPage = "static/business_draft_test.html";
+                formPage = "static/business_draft.html";
                 break;
             case 31: // 대금지급결의서
-                formPage = "static/payment_resolution_test.html";
+                formPage = "static/payment_resolution.html";
                 break;
             case 32: // 휴가신청서
-                formPage = "static/reqVac_test.html";
+                formPage = "static/reqVac.html";
                 break;
         }
         return formPage;
@@ -162,10 +162,17 @@ public class ApprovalController {
     
     // 대금지급결의서 발주번호 검색(modal) -> 특정 일자의 발주번호 리스트 가져오기
     @GetMapping(value="/getorderlist")
-    public ResponseEntity<List<OrderDto>> getOrderList(@RequestParam String orderDate) {
-    	List<OrderDto> orderlist = service.getOrderList(orderDate);    	
-    	return new ResponseEntity<>(orderlist, HttpStatus.OK);
+    public ResponseEntity<List<OrderDto>> getOrderNumList(@RequestParam String orderDate) {
+    	List<OrderDto> orderNumList = service.getOrderNumList(orderDate);    	
+    	return new ResponseEntity<>(orderNumList, HttpStatus.OK);
     }
+    
+    // 위에서 나온 리스트에서 발주번호 선택시 해당 발주번호에 해당하는 물품 리스트 가져오기
+    @GetMapping(value="/getproductlist")
+    public ResponseEntity<List<OrderDto>> getOrderProductList(@RequestParam int orderIdx) {
+    	List<OrderDto> orderProductList = service.getOrderProductList(orderIdx);    	
+    	return new ResponseEntity<>(orderProductList, HttpStatus.OK);
+    }    
     
     
     // 임시 저장하기(새결재문서 / 임시저장함)
@@ -241,9 +248,9 @@ public class ApprovalController {
 	
 	// 내결재문서 중 결재 진행중인 문서 회수하기
 	@PostMapping(value="/retrieveappr")
-	public ResponseEntity<String> retrieveAppr(@RequestParam Integer apprIdx) {
+	public ResponseEntity<String> retrieveAppr(@RequestParam Integer apprIdx, @RequestParam int common_idx) {
 		try {
-			int row = service.retrieveAppr(apprIdx);
+			int row = service.retrieveAppr(apprIdx, common_idx);
 			if(row>0) {
 				return new ResponseEntity<>("결재회수가 성공적으로 처리되었습니다.", HttpStatus.OK);				
 			}else {
@@ -336,10 +343,11 @@ public class ApprovalController {
 			String fnApprEmp_idx = principal.getName();
 			logger.info("최종 결재자 : "+fnApprEmp_idx);	
 			Integer apprIdx = dto.getApprIdx();
-			Date finalApprDate = service.getFnApprDate(fnApprEmp_idx, apprIdx);
+			Timestamp finalApprDate = service.getFnApprDate(fnApprEmp_idx, apprIdx);
 			logger.info("최종 결재일자 : " + finalApprDate);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-			String fnApprYear = sdf.format(finalApprDate);			
+			String fnApprYear = sdf.format(finalApprDate);	
+			logger.info("최종 결재일자의 연도: "+ fnApprYear);
 						
 			int maxDocId = service.getMaxDocId(fnApprYear, iniDeptName);			 
 			logger.info("해당 연도에 해당 부서에서 doc_id 가장 큰 값 : "+maxDocId);
@@ -397,32 +405,22 @@ public class ApprovalController {
 				params.put("event_end_time", leaveEndHourString);
 				params.put("schedule_type", "14");
 				params.put("reg_emp_idx", drafterEmpIdx);
+				
+				epservice.addLeaveEvent(params);
 								
 				List<Date> dates = generateDateList(leaveStartDate, leaveEndDate);		
 				logger.info(dates.toString());
 				for (Date date : dates) {						
 					if(leaveType==50) {	
 						totalLeaveDays--;
-						service.insertAnnualLeaveInfo(drafterEmpIdx, date, leaveType, totalLeaveDays);
-						epservice.addLeaveEvent(params);
+						service.insertAnnualLeaveInfo(drafterEmpIdx, date, leaveType, totalLeaveDays);						
 					}else {
 						service.insertOtherLeaveInfo(drafterEmpIdx, date, leaveType, totalLeaveDays);
-						epservice.addLeaveEvent(params);
 					}
 				}
 				
 				
 			}   
-			
-			// 결재가 완료되면 추가해야 할 것들
-			// 1. 대금지급결의서라면 해당 금액 -(지출) 처리
-		/*	if(dto.getApprTypeIdx()==31) {
-							
-			} */
-			
-			// 더 해야할 것
-			// 파일 첨부, 다운로드		
-			
 			
 		}else {
 			// 그게 아니라면 결재문서의 단계 상태 update
@@ -501,10 +499,10 @@ public class ApprovalController {
 	}	
 	
 	// 임시저장문서 삭제
-	@PostMapping(value="/apprdocdel")
-	public ModelAndView apprDocDel(@RequestParam Integer apprIdx, RedirectAttributes rAttr) {
+	@PostMapping(value="/tempdocdel")
+	public ModelAndView tempDocDel(@RequestParam Integer apprIdx, @RequestParam int common_idx, RedirectAttributes rAttr) {
 		ModelAndView mav = new ModelAndView("redirect:/approval/tempapproval");
-		service.apprDocDel(apprIdx);
+		service.tempDocDel(apprIdx, common_idx);
 		rAttr.addFlashAttribute("msg", "해당 문서가 삭제되었습니다.");
 		return mav;
 	}
@@ -516,12 +514,13 @@ public class ApprovalController {
 		String emp_idx = principal.getName();
 		EmployeeDto empDto = service.getEmployeeInfo(emp_idx);
 		String DeptName = empDto.getDeptName();
+		int deptId = empDto.getDeptId();
 				
 		ArrayList<ApprovalDto> teamapprlist;
 		if("UStore".equals(DeptName)) {
 			teamapprlist = service.getAllApprList();
 		}else {			
-			teamapprlist = service.getTeamApprList(emp_idx);
+			teamapprlist = service.getTeamApprList(emp_idx, deptId);
 		}
 								
 		ModelAndView mav = new ModelAndView("approval/teamApprDocList");

@@ -1,6 +1,7 @@
 package com.ustore.approval.service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +73,9 @@ public class ApprovalService {
 	public void sendAppr(ApprovalDto dto) {
 		
 		dao.saveContent(dto);
-		logger.info("appr_idx : "+dto.getApprIdx());		
+		logger.info("appr_idx : "+dto.getApprIdx());	
+		Integer apprIdx = dto.getApprIdx();
+		String empIdx = dto.getEmpIdx();
 		
 		List<Map<String, String>> apprlist = dto.getApprovalLines();
 		for (Map<String, String> emp : apprlist) {
@@ -91,6 +94,7 @@ public class ApprovalService {
 			}else {
 				dto.setApprConfirm("0");
 			}
+			// 결재선 저장
 			dao.saveApprLine(dto);
 		}
 		List<Map<String, String>> recvlist = dto.getReceivers();
@@ -99,9 +103,10 @@ public class ApprovalService {
 			dto.setReceiver(recv.get("name"));
 			dto.setPositionType(recv.get("positionType"));
 			dto.setDeptName(recv.get("department"));
+			// 수신자 저장
 			dao.saveApprRecv(dto);						    
 		}	
-		
+		dao.updateApprDate(apprIdx, empIdx);
 	/*	if(files != null && files.length!=0) {
 					
 					SaveFile savefile = new SaveFile();
@@ -176,8 +181,8 @@ public class ApprovalService {
 	}
 
 	// 발주날짜에 따른 발주번호 리스트 가져오기
-	public List<OrderDto> getOrderList(String orderDate) {
-		return dao.getOrderList(orderDate);
+	public List<OrderDto> getOrderNumList(String orderDate) {
+		return dao.getOrderNumList(orderDate);
 	}
 	
 	// 결재요청문서 리스트 가져오기
@@ -191,8 +196,8 @@ public class ApprovalService {
 	}
 
 	// 로그인한 직원의 부서 결재완료 문서 불러오기
-	public ArrayList<ApprovalDto> getTeamApprList(String emp_idx) {
-		return dao.getTeamApprList(emp_idx);
+	public ArrayList<ApprovalDto> getTeamApprList(String emp_idx, int deptId) {
+		return dao.getTeamApprList(emp_idx, deptId);
 	}
 	
 	// 점장이 로그인 시 전체 결재완료 문서 불러오기
@@ -201,8 +206,8 @@ public class ApprovalService {
 	}
 	
 	// 내 결재문서 회수하기
-	public int retrieveAppr(int apprIdx) {		
-		return dao.retrieveAppr(apprIdx);
+	public int retrieveAppr(int apprIdx, int common_idx) {		
+		return dao.retrieveAppr(apprIdx, common_idx);
 	}
 	
 	// 결재하기(결재자 정보 update)
@@ -216,15 +221,22 @@ public class ApprovalService {
 	}
 	
 	// 기존 결재완료 문서의 최종결재일의 연도 뽑아내기
-	public Date getFnApprDate(String fnApprEmp_idx, Integer apprIdx) {
+	public Timestamp getFnApprDate(String fnApprEmp_idx, Integer apprIdx) {
 		return dao.getFnApprDate(fnApprEmp_idx, apprIdx);
 	}
 	
 	// 결재완료시 문서 번호 생성을 위해 기존 문서의 최대값 가져오기(없으면 0으로 가지고 가서 +1해주고 0001로 생성)
 	public int getMaxDocId(String iniDeptName, String fnApprYear) {
-		int maxDocId = dao.getMaxDocId(iniDeptName, fnApprYear);		
-		return (maxDocId == 0)? 0: maxDocId;
+		String maxDocId = dao.getMaxDocId(iniDeptName, fnApprYear);		
+		return (maxDocId == null)? 0: extractMaxDocId(maxDocId);
 	}	
+	
+	// 기존 결재완료 문서의 뒤의 4자리 최대값 가져와서 숫자만 뽑아내기
+	private int extractMaxDocId(String maxDocId) {		
+		String lastFourDigits = maxDocId.substring(maxDocId.length() - 4);
+		logger.info(lastFourDigits);		
+		return Integer.parseInt(lastFourDigits);
+	}
 
 	
 	// 결재문서 상태 바꾸기(결재완료) - 결재문서 상태(41) 변경 및 문서번호 생성 
@@ -243,8 +255,8 @@ public class ApprovalService {
 	}
 	
 	// 임시저장 문서 삭제
-	public void apprDocDel(Integer apprIdx) {
-		dao.apprDocDel(apprIdx);
+	public void tempDocDel(Integer apprIdx, int common_idx) {
+		dao.tempDocDel(apprIdx, common_idx);
 	}
 
 	// 휴가신청서 기안자의 기안문 정보 확인
@@ -265,6 +277,11 @@ public class ApprovalService {
 	public int getTotalLeaveDays(String drafterEmpIdx) {
 		return dao.getTotalLeaveDays(drafterEmpIdx);
 	}
+
+	public List<OrderDto> getOrderProductList(int orderIdx) {
+		return dao.getOrderProductList(orderIdx);
+	}
+
 
 	
 

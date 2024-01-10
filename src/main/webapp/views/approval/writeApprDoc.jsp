@@ -45,7 +45,7 @@
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
-		<%-- <jsp:include page="/views/common/header.jsp"></jsp:include> --%>
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 				
 		<!--begin::Main-->
 		<!--begin::Root-->
@@ -57,7 +57,7 @@
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px">
 					<!--================================메인 내용들어가는부분================================================-->
-					<%-- <jsp:include page="/views/common/sidebar.jsp"></jsp:include> --%>
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
@@ -97,7 +97,6 @@
 						</div>
 						<!--end::Toolbar-->	
 						<!-- 결재 양식 들어오는 곳 -->	
-						<p>Selected Form: <%= request.getParameter("common_idx") %></p>	
 						<div class="loadApprDoc">	
 							${htmlContent}					
 						</div>					
@@ -192,35 +191,7 @@
 									</div>
 								</div>
 							</div>
-						</div>
-						<!-- 아래쪽 div -->
-						<c:if test="${commentsExist}">
-							<div>
-								<div class="comment border"  style="align-items: center; margin: 5px;">
-									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
-										<span class="text-center">결재의견(반려, 수정)</span>
-									</div>										
-									<div class="d-flex flex-column commentTable scroll" id="comment" style="height: 100px;">
-										<div style="overflow: auto;">
-											<table class="w-100">
-												<thead>
-													<tr>
-														<th>결재자명</th>
-														<th>일시</th>
-														<th>의견</th>
-													</tr>
-												</thead>
-												<tbody>	
-													<tr>
-														<td colspan="3" style="text-align: center;">의견이 없습니다.</td>
-													</tr>													
-												</tbody>
-											</table>
-										</div>										
-									</div>
-								</div>
-							</div>	
-						</c:if>										
+						</div>																
 					</div>
 
 					<div class="modal-footer" style="display: flex; justify-content: center;">
@@ -246,32 +217,30 @@
 	</body>
 	<!--end::Body-->
 	<script>
-	var common_idx = ${common_idx};
-	var myModal = new bootstrap.Modal(document.getElementById('kt_modal_1'), {
-        backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
-        keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
-    });
 	
+	$(document).ready(function () {  	
+    	headerOnReady();
+    	
+    	var formPage = '<%= request.getAttribute("formPage") %>';
+        if (formPage) {
+             loadFormPage(formPage, common_idx);
+        }         	 	
+      	 
+        // 결재정보 버튼 클릭 시의 동작
+        $('#btnApprovalInfo').on('click', function () {
+            console.log('결재정보 버튼 클릭');            
+            $('#kt_modal_1').modal('show');          
+        });
+                  
+        $('#kt_modal_1').on('shown.bs.modal', function(){
+    	  getTreeData();
+    	}); 
+	});
+	
+	var common_idx = ${common_idx};	
 	var loggedInEmp_idx = ${principal.username};
 	console.log(loggedInEmp_idx);
 	addLoggedInEmpToApprLine(loggedInEmp_idx);
-	
-	
-	
-    var formPage = '<%= request.getAttribute("formPage") %>';
-    if (formPage) {
-         loadFormPage(formPage, common_idx);
-    }         	 	
-  	 
-    // 결재정보 버튼 클릭 시의 동작
-    $('#btnApprovalInfo').on('click', function () {
-        console.log('결재정보 버튼 클릭');            
-        myModal.show();          
-    });
-              
-    $('#kt_modal_1').on('shown.bs.modal', function(){
-	  getTreeData();
-	});  
 		
 	
     var readonly = false; /* ckEditor 있는 폼 불러올때, true이면 읽기전용(결재 상신중인 문서 확인시에는 수정 안되게 처리) */
@@ -720,12 +689,12 @@
 	
 	            // 모든 처리가 완료되었을 때 모달 닫기
 	            if (approvalSuccess && receiverSuccess) {
-	                $('#kt_modal_1').modal('hide');
+	            	$('.btn[data-bs-dismiss="modal"]').click();
 	            }
             },
             error: function (error) {
                 console.error('결재선 정보 저장 중 오류가 발생했습니다.');
-                $('#kt_modal_1').modal('hide');
+                $('.btn[data-bs-dismiss="modal"]').click();
             }
         });
         
@@ -768,13 +737,13 @@
 
                 // 모든 처리가 완료되었을 때 모달 닫기
                 if (approvalSuccess && receiverSuccess) {
-                    $('#kt_modal_1').modal('hide');
+                	$('.btn[data-bs-dismiss="modal"]').click();
                 }
             },
             error: function (error) {
                 // 수신자 정보 저장 중 오류가 발생했을 때의 동작
                 console.error('수신자 정보 저장 중 오류가 발생했습니다.');
-                $('#kt_modal_1').modal('hide');
+                $('.btn[data-bs-dismiss="modal"]').click();
             }
         });
         
@@ -800,15 +769,13 @@
                 	    receivers: receivers
                 	};
         }else if(common_idx=='31'){
-        	var orderNum = $('#orderNum').val();
-    	    var totalAmount = $('#totalAmount').val();
+        	var orderIdx = $('#orderNum').val();
         	ApprovalDto = {
         		    commonIdx: common_idx,
         		    apprSubject: apprSubject,
         		    approvalLines: approvalLines,
         	        receivers: receivers,
-        		    orderNum: orderNum,
-        		    totalAmount : totalAmount
+        		    orderIdx: orderIdx
         		};
         }else{
         	var leaveType = $('#leaveType option:selected').val();
@@ -873,15 +840,13 @@
             	    receivers: receivers
             	};
 	    }else if(common_idx=='31'){
-	    	var orderNum = $('#orderNum').val();
-    	    var totalAmount = $('#totalAmount').val();
+	    	var orderIdx = $('#orderNum').val();
 	    	ApprovalDto = {
 	    		    commonIdx: common_idx,
 	    		    apprSubject: apprSubject,
 	    		    approvalLines: approvalLines,
 	    	        receivers: receivers,
-	    		    orderNum: orderNum,
-	    		    totalAmount : totalAmount
+	    		    orderIdx: orderIdx
 	    		};
 	    }else{
 	    	var leaveType = $('#leaveType').val();
