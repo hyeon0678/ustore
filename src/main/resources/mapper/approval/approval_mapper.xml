@@ -34,8 +34,8 @@
         </if>
         <if test="commonIdx == 31">
         	INSERT INTO payment_resolution (appr_idx, emp_idx, appr_subject,  
-            	appr_status, doc_step, order_num)
-            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 43, 1, #{orderNum});            
+            	appr_status, doc_step, order_idx)
+            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 43, 1, #{orderIdx});            
         </if>
         <if test="commonIdx == 32">
             INSERT INTO req_vacation (appr_idx, emp_idx, appr_subject, 
@@ -66,8 +66,7 @@
             WHERE appr_idx=#{apprIdx}            	
 	    </if>
         <if test="commonIdx == 31">
-	        UPDATE payment_resolution SET appr_subject=#{apprSubject}, 
-	        	appr_content=#{apprContent}, order_num=#{orderNum}, appr_submit_date=now()
+	        UPDATE payment_resolution SET appr_subject=#{apprSubject}, order_idx=#{orderIdx}, appr_submit_date=now()
             WHERE appr_idx=#{apprIdx}            	
 	    </if>
         <if test="commonIdx == 32">
@@ -102,8 +101,8 @@
         </if>
         <if test="commonIdx == 31">
         	INSERT INTO payment_resolution (appr_idx, emp_idx, appr_subject,  
-            	appr_status, doc_step, order_num)
-            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 40, 1, #{orderNum})            
+            	appr_status, doc_step, order_idx)
+            VALUES (nextval(appr_idx_sequence), #{empIdx}, #{apprSubject}, 40, 1, #{orderIdx})            
         </if>
         <if test="commonIdx == 32">
             INSERT INTO req_vacation (appr_idx, emp_idx, appr_subject, 
@@ -127,6 +126,11 @@
 	        VALUES (#{empIdx}, #{apprIdx}, #{receiver})	    
 	</insert>
 	
+	<!-- 결재 상신시 결재일자 update(이후 결재버튼 누르면 해당 결재자의 결재일자 update) -->
+	<update id="updateApprDate">
+		UPDATE approval_line SET appr_date = now()
+		WHERE appr_idx = #{apprIdx} AND emp_idx = #{empIdx}
+	</update>
 	
 	<!-- 임시저장 문서 list가져오기 -->
 	<select id="getTempList" resultType="ApprovalDto">
@@ -176,7 +180,7 @@
             WHERE appr_idx=#{param1}
         </if>
         <if test="common_idx == 31">
-        	SELECT appr_subject, appr_status, doc_step, order_num 
+        	SELECT appr_subject, appr_status, doc_step, order_idx 
         	FROM payment_resolution          
         	WHERE appr_idx=#{param1}
         </if>
@@ -189,13 +193,26 @@
 	</select>
 	
 	
-	<!-- 대금지급결의서 발주번호 검색(modal) -> 특정 일자의 발주번호 리스트 가져오기 -->
-	<select id="getOrderList" resultType="OrderDto">
-		SELECT DISTINCT o.order_date, o.order_idx, o.emp_idx 
+	<!-- 대금지급결의서 발주번호 검색(modal) -> 특정 일자의 발주번호 리스트 가져오기 / 결재진행중이거나 결재완료된 번호는 안가져옴 -->
+	<select id="getOrderNumList" resultType="OrderDto">
+		SELECT DISTINCT o.order_date, o.order_idx, e.emp_name 
 		FROM `order` o
 		JOIN order_detail od ON o.order_idx = od.order_idx 
-		WHERE o.order_date =#{orderDate} and od.conf_status = 'Y'
+		JOIN employee e ON o.emp_idx = e.emp_idx
+		LEFT JOIN payment_resolution pr ON o.order_idx = pr.order_idx
+		WHERE o.order_date =#{orderDate} 
+			AND od.conf_status = 'Y' 
+			AND pr.appr_status not in (40, 41)
 		ORDER BY o.order_date DESC
+	</select>
+	
+	<!-- 발주번호에 대한 세부 내용 가져오기(품명, 주문량, 단가 등) -->
+	<select id="getOrderProductList" resultType="OrderDto">
+		SELECT DISTINCT od.purchase_price, (od.quantity-COALESCE(od.return_quantity, 0)) as netQuantity, p.product_name, p.unit_quantity, (od.purchase_price*p.unit_quantity*(od.quantity - COALESCE(od.return_quantity, 0))) as totalPricePerProduct
+		FROM `order` o
+		JOIN order_detail od ON o.order_idx = od.order_idx 
+		JOIN products p on od.product_id = p.product_id 
+		WHERE o.order_idx =#{orderIdx};
 	</select>
 	
 	<!-- 내결재문서(내가 결재 올린 문서) list가져오기 -->
@@ -261,6 +278,7 @@
 		ORDER BY appr_submit_date DESC
 	</select>
 	
+	<!-- 결재하기 -->
 	<update id="updateAppr" parameterType="ApprovalDto">
 		<if test="commonIdx == 30">
 		UPDATE approval_line al
@@ -282,13 +300,14 @@
 		</if>
 	</update>
 	
+	<!-- 남은 결재자 있는지 확인 -->
 	<select id="chkRemainApprover" parameterType="ApprovalDto" resultType="int">
 		SELECT count(approver)
 		FROM approval_line 
 		WHERE appr_idx=#{apprIdx} AND appr_confirm=0
 	</select>
 	
-	
+	<!-- 결재문서의 상태 update(남은 결재자 없을시 결재완료 처리(apprStatus = 41), 문서번호 생성) -->
 	<update id="updateApprStatus" parameterType="ApprovalDto">
 		<if test="commonIdx == 30">
 			UPDATE business_draft
@@ -307,6 +326,7 @@
         </if>
 	</update>
 	
+	<!-- 결재문서의 상태 update(남은 결재자 있을시) -->
 	<update id="updateApprDocStep" parameterType="ApprovalDto">
 		<if test="commonIdx == 30">
 			UPDATE business_draft
@@ -326,31 +346,31 @@
 	</update>
 	
 	<!-- 최종 결재자 결재일자 가져오기(문서번호 생성을 위해 연도만 뽑아내기 위함) -->
-	<select id="getFnApprDate" resultType="java.sql.Date">
+	<select id="getFnApprDate" resultType="java.sql.Timestamp">
 		SELECT appr_date 
 		FROM approval_line
 		WHERE emp_idx=#{fnApprEmp_idx} AND appr_idx=#{apprIdx}
 	</select>
 	
 	<!-- 최종결재일자 연도와 부서명이 같은 문서번호의 뒤의 숫자 4자리 max값 가져오기 -->
-	<select id="getMaxDocId" resultType="int">
-		SELECT MAX(CONVERT(SUBSTRING_INDEX(doc_id, '-', -1), UNSIGNED INTEGER)) AS doc_id
+	<select id="getMaxDocId" resultType="String">
+		SELECT MAX(doc_id)
 		FROM (
 		    SELECT doc_id
 		    FROM business_draft bd
-		    WHERE LEFT(doc_id, 4) = '2024' AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = '매장'    
+		    WHERE LEFT(doc_id, 4) = #{fnApprYear} AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = #{iniDeptName}    
 		    UNION    
 		    SELECT doc_id
 		    FROM payment_resolution pr
-		    WHERE LEFT(doc_id, 4) = '2024' AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = '매장'    
+		    WHERE LEFT(doc_id, 4) = #{fnApprYear} AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = #{iniDeptName}    
 		    UNION    
 		    SELECT doc_id
 		    FROM req_vacation rv
-		    WHERE LEFT(doc_id, 4) = '2024' AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = '매장'
+		    WHERE LEFT(doc_id, 4) = #{fnApprYear} AND SUBSTRING_INDEX(SUBSTRING_INDEX(doc_id, '-', 2), '-', -1) = #{iniDeptName}
 		    )AS combined_result;
 	</select>
 	
-	
+	<!-- 반려하기 -->
 	<update id="rejectApprDoc">		
 		<if test="common_idx == 30">
 		UPDATE approval_line al
@@ -375,7 +395,7 @@
 	
 	<!-- 부서문서(결재완료문서) list가져오기 -->
 	<select id="getTeamApprList" resultType="ApprovalDto">
-		SELECT bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.emp_idx, bd.doc_id, al.appr_date, d2.dept_name, drafter.emp_name
+		SELECT distinct bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.emp_idx, bd.doc_id, DATE_FORMAT(al.appr_date, '%Y-%m-%d') as appr_date, d2.dept_name, drafter.emp_name
 		FROM business_draft bd
 		JOIN employee drafter ON bd.emp_idx = drafter.emp_idx
 		LEFT JOIN approval_line al ON bd.appr_idx = al.appr_idx
@@ -383,12 +403,12 @@
 		LEFT JOIN employee receiver ON r.emp_idx = receiver.emp_idx
 		LEFT JOIN department d2 ON d2.dept_id = drafter.dept_id 
 		WHERE bd.appr_status = 41
-		  AND (drafter.dept_id = #{emp_idx}
-		       OR al.emp_idx = #{emp_idx}
+		  AND (drafter.dept_id = #{deptId}
+		       OR drafter.emp_idx = #{emp_idx}
 		       OR r.emp_idx = #{emp_idx}
-		       OR receiver.dept_id = #{emp_idx})
-		union all
-		SELECT pr.appr_idx, pr.appr_subject, pr.appr_status, pr.appr_type_idx, pr.emp_idx, pr.doc_id, al.appr_date, d3.dept_name, drafter2.emp_name
+		       OR receiver.dept_id = #{deptId})
+		union
+		SELECT distinct pr.appr_idx, pr.appr_subject, pr.appr_status, pr.appr_type_idx, pr.emp_idx, pr.doc_id, DATE_FORMAT(al.appr_date, '%Y-%m-%d') as appr_date, d3.dept_name, drafter2.emp_name
 		FROM payment_resolution pr
 		JOIN employee drafter2 ON pr.emp_idx = drafter2.emp_idx
 		LEFT JOIN approval_line al ON pr.appr_idx = al.appr_idx
@@ -396,12 +416,12 @@
 		LEFT JOIN employee receiver ON r.emp_idx = receiver.emp_idx
 		LEFT JOIN department d3 ON d3.dept_id = drafter2.dept_id 
 		WHERE pr.appr_status = 41
-		  AND (drafter2.dept_id = #{emp_idx}
-		       OR al.emp_idx = #{emp_idx}
+		  AND (drafter2.dept_id = #{deptId}
+		       OR drafter2.emp_idx = #{emp_idx}
 		       OR r.emp_idx = #{emp_idx}
-		       OR receiver.dept_id = #{emp_idx})
-		union all
-		SELECT rv.appr_idx, rv.appr_subject, rv.appr_status, rv.appr_type_idx, rv.emp_idx, rv.doc_id, al.appr_date, d4.dept_name, drafter3.emp_name
+		       OR receiver.dept_id = #{deptId})
+		union
+		SELECT distinct rv.appr_idx, rv.appr_subject, rv.appr_status, rv.appr_type_idx, rv.emp_idx, rv.doc_id, DATE_FORMAT(al.appr_date, '%Y-%m-%d') as appr_date, d4.dept_name, drafter3.emp_name
 		FROM req_vacation rv
 		JOIN employee drafter3 ON rv.emp_idx = drafter3.emp_idx
 		LEFT JOIN approval_line al ON rv.appr_idx = al.appr_idx
@@ -409,19 +429,19 @@
 		LEFT JOIN employee receiver ON r.emp_idx = receiver.emp_idx
 		LEFT JOIN department d4 ON d4.dept_id = drafter3.dept_id 
 		WHERE rv.appr_status = 41
-		  AND (drafter3.dept_id = #{emp_idx}
-		       OR al.emp_idx = #{emp_idx}
+		  AND (drafter3.dept_id = #{deptId}
+		       OR drafter3.emp_idx = #{emp_idx}
 		       OR r.emp_idx = #{emp_idx}
-		       OR receiver.dept_id = #{emp_idx})
-		  GROUP BY appr_idx
-	      ORDER BY appr_date DESC
+		       OR receiver.dept_id = #{deptId})
+		GROUP BY appr_idx
+	    ORDER BY appr_date DESC, doc_id DESC
 	</select>
 	
 	<!-- 점장이 로그인시 전체 결재완료 문서 가져오기 -->
 	<select id="getAllApprList" resultType="ApprovalDto">
 		SELECT distinct * 
 		FROM(
-			SELECT distinct bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.emp_idx, bd.doc_id, al.appr_date, d2.dept_name, drafter.emp_name
+			SELECT distinct bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.emp_idx, bd.doc_id, DATE_FORMAT(al.appr_date, '%Y-%m-%d') as appr_date, d2.dept_name, drafter.emp_name
 			FROM business_draft bd
 			JOIN employee drafter ON bd.emp_idx = drafter.emp_idx
 			LEFT JOIN approval_line al ON bd.appr_idx = al.appr_idx
@@ -430,7 +450,7 @@
 			LEFT JOIN department d2 ON d2.dept_id = drafter.dept_id 
 			WHERE bd.appr_status = 41
 			union
-			SELECT distinct pr.appr_idx, pr.appr_subject, pr.appr_status, pr.appr_type_idx, pr.emp_idx, pr.doc_id, al.appr_date, d2.dept_name, drafter.emp_name
+			SELECT distinct pr.appr_idx, pr.appr_subject, pr.appr_status, pr.appr_type_idx, pr.emp_idx, pr.doc_id, DATE_FORMAT(al.appr_date, '%Y-%m-%d') as appr_date, d2.dept_name, drafter.emp_name
 			FROM payment_resolution pr
 			JOIN employee drafter ON pr.emp_idx = drafter.emp_idx
 			LEFT JOIN approval_line al ON pr.appr_idx = al.appr_idx
@@ -439,7 +459,7 @@
 			LEFT JOIN department d2 ON d2.dept_id = drafter.dept_id 
 			WHERE pr.appr_status = 41
 			union
-			SELECT distinct rv.appr_idx, rv.appr_subject, rv.appr_status, rv.appr_type_idx, rv.emp_idx, rv.doc_id, al.appr_date, d2.dept_name, drafter.emp_name
+			SELECT distinct rv.appr_idx, rv.appr_subject, rv.appr_status, rv.appr_type_idx, rv.emp_idx, rv.doc_id, DATE_FORMAT(al.appr_date, '%Y-%m-%d') as appr_date, d2.dept_name, drafter.emp_name
 			FROM req_vacation rv
 			JOIN employee drafter ON rv.emp_idx = drafter.emp_idx
 			LEFT JOIN approval_line al ON rv.appr_idx = al.appr_idx
@@ -451,7 +471,8 @@
 		ORDER BY appr_date DESC;
 	</select>
 
-	<delete id="apprDocDel">
+	<!-- 임시저장 문서 삭제하기 -->
+	<delete id="tempDocDel">
 		<if test="common_idx == 30">
 		DELETE FROM business_draft
 		WHERE appr_idx = #{apprIdx}
@@ -471,19 +492,21 @@
 		SELECT * FROM req_vacation WHERE appr_idx = #{apprIdx} AND emp_idx = #{drafterEmpIdx}
 	</select>
 	
+	<!-- 기안자의 총 잔여 연차갯수 가지고 오기 -->
 	<select id="getTotalLeaveDays" resultType="int">
 		SELECT leave_incdec FROM annual_leave WHERE emp_idx = #{drafterEmpIdx}
 		ORDER BY leave_date DESC
 		LIMIT 1
 	</select>
 	
-	
+	<!-- 결재받은 휴가신청서의 연차타입이 연차일때 연차히스토리 테이블에 업데이트(연차 차감) -->
 	<insert id="insertAnnualLeaveInfo">
 		INSERT INTO annual_leave
 		(emp_idx, leave_date, leave_type, leave_incdec, reg_by)
 		VALUES (#{drafterEmpIdx}, #{date}, #{leaveType}, #{totalLeaveDays}, #{drafterEmpIdx})
 	</insert>
 	
+	<!-- 결재받은 휴가신청서의 연차타입이 연차 외의 항목(병가, 공가)일때 연차히스토리 테이블에 업데이트(연차 미차감) -->
 	<insert id="insertOtherLeaveInfo">
 		INSERT INTO annual_leave
 		(emp_idx, leave_date, leave_type, leave_incdec, reg_by)

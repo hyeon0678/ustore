@@ -1,6 +1,7 @@
 package com.ustore.approval.dto;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class ApprovalDto {
 	private int apprOrder; // 결재자의 결재단계(순서)
 	private String apprConfirm; // 해당 결재자의 apprConfirm(결재여부) :  0 미결재, 1 결재, 2 반려처리
 	private Date apprRecvDate; // 결재문서 받은날짜
-	private Date apprDate; // 결재날짜
+	private Timestamp apprDate;
 	private String docId; // 문서번호
 	private String comment; // 결재의견
 	private String receiver; // 수신자
@@ -43,11 +44,17 @@ public class ApprovalDto {
 	private int leaveDays; // 신청일수
 	private String leaveReason; // 신청 휴가 사유
 	// 대금지급결의서
-	private int orderNum; // 발주번호
+	private int orderIdx; // 발주번호
+	
 	private int totalAmount; // 합계금액
 	
 	
-	
+	public int getOrderIdx() {
+		return orderIdx;
+	}
+	public void setOrderIdx(int orderIdx) {
+		this.orderIdx = orderIdx;
+	}
 	public String getFormattedApprDate() {
 		return formattedApprDate;
 	}
@@ -152,10 +159,11 @@ public class ApprovalDto {
 
 	
 	
-	public Date getApprDate() {
+	
+	public Timestamp getApprDate() {
 		return apprDate;
 	}
-	public void setApprDate(Date apprDate) {
+	public void setApprDate(Timestamp apprDate) {
 		this.apprDate = apprDate;
 	}
 	public String getDocId() {
@@ -238,12 +246,7 @@ public class ApprovalDto {
 	public void setLeaveReason(String leaveReason) {
 		this.leaveReason = leaveReason;
 	}
-	public int getOrderNum() {
-		return orderNum;
-	}
-	public void setOrderNum(int orderNum) {
-		this.orderNum = orderNum;
-	}
+	
 	public int getApprStatus() {
 		return apprStatus;
 	}

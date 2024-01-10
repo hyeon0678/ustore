@@ -31,11 +31,47 @@ public class OrderDto {
 	private String receiptDate;
 	private int resourceIdx;
 	private String resourceName;
+	private String empName;
 
 	
+	// 대금지급 관련 추가
+	private int netQuantity; // 주문량 - 반품량
+	private int returnQuantity; // 반품량
+	private int totalPricePerProduct; // 발주 건 제품의 판매 금액(구매금액*단위수량*(주문량-반품량))
+	private int totalAmount; // 발주 건 총 금액
 	
 	
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+	public int getNetQuantity() {
+		return netQuantity;
+	}
+	public void setNetQuantity(int netQuantity) {
+		this.netQuantity = netQuantity;
+	}
+	public int getReturnQuantity() {
+		return returnQuantity;
+	}
+	public void setReturnQuantity(int returnQuantity) {
+		this.returnQuantity = returnQuantity;
+	}
 	
+	public int getTotalPricePerProduct() {
+		return totalPricePerProduct;
+	}
+	public void setTotalPricePerProduct(int totalPricePerProduct) {
+		this.totalPricePerProduct = totalPricePerProduct;
+	}
+	public int getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(int totalAmount) {
+		this.totalAmount = totalAmount;
+	}
 	public int getResourceIdx() {
 		return resourceIdx;
 	}

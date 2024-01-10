@@ -100,13 +100,11 @@
 										<div class="card-title">
 											<!--begin::Search-->
 											<div class="d-flex align-items-center position-relative my-1">
-												<i
-													class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+												<i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
 													<span class="path1"></span> <span class="path2"></span>
-												</i> <input type="text"
-													data-kt-ecommerce-category-filter="search"
-													class="form-control form-control-solid w-250px ps-12"
-													placeholder="검색어를 입력 해주세요." />
+												</i> 
+												<input type="text" data-kt-ecommerce-category-filter="search" class="form-control form-control-solid w-250px ps-12"	placeholder="검색어를 입력 해주세요." />
+												<button id= "search" class="btn btn-primary" style="margin: 10px;" >검색</button>
 											</div>
 											<!--end::Search-->
 										</div>
@@ -114,14 +112,7 @@
 										<!--begin::Card toolbar-->
 										<div class="card-toolbar">
 											<!--begin::Toolbar-->
-											<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-												<!--begin::Filter-->
-												<button id="delTempDoc" type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-													<i class="ki-duotone ki-filter fs-2">
-														<span class="path1"></span>
-														<span class="path2"></span>
-													</i>문서삭제
-												</button>								
+											<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">	
 											</div>
 											<!--end::Toolbar-->							
 										</div>
@@ -133,12 +124,7 @@
 										<!--begin::Table-->
 										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
 											<thead>
-												<tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-													<th class="w-10px pe-2">
-														<div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-															<input type="checkbox" id="chk_all" class="form-check-input" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
-														</div>
-													</th>
+												<tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">													
 													<th class="min-w-125px">저장일자</th>
 													<th class="min-w-125px">결재양식</th>
 													<th class="min-w-125px">제목</th>
@@ -147,12 +133,7 @@
 											</thead>
 											<tbody class="text-gray-600 fw-semibold">
 												<c:forEach items="${templist}" var="bbs">
-													<tr>
-														<td>
-															<div class="form-check form-check-sm form-check-custom form-check-solid">
-																<input type="checkbox" name="chk" class="form-check-input"  value="1"/>
-															</div>
-														</td>
+													<tr>														
 														<td>${bbs.apprSubmitDate}</td>
 														<td>
 															<c:choose>
@@ -208,30 +189,9 @@
 	</body>
 	<!--end::Body-->
 	<script>
-	$('#chk_all').on('click',function(){
-		var $chk = $('input[type="checkbox"]');
-		if($(this).is(":checked")){
-			$chk.prop("checked", true);
-		}else{
-			$chk.prop("checked", false);
-		}
-	});
-
-	$("input[name='chk']").on('click',function(){
-		var total = $("input[name='chk']").length;
-		var checked = $("input[name='chk']:checked").length;
-		
-		if(total != checked){
-			$('#chk_all').prop("checked", false);
-		}else{
-			$('#chk_all').prop("checked", true);
-		}
-	});
 	
-	$('#delTempDoc').on('click', function(){
-	
-		
-	})	
-
+	$(document).ready(function () {    	
+	    headerOnReady();
+	});
 	</script>
 </html>

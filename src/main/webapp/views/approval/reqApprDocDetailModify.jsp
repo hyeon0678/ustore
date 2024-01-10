@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<!--begin::Head-->
@@ -193,37 +194,33 @@
 							</div>
 						</div>
 						<!-- 아래쪽 div -->
-						<c:if test="${commentsExist}">
 							<div>
-								<div class="comment border"  style="align-items: center; margin: 5px;">
-									<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
-										<span class="text-center">결재의견(반려, 수정)</span>
+							<div class="comment border"  style="align-items: center; margin: 5px;">
+								<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
+									<span class="text-center">결재의견(반려, 수정)</span>
+								</div>										
+								<div class="d-flex flex-column commentTable scroll" id="commentlist" style="height: 100px;">
+									<div style="overflow: auto;">
+										<table class="w-100">
+											<thead>
+												<tr>
+													<th>결재자명</th>
+													<th>결재타입</th>
+													<th>결재일시</th>
+													<th>결재의견</th>
+												</tr>
+											</thead>
+											<tbody>												
+											</tbody>
+										</table>
 									</div>										
-									<div class="d-flex flex-column commentTable scroll" id="comment" style="height: 100px;">
-										<div style="overflow: auto;">
-											<table class="w-100">
-												<thead>
-													<tr>
-														<th>결재자명</th>
-														<th>일시</th>
-														<th>의견</th>
-													</tr>
-												</thead>
-												<tbody>	
-													<tr>
-														<td colspan="3" style="text-align: center;">의견이 없습니다.</td>
-													</tr>													
-												</tbody>
-											</table>
-										</div>										
-									</div>
 								</div>
-							</div>	
-						</c:if>										
+							</div>
+						</div>								
 					</div>
 
 					<div class="modal-footer" style="display: flex; justify-content: center;">
-						<button type="button" class="btn btn-primary" id="saveApprLine">저장</button>
+						<button type="button" class="btn btn-primary" id="checkapprinfo">확인</button>
 					</div>
 				</div>
 			</div>
@@ -332,6 +329,52 @@
 			$("#apprListTable tr:last").html(generateSignatureRow());
 		    
 			
+			// tbody 요소를 가져옴
+			var commentbody = document.querySelector("#commentlist tbody");
+
+			// approvalLines 배열 순회
+			approvalLines.forEach(function(data, index) {
+			    // comment가 있는 경우에만 처리
+			    if (data.comment !== null) {
+			        // tr 요소 생성
+			        var row = document.createElement("tr");
+
+			        // 각 컬럼에 데이터 추가
+			        var columns = ["name", "apprConfirm", "apprDate", "comment"];
+			        columns.forEach(function(column) {
+			            var cell = document.createElement("td");
+			            // 날짜 데이터의 경우 포맷 변경
+			            if (column === "apprDate") {
+			                var date = data[column] ? new Date(data[column]) : null;
+			                if(date){
+				                cell.textContent = date.toLocaleDateString("ko-KR", { year: 'numeric', month: '2-digit', day: '2-digit' });
+			                }else{
+			                	cell.textContent = '';
+			                }              	
+			                
+			            } else if(column === "apprConfirm") {
+			            	var confirmType = data[column]
+			            	if(confirmType==0){
+			            		cell.textContent = ''; 
+			            	}else if(confirmType==1 && index ===0){
+			            		cell.textContent = '기안';
+			            	}else if(confirmType==1){
+			            		cell.textContent = '결재';
+			            	}else{
+			            		cell.textContent = '반려';
+			            	}
+			            } else {
+			                cell.textContent = data[column];
+			            }
+			            row.appendChild(cell);
+			        });
+
+			        // tbody에 행 추가
+			        commentbody.appendChild(row);
+			    }
+			});
+			
+			
 			// 수신자 정보 불러오기
 		    
 		    var beforeConvertRecvData = ${receiver};
@@ -439,14 +482,11 @@
 		}
     }
     
-    
-
-    var myModal = new bootstrap.Modal(document.getElementById('kt_modal_1'), {
-        backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
-        keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
-    });
-    
+        
     $(document).ready(function () {
+    	
+    	headerOnReady();
+    	
     	var common_idx=${common_idx};
     	console.log("common_idx : "+common_idx);
     	// 초기에 선택된 양식에 대한 HTML 파일 로드
@@ -458,14 +498,27 @@
         // 결재정보 버튼 클릭 시의 동작
         $('#btnApprovalInfo').on('click', function () {
             console.log('결재정보 버튼 클릭');            
-            myModal.show();
+            $('#kt_modal_1').modal('show');
         });
-               
+        
+        
+     	// 뒤로가기 버튼 클릭 시의 동작
+        $('#btnGoBack').on('click', function () {
+        	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
+                window.location.href = '/approval/reqpapproval';
+            } else {
+                console.log('뒤로가기 버튼 클릭 - 취소');
+            }            
+        });
         
         $('#kt_modal_1').on('shown.bs.modal', function(){
 			getTreeData();
-		})
+		});
         
+		$('#checkapprinfo').on('click', function(){
+			$('.btn[data-bs-dismiss="modal"]').click();
+		});
+		
     });
 	
 	
@@ -846,12 +899,12 @@
 	
 	            // 모든 처리가 완료되었을 때 모달 닫기
 	            if (approvalSuccess && receiverSuccess) {
-	                $('#kt_modal_1').modal('hide');
+	            	$('.btn[data-bs-dismiss="modal"]').click();
 	            }
             },
             error: function (error) {
                 console.error('결재선 정보 저장 중 오류가 발생했습니다.');
-                $('#kt_modal_1').modal('hide');
+                $('.btn[data-bs-dismiss="modal"]').click();
             }
         });
         
@@ -876,13 +929,13 @@
 
                 // 모든 처리가 완료되었을 때 모달 닫기
                 if (approvalSuccess && receiverSuccess) {
-                    $('#kt_modal_1').modal('hide');
+                	$('.btn[data-bs-dismiss="modal"]').click();
                 }
             },
             error: function (error) {
                 // 수신자 정보 저장 중 오류가 발생했을 때의 동작
                 console.error('수신자 정보 저장 중 오류가 발생했습니다.');
-                $('#kt_modal_1').modal('hide');
+                $('.btn[data-bs-dismiss="modal"]').click();
             }
         });
         
@@ -1082,18 +1135,7 @@
 	        }
 	    });
 	});
-	
-	
-	
-
-    // 뒤로가기 버튼 클릭 시의 동작
-    $('#btnGoBack').on('click', function () {
-    	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
-            window.location.href = '/approval/tempapproval';
-        } else {
-            console.log('뒤로가기 버튼 클릭 - 취소');
-        }            
-    });
+    
 	
 	</script>
 </html>

@@ -65,7 +65,7 @@
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
-		<%-- <jsp:include page="/views/common/header.jsp"></jsp:include> --%>
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 				
 		<!--begin::Main-->
 		<!--begin::Root-->
@@ -77,7 +77,7 @@
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px">
 					<!--================================메인 내용들어가는부분================================================-->
-					<%-- <jsp:include page="/views/common/sidebar.jsp"></jsp:include> --%>
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
@@ -207,14 +207,15 @@
 								<div class="d-flex flex-column-auto h-40px flex-center text-light-success bg-success" style="margin: 10px 0px;">
 									<span class="text-center">결재의견(반려, 수정)</span>
 								</div>										
-								<div class="d-flex flex-column commentTable scroll" id="comment" style="height: 100px;">
+								<div class="d-flex flex-column commentTable scroll" id="commentlist" style="height: 100px;">
 									<div style="overflow: auto;">
 										<table class="w-100">
 											<thead>
 												<tr>
 													<th>결재자명</th>
-													<th>일시</th>
-													<th>의견</th>
+													<th>결재타입</th>
+													<th>결재일시</th>
+													<th>결재의견</th>
 												</tr>
 											</thead>
 											<tbody>												
@@ -264,6 +265,7 @@
 	var approvalLines = [];
 	var receivers = [];
 	var readonly = true;
+	var orderIdx;
 	
     function loadFormPage(formPage, common_idx, apprTypeIdx) {
         $.ajax({
@@ -289,10 +291,12 @@
                     element.setAttribute('readonly', true);
                 });
                 
-                var selectElement = document.getElementById('leaveType');
-                if (selectElement) {
-                    selectElement.setAttribute('disabled', true);
+                var selectElementLeaveType = document.getElementById('leaveType');
+                if (selectElementLeaveType) {
+                	selectElementLeaveType.setAttribute('disabled', true);
                 }
+                
+                $('#orderNumSearch').hide();
                 
             },
             error: function (error) {
@@ -349,23 +353,39 @@
 		    
 			
 			// tbody 요소를 가져옴
-			var commentbody = document.querySelector("#comment tbody");
+			var commentbody = document.querySelector("#commentlist tbody");
 
 			// approvalLines 배열 순회
-			approvalLines.forEach(function(data) {
+			approvalLines.forEach(function(data, index) {
 			    // comment가 있는 경우에만 처리
 			    if (data.comment !== null) {
 			        // tr 요소 생성
 			        var row = document.createElement("tr");
 
 			        // 각 컬럼에 데이터 추가
-			        var columns = ["name", "apprDate", "comment"];
+			        var columns = ["name", "apprConfirm", "apprDate", "comment"];
 			        columns.forEach(function(column) {
 			            var cell = document.createElement("td");
 			            // 날짜 데이터의 경우 포맷 변경
 			            if (column === "apprDate") {
-			                var date = new Date(data[column]);
-			                cell.textContent = date.toLocaleDateString("ko-KR", { year: 'numeric', month: '2-digit', day: '2-digit' });
+			                var date = data[column] ? new Date(data[column]) : null;
+			                if(date){
+				                cell.textContent = date.toLocaleDateString("ko-KR", { year: 'numeric', month: '2-digit', day: '2-digit' });
+			                }else{
+			                	cell.textContent = '';
+			                }              	
+			                
+			            } else if(column === "apprConfirm") {
+			            	var confirmType = data[column]
+			            	if(confirmType==0){
+			            		cell.textContent = ''; 
+			            	}else if(confirmType==1 && index ===0){
+			            		cell.textContent = '기안';
+			            	}else if(confirmType==1){
+			            		cell.textContent = '결재';
+			            	}else{
+			            		cell.textContent = '반려';
+			            	}
 			            } else {
 			                cell.textContent = data[column];
 			            }
@@ -437,10 +457,9 @@
                 break;
                 
             case '31':            	
-            	var orderNum = "${content.orderNum}";
-        	    var totalAmount = "${content.totalAmount}";            	
-            	$("#orderNum").val(orderNum);
-            	$("#totalAmount").val(totalAmount);
+            	var orderIdx = "${content.orderIdx}";  
+            	getItemsForOrder(orderIdx); 
+            	
                 break;
                 
             case '32':            	
@@ -485,17 +504,12 @@
 		    return rowHtml;
 		}
     }
-    
-   
-    var myModal = new bootstrap.Modal(document.getElementById('kt_modal_1'), {
-        backdrop: 'static', // 배경 클릭 시 모달이 닫히지 않도록 설정
-        keyboard: false // Esc 키를 눌렀을 때 모달이 닫히지 않도록 설정
-    });
-	
-	
+   	
 	
 	$(document).ready(function () {    	
     	
+		headerOnReady();
+		
 		var common_idx=${common_idx};
     	console.log("common_idx : "+common_idx);
     	// 초기에 선택된 양식에 대한 HTML 파일 로드
@@ -506,15 +520,12 @@
 		
         // 결재정보 버튼 클릭 시의 동작
         $('#btnApprovalInfo').on('click', function () {
-            // 여기에 결재정보 버튼 클릭 시 수행할 동작 추가
-            console.log('결재정보 버튼 클릭');
-            
-            myModal.show();
+            console.log('결재정보 버튼 클릭');            
+            $('#kt_modal_1').modal('show');
         });
 
         // 출력하기 버튼 클릭 시의 동작
         $('#btnPrintDoc').on('click', function () {
-            // 여기에 임시저장 버튼 클릭 시 수행할 동작 추가
             console.log('임시저장 버튼 클릭');
             window.print();
         });
@@ -522,25 +533,20 @@
         // 뒤로가기 버튼 클릭 시의 동작
         $('#btnGoBack').on('click', function () {
         	if (confirm('리스트 페이지로 이동하시겠습니까?')) {
-                // 사용자가 Yes를 클릭한 경우 /newapproval 페이지로 이동
                 window.location.href = '/approval/teamapproval';
             } else {
-                // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
                 console.log('뒤로가기 버튼 클릭 - 취소');
             }            
         });
         
         $('#kt_modal_1').on('shown.bs.modal', function(){
 			getTreeData();
-		})
+		});
 		
 		$('#checkapprinfo').on('click', function(){
-			myModal.modal('hide');
-		})
-		
-		$('#kt_modal_1').on('hidden.bs.modal', function () {
-		    $('.modal-backdrop').remove();
+			$('.btn[data-bs-dismiss="modal"]').click();
 		});
+
         
     });
 	

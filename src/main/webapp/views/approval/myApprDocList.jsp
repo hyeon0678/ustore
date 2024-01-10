@@ -99,13 +99,11 @@
 										<div class="card-title">
 											<!--begin::Search-->
 											<div class="d-flex align-items-center position-relative my-1">
-												<i
-													class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
+												<i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
 													<span class="path1"></span> <span class="path2"></span>
-												</i> <input type="text"
-													data-kt-ecommerce-category-filter="search"
-													class="form-control form-control-solid w-250px ps-12"
-													placeholder="검색어를 입력 해주세요." />
+												</i> 
+												<input type="text" data-kt-ecommerce-category-filter="search" class="form-control form-control-solid w-250px ps-12"	placeholder="검색어를 입력 해주세요." />
+												<button  id= "search"  class="btn btn-primary" style="margin: 10px;" >검색</button>
 											</div>
 											<!--end::Search-->
 										</div>
@@ -146,7 +144,7 @@
 												                </c:when>
 												            </c:choose>
 														</td>
-														<td><a href="/approval/myapproval/detail?apprIdx=${bbs.apprIdx}&apprTypeIdx=${bbs.apprTypeIdx}">${bbs.apprSubject}</a></td>														
+														<td><a href="/approval/myapproval/detail?apprIdx=${bbs.apprIdx}&apprTypeIdx=${bbs.apprTypeIdx}&apprStatus=${bbs.apprStatus}">${bbs.apprSubject}</a></td>														
 														<td>${bbs.docId}</td>
 														<td>
 															<c:choose>
@@ -196,6 +194,8 @@
 	</body>
 	<!--end::Body-->
 	<script>
-
+	$(document).ready(function(){
+		headerOnReady();
+	});
 	</script>
 </html>

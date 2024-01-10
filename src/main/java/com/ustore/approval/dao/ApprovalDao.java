@@ -1,6 +1,7 @@
 package com.ustore.approval.dao;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public interface ApprovalDao {
 
 	int chkRecordExists(Integer apprIdx);
 
-	List<OrderDto> getOrderList(String orderDate);
+	List<OrderDto> getOrderNumList(String orderDate);
 
 	int delTempApprLine(ApprovalDto dto);
 
@@ -46,9 +47,9 @@ public interface ApprovalDao {
 
 	ArrayList<ApprovalDto> getMyApprList(String emp_idx);
 
-	ArrayList<ApprovalDto> getTeamApprList(String emp_idx);
+	ArrayList<ApprovalDto> getTeamApprList(String emp_idx, int deptId);
 
-	int retrieveAppr(int apprIdx);
+	int retrieveAppr(int apprIdx, int common_idx);
 
 	ArrayList<Integer> getApprOrder(String emp_idx);
 
@@ -58,15 +59,15 @@ public interface ApprovalDao {
 
 	void rejectApprDoc(Integer apprIdx, String comment, int common_idx);
 
-	void apprDocDel(Integer apprIdx);
+	void tempDocDel(Integer apprIdx, int common_idx);
 
 	void updateApprStatus(ApprovalDto dto);
 
 	void updateApprDocStep(ApprovalDto dto);
 
-	int getMaxDocId(String iniDeptName, String fnApprYear);
+	String getMaxDocId(String fnApprYear, String iniDeptName);
 
-	Date getFnApprDate(String fnApprEmp_idx, Integer apprIdx);
+	Timestamp getFnApprDate(String fnApprEmp_idx, Integer apprIdx);
 
 	ArrayList<ApprovalDto> getAllApprList();
 
@@ -77,6 +78,10 @@ public interface ApprovalDao {
 	void insertOtherLeaveInfo(String drafterEmpIdx, Date date, int leaveType, int totalLeaveDays);
 
 	int getTotalLeaveDays(String drafterEmpIdx);
+
+	List<OrderDto> getOrderProductList(int orderIdx);
+
+	void updateApprDate(Integer apprIdx, String empIdx);
 
 
 

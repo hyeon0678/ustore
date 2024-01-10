@@ -78,7 +78,7 @@
 
 				<div class="input-group mb-5" style="margin-top: 20px;">
 					<span class="input-group-text" id="inputGroup-sizing-default" style="width: 20%;">발주번호&nbsp;&nbsp;
-						<button type="button" class="btn btn-light-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#kt_modal_2">검색</button>	
+						<button type="button" id="orderNumSearch" class="btn btn-light-primary btn-sm mt-2 me-2" data-bs-toggle="modal" data-bs-target="#kt_modal_10">검색</button>	
 					</span>											
 					<input type="text" id="orderNum" name="orderNum" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
 				</div>
@@ -87,45 +87,47 @@
 					<table id="orderTable" class="table table-rounded table-striped border gy-7 gs-7">		
 						<thead>
 							<tr class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
-								<th style="font-weight: 600;">번호</th>
 								<th style="font-weight: 600;">품명</th>
-								<th style="font-weight: 600;">수량</th>
+								<th style="font-weight: 600;">단위수량</th>
+								<th style="font-weight: 600;">주문량(파레트)</th>
 								<th style="font-weight: 600;">단가</th>
 								<th style="font-weight: 600;">금액</th>
 							</tr>
 						</thead>
 						<tbody>							
 						</tbody>
-						<tr>
-							<td colspan="4" style="text-align: center; font-weight: 600;">합 계 금 액</td>
-							<td id="totalAmount"></td>
-						</tr>
 					</table>
 				</div>
+				
+				<div class="input-group mb-5">
+					<span class="input-group-text flex-grow-1" id="inputGroup-sizing-default" style="width: 20%;">합계금액</span>
+					<input type="text" name="totalAmount" id="totalAmount" class="form-control flex-grow-1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="width: 80%;"/>
+				</div>
+				
 				<!--begin::Form 파일첨부 -->
-				<form class="form" action="#" method="post">
-					<!--begin::Input group-->
+				<!-- <form class="form" action="#" method="post">
+					begin::Input group
 					<div class="form-group row">
-						<!--begin::Label-->
+						begin::Label
 						<label class="col-lg-2 col-form-label text-lg-right">파일첨부 :</label>
-						<!--end::Label-->
+						end::Label
 
-						<!--begin::Col-->
+						begin::Col
 						<div class="col-lg-10">
-							<!--begin::Dropzone-->
+							begin::Dropzone
 							<div class="dropzone dropzone-queue mb-2" id="kt_dropzonejs_example_2">
-								<!--begin::Controls-->
+								begin::Controls
 								<div class="dropzone-panel mb-lg-0 mb-2">
 									<a class="dropzone-select btn btn-sm btn-primary me-2">Attach files</a>
 									<a class="dropzone-upload btn btn-sm btn-light-primary me-2">Upload All</a>
 									<a class="dropzone-remove-all btn btn-sm btn-light-primary">Remove All</a>
 								</div>
-								<!--end::Controls-->
+								end::Controls
 
-								<!--begin::Items-->
+								begin::Items
 								<div class="dropzone-items wm-200px">
 									<div class="dropzone-item" style="display:none">
-										<!--begin::File-->
+										begin::File
 										<div class="dropzone-file">
 											<div class="dropzone-filename" title="some_image_file_name.jpg">
 												<span data-dz-name>some_image_file_name.jpg</span>
@@ -134,9 +136,9 @@
 
 											<div class="dropzone-error" data-dz-errormessage></div>
 										</div>
-										<!--end::File-->
+										end::File
 
-										<!--begin::Progress-->
+										begin::Progress
 										<div class="dropzone-progress">
 											<div class="progress">
 												<div
@@ -145,41 +147,41 @@
 												</div>
 											</div>
 										</div>
-										<!--end::Progress-->
+										end::Progress
 
-										<!--begin::Toolbar-->
+										begin::Toolbar
 										<div class="dropzone-toolbar">
 											<span class="dropzone-start"><i class="bi bi-play-fill fs-3"></i></span>
 											<span class="dropzone-cancel" data-dz-remove style="display: none;"><i class="bi bi-x fs-3"></i></span>
 											<span class="dropzone-delete" data-dz-remove><i class="bi bi-x fs-1"></i></span>
 										</div>
-										<!--end::Toolbar-->
+										end::Toolbar
 									</div>
 								</div>
-								<!--end::Items-->
+								end::Items
 							</div>
-							<!--end::Dropzone-->
+							end::Dropzone
 
-							<!--begin::Hint-->
+							begin::Hint
 							<span class="form-text text-muted">파일 개당 최대 크기 10MB, 5개 제한.</span>
-							<!--end::Hint-->
+							end::Hint
 						</div>
-						<!--end::Col-->
+						end::Col
 					</div>
-					<!--end::Input group-->
-				</form>
+					end::Input group
+				</form> -->
 				<!--end::Form 파일첨부 -->							
 			</div>
 		</div>
 	
 		<!--begin::modal-->
-		<div class="modal fade" tabindex="-1" id="kt_modal_2" role="dialog">
+		<div class="modal fade" tabindex="-1" id="kt_modal_10" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h3 class="modal-title">발주번호 검색</h3>
 						<!--begin::Close-->
-						<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+						<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modalorder" aria-label="Close">
 							<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
 						</div>
 						<!--end::Close-->
@@ -208,10 +210,6 @@
 							</table>
 						</div>						
 					</div>
-
-					<div class="modal-footer" style="display: flex; justify-content: center;">
-						<button type="button" class="btn btn-primary">저장</button>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -227,7 +225,7 @@
 	<!--end::Body-->
 	<script>		
 		$(document).ready(function(){
-			$('#kt_modal_2').on('shown.bs.modal', function(){
+			$('#kt_modal_10').on('shown.bs.modal', function(){
 				$("#kt_daterangepicker_3").daterangepicker({
 					singleDatePicker: true,
 					showDropdowns: true,
@@ -247,7 +245,7 @@
 			
 			$.ajax({
 				type : 'GET',
-				url: '/getorderlist', // 적절한 서버 엔드포인트로 수정
+				url: '/getorderlist',
 		        data: { orderDate: orderDate },
 		        dataType : 'JSON',
 		        success: function (data) {
@@ -267,14 +265,66 @@
 		    $.each(data, function (index, order) {
 		        var row = '<tr>' +
 		                      '<td>' + order.orderDate + '</td>' +
-		                      '<td><a href="" class="text-gray-800 text-hover-primary mb-1">' + order.orderIdx + '</a></td>' +
-		                      '<td>' + order.emp_idx + '</td>' +
+		                      '<td><a href="#" class="order-link text-gray-800 text-hover-primary mb-1" data-order-idx="' + order.orderIdx + '">' + order.orderIdx + '</a></td>' +
+		                      '<td>' + order.empName + '</td>' +
 		                  '</tr>';
 		        tableBody.append(row);
 		    });
 		}
 
+		$(document).on('click', '.order-link', function(event) {
+		    event.preventDefault();
+		    
+		    var orderIdx = $(this).data('order-idx');
+		    getItemsForOrder(orderIdx);
+		    
+		});
 		
+		// 발주번호에 해당하는 물품 리스트를 가져와서 표시하는 함수
+		function getItemsForOrder(orderIdx) {
+		    $.ajax({
+		        type: 'GET',
+		        url: '/getproductlist',
+		        data: { orderIdx: orderIdx },
+		        dataType: 'JSON',
+		        success: function (data) {
+		        	console.log(data);
+		        	console.log(orderIdx);
+		            displayItems(data, orderIdx);
+		        },
+		        error: function (error) {
+		            console.error('발주번호에 해당하는 물품 리스트를 가져오는 중 오류가 발생했습니다.');
+		        }
+		    });
+		}
+
+		// 물품 리스트를 페이지에 표시하는 함수
+		function displayItems(items, orderIdx) {
+		    var orderTable = $('#orderTable tbody'); // 물품을 표시할 요소 선택
+		    orderTable.html(''); // 기존 데이터 삭제
+
+		    var totalAmount = 0;
+		    
+		    // 데이터를 반복하면서 테이블에 행을 추가
+		    $.each(items, function (index, item) {
+		        var row = '<tr>' +
+		                      '<td>' + item.productName + '</td>' +
+		                      '<td>' + item.unitQuantity + '</td>' +
+		                      '<td>' + item.netQuantity + '</td>' +
+		                      '<td>' + item.purchasePrice + '</td>' +
+		                      '<td>' + item.totalPricePerProduct + '</td>' +
+		                  '</tr>';
+		       orderTable.append(row);
+		       totalAmount += item.totalPricePerProduct;
+		    });
+		    
+		    $('#orderNum').val(orderIdx);
+		    $('#totalAmount').val(totalAmount.toLocaleString());
+		    
+		    $('.btn[data-bs-dismiss="modalorder"]').click();
+		}
+		
+	/* 	
 		// set the dropzone container id
 		const id = "#kt_dropzonejs_example_2";
 		const dropzone = document.querySelector(id);
@@ -363,6 +413,6 @@
 				dropzone.querySelector('.dropzone-upload').style.display = "none";
 				dropzone.querySelector('.dropzone-remove-all').style.display = "none";
 			}
-		});
+		}); */
 	</script>
 </html>
