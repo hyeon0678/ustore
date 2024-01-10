@@ -42,6 +42,19 @@ public class reservationService {
 		}
 	}
 
+	public boolean addBooking(HashMap<String, String> params) {
+		int row =reservationDao.addBooking(params);
+		if(row != 1) {			
+			return false;
+		}else {
+			return true;
+		}
+	}
+
+	public ArrayList<reservationDto> bookingInfo(String param, String string) {
+		return reservationDao.bookingInfo(param,string);
+	}
+
 
 
 }

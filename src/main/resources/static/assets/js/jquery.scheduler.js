@@ -1,15 +1,15 @@
 (function ($) {
     
-    var defaults = {
-        startDate       : new Date(),
-        startTime       : '7 AM',
-        endTime         : '8 PM',
-        use24Hour       : false,
-        timeslotHeight  : 40,
-        timeslotWidth   : 75,
-        items           : ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
-        reservations    : []
-    }
+  var defaults = {
+    startDate       : new Date(),
+    startTime       : '00:00', // 24시간 형식으로 시작 시간 설정
+    endTime         : '24:00', // 24시간 형식으로 끝나는 시간 설정
+    use24Hour       : true,   // true면 24시간 형식 사용, false면 AM/PM 형식 사용
+    timeslotHeight  : 40,
+    timeslotWidth   : 75,
+    items           : ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
+    reservations    : []
+};
         
     $.fn.extend({
 	  scheduler: function(options) {
@@ -146,7 +146,6 @@
     
     // Create a new rsvn with mouse click and drag
     var createRsvn = {
-        
         start: function(e) {    
             var $newRsvn,
                 settings = e.data.settings,
@@ -156,7 +155,8 @@
                 left = posX - (posX % settings.timeslotWidth),
                 height = settings.timeslotHeight + 1,
                 width = settings.timeslotWidth + 1;
-            
+            startTop = posY - (posY % settings.timeslotHeight);
+            startWidth = posX - (posX % settings.timeslotWidth);
             var collisions = $(".reservation").filter(function() {
                     return $(this).position().top == top && $(this).position().left == left;
                 }).not($newRsvn);
@@ -210,16 +210,19 @@
                 }
             });
         },
-        
+        // 콜백함수 같다. 모달창 
         end: function(e) {
             var $newRsvn = e.data.rsvn;
-            
+            console.log(e);
             if ($newRsvn.hasClass("reservation-error")) {
                 $newRsvn.remove();
             } else {
                 $newRsvn.removeClass("reservation-creating");
                 $newRsvn.addClass("reservation-final");
+            	qq(startTop,startWidth,$newRsvn[0].clientWidth);
+                
             }
+
             $(".row-container").off("mousemove.newevent");
             $(document).off("mouseup.newevent");
         }   
@@ -233,7 +236,7 @@
         },
         
         set: function(date) {
-            var dateString = date.format('F j Y');
+            var dateString = date.format('Y-m-d ');
             
             $(".date").text(dateString);
         },
@@ -250,7 +253,7 @@
                 newDate = new Date(currDate - 86400000);
             }
             
-            newDate = newDate.format('F j Y');
+            newDate = newDate.format('Y-m-d');
             
             $(".date").text(newDate);
         }
