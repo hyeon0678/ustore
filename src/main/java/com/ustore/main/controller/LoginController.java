@@ -27,9 +27,9 @@ public class LoginController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/resetPw")
+	@GetMapping("/main/searchPw")
 	public String resetPw() {
-		return "common/reset_pw";
+		return "common/search_pw";
 	}
 	
 	

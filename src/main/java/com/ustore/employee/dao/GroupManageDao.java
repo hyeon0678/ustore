@@ -43,4 +43,8 @@ public interface GroupManageDao {
 
 	int selectDeptEmpNum(int deptId);
 
+	int insertDept(HashMap<String, String> param);
+
+	int deleteDept(String name, int deptIdx);
+
 }

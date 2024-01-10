@@ -72,7 +72,7 @@
 									<!--begin::Wrapper-->
 									<div class="d-flex flex-stack mb-2">
 										<label class="form-label fw-bold text-gray-900 fs-6 mb-0">비밀번호</label>
-										<a href="/resetPw" class="link-primary fs-6 fw-bold"> 비밀번호 찾기 </a>
+										<a href="/main/searchPw" class="link-primary fs-6 fw-bold" style="display: none"> 비밀번호 재설정 </a>
 									</div>
 									<input class="form-control form-control-lg form-control-solid" type="password" name="empPw" autocomplete="off" />
 									<p class="field-validation">비밀번호를 입력해주세요</p>

@@ -10,7 +10,7 @@ public enum FileEnum {
 	ANONYBOARD("anony_board", 71),
 	SENDMAIL("send_mail", 72),
 	RECEIVEMAIL("receive_mail", 73),
-	EMPLOYEE("empoyee", 74),
+	EMPLOYEE("employee", 74),
 	APPROVAL("approval", 75),
 	MEMBERS("members", 76);
 

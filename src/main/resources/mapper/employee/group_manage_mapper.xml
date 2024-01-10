@@ -193,5 +193,16 @@
 		WHERE dept_id = #{param1}
 	</select>
 	
+	<insert id="insertDept">
+		INSERT INTO department (parent_dept_id, dept_name, reg_by)
+		VALUES(#{parentDeptId},#{deptName},#{regBy})
+	</insert>
 	
+	<update id="deleteDept">
+		UPDATE  department 
+		SET update_by = #{param1}
+		, `update` = curdate()
+		, dept_delete = 'Y'
+		WHERE dept_id=#{param2}
+	</update>
 </mapper>

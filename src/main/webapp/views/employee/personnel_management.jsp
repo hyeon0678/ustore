@@ -311,7 +311,13 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="modal-body">
 												<!-- 모달창 몸통 테이블 시작-->
 												<div class="py-5" style="margin-top: -40px;">
-													<div class="table-responsive">
+													<div class="table-responsive h-400px" 
+													data-kt-scroll="true"
+													data-kt-scroll-activate="{default: false, lg: true}"
+													data-kt-scroll-max-height="450px"
+													data-kt-scroll-dependencies="#kt_header, #kt_app_header, #kt_app_toolbar, #kt_toolbar, #kt_footer, #kt_app_footer, #kt_chat_messenger_header, #kt_chat_messenger_footer"
+													data-kt-scroll-wrappers="#kt_content, #kt_app_content, #kt_chat_messenger_body"
+													data-kt-scroll-offset="5px">
 														<table class="table table-row-dashed table-row-gray-300 gy-7">
 															<thead>
 																<tr class="fw-bold fs-6 text-gray-800">
@@ -530,20 +536,39 @@ License: For each use you must have a valid license purchased only from above li
 		
 		$('.deptmanagement-modal').on('click', function(){
 			let deptIdx = 1;
+			deptManagementStack.push(1);
 			$('.modal-title').html('부서 관리')
 			callDeptInfo(deptIdx);
 		});
 		
 		
 		$('.dept-make').on('click', function(){
-			deptIdx = deptManagementStack[deptManagementStack.length-1]
-			callDeptInfo(deptIdx);
+			let currentDept = deptManagementStack[deptManagementStack.length-1]
+			deptName = $('.dept-make-name').val();
+			console.log(deptName);
+			$.ajax({
+				type:'POST',
+				url:'/department/insert',
+				data:{
+					parentDeptId:currentDept,
+					deptName:deptName,
+				},
+				dataType:'JSON',
+				success:function(data){
+					console.log("success");
+					callDeptInfo(currentDept)
+				},error:function(error){
+					console.log(error);
+				}
+			});
+			$('.dept-make-name').val('');
 		});
 		
 		$('.back-btn').on('click', function(){
 			let deptIdx = 1;
-			if(deptManagementStack.length <= 0){
+			if(deptManagementStack.length <= 1){
 				$('.modal-title').html('부서 관리')
+				$('.back-btn').css({"display":"none"})
 			}else{
 				$('.modal-title').html('부서 상세')
 				deptManagementStack.pop();
@@ -561,20 +586,35 @@ License: For each use you must have a valid license purchased only from above li
 				let deptIdx = $elem.children().html()
 				console.log($elem);
 				$('.modal-title').html('부서 상세')
-				let success = callDeptInfo(deptIdx);
-				if(success == 'ok'){
-					deptManagementStack.push(deptIdx);
-				}
+				callDeptInfo(deptIdx);
+				deptManagementStack.push(deptIdx);
 			});
 		}
 
 		function deptDelete(){
 			$('.dept-delete').on('click', function(){
+				let currentDept = deptManagementStack[deptManagementStack.length-1]
+				let $elem = $(this).closest('tr');
+				$elem = $elem.children('td.info')
+				let deptIdx = $elem.children().html()
+				console.log(deptIdx);
 				
+				$.ajax({
+					type:'GET',
+					url:'/department/delete/'+deptIdx,
+					data:{},
+					dataType:'JSON',
+					success:function(data){
+						callDeptInfo(currentDept);
+					},error:function(error){
+						console.log(error);
+					}
+				});
 			})
 		}
 		
 		function callDeptInfo(deptIdx){
+			console.log("callDeptInfo"+deptIdx);
 			$.ajax({
 				type:'GET',
 				url:'/department/'+deptIdx,
@@ -583,11 +623,10 @@ License: For each use you must have a valid license purchased only from above li
 				success:function(data){
 					console.log(data.deptList);
 					drawDeptManagement(data.deptList)
-					return 'ok';
 				},error:function(error){
 					console.log(error);
 				}
-			})
+			});
 		}
 		
 		function drawDeptManagement(deptData){

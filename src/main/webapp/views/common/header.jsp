@@ -36,7 +36,7 @@
 			data-kt-sticky-offset="{default: '200px', lg: '300px'}">
 			<!--begin::Container-->
 			<div
-				class="container-fluid d-flex align-items-stretch justify-content-between">
+				class="container-fluid d-flex align-items-stretch justify-content-between" style=" background-color: #255000;">
 				<!--begin::Logo bar-->
 				<div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
 					<!--begin::Aside Toggle-->
@@ -56,9 +56,9 @@
 				<!--end::Logo bar-->
 				<!--begin::Topbar-->
 				<div
-					class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
+					class="d-flex align-items-stretch justify-content-between flex-lg-grow-1" >
 					<!--begin::Search-->
-					<div class="d-flex align-items-stretch me-1">
+					<div class="d-flex align-items-stretch me-1" >
 						<!--begin::Search-->
 						<div id="kt_header_search"
 							class="header-search d-flex align-items-center w-100 w-lg-300px"
@@ -124,7 +124,7 @@
 								class="btn btn-icon w-30px h-30px w-md-40px h-md-40px position-relative"
 								id="kt_drawer_chat_toggle">
 								<!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/craft/docs/core/html/src/media/icons/duotune/communication/com007.svg-->
-								<span class="svg-icon svg-icon-2x svg-icon-white chat-icon"><svg
+								<span class="svg-icon svg-icon-2x svg-icon-white"><svg class="chat-icon"
 										width="24" height="24" viewBox="0 0 24 24" fill="none"
 										xmlns="http://www.w3.org/2000/svg">
 							<path opacity="0.3"
@@ -144,7 +144,7 @@
 						<!--end::Chat-->
 						<!--====================================================================헤더 알림 모달 ============================================================================-->
 						<!--begin::Notifications-->
-						<div class="d-flex align-items-center ms-1 ms-lg-2">
+						<div class="d-flex align-items-center ms-1 ms-lg-2 ">
 							<!--begin::Menu wrapper-->
 							<div class="btn btn-icon w-30px h-30px w-md-40px h-md-40px"
 								data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
@@ -224,7 +224,7 @@
 							<div class="cursor-pointer symbol symbol-35px symbol-lg-35px"
 								data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
 								data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-								<img alt="Pic" src="resource/assets/media/profil/blank.png" />
+								<img alt="Pic" class="profile-photo"src="resource/assets/media/profil/blank.png" />
 							</div>
 							<!--begin::User account menu-->
 							<div
@@ -236,7 +236,7 @@
 										<!--begin::Avatar-->
 										<div class="symbol symbol-50px me-5">
 											<!--================================메인 프로필 이미지 경로 고쳐 주세요================================================-->
-											<img alt="Logo" src="resource/assets/media/profil/blank.png" />
+											<img class="profile-photo" alt="Logo" src="resource/assets/media/profil/blank.png" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Username 유저의 이름과 소속-->
@@ -302,6 +302,21 @@
 				})	
 	    	}
 	    }, onError);
+	    
+	    $.ajax({
+	    	type:'GET',
+			data:{},
+			url:'/employee/getEmpPhoto.ajax',
+			dataType:'JSON',
+			success:function(data){
+				console.log('profile success')
+				let photo = data.photo
+				let imgurl = "/ustore/photo/"+photo;
+				$('.profile-photo').prop("src", imgurl)
+			},error:function(error){
+				console.log(error);
+			}
+		});
    	}
     
     function onError(error){

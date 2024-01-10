@@ -1,5 +1,6 @@
 package com.ustore.employee.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,11 +34,17 @@ public interface EmpProfileDao {
 	
 	EmpProrileDto homeProfileDetail(String emp_idx);
 	
-	EmployeeDto selectEmpUpdateData(int fileType, String empIdx);
+	EmployeeDto selectEmpUpdateData(String empIdx);
 	
 	int insertEmpUpdateData(EmployeeDto dto);
 
 	void addLeaveEvent(Map<String, String> params);
+
+	HashMap<String, String> selectEmpPhoto(int parseInt, int findDefindCode);
+
+	int updateEmpInfoAll(EmployeeDto dto);
+
+	int updateEmpInfo(EmployeeDto dto);
 
 
 	

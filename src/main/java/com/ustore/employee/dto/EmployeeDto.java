@@ -28,23 +28,16 @@ public class EmployeeDto {
 	private String schoolName;
 	private String major;
 	private int leaveIncdec;  // 연차 갯수
-
-	private String newFileName;
-	private String extension;
+	private String newPw;
+	private String photo;
+	private String isChangePw;
 	
-	public String getExtension() {
-		return extension;
+	public String getNewPw() {
+		return newPw;
 	}
-	public void setExtension(String extension) {
-		this.extension = extension;
+	public void setNewPw(String newPw) {
+		this.newPw = newPw;
 	}
-	public String getNewFileName() {
-		return newFileName;
-	}
-	public void setNewFileName(String newFileName) {
-		this.newFileName = newFileName;
-	}
-
 	public int getLeaveIncdec() {
 		return leaveIncdec;
 	}
@@ -194,6 +187,18 @@ public class EmployeeDto {
 	}
 	public void setMajor(String major) {
 		this.major = major;
+	}
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+	public String getIsChangePw() {
+		return isChangePw;
+	}
+	public void setIsChangePw(String isChangePw) {
+		this.isChangePw = isChangePw;
 	}
 	
 }

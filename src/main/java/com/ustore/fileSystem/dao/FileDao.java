@@ -9,4 +9,5 @@ import com.ustore.fileSystem.dto.FileDto;
 @Mapper
 public interface FileDao {
 	int saveFile(FileDto params);
+	int updateFile(FileDto params);
 }

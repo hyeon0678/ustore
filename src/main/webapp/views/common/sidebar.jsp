@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<!--begin::Head-->
@@ -11,19 +11,6 @@
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-<!-- 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
-		begin::Fonts(mandatory for all pages)
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-		end::Fonts
-		begin::Vendor Stylesheets(used for this page only)
-		<link href="resource/assets/plugins/custom/leaflet/leaflet.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="resource/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-		end::Vendor Stylesheets
-		begin::Global Stylesheets Bundle(mandatory for all pages)
-		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" /> -->
-		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
 	<!--end::Head-->
@@ -295,6 +282,7 @@
 								</div>
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
+								<sec:authorize access="hasRole('ROLE_매장관리팀')">
 								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
@@ -346,8 +334,10 @@
 									</div>
 									<!--end:Menu sub-->
 								</div>
+								</sec:authorize>
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
+								<sec:authorize access="hasRole('ROLE_인사팀')">
 								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
@@ -388,8 +378,10 @@
 									</div>
 									<!--end:Menu sub-->
 								</div>
+								</sec:authorize>
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
+								<sec:authorize access="hasRole('ROLE_인사팀')">
 								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
@@ -430,8 +422,10 @@
 									</div>
 									<!--end:Menu sub-->
 								</div>
+								</sec:authorize>
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
+								<sec:authorize access="hasRole('ROLE_고객지원팀')">
 								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
@@ -482,6 +476,7 @@
 									</div>
 									<!--end:Menu sub-->
 								</div>
+								</sec:authorize>
 								<!--end:Menu item-->
 							</div>
 						</div>

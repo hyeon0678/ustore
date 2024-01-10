@@ -131,11 +131,9 @@ where e.emp_idx = #{param1}
 </select>
 
 <select id="selectEmpUpdateData">
-	SELECT e.emp_idx, e.emp_phone, e.emp_zipcode, e.emp_roadAddr, e.emp_detailAddr, e.emp_name, f.new_file_name, f.extension 
+	SELECT e.emp_idx, e.emp_phone, e.emp_zipcode, e.emp_roadAddr, e.emp_detailAddr, e.emp_name, e.emp_email
 	FROM employee e
-	LEFT OUTER JOIN file f
-	ON e.emp_idx  = f.conn_idx 
-	WHERE f.conn_idx  = #{param1} AND e.emp_idx LIKE #{param2}
+	WHERE e.emp_idx LIKE #{param1}
 </select>
 
 <update id="updateEmpUpdateData">
@@ -173,6 +171,35 @@ insert into schedule(
 	, #{reg_emp_idx}
 	
 	)
+</insert>
+
+<select id="selectEmpPhoto" resultType="hashMap">
+SELECT f.extension, f.new_file_name
+FROM file f 
+WHERE f.conn_idx = #{param1} AND f.file_type = #{param2}
+</select>
+
+<sql id="empInfoUpdate">
+UPDATE employee SET
+emp_email = #{empEmail},
+emp_phone = #{empPhone},
+emp_zipcode = #{empZipcode},
+emp_roadAddr = #{empRoadAddr},
+emp_detailAddr = #{empDetailAddr},
+`update` = curdate(),
+update_by = #{empIdx}
+</sql>
+
+<insert id="updateEmpInfo">
+	<include refid="empInfoUpdate"/>
+	WHERE emp_idx like #{empIdx}
+</insert>
+
+<insert id="updateEmpInfoAll">
+	<include refid="empInfoUpdate"/>
+	,emp_pw = #{empPw},
+	emp_changepw_date = curdate() 
+	WHERE emp_idx like #{empIdx}
 </insert>
 
 </mapper>

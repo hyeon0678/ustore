@@ -9,8 +9,16 @@ public class DeptDto {
 	private String path;
 	private int leaf;
 	private int empCnt;
+	private String regBy;
 	
 	
+	
+	public String getRegBy() {
+		return regBy;
+	}
+	public void setRegBy(String regBy) {
+		this.regBy = regBy;
+	}
 	public int getEmpCnt() {
 		return empCnt;
 	}

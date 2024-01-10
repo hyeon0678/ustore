@@ -2,6 +2,7 @@ package com.ustore.employee.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -47,6 +48,17 @@ public class DepartmentManagementService {
 		}
 		
 		return result;
+	}
+
+	public int insertDept(String name, HashMap<String, String> param) {
+		param.put("regBy", name);
+		int row = dmDao.insertDept(param);
+		return row;
+	}
+
+	public int deleteDept(String name, int deptIdx) {
+		int row = dmDao.deleteDept(name, deptIdx);
+		return 0;
 	}
 
 }

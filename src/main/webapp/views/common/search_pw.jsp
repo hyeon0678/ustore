@@ -23,20 +23,13 @@ License: For each use you must have a valid license purchased only from above li
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta property="og:locale" content="en_US" />
-		<meta property="og:type" content="article" />
-		<meta property="og:title" content="Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes" />
-		<meta property="og:url" content="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" />
-		<meta property="og:site_name" content="Craft by Keenthemes" />
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
-		<link rel="shortcut icon" href="/media/logos/favicon.ico" />
+		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-		<!--end::Fonts-->
-		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-		<link href="/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-		<link href="/css/style.bundle.css" rel="stylesheet" type="text/css" />
-		<!--end::Global Stylesheets Bundle-->
+		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
 	<!--end::Head-->
@@ -49,31 +42,20 @@ License: For each use you must have a valid license purchased only from above li
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Authentication - New password -->
 			<div class="d-flex flex-column flex-lg-row flex-column-fluid">
-				<!--begin::Aside-->
-				<div class="d-flex flex-column flex-lg-row-auto bg-primary w-xl-600px positon-xl-relative">
+				<div class="d-flex flex-column flex-lg-row-auto w-xl-600px positon-xl-relative" style="background: #fffff8;">
 					<!--begin::Wrapper-->
 					<div class="d-flex flex-column position-xl-fixed top-0 bottom-0 w-xl-600px scroll-y">
 						<!--begin::Header-->
 						<div class="d-flex flex-row-fluid flex-column text-center p-5 p-lg-10 pt-lg-20">
-							<!--begin::Logo-->
-							<a href="index.html" class="py-2 py-lg-20">
-								<img alt="Logo" src="/media/logos/logo-ellipse.svg" class="h-60px h-lg-70px" />
+							<a href="index.go" class="py-2 py-lg-20">
+								<img alt="Logo" src="resource/assets/media/logos/mainLogo.svg" class="h-60px h-lg-70px" />
 							</a>
-							<!--end::Logo-->
-							<!--begin::Title-->
-							<h1 class="d-none d-lg-block fw-bold text-white fs-2qx pb-5 pb-md-10">Welcome to Craft</h1>
-							<!--end::Title-->
-							<!--begin::Description-->
-							<p class="d-none d-lg-block fw-semibold fs-2 text-white">Plan your blog post by choosing a topic creating 
-							<br />an outline and checking facts</p>
-							<!--end::Description-->
+							<h1 class="d-none d-lg-block fw-bold fs-2qx pb-5 pb-md-10" style="color: #255000;">어서오세요 UStore 입니다.</h1>
+							<p class="d-none d-lg-block fw-semibold fs-4" style="color: #255000;">UStore는 임직원분들의 행복한 하루와 안전한 일자리를 기원합니다.
+							<br />오늘도 안전근무 유의해주시기 바랍니다.</p>
 						</div>
-						<!--end::Header-->
-						<!--begin::Illustration-->
-						<div class="d-none d-lg-block d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url(/media/illustrations/sigma-1/17.png)"></div>
-						<!--end::Illustration-->
+						<div class="d-none d-lg-block d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url(resource/assets/media/illustrations/sigma-1/17.png)"></div>
 					</div>
-					<!--end::Wrapper-->
 				</div>
 				<!--begin::Aside-->
 				<!--begin::Body-->
@@ -96,7 +78,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin::Wrapper-->
 									<div class="mb-1">
 										<!--begin::Label-->
-										<label class="form-label fw-bold text-gray-900 fs-6">새 비밀번호를 입력해주세요</label>
+										<label class="form-label fw-bold text-gray-900 fs-6">사원번호</label>
 										<!--end::Label-->
 										<!--begin::Input wrapper-->
 										<div class="position-relative mb-3">
@@ -111,7 +93,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin::Wrapper-->
 									<div class="mb-1">
 										<!--begin::Label-->
-										<label class="form-label fw-bold text-gray-900 fs-6">비밀번호 확인</label>
+										<label class="form-label fw-bold text-gray-900 fs-6">생년월일</label>
 										<!--end::Label-->
 										<!--begin::Input wrapper-->
 										<div class="position-relative mb-3">
@@ -123,13 +105,8 @@ License: For each use you must have a valid license purchased only from above li
 								<!--end::Input group=-->
 								<!--begin::Action-->
 								<div class="text-center">
-									<button type="button" id="kt_new_password_submit2" class="btn btn-lg btn-primary fw-bold">
-										<span class="indicator-label">3개월 후에 다시 알림</span>
-										<span class="indicator-progress">Please wait... 
-										<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-									</button>
 									<button type="button" id="kt_new_password_submit1" class="btn btn-lg btn-primary fw-bold">
-										<span class="indicator-label">재설정</span>
+										<span class="indicator-label">비밀번호 재설정</span>
 										<span class="indicator-progress">Please wait... 
 										<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
 									</button>
@@ -158,8 +135,8 @@ License: For each use you must have a valid license purchased only from above li
 			<!--end::Authentication - New password-->
 		</div>
 		<script>var hostUrl = "/";</script>
-		<script src="/plugins/global/plugins.bundle.js"></script>
-		<script src="/js/scripts.bundle.js"></script>
+		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="resource/assets/js/scripts.bundle.js"></script>
 	</body>
 	<!--end::Body-->
 </html>

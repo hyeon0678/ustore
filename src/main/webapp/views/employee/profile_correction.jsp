@@ -6,8 +6,7 @@
 <!--begin::Head-->
 <head>
 <base href="../" />
-<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by
-	KeenThemes</title>
+<title>UStore | 프로필 변경</title>
 <meta charset="utf-8" />
 <link rel="canonical" href="https://preview.keenthemes.com/craft" />
 <link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
@@ -59,15 +58,15 @@
 							style="background-color: white; margin: 20px;">
 							<div id="kt_account_settings_profile_details"
 								class="collapse show">
-								<form action="" method="post">
+								<form action="/employee/correction" method="post" enctype="multipart/form-data">
 									<div class="row mb-6" style="margin-top: 20px;">
 										<label class="col-lg-4 col-form-label fw-semibold fs-6">사진</label>
 										<div class="col-lg-8">
-											<div class="image-input image-input-outline"
+											<div class="image-input image-input-outline empImg"
 												data-kt-image-input="true"
-												style="background-image: url('/photo/'+${photo})">
+												style="background-image: url()">
 												<div class="image-input-wrapper w-125px h-125px"
-													style="background-image: url(resource/assets/media/avatars/300-1.jpg)"></div>
+													style="background-image: url('/ustore/photo/${empInfo.photo}')"></div>
 												<label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
 													data-kt-image-input-action="change"
 													data-bs-toggle="tooltip" title="Change avatar"> 
@@ -113,6 +112,12 @@
 										</div>
 									</div>
 									<div class="row mb-6">
+										<label class="col-lg-4 col-form-label required fw-semibold fs-6">이메일</label>
+										<div class="col-lg-8 fv-row">
+							                <input type="text" name="empEmail" value="${empInfo.empEmail}" class="form-control" placeholder="개인 이메일 ex)example@example.com">
+							            </div>
+									</div>
+									<div class="row mb-6">
 										<label
 											class="col-lg-4 col-form-label required fw-semibold fs-6">주소</label>
 										<div class="col-lg-8 fv-row">
@@ -131,30 +136,40 @@
 										<div class="col-lg-8 fv-row" style="float: right; margin-top: 5px;">
 											<input type="text" class="form-control" placeholder="상세 주소" id="detailAddress" value="${empInfo.empDetailAddr}" name="empDetailAddr"/>
 										</div>
-									</div>
-									<div class="row mb-6">
-										<!--begin::Label-->
-										<label class="col-lg-4 col-form-label fw-semibold fs-6">비밀번호</label>
-										<!--end::Label-->
-										<!--begin::Col-->
-										<div class="col-lg-8 fv-row">
-											<input type="password" name="empPw" class="form-control" placeholder="변경할 비밀번호" value="" />
+									</div >
+									<div>
+										<div class="form-check col-lg-8 fv-row">
+									    	<input class="form-check-input" name = "isChangePw" type="checkbox" value="checked" id="flexCheckDefault" />
+										    <label class="form-check-label" for="flexCheckDefault">
+										        비밀번호 변경
+										    </label>
 										</div>
-									</div>
-
-									<div class="row mb-6">
-										<label class="col-lg-4 col-form-label fw-semibold fs-6">비밀번호 확인</label>
-										<div class="col-lg-8 fv-row">
-											<input type="password" name="pwConf" class="form-control" placeholder="비밀번호 확인" value="" />
-											<p class="global-validation">아이디 혹은 비밀번호를 확인해주세요</p>
+										<div class="change-pw-div" style="display: none;">
+											<div class="row mb-6">
+												<label class="col-lg-4 col-form-label fw-semibold fs-6">비밀번호</label>
+												<div class="col-lg-8 fv-row">
+													<input type="password" name="empPw" class="form-control" placeholder="변경할 비밀번호" value="" />
+													<p class="pattern-field-validation fs-8" style="color: red;">비밀번호: 8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요.
+														</br>
+														사용 가능 특수문자 : @$!%*#?&
+													</p>
+												</div>
+											</div>
+			
+											<div class="row mb-6">
+												<label class="col-lg-4 col-form-label fw-semibold fs-6">비밀번호 확인</label>
+												<div class="col-lg-8 fv-row">
+													<input type="password" name="pwConf" class="form-control" placeholder="비밀번호 확인" value="" />
+													<p class="field-validation fs-8" style="color: red;">비밀번호가 일치하지 않습니다!</p>
+												</div>
+											</div>
 										</div>
-									</div>
-
-									<div class="card-footer d-flex justify-content-end py-6">
-										<button type="submit" class="btn btn-primary"
-											id="kt_account_profile_details_submit">저장</button>
 									</div>
 								</form>
+								<div class="card-footer d-flex justify-content-end py-6">
+										<button type="button" class="btn btn-primary"
+											id="kt_account_profile_details_submit">저장</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -168,7 +183,10 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 	let elements = [];
-	
+	let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+	let pwReg = new RegExp("(?=.*[A-Za-z])(?=.*[0-9])(?=.*[@$!%*#?&])[A-Za-z0-9@$!%*#?&^]{8,16}")
+	let pw = ''
+	let pwConf = ''
 	$(document).ready(function(){
 		headerOnReady();		
 	})
@@ -188,15 +206,46 @@
 		}).open();
 	}
 	
+	$('#flexCheckDefault').on('click', function(){
+		if($(this).is(":checked")){
+			$('.change-pw-div').css({"display":"block"});
+		}else{
+			$('.change-pw-div').css({"display":"none"});
+		}
+	})
+	
+	$('input[name=pwConf]').on('keyup', function(){
+		pwConf = $(this).val();
+		pw = $('input[name=empPw]').val();
+		console.log('pw : '+pw+'pwConf:'+pwConf);
+		if(pwConf== pw){
+			$('.field-validation').css({"display":"none"});
+		}else{
+			$('.field-validation').css({"display":"block"});
+		}
+	});
+	
+	$('input[name=empPw]').on('keyup', function(){
+		pwConf = $('input[name=pwConf]').val();
+		pw = $(this).val();
+		console.log('pw : '+pw+'pwConf:'+pwConf);
+		if(pwConf== pw){
+			$('.field-validation').css({"display":"none"});
+		}else{
+			$('.field-validation').css({"display":"block"});
+		}
+	});
+	
 	function getElems(){
 		elements = [];
 		elements.push($('input[name=empName]'));
+		elements.push($('input[name=empEmail]'));
 		elements.push($('input[name=empPhone]'));
 		elements.push($('input[name=empZipcode]'));
 		elements.push($('input[name=empRoadAddr]'));
 		elements.push($('input[name=empDetailAddr]'));
-		elements.push($('input[name=empRoadAddr]'));
-		elements.push($('input[name=empDetailAddr]'));
+		elements.push($('input[name=empPw]'));
+		elements.push($('input[name=pwConf]'));
 		return elements;
 	}
 	
@@ -205,11 +254,23 @@
 		let elements = getElems();
 		console.log(elements);
 		for(let elem of elements){
-			console.log("elem" + elem);
 			console.log("elem value"+elem.val());
-			if(elem.val()==''){
+			if(elem.attr('name') == 'empEmail'){
+				let result = confEmail(elem.val())
+				console.log("email conf : " + result)
+				if(result == false){
+					
+					return false;
+				}
+			}
+			if(elem.attr('name') == 'empPw'){
+				if(confPw(elem) == false){
+					return false;
+				}
+			}else if(elem.val()=='' && elem.attr('name') != 'pwConf'){
 				let name = elemName[elem.attr('name')];
-				alert(name + '의 값을 입력해주세요!');
+				let message = name + '의 값을 입력해주세요!'
+				FalseModal(message)
 				elem.focus();
 				return false;
 			}
@@ -217,28 +278,51 @@
 		return true;
 	}
 	
-	$('.submit_btn').on('click', function(){
-		console.log('test')
+	function confPw(elem){
+		if($('#flexCheckDefault').is(":checked")){
+			let empPw = $('input[name=empPw]').val();
+			console.log("empPw : "+empPw)
+			if(empPw == ''){
+				let message = '비밀번호를 입력해주세요!'
+				FalseModal(message)
+				return false;	
+			}else if(!pwReg.test(empPw)){
+				console.log(pwReg.test(empPw));
+				let message = '비밀번호 형식이 틀렸습니다!'
+				FalseModal(message)
+				return false;
+			}else if(pwConf != pw || pwConf == ''){
+				let message = '비밀번호를 확인해주세요!'
+				FalseModal(message)
+				return false;	
+			}
+		}
+	}
+	
+	function confEmail(email){
+		console.log("email "+email)
+		if(email == '' || !regex.test(email)){
+			let message = '이메일이 형식에 맞지 않습니다!'
+				FalseModal(message)
+			return false;
+		}
+	}
+	
+	let elemName = {
+			'empName':'사원명',
+			'empPhone':'개인 전화번호',
+			'empZipcode':'우편번호',
+			'empRoadAddr':'도로명 주소',
+			'empDetailAddr':'상세 주소',
+			'empPw':'비밀번호'
+	}
+	
+	$('#kt_account_profile_details_submit').on('click',function(){
 		if(validation() == true){
 			$('form').submit();
 		}
 	});
 	
-	let elemName = {
-			'deptName':'부서명',
-			'positionType':'직책',
-			'empEmergencyPhone':'비상 연락망',
-			'empName':'사원명',
-			'empPhone':'개인 전화번호',
-			'empExtNo':'내선번호',
-			'empBirth':'생년월일',
-			'empZipcode':'우편번호',
-			'empRoadAddr':'도로명 주소',
-			'empDetailAddr':'상세 주소',
-			'education':'학력',
-			'schoolName':'학교 명',
-			'major':'전공'
-	}
 </script>
 
 <script>
@@ -248,5 +332,7 @@
 			.replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
 	}
 </script>
+
+
 </body>
 </html>

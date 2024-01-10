@@ -113,17 +113,17 @@
 								
 								<div style="margin-top:20px">
 								비상 연락처
-								<input type="text" name="empEmergencyPhone" class= "form-control" placeholder="비상 연락망을 입력해주세요"/>
+								<input type="text" name="empEmergencyPhone" class= "form-control" placeholder="비상 연락망을 입력해주세요" oninput="oninputPhone(this)"/>
 								</div>
 								
 								<div style="margin-top:20px">
 								개인 연락처
-								<input type="text" name="empPhone" class="form-control" placeholder="개인 번호를 입력해주세요"/>
+								<input type="text" name="empPhone" class="form-control" placeholder="개인 번호를 입력해주세요" oninput="oninputPhone(this)"/>
 								</div>
 								
 								<div style="margin-top:20px">
 								내선 번호
-								<input type="text" name="empExtNo" class= "form-control" placeholder="내선 번호를 입력해주세요"/>
+								<input type="text" name="empExtNo" class= "form-control" placeholder="내선 번호를 입력해주세요" oninput="onempExtNo(this)"/>
 								</div>
 								
 								<div style="margin-top:20px">
@@ -264,7 +264,8 @@
 				console.log("elem value"+elem.val());
 				if(elem.val()==''){
 					let name = elemName[elem.attr('name')];
-					alert(name + '의 값을 입력해주세요!');
+					let message = name + '의 값을 입력해주세요!';
+					FalseModal(message)
 					elem.focus();
 					return false;
 				}
@@ -275,10 +276,24 @@
 		$('.submit_btn').on('click', function(){
 			console.log('test')
 			if(validation() == true){
+				SuccessModal("사원을 등록했습니다!")
 				$('form').submit();
 			}
 		});
 
+</script>
+<script>
+	function oninputPhone(target) {
+		target.value = target.value
+			.replace(/[^0-9]/g, '')
+			.replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
+	}
+</script>
+<script>
+	function onempExtNo(target) {
+		target.value = target.value
+			.replace(/[^0-9]/g, '')
+	}
 </script>
 	<!--end::Body-->
 </html>

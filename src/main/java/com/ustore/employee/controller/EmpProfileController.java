@@ -1,5 +1,6 @@
 package com.ustore.employee.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +18,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ustore.employee.dto.EmpProrileDto;
@@ -38,13 +41,20 @@ public class EmpProfileController {
 	@Autowired EmpProfileService service;
 	
 	@GetMapping("/employee/correction")
-	public String correction(Principal principal, Model model) {
+	public String employeeInfoModifyForm(Principal principal, Model model) {
 		EmployeeDto result = service.getEmpUpdateData(principal.getName());
 		model.addAttribute("empInfo",result);
 		return "employee/profile_correction";
 	}
 	
-	
+	@PostMapping("/employee/correction")
+	public String employeeInfoModify(Principal principal, @RequestParam MultipartFile avatar, 
+			@ModelAttribute EmployeeDto dto) throws IOException {
+		logger.info("empInfo {}",dto.getIsChangePw());
+		logger.info("empInfo photo {}",avatar);
+		int result = service.modifyEmpInfo(principal.getName(), avatar, dto);
+		return "redirect:/employee/home";
+	}
 	
 	@GetMapping("/employee/home")
 	public ModelAndView home(Principal principal, HttpSession session)throws Exception {
@@ -162,6 +172,15 @@ public class EmpProfileController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		int employeDel = service.employeDel(sch_idx);
 		result.put("삭제 일정 번호 전달 success", employeDel);
+		return result;
+	}
+	
+	@RequestMapping(value="/employee/getEmpPhoto.ajax")
+	@ResponseBody
+	public HashMap<String, Object> empPhoto(Principal principal){	
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		String photo = service.getEmpPhoto(Integer.parseInt(principal.getName()));
+		result.put("photo", photo);
 		return result;
 	}
 	
