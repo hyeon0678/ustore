@@ -152,7 +152,7 @@
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
-												<span class="menu-title">보낸메일함</span>
+												<span class="menu-title">받은메일함</span>
 											</a>
 											<!--end:Menu link-->
 										</div>
@@ -164,7 +164,7 @@
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
-												<span class="menu-title">받은메일함</span>
+												<span class="menu-title">보낸메일함</span>
 											</a>
 											<!--end:Menu link-->
 										</div>
