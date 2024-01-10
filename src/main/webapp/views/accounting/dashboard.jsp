@@ -6,8 +6,7 @@
 <html lang="ko">
 <!--begin::Head-->
 <head>
-<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by
-	KeenThemes</title>
+<title>DashBoard</title>
 <meta charset="utf-8" />
 <meta name="description"
 	content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
@@ -126,7 +125,7 @@
 																		</select>
 																		</span>
 										<button type="button"
-											class="btn btn-primary span-search-button fs-7">검색</button>
+											class="btn btn-primary span-search-button fs-7" id="priceBtn">검색</button>
 									</div>
 
 									<!--end::Info-->
@@ -197,10 +196,10 @@
 										<div class="mb-0">
 											<input
 												class="form-control form-control-solid kt_daterangepicker_1"
-												placeholder="기간 선택" />
+												placeholder="기간 선택" id="CategoryDatePicker" />
 										</div>
 										<button type="button"
-											class="btn btn-primary span-search-button fs-7">검색</button>
+											class="btn btn-primary span-search-button fs-7" id ="CategoryBtn">검색</button>
 									</div>
 									<!--end::Info-->
 								</div>
@@ -208,6 +207,7 @@
 								<!--begin::Chart-->
 								<div id="" class="min-h-auto card-body chart-content-body">
 									<!-- 차트 그리는 부분 -->
+									<canvas id="kt_chartjs_4" class="mh-350px"></canvas>
 								</div>
 								<!--end::Chart-->
 							</div>
@@ -225,10 +225,7 @@
 
 	<!--begin::Javascript-->
 	<script>var hostUrl = "/";</script>
-	<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 	<script src="resource/assets/js/scripts.bundle.js"></script>
-	<!--end::Global Javascript Bundle-->
-	<!--end::Javascript-->
 </body>
 <!--end::Body-->
 <script>
@@ -239,7 +236,7 @@
         $(document).ready(function() {
          
             fetchDataAndRenderChart();
-            generateRandomData();
+    
             
           
         });
@@ -295,7 +292,23 @@
         $('#searchButton').click(function() {
    
             var selectedDate = $('#datePicker').val();
+            
+            var startDateString = selectedDate.split(' - ')[0];
 
+   
+         var today = new Date();
+         today.setHours(0, 0, 0, 0); 
+
+      
+         var startDateParts = startDateString.split('/');
+         var startDate = new Date(startDateParts[2], startDateParts[0] - 1, startDateParts[1]); 
+
+         
+         if (isNaN(startDate) || startDate > today) {
+          
+             InfoModal("시작 날짜가 오늘을 넘었습니다.");
+             return;
+         }
          
             $.ajax({
                 url: '/accounting/dashboard/produtctdaylist',
@@ -370,22 +383,23 @@
         fetchDataAndRenderChart();
     });
 </script>
+<!-- ------------------------------------------------------------------비용 금액 -->
 <script>
 $(document).ready(function() {
     var primaryColor = KTUtil.getCssVariableValue('--kt-primary');
     var dangerColor = KTUtil.getCssVariableValue('--kt-danger');
     var successColor = KTUtil.getCssVariableValue('--kt-success');
     var currentDate = new Date();
-    var myChart; // myChart 변수를 전역으로 선언
-    var isWeeklyClicked = false; // 주간 버튼 클릭 여부를 저장하는 변수
+    var myChart; 
+    var isWeeklyClicked = false; 
 
-    // 5일 전의 날짜 계산
+
     var fiveDaysAgo = new Date(currentDate);
     fiveDaysAgo.setDate(currentDate.getDate() - 5);
-    // Define fonts
+
     var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
 
-    // Chart labels
+ 
     const labels = [];
     for (var i = 0; i <= 5; i++) {
         var dateToAdd = new Date(fiveDaysAgo);
@@ -394,14 +408,14 @@ $(document).ready(function() {
     }
     
 
-    // Get chart context
+
     var ctx = document.getElementById('kt_chartjs_1').getContext('2d');
 
-    // Get data from server
+ 
     var dashboardData = [];
-    var totalPriceData = []; // 전역으로 선언
-    var totalPriceOrderData = []; // 전역으로 선언
-    var totalUsedPointsData = []; // 전역으로 선언
+    var totalPriceData = []; 
+    var totalPriceOrderData = []; 
+    var totalUsedPointsData = [];
 
     function formatDate(date) {
         var month = date.getMonth() + 1;
@@ -409,17 +423,17 @@ $(document).ready(function() {
         return month + '월' + day + '일';
     }
 
-    // Make an AJAX call to get data from the server
+ 
     $.ajax({
         url: '/accounting/dashboardday/list',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
         	console.log('Received data from server:', data);
-            // Extracting data from the server response
+    
             totalPriceData = data.list1.map(item => item.totalPrice);
-            totalPriceOrderData = data.list2.map(item => Math.floor(Math.random() * 2000)); // 전역 변수에 할당
-            totalUsedPointsData = data.list3.map(item => item.totalUsedPoints); // 전역 변수에 할당
+            totalPriceOrderData = data.list2.map(item => item.totalPriceOrder); 
+            totalUsedPointsData = data.list3.map(item => item.totalUsedPoints); 
 
             var sortedData = [
                 { label: '포인트 사용', data: normalizeData(totalUsedPointsData), backgroundColor: successColor },
@@ -458,7 +472,7 @@ $(document).ready(function() {
                 },
             };
 
-            // Init ChartJS
+      
             myChart = new Chart(ctx, config);
         },
         error: function(error) {
@@ -467,29 +481,27 @@ $(document).ready(function() {
     });
 
     function normalizeData(data) {
-        // Find the maximum value in the data
+        
         const maxValue = Math.max(...data);
 
-        // Normalize the data by dividing each value by the maximum value
+     
         return data.map(value => (maxValue !== 0 ? (value / maxValue) * 100 : value));
     }
 
-    $(document).on('click', '.span-search-button', function() {
-        // 현재 차트의 설정을 가져옵니다.
+    $(document).on('click', '#priceBtn', function() {
+       
         var chartConfig = myChart.config;
 
-        // 차트를 다시 렌더링하기 전에 옵션을 수정합니다.
-        // 여기서는 '주간'에 해당하는 데이터를 가져오도록 예시로 구현하였습니다.
+      
         if ($('#Bselect').val() === '주간' && !isWeeklyClicked) {
-            isWeeklyClicked = true; // 주간 버튼 클릭 플래그를 true로 설정
+            isWeeklyClicked = true;
             chartConfig.data.labels = ['5주전', '4주전', '3주전', '2주전', '1주전', '이번주'];
             chartConfig.data.datasets.forEach(function(dataset) {
-                // 여기서는 랜덤 데이터를 사용하도록 예시로 구현하였습니다.
+               
                 dataset.data = Array.from({ length: 6 }, () => Math.floor(Math.random() * 700));
             });
         } else if ($('#Bselect').val() === '일간') {
-            isWeeklyClicked = false; // 주간 버튼 클릭 플래그를 false로 설정
-            // '일간'인 경우, 기존과 동일한 데이터를 사용하도록 설정합니다.
+            isWeeklyClicked = false; 
             chartConfig.data.labels = labels;
             chartConfig.data.datasets.forEach(function(dataset, index) {
                 if (index === 0) {
@@ -502,34 +514,33 @@ $(document).ready(function() {
             });
         }
 
-        // 차트를 다시 렌더링합니다.
+
         myChart.update();
     });
 });
 
 </script>
 
-<!-- ----------------------------------------------------------------------------------------------------------------- -->
+<!-- -------------------------------------------------영업 이익---------------------------------------------------------------- -->
 <script>
     var ctx = document.getElementById('kt_chartjs_2');
     
-    // Define colors
+
     var primaryColor = KTUtil.getCssVariableValue('--kt-primary');
     var dangerColor = KTUtil.getCssVariableValue('--kt-danger');
     
-    // Define fonts
+
     var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
     
-    // Chart labels
+ 
     const labels = ['8월', '9월', '10월', '11월', '12월', '1월'];
-    
-    // Chart data
+ 
     const data = {
         labels: labels,
         datasets: [
             {
                 label: '영업 이익',
-                data: [],  // Initialize with empty data
+                data: [],  
                 borderColor: primaryColor,
                 borderWidth: 2,
                 fill: false,
@@ -538,7 +549,7 @@ $(document).ready(function() {
         ]
     };
     
-    // Chart config
+    
     const config = {
         type: 'line',
         data: data,
@@ -557,25 +568,25 @@ $(document).ready(function() {
         }
     };
     
-    // Init ChartJS
+ 
     var myChart = new Chart(ctx, config);
 
-    // Function to update line chart with new data
+  
     function updateLineChart(lineData) {
         myChart.data.datasets[0].data = lineData;
         myChart.update();
     }
 
-    // Simulate server data (replace this with your actual data fetching)
+   
     $.ajax({
         url: '/accounting/dashboardline/list',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-            // Assuming your server response has a property 'totalUsedPoints'
+            
             var lineData = data.map(item => item.totalAllPrice * 1000);
             
-            // Update line chart with actual data
+      
             updateLineChart(lineData);
         },
         error: function(error) {
@@ -583,5 +594,195 @@ $(document).ready(function() {
         }
     });
 </script>
+<!-- -----------------------------------------------------------------------------------카테고리-->
 
+ <script>
+$(document).ready(function() {
+  
+    fetchData();
+
+   
+    function fetchData() {
+        $.ajax({
+            type: 'GET',
+            url: '/accounting/dashboardcategory/list',
+            dataType: 'json',
+            success: function(data) {
+               
+                initChart(data);
+            },
+            error: function(error) {
+                console.error('데이터 가져오기 오류:', error);
+            }
+        });
+    }
+
+   
+    function initChart(data) {
+      
+        var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
+
+     
+        const foodData = data.map(item => item.food);
+        const necessityData = data.map(item => item.necessity);
+        const electronicsData = data.map(item => item.electronics);
+
+        
+        const chartConfig = {
+            type: 'pie',
+            data: {
+                labels: ['식품', '생필품', '전자제품'],
+                datasets: [
+                    {
+                        label: 'price',
+                        data: [foodData, necessityData, electronicsData],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)'
+                        ],
+                        borderWidth: 2,
+                    },
+                ],
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '카테고리',
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 15,
+                                family: fontFamily,
+                            },
+                        },
+                    },
+                },
+                responsive: true,
+            },
+            defaults: {
+                global: {
+                    defaultFont: fontFamily,
+                },
+            },
+        };
+
+        var ctx = document.getElementById('kt_chartjs_4');
+        var myChart = new Chart(ctx, chartConfig);
+    }
+
+});
+</script>
+
+<script>
+$(document).ready(function() {
+	console.log('Document is ready.');
+    $('#CategoryBtn').click(function() {
+    	  console.log('CategoryBtn clicked.');
+        var selectedCateDate = $('#CategoryDatePicker').val(); 
+        var startDateString = selectedCateDate.split(' - ')[0];
+
+  
+     var today = new Date();
+     today.setHours(0, 0, 0, 0); 
+
+    
+     var startDateParts = startDateString.split('/');
+     var startDate = new Date(startDateParts[2], startDateParts[0] - 1, startDateParts[1]);
+
+   
+     if (isNaN(startDate) || startDate > today) {
+      
+         InfoModal("시작 날짜가 오늘을 넘었습니다.");
+         return;
+     }
+        console.log('Selected date!!:', selectedCateDate);
+        $.ajax({
+            url: '/accounting/dashboardcategory/update',
+            method: 'GET',
+            data: { selectedCateDate: selectedCateDate },
+            dataType: 'json',
+            success: function(response) {
+            
+                console.log('요청 성공', response);
+                
+            
+                if (response === null || response.length === 0) {
+                	var existingChart = Chart.getChart('kt_chartjs_4');
+                    if (existingChart) {
+                        existingChart.destroy();
+                    }
+                    fetchData();
+                } else {
+             
+                    updateCategoryChart(response);
+                }
+            },
+            error: function(error) {
+          
+                console.error('Ajax 요청 실패:', error);
+                
+             
+                fetchData();
+            }
+        });
+    });
+
+  
+    function updateCategoryChart(data) {
+       
+    	 const foodData = data.map(item => item.food);
+         const necessityData = data.map(item => item.necessity);
+         const electronicsData = data.map(item => item.electronics);
+
+      
+        var existingChart = Chart.getChart('kt_chartjs_4');
+        if (existingChart) {
+            existingChart.destroy();
+        }
+
+  
+        const ctx = document.getElementById('kt_chartjs_4').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['식품', '생필품', '전자제품'],
+                datasets: [
+                    {
+                        label: 'price',
+                        data: [foodData, necessityData, electronicsData],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)'
+                        ],
+                        borderWidth: 2,
+                    },
+                ],
+                
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: false,
+                    }
+                },
+                responsive: true,
+            },
+            defaults: {
+                global: {
+                    defaultFont: KTUtil.getCssVariableValue('--bs-font-sans-serif')
+                }
+            }
+        });
+    }
+
+
+    fetchData();
+});
+
+</script>
 </html>

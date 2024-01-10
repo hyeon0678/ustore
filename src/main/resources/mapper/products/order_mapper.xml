@@ -93,19 +93,34 @@ VALUES (
     select * from order_cart
     </select>
     <select id="orderHistoryList" resultType="OrderDto">
-     SELECT
-    o.order_idx,
-    o.exp_arrival_date,
-    d.driver_name,
-    r.resource_name
+WITH RankedOrders AS (
+    SELECT
+        o.order_idx,
+        o.exp_arrival_date,
+        d.driver_name,
+        r.resource_name,
+        ROW_NUMBER() OVER (PARTITION BY o.order_idx ORDER BY o.exp_arrival_date DESC, r.resource_name) AS row_num
+    FROM
+        `order` o
+    JOIN
+        delivery_driver d ON o.driver_idx = d.driver_idx
+    JOIN
+        driver_schedule ds ON o.driver_idx = ds.driver_idx
+    JOIN
+        resource r ON ds.resource_idx = r.resource_idx
+)
+SELECT
+    order_idx,
+    exp_arrival_date,
+    driver_name,
+    resource_name
 FROM
-    `order` o
-JOIN
-    delivery_driver d ON o.driver_idx = d.driver_idx
-JOIN
-    driver_schedule ds ON o.driver_idx = ds.driver_idx
-JOIN
-    resource r ON ds.resource_idx = r.resource_idx;
+    RankedOrders
+WHERE
+    row_num = 1
+ORDER BY
+    order_idx DESC;
+
     </select>
     
     <select id="orderListModal" resultType="OrderDto">

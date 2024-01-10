@@ -93,7 +93,7 @@ public class OrderController {
 	@ResponseBody
 	public ResponseEntity<ArrayList<OrderDto>> getOrderList(HttpSession session,Model model) {
 	   
-		boolean orderCheck = service.orderCartCheck();
+		boolean orderCheck = service.orderCartCheck();	
 	    logger.info("장바구니에 값이 있나?  없으면 false : "+orderCheck);
 	    if (orderCheck==false) {
 	      
