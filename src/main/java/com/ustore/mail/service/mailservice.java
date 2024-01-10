@@ -29,6 +29,48 @@ public class mailservice {
 	public ArrayList<HashMap<String, String>> searchlist(String emproynum, String keyword) {
 		return dao.searchlist(emproynum, keyword);
 	}
+
+
+
+
+	public ArrayList<HashMap<String, String>> outlist(String emproynum) {
+		return dao.outlist(emproynum);
+	}
+
+
+
+
+	public ArrayList<HashMap<String, String>> outsearchlist(String emproynum, String keyword) {
+		return dao.outsearchlist(emproynum, keyword);
+	}
+
+
+
+
+	public ArrayList<HashMap<String, String>> dellistRM(String emproynum) {
+		return dao.dellistRM(emproynum);
+	}
+
+
+
+
+	public ArrayList<HashMap<String, String>> dellistSM(String emproynum) {
+		return dao.dellistSM(emproynum);
+	}
+
+
+
+
+	public ArrayList<HashMap<String, String>> delsearchRM(String emproynum, String keyword) {
+		return dao.delsearchRM(emproynum,keyword);
+	}
+
+
+
+
+	public ArrayList<HashMap<String, String>> delsearchSM(String emproynum, String keyword) {
+		return dao.delsearchSM(emproynum, keyword);
+	}
 	
 	
 	

@@ -73,27 +73,33 @@
 							</div>
 							<div class="mail-comm">
 								<div class="comm-left">
-									<button type="button" class="btn btn-primary span-pay">메일작성</button>
+									<button type="button" class="btn btn-primary span-pay" onclick="newscript()">메일작성</button>
 								</div>	
 								<div class="comm-right">
-									<input type="text" class="form-control" placeholder="이름혹은 내용을 검색해주세요" style="width: 200px; height: 40px;">
-									<button type="button" class="btn btn-primary span-search-button" style="margin-left: 10px;">검색</button>
+									<input type="text" class="form-control" name="searchlist" placeholder="내용을 입력해주세요" style="width: 200px; height: 40px;">
+									<button type="button" class="btn btn-primary span-search-button" style="margin-left: 10px;" onclick="searchbutton()">검색</button>
 									<button class="img-button" style="margin-left: 10px;"><img src="resource/assets/media/icon/gen027.svg" onclick=""/></button>
 								</div>
 							</div>
 						</div>
 						<div class="container d-flex flex-column flex-lg-row comm-content-body" id="kt_docs_content_container">
 							<div class="card card-docs flex-row-fluid mb-2" id="kt_docs_content_card"> 
-								<table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5 database_table">
+								<table class="table align-middle table-row-dashed fs-6 gy-5"
+										id="kt_datatable_zero_configuration_out" style="overflow-x: hidden;">
 									<thead>
-										<tr class="fw-semibold fs-6 text-center">
-											<th><input type="checkbox"/></th>
-											<th>제목</th>
-											<th>수신자(팀명)</th>
-											<th>수신일</th>
-											<th>읽음/안읽음</th>
+										<tr class="text-start fw-bold fs-7 text-uppercase gs-0 text-center" style=" color: #c6da52;">
+											<th class="min-w-30px text-center"><input type="checkbox" onclick="checked()"/></th>
+											<th class="min-w-30px text-center" >NO.</th>
+											<th class="min-w-80px text-center" >상태</th>
+											<th class="min-w-200px text-center" >제목</th>
+											<th class="min-w-130px text-center" >수신자(팀명)</th>
+											<th class="min-w-130px text-center" >발신일</th>
 										</tr>
 									</thead>
+									<tbody class="fw-semibold text-gray-600"  id="list">
+									
+									
+									</tbody>
 								</table>
 							</div>
 								
@@ -118,32 +124,98 @@
 		<!--end::Javascript-->
 	</body>
 	<script>
-		$('#searchButton').on('click', function () {
-		$.ajax({
-	        type: 'get',
-	        url: 'list',
-	        dataType: 'json',
-	        success: function (data) {
-	        	console.log(data);
-	        	 drawList(data); 
+
+    listcall();
+    var checked = false;
+    var table=$("#kt_datatable_zero_configuration_out");
+    
+	
+	function searchbutton(){
+		
+		var keyword = $('input[name="searchlist"]').val();
+		table.DataTable().destroy();
+	   	$.ajax({
+			type:'get',
+			url:'mail/out.ajax/search', 
+			data:{'keyword':keyword},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				console.log("리스트 호출 뿌려주기");	
+				drawList(data);		 
 	        },
 	        error: function (e) {
 	            console.log(e);
 	        }
 	    });
-	});
-	
-	function drawList(obj){
-		var content ='';
-		
-		obj.list.forEach(function(item, idx){
-			// content 그리는 곳
-		});
-		$('#list').empty();
-		$('#list').append(content);
+		}//
 
-		$("#kt_datatable_zero_configuration").DataTable();
+	function listcall(page){
+		console.log("리스트 호출");
+		$.ajax({
+			type:'get',
+			url:'mail/out.ajax/list', 
+			data:{},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				console.log("리스트 호출 뿌려주기");
+				
+				drawList(data);		
+				
+			},
+			error:function(e){
+				console.log(e);
+			}
+			});//	
 	}
+	
+	function newscript(){
+		console.log("메일작성하는 페이지 이동");
+		location.href='mail/write';
+	}
+	
+	
+	
+	
+function drawList(obj){
+	console.log(obj);
+	
+	var content ='';
+	
+	 $('#list').empty();
+		 
+	if (obj.size <= 0) {			
+		 content = '<tr>';				 
+		 content += '<td style="text-align: center; color: red;" colspan="7"> 받은메일이 없습니다 . </td>';
+		 content += '</tr>';		
+		 $('#list').append(content);
+	}else {
+	for (var i = 0; i < obj.size; i++) {
+		 	content = '<tr>';
+		 	content += '<th class="min-w-30px text-center"><input type="checkbox"/></th>';
+		 	content += '<th class="min-w-30px text-center" >'+i+'</th>';
+		 	if(obj.list[i].mail_read == 'N'){
+		 		content += '<th class="min-w-80px text-center" >안읽음</th>';
+			 } else {
+				 content += '<th class="min-w-80px text-center" >읽음</th>'; 
+			}
+		 	content += '<th class="min-w-200px text-center" ><a href="mail/detail?idx='+obj.list[i].mailnum+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].mail_subject+'</a></th>';
+		 	content += '<th class="min-w-130px text-center" >'+obj.list[i].personname+'</th>';
+		 	var date = new Date(obj.list[i].mail_create_date);
+			 var dateStr = date.toLocaleDateString("ko-KR");
+		 	content += '<th class="min-w-130px text-center" >'+dateStr+'</th>';
+		 	content += '</tr>';
+			console.log(content);
+			$('#list').append(content);
+	};
+	};
+	    
+	if (obj.size > 0) {
+		console.log("destroiy");
+		table.DataTable( {"ordering": false, "info": false, "destroy": true, "pageLength": 10 , "lengthChange": false } );
+	}
+}
 
 	</script>
 	<!--end::Body-->

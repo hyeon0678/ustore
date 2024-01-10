@@ -12,6 +12,18 @@ public interface maildao {
 
 	ArrayList<HashMap<String, String>> searchlist(String emproynum, String keyword);
 
+	ArrayList<HashMap<String, String>> outlist(String emproynum);
+
+	ArrayList<HashMap<String, String>> outsearchlist(String emproynum, String keyword);
+
+	ArrayList<HashMap<String, String>> dellistRM(String emproynum);
+
+	ArrayList<HashMap<String, String>> dellistSM(String emproynum);
+
+	ArrayList<HashMap<String, String>> delsearchRM(String emproynum, String keyword);
+
+	ArrayList<HashMap<String, String>> delsearchSM(String emproynum, String keyword);
+
 	
 	
 	

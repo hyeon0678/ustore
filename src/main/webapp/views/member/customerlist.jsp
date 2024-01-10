@@ -262,6 +262,7 @@
 	
 	$('#pageState').change(function(){
 		//$('#pagination').twbsPagination('destroy');
+		$('#list').empty();
 		table.DataTable().destroy();
 		listcall(showpage);	
 		//table.DataTable().drow();

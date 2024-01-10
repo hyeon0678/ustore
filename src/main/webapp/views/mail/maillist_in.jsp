@@ -92,7 +92,7 @@
 											<th class="min-w-80px text-center" >상태</th>
 											<th class="min-w-200px text-center" >제목</th>
 											<th class="min-w-130px text-center" >발신자(팀명)</th>
-											<th class="min-w-130px text-center" >발신일</th>
+											<th class="min-w-130px text-center" >수신일</th>
 										</tr>
 									</thead>
 									<tbody class="fw-semibold text-gray-600"  id="list">

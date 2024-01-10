@@ -5,7 +5,7 @@
 	<!--begin::Head-->
 	<base href="../../" />
 	<head>
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+		<title>UStore</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
@@ -38,7 +38,7 @@
 				display: flex;
 				justify-content: space-between;
 				margin-right: 30px;
-				margin: 5px 40px 30px 40px;
+				margin: 5px 40px 15px 40px;
 			}
 			.comm-head{
 				margin: 20px 0px 30px 40px;
@@ -51,6 +51,7 @@
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
@@ -62,36 +63,50 @@
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 95px;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
+						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
+							<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">휴지통</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 						<div class="container flex-column flex-lg-row ">
 							<div class="comm-head">
-								<h2>보낸 메일함</h2>
 							</div>
 							<div class="mail-comm">
 								<div class="comm-left">
-									<button type="button" class="btn btn-primary span-pay">메일작성</button>
+									<button type="button" class="btn btn-primary span-pay" onclick="newscript()">메일작성</button>
 								</div>	
-								<div class="comm-right">
-									<input type="text" class="form-control" placeholder="이름혹은 내용을 검색해주세요" style="width: 250px; height: 40px;">
-									<button type="button" class="btn btn-primary span-search-button" style="margin-left: 10px;">검색</button>
-									<button class="img-button" style="margin-left: 10px;"><img src="resource/assets/media/icon/gen027.svg" onclick=""/>복원</button>
-									<button class="img-button" style="margin-left: 10px;"><img src="resource/assets/media/icon/arr059" onclick=""/>삭제</button>
+								<div class="comm-right" style="align-items: center;">
+									<!--begin::Col 드롭박스 >> 회원 상태-->
+									<div class="col-lg-8 fv-row" style="width: 150px; height: 30px; display: flex; margin: 10px;">
+										<select id="pageState" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;"> 
+											<option  value="RM">받은 메일</option>																	
+											<option  value="SM">보낸 메일</option>
+										</select>
+									</div>
+									<!--end::Col-->
+									<input type="text" class="form-control" name="searchlist" placeholder="내용을 입력해주세요" style="width: 200px; height: 40px;">
+									<button type="button" class="btn btn-primary span-search-button" style="margin-left: 10px;" onclick="searchbutton()">검색</button>
+									<button class="img-button" style="margin-left: 10px;"><img src="assets/media/icons/duotune/arrows/arr059.svg" onclick=""/>복원</button>
 								</div>
 							</div>
 						</div>
 						<div class="container d-flex flex-column flex-lg-row comm-content-body" id="kt_docs_content_container">
 							<div class="card card-docs flex-row-fluid mb-2" id="kt_docs_content_card"> 
-								<table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5 ">
+								<table class="table align-middle table-row-dashed fs-6 gy-5"
+										id="kt_datatable_zero_configuration_del" style="overflow-x: hidden;">
 									<thead>
-										<tr class="fw-semibold fs-6 text-center">
-											<th><input type="checkbox"/></th>
-											<th>제목</th>
-											<th>수신자(팀명)</th>
-											<th>수신일</th>
-											<th>읽음/안읽음</th>
+										<tr class="text-start fw-bold fs-7 text-uppercase gs-0 text-center" style=" color: #c6da52;">
+											<th class="min-w-30px text-center"><input type="checkbox" onclick="checked()"/></th>
+											<th class="min-w-30px text-center" >NO.</th>
+											<th class="min-w-50px text-center" >상태</th>
+											<th class="min-w-200px text-center" >제목</th>
+											<th class="min-w-130px text-center" >이름(팀명)</th>
+											<th class="min-w-130px text-center" >생성날짜</th>
 										</tr>
 									</thead>
+									<tbody class="fw-semibold text-gray-600"  id="list">
+									
+									
+									</tbody>
 								</table>
 							</div>
 								
@@ -116,29 +131,148 @@
 		<!--end::Javascript-->
 	</body>
 	<script>
-		var ajax = true;
-		$('#kt_datatable_zero_configuration').DataTable({
-			ordering:false,
-			"lengthChange": false,
-			alax:{
-				url:"/mailtest"
-				,type:'get'
-				,dataSrc:function(res){
-					var data = res.data;
-					return data;
-				}
-			},
-			columns: [
-				{ data: '<input type="checkbox" id="checkAll"/>' },
-				{ data: '제목' },
-				{ data: '발신자(팀명)' },
-				{ data: '발신일' },
-				{ data: '읽음/안읽음' }
-			],
-			processing: true,
-			serverSide: true
-		});
+	
 
+    listcall();
+    var checked = false;
+    var table=  $('#kt_datatable_zero_configuration_del');
+    
+    
+    $('#pageState').change(function(){
+    	
+    	$('#kt_datatable_zero_configuration_del').DataTable().destroy();
+    	//$('#kt_datatable_zero_configuration_del').empty();
+    	
+		
+		 listcall();
+		 
+	});
+    
+    
+    
+	
+	function searchbutton(){
+		
+			
+		var keyword = $('input[name="searchlist"]').val();
+		
+		$('#kt_datatable_zero_configuration_del').DataTable().destroy();
+		
+		
+	   	$.ajax({
+			type:'get',
+			url:'mail/del.ajax/search', 
+			data:{'keyword':keyword, 'pageState':$('#pageState').val()},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				console.log("검색 리스트 호출 뿌려주기");
+				drawList(data);		 
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}//
+
+	function listcall(page){
+		console.log("리스트 호출");
+		$.ajax({
+			type:'get',
+			url:'mail/del.ajax/list', 
+			data:{'pageState':$('#pageState').val()},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				console.log("리스트 호출 뿌려주기");
+				
+				drawList(data);		
+				
+			},
+			error:function(e){
+				console.log(e);
+			}
+			});//	
+	}
+	
+	function newscript(){
+		console.log("메일작성하는 페이지 이동");
+		location.href='mail/write';
+	}
+	
+	
+	
+	
+function drawList(obj){
+	console.log(obj);
+	var pageState = $('#pageState').val();
+	
+	var content ='';
+	
+	 $('#list').empty();
+		 
+	if (obj.size <= 0) {		
+		$('#kt_datatable_zero_configuration_del').DataTable().destroy();
+		 content = '<tr>';				 
+		 content += '<td style="text-align: center; color: red;" colspan="7"> 휴지통에 메일이 없습니다 . </td>';
+		 content += '</tr>';		
+		 $('#list').append(content);
+	}else {
+		
+		if (pageState == 'RM') {
+			for (var i = 0; i < obj.size; i++) {
+			 	content = '<tr>';
+			 	content += '<th class="min-w-30px text-center"><input type="checkbox"/></th>';
+			 	content += '<th class="min-w-30px text-center" >'+(i+1)+'</th>';
+			 	if(obj.list[i].mail_read == 'N'){
+			 		content += '<th class="min-w-50px text-center" >안읽음</th>';
+				 } else {
+					 content += '<th class="min-w-50px text-center" >읽음</th>'; 
+				}
+			 	content += '<th class="min-w-200px text-center" ><a href="mail/detail?idx='+obj.list[i].mailnum+' && mailstate='+pageState+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].mail_subject+'</a></th>';
+			 	content += '<th class="min-w-130px text-center" >'+obj.list[i].personname+'</th>';
+			 	var date = new Date(obj.list[i].mail_create_date);
+				 var dateStr = date.toLocaleDateString("ko-KR");
+			 	content += '<th class="min-w-130px text-center" >'+dateStr+'</th>';
+			 	content += '</tr>';
+				console.log(content);
+				$('#list').append(content);
+				
+				};
+		}else {
+			for (var i = 0; i < obj.size; i++) {
+			 	content = '<tr>';
+			 	content += '<th class="min-w-30px text-center"><input type="checkbox"/></th>';
+			 	content += '<th class="min-w-30px text-center" >'+i+'</th>';
+			 	if(obj.list[i].mail_read == 'N'){
+			 		content += '<th class="min-w-50px text-center" >안읽음</th>';
+				 } else {
+					 content += '<th class="min-w-50px text-center" >읽음</th>'; 
+				}
+			 	content += '<th class="min-w-200px text-center" ><a href="mail/detail?idx='+obj.list[i].mailnum+' && mailstate='+pageState+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].mail_subject+'</a></th>';
+			 	content += '<th class="min-w-130px text-center" >'+obj.list[i].personname+'</th>';
+			 	var date = new Date(obj.list[i].mail_create_date);
+				 var dateStr = date.toLocaleDateString("ko-KR");
+			 	content += '<th class="min-w-130px text-center" >'+dateStr+'</th>';
+			 	content += '</tr>';
+				console.log(content);
+				$('#list').append(content);
+				};
+			
+		};
+				table.DataTable( {"ordering": false, "info": false, "destroy": true, "pageLength": 10 , "lengthChange": false } );
+	};
+	/*    
+	if (obj.size > 0) {
+		console.log("destroy");
+		table.DataTable( {"ordering": false, "info": false, "pageLength": 10 , "lengthChange": false } );
+	}
+	*/
+}
+
+	
+	
+	
 	</script>
 	<!--end::Body-->
 </html>
