@@ -29,6 +29,10 @@ public interface DashboardDao {
 
 	ArrayList<DashboardDto> dashboardLineList();
 
+	ArrayList<DashboardDto> dashboardCategory();
+
+	ArrayList<DashboardDto> dashboardCategoryUpdate(String trfirstSelectedDate, String trlastSelectedDate);
+
 
 
 }

@@ -13,13 +13,6 @@
 <meta name="keywords"
 	content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta property="og:locale" content="en_US" />
-<meta property="og:type" content="article" />
-<meta property="og:title"
-	content="Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes" />
-<meta property="og:url"
-	content="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" />
-<meta property="og:site_name" content="Craft by Keenthemes" />
 <link rel="canonical" href="https://preview.keenthemes.com/craft" />
 <link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
 <!--begin::Fonts(mandatory for all pages)-->
@@ -282,7 +275,7 @@
 				.ready(
 						function() {
 							var modalClicked = false;
-
+						
 					
 							$('#kt_modal_1')
 									.on(
@@ -339,7 +332,7 @@
 															});
 												}
 											});
-						});
+							headerOnReady();});
 	</script>
 </body>
 <!--end::Body-->
