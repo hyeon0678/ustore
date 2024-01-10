@@ -423,6 +423,8 @@ public class ApprovalController {
 			service.updateApprDocStep(dto);
 			
 			// 알람 처리(알람 테이블에 알람받을 emp_idx와 주소 넣어줘야 함, 알림 종류는 common_idx = 100)
+			
+			
 		}		
 		
         return mav;
