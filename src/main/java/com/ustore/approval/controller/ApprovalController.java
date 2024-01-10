@@ -31,8 +31,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -44,7 +42,6 @@ import com.ustore.employee.dao.GroupManageDao;
 import com.ustore.employee.dto.EmployeeDto;
 import com.ustore.employee.service.EmpProfileService;
 import com.ustore.products.dto.OrderDto;
-import com.ustore.utils.DateCalculator;
 
 
 @Controller
@@ -54,7 +51,6 @@ public class ApprovalController {
 	@Autowired ApprovalService service;
 	@Autowired GroupManageDao gmdao;
 	@Autowired EmpProfileService epservice;
-	private DateCalculator dateCalc = new DateCalculator();
 	
 	// 새결재진행 (문서양식 선택 페이지)
 	@GetMapping(value="/approval/newapproval")
