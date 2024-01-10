@@ -282,7 +282,7 @@
 								</div>
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
-								<sec:authorize access="hasRole('ROLE_매장관리팀')">
+								<sec:authorize access="hasAnyRole('ROLE_매장관리팀','ROLE_점장')">
 								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
@@ -337,7 +337,7 @@
 								</sec:authorize>
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
-								<sec:authorize access="hasRole('ROLE_인사팀')">
+								<sec:authorize access="hasAnyRole('ROLE_인사팀','ROLE_점장')">
 								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
@@ -381,7 +381,7 @@
 								</sec:authorize>
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
-								<sec:authorize access="hasRole('ROLE_인사팀')">
+								<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
 								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
@@ -425,7 +425,7 @@
 								</sec:authorize>
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
-								<sec:authorize access="hasRole('ROLE_고객지원팀')">
+								<sec:authorize access="hasAnyRole('ROLE_고객지원팀','ROLE_점장')">
 								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
