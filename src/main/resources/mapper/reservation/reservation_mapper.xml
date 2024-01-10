@@ -14,4 +14,15 @@
 	<update id="delResource">
 		UPDATE resource SET resource_del = 'Y' , update_by = CURRENT_DATE , reg_by =#{param2} WHERE resource_idx =#{param1}
 	</update>
+	
+	<insert id="addBooking">
+		INSERT INTO resource_booking 
+		(emp_idx, resource_idx, booking_start_date, booking_end_date ,booking_start_time ,booking_end_time ,booking_content ,reg_by)
+		VALUES (#{regBy},#{resourceIdx},#{day},#{day},#{startTime},#{endTime},#{text},#{regBy})
+	</insert>
+	
+	<select id="bookingInfo" resultType="com.ustore.reservation.dto.reservationDto">
+		 		SELECT rb.emp_idx,rb.resource_idx ,rb.booking_start_date ,rb.booking_end_date ,rb.booking_start_time ,rb.booking_end_time , rb.booking_content 
+		FROM resource_booking rb LEFT JOIN resource r ON rb.resource_idx = r.resource_idx WHERE r.resource_del = 'N' AND rb.booking_start_date =#{param1} AND rb.emp_idx=#{param2}
+	</select>
 </mapper>

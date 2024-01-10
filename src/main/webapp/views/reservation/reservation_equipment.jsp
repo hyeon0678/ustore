@@ -96,106 +96,74 @@
 										<h2 class="card-title fw-bold">자원 예약</h2>
 									</div>
 									<div class="card-body">
-        								<div id="scheduler" style="padding-top: 50px;"></div>
+									<div class="hover-scroll-x h-auto px-5">
+									    <div style="width: 1200px">
+        									<div id="scheduler" style="padding-bottom: 30px;"></div>
+									    </div>
+									</div>
 									</div>
 								</div>
 									
 									
 								<div class="modal fade" tabindex="-1" id="kt_modal_0">
-									<!--begin::Modal dialog-->
-									<div class="modal-dialog modal-dialog-centered mw-650px">
-										<!--begin::Modal content-->
+									<<div class="modal-dialog modal-dialog-centered mw-650px">
 										<div class="modal-content">
-											<!--begin::Form-->
-											<form class="form" action="#" id="kt_modal_add_event_form">
-												<!--begin::Modal header-->
-												<div class="modal-header">
-													<!--begin::Modal title-->
-													<h3 class="modal-title">예약</h3>
-													<!--end::Modal title-->
-													<!--begin::Close-->
-													<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-														<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-													</div>
-													<!--end::Close-->
-												</div>
-												<!--end::Modal header-->
-												<!--begin::Modal body-->
-												<div class="modal-body py-10 px-lg-17">
-													<!--begin::Input group-->
-													<div class="fv-row mb-9">
-														<!-- 시작::라벨 -->
-														<label class="fs-6 fw-semibold required mb-2">자원명</label>
-														<!-- 끝::라벨 -->
-														
-														<!-- 시작::입력 -->
-														<div class="form-check form-check-custom form-check-solid">
-															<input class="form-control" type="text" value="" id="" name="resource_name" readonly="readonly" style="border: 0px"/>
-														</div>
+											<div class="modal-header">
+												<h3 class="modal-title">예약</h3>
 
-														<!-- 끝::입력 -->
-													</div>
-													<!--end::Input group-->
-													<!--begin::Input group-->
-													<div class="fv-row mb-9">
-														<!--begin::Label-->
-														<label class="fs-6 fw-semibold mb-2">예약 내용</label>
-														<!--end::Label-->
-														<!--begin::Input-->
-														<input type="text" class="form-control" placeholder="" name="event_description" />
-														<!--end::Input-->
-													</div>
-													<!--end::Input group-->
-													<!--begin::Input group-->
-													
-													<!--end::Input group-->
-													<!--begin::Input group-->
-													<div class="fv-row mb-9">
-														<!--begin::Label-->
-														<!--end::Label-->
-														<!--begin::Input-->
-														
+												<!--begin::Close-->
+												<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+													<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+												</div>
+												<!--end::Close-->
+											</div>
 
-														<!--end::Input-->
+											<div class="modal-body">
+												<!-- 모달창 몸통 테이블 시작-->
+												<div class="py-3" style="margin-top: -40px;">
+													<div class="table-responsive">
+														<table class="table table-row-dashed table-row-gray-300 gy-7">
+															<thead>
+																<tr class="fw-bold fs-6 text-gray-800">
+																	<th>자원 종류</th>
+																	<th class="resourceType">물류 장비</th>
+																	<th class="text-end"></th>
+																	<th class="text-end"></th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr class="fw-bold fs-6 text-gray-800">
+																	<th>예약 내용</th>
+																	<th style="width: 50%"><input type="text" class="form-control" placeholder="예약 내용을 입력하세요" id="text"/></th>
+																	<th class="text-end"></th>
+																	<th class="text-end"></th>
+																</tr>
+																<tr class="fw-bold fs-6 text-gray-800">
+																	<th>예약 일시</th>
+																	<th id="day"></th>
+																	<th class="text-end"></th>
+																	<th class="text-end"></th>
+																</tr>
+																<tr class="fw-bold fs-6 text-gray-800">
+																	<th>예약 시간</th>
+																	<th id="time"></th>
+																	<th class="text-end"></th>
+																	<th class="text-end"></th>
+																</tr>
+															</tbody>
+														</table>
 													</div>
-													<!--end::Input group-->
-													<!--begin::Input group-->
-													<div class="row row-cols-lg-2 g-10">
-														<div class="col">
-															<div class="fv-row mb-9">
-																<!--begin::Label-->
-																<label class="fs-6 fw-semibold mb-2 required">예약 일시</label>
-																<!--end::Label-->
-																<!--begin::Input-->
-																<input type="date" class="form-control form-control-solid" name="data"  />
-																<!--end::Input-->
-															</div>
-														</div>
-														<div class="col" >
-															<div class="fv-row mb-9">
-																<!--begin::Label-->
-																<label class="fs-6 fw-semibold mb-2">예약 기간</label>
-																<!--end::Label-->
-																<!--begin::Input-->
-																<input type="time" class="form-control form-control-solid" name="starttime" placeholder="start time" />
-																<input type="time" class="form-control form-control-solid" name="endtime" placeholder="end time" />
-																<!--end::Input-->
-															</div>
-														</div>
-													</div>
-													<!--end::Input group-->
-													<!--begin::Input group-->
-													
 												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-primary submit_btn">예약</button>
-												</div>
-											</form>
-											<!--end::Form-->
+												<!-- 모달창 몸통 테이블 끝-->
+											</div>
+
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary submit_btn" id="addBookingBut">예약</button>
+												<button type="button" class="btn btn-light">취소</button>
+											</div>
 										</div>
 									</div>
 								</div>
-								<!--end::Modal - New Product-->
 								
 								
 								
@@ -235,12 +203,10 @@
 														<span class="path6"></span>
 													</i>
 													<div class="mb-9">
-														예약 정보
-														<div class="d-flex align-items-center mb-2">
-															자원명 
-															<div>
-																<input type="text" name="" value="" readonly="readonly" style="border: 0px"/>
-															</div>
+														<h3>예약 정보</h3>
+														<div class="d-flex align-items-center">
+															<p class="resourceType">자원명</p> 
+															
 														</div>
 													</div>
 												</div>
@@ -257,7 +223,7 @@
 												</div>
 												<!--end::Row-->
 												<!--begin::Row-->
-												<div class="d-flex align-items-center mb-9">
+												<div class="d-flex align-items-center">
 													<!--begin::Bullet-->
 													<span class="bullet bullet-dot h-10px w-10px bg-danger ms-2 me-7"></span>
 													<!--end::Bullet-->
@@ -289,11 +255,7 @@
 										</div>
 									</div>
 								</div>
-								
-								
-								
-								
-								
+
 								<div class="modal fade" tabindex="-1" id="kt_modal_1">
 									<div class="modal-dialog modal-dialog-centered mw-650px">
 										<div class="modal-content">
@@ -418,6 +380,9 @@
 		
 
 		<script>
+
+	
+		var resourceType = '';
 		
 		var date = new Date(),
 	    day = date.getDate(),
@@ -443,22 +408,167 @@
 
 	// 예제 항목 배열
 	var printers = ['jQuery', 'Script', 'Net', 'AngularJS', 'ReactJS', 'VueJS'];
+	$("#scheduler").scheduler({ items: printers, reservations: reservations, timeslotHeight: 70, timeslotWidth: 100 });
 
-	// 초기화
-	$(document).ready(function() {
-    // 여기에 스케줄러 플러그인 초기화 코드를 넣으세요
-	$('#scheduler').scheduler({ items: printers, reservations: reservations, timeslotHeight: 70, timeslotWidth: 100 });
-    });
+		
+	drawresource();
+		
+		function drawresource(){
+			$.ajax({
+		        type: 'get',
+		        url: 'reservation/drawResource.ajax',
+		        dataType: 'json',
+		        data: {
+    	            'day': $('.date').text()
+    	        },
+		        success: function (data) {
+					console.log(data);
+					resourceType=data.item[0].resourceType+'_';
+					resource(data.item);
+		        },
+		        error: function (e) {
+		            console.log(e);
+		        }
+		    });
+		}
+		
+		
+		
+		function resource(item){
+			$('#scheduler').empty();
+			var date = new Date(),
+		    day = date.getDate(),
+		    date1 = new Date();
+		date1.setDate(day);
+		date1 = date1.format('Y-m-d');
+		// 예약 예제 데이터 배열
+		var reservations = [
+		    { date: date1, start: '11:00', end: '13:00', row: 0 },
+		    { date: date1, start: '8:00', end: '16:00', row: 1 },
+		    { date: date1, start: '7:00', end: '9:00', row: 3 },
+		    { date: date1, start: '8:00', end: '18:00', row: 4 }
+		];
 
-	// 예약 삭제를 허용
-	$(document).on('click', ".reservation", function () {
-	    console.log(this);
-	});
+		// 예제 항목 배열
+		var printers = [];
+		
+		
+		item.forEach(function(item,idx){
+			if (!printers[idx]) {
+			    printers[idx] = ''; // 인덱스에 대한 초기값 설정
+			  }
+			  printers[idx] += item.resourceName;	  
+			});
 
-	// 각 예약 요소에 고유한 ID 추가
-	for (var i = 0; i < reservations.length; i++) {
-	    $(".reservation").eq(i).attr("id", "reservation-" + i);
+		console.log(printers);
+		
+
+
+		// 초기화
+	    // 여기에 스케줄러 플러그인 초기화 코드를 넣으세요
+		$('#scheduler').scheduler({ items: printers, reservations: reservations, timeslotHeight: 70, timeslotWidth: 100 });
+
+
+		// 예약 삭제를 허용
+		$(document).on('click', ".reservation", function () {
+		    console.log(this);
+		});
+		
+		// 각 예약 항목에 고유한 ID 추가
+		for(var i = 0; i<item.length; i++){
+			var itemElement = $(".cell").eq(i);
+			itemElement.attr("id",item[i].resourceIdx);
+			itemElement.attr('data-product-id', i);
+		}
+
+		// 각 예약 요소에 고유한 ID 추가
+		for (var i = 0; i < reservations.length; i++) {
+	    var reservationElement = $(".reservation").eq(i);
+	    reservationElement.attr("id", "reservation-" + i);
+	    
+	    reservationElement.text(i);
+
+	    // 텍스트 가운데 정렬을 위한 CSS 스타일 적용
+	    reservationElement.css({
+	        'text-align': 'center',
+	        'line-height': reservationElement.height() + 'px'
+	    });
 	}
+		
+
+}
+		
+		
+		function qq(startTop,startWidth,endWidth){
+			console.log('startTop',startTop);
+			console.log('startWidth',startWidth);
+			console.log('endWidth',endWidth);
+			
+			console.log(startTop/70);
+
+
+			// startTop을 기반으로 'product-id'가 일치하는 요소를 선택합니다. row값을 가져오기 위한 코드
+			var row = $('.cell').filter('[data-product-id="' + (startTop / 70) + '"]');
+
+			// 선택된 요소의 'id' 속성값을 가져옵니다.
+			var resourceIdx = row.attr('id');
+
+			// 가져온 'id' 값을 출력합니다.
+			console.log('id:', resourceIdx);
+			
+			var startTime = '';
+			var endTime = '';
+			if((startWidth/100).toString().length < 2){
+				startTime = '0'+startWidth/100+':'+'00';
+			}else{
+				startTime = startWidth/100+':'+'00';
+			}
+			if((startWidth/100+endWidth/100).toString().length < 2){
+				endTime = '0'+(startWidth/100+endWidth/100)+':'+'00';
+			}else{
+				endTime = (startWidth/100+endWidth/100)+':'+'00';
+			}
+			console.log(startTime);
+			console.log(endTime);
+			$('.resourceType').text(resourceType);
+			
+			var currentDate = new Date();
+
+			// 년, 월, 일을 추출
+			var year = currentDate.getFullYear();
+			var month = ('0' + (currentDate.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 1을 더해줌
+			var day = ('0' + currentDate.getDate()).slice(-2);
+
+			// "yyyy-mm-dd" 형식으로 조합
+			var formattedDate = year + '-' + month + '-' + day;
+			
+			$('#day').text($('.date').text());
+			$('#time').text(startTime+'~'+endTime);
+            $('#kt_modal_0').modal('show');
+            
+            $('#addBookingBut').on('click',function(){
+            	$.ajax({
+        	        type: 'get',
+        	        url: 'reservation/addBooking.ajax',
+        	        data: {
+        	            'day': $('.date').text(),
+        	            'startTime': startTime,
+        	            'endTime': endTime,
+        	            'text': $('#text').val(),
+        	            'resourceIdx':resourceIdx
+        	        },
+        	        dataType: 'json',
+        	        success: function (data) {
+        				console.log(data);
+        				
+        	        },
+        	        error: function (e) {
+        	            console.log(e);
+        	        }
+        	    });
+            });
+		}
+		
 	
 	
 	
@@ -536,7 +646,7 @@
 	        }
 	    });
 	}
-
+	
 </script>
 		
 
