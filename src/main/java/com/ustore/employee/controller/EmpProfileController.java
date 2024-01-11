@@ -8,7 +8,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Param;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ustore.employee.dao.EmpProfileDao;
 import com.ustore.employee.dto.EmpProrileDto;
 import com.ustore.employee.dto.EmployeeDto;
 import com.ustore.employee.service.EmpProfileService;
@@ -39,6 +38,7 @@ public class EmpProfileController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired EmpProfileService service;
+	@Autowired EmpProfileDao dao;
 	
 	@GetMapping("/employee/correction")
 	public String employeeInfoModifyForm(Principal principal, Model model) {
@@ -86,8 +86,8 @@ public class EmpProfileController {
 			mav.addObject("employee", dto);
 			mav.setViewName("employee/profile");
 			
-int annual = service.annualCount(emp_idx);
 			
+			Integer annual = dao.annualCount(emp_idx);
 			model.addAttribute("annual",annual);
 			logger.info("로그인 성공");
 			

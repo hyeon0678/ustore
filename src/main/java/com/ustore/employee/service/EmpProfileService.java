@@ -137,8 +137,5 @@ public class EmpProfileService {
 		return row;
 	}
 
-		public int annualCount(String emp_idx) {
-		
-		return dao.annualCount(emp_idx);
-	}
+	
 }
