@@ -464,7 +464,7 @@ button i.bi {
     	fetchData();
     });
     function fetchDriverList() {
-        // 새로운 드라이버 리스트 가져오기
+        
         $.ajax({
             url: '/order/orderdriver/list',
             method: 'GET',
@@ -479,8 +479,8 @@ button i.bi {
     }
 
     function renderDriverList(driverList) {
-        // 드라이버 리스트를 비우고 새로운 드라이버 리스트를 추가
-        var selectElement = $('#orderDriverList'); // 실제 사용하는 ID로 변경
+       
+        var selectElement = $('#orderDriverList'); 
         selectElement.empty();
 
         if (driverList.length === 0) {

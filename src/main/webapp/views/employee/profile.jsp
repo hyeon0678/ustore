@@ -151,7 +151,7 @@ License: For each use you must have a valid license purchased only from above li
 																</div>
 																<!--end::Number-->
 																<!--begin::Label-->
-																<div class="fw-semibold fs-6 text-gray-500">${annual}개</div>
+																<div class="fw-semibold fs-6 text-gray-500" style="text-align: center;">${annual}개</div>
 																<!--end::Label-->
 															</div>
 															<!--end::Stat-->

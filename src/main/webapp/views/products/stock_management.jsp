@@ -310,18 +310,18 @@
 
 	<script>
 	$(document).ready(function() {
-	    // 초기에 페이지 로딩 시 대분류를 선택하지 않은 경우 중분류 선택 비활성화
+	  
 	    $("#Sselect").prop("disabled", true);
 
 	    $("#Bselect").change(function() {
 	        var selectedLargeCategory = $(this).val();
 
-	        // 대분류가 선택되지 않은 경우
+	     
 	        if (!selectedLargeCategory) {
-	            // 중분류 선택을 비활성화하고 기존 옵션 제거
+	 
 	            $("#Sselect").prop("disabled", true).empty();
 	        } else {
-	            // 대분류에 따른 중분류 옵션 추가 및 중분류 선택 활성화
+	        
 	            $("#Sselect").prop("disabled", false).empty();
 	            if (selectedLargeCategory === "식품") {
 	                $("#Sselect").append('<option value="01">주류</option>');
@@ -399,18 +399,18 @@
 		
 	</script>
 <script>
-    // 폼 제출 이벤트 리스너
+  
     document.getElementById('myForm').addEventListener('submit', function (event) {
-        // 필드 값 가져오기
+  
         var productName = document.querySelector('[name="productName"]').value;
         var Bselect = document.querySelector('[name="Bselect"]').value;
         var categoryId = document.querySelector('[name="categoryId"]').value;
         var unitQuantity = document.querySelector('[name="unitQuantity"]').value;
         var purchasePrice = document.querySelector('[name="purchasePrice"]').value;
 
-        // 필드 유효성 검사
+     
         if (productName.trim() === '' || Bselect.trim() === '' || categoryId.trim() === '' || unitQuantity.trim() === '' || purchasePrice.trim() === '') {
-            // 입력되지 않은 내용이 있을 경우 메시지 표시
+        
             Swal.fire({
                 text: '입력되지 않은 내용이 있습니다.',
                 icon: 'info',
@@ -420,10 +420,10 @@
                 }
             });
 
-            // 폼 제출 중단
+         
             event.preventDefault();
         } else {
-            // SweetAlert로 성공 메시지 표시
+        
             event.preventDefault();
             Swal.fire({
                 text: '물품이 추가 되었습니다.',
@@ -433,7 +433,7 @@
                     confirmButton: 'btn btn-primary'
                 }
             }).then(function () {
-                // 확인 버튼 클릭 시 서버로 폼 제출
+        
                 document.getElementById('myForm').submit();
             });
         }
