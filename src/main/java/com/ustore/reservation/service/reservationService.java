@@ -51,8 +51,21 @@ public class reservationService {
 		}
 	}
 
-	public ArrayList<reservationDto> bookingInfo(String param, String string) {
-		return reservationDao.bookingInfo(param,string);
+	public ArrayList<reservationDto> bookingInfo(String param, String string, String resourceType) {
+		return reservationDao.bookingInfo(param,string,resourceType);
+	}
+
+	public ArrayList<reservationDto> infoBooking(String bookingIdx) {
+		return reservationDao.infoBooking(bookingIdx);
+	}
+
+	public boolean infoBookingDel(String bookingIdx) {
+		int row = reservationDao.infoBookingDel(bookingIdx);
+		if(row != 1) {			
+			return false;
+		}else {
+			return true;
+		}
 	}
 
 

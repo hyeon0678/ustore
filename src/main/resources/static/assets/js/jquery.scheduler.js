@@ -1,20 +1,40 @@
 (function ($) {
-    
-  var defaults = {
-    startDate       : new Date(),
-    startTime       : '00:00', // 24시간 형식으로 시작 시간 설정
-    endTime         : '24:00', // 24시간 형식으로 끝나는 시간 설정
-    use24Hour       : true,   // true면 24시간 형식 사용, false면 AM/PM 형식 사용
-    timeslotHeight  : 40,
-    timeslotWidth   : 75,
-    items           : ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
-    reservations    : []
-};
-        
+  var upuptime = '';   
+  var defaults ={};
+  $.fn.extend({
+  updateTime: function(time) {
+    console.log(time);
+    upuptime = time;
+  },
+  updateDefaults: function() {
+    defaults = {
+      startDate: new Date(upuptime),
+      startTime: '00:00',
+      endTime: '24:00',
+      use24Hour: true,
+      timeslotHeight: 40,
+      timeslotWidth: 75,
+      items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
+      reservations: []
+    };
+  }
+});
+
+  $(document).ready(function() {
+  	defaults = {
+        startDate       : new Date(upuptime),
+        startTime       : '00:00',
+        endTime         : '24:00',
+        use24Hour       : true,
+        timeslotHeight  : 40,
+        timeslotWidth   : 75,
+        items           : ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
+        reservations    : []
+	    }
+
     $.fn.extend({
 	  scheduler: function(options) {
 	    var settings = $.extend({}, defaults, options);
-	
 	    return this.each(function() {
 	      render.calendar($(this), settings);
 	      setSize(settings.timeslotHeight, settings.timeslotWidth);
@@ -25,6 +45,7 @@
 	  }
 	});       
         
+
     // Render html for scheduler
     var render = {
         
@@ -40,9 +61,9 @@
             var header = $("<div></div>").addClass("header");
             var dateHeader = $("<div></div>").addClass("date-header");
 
-            header.append("<div class='prev button'>&#10094</div>")
+            header.append("<div></div>")
             header.append("<div class='date'>January 1 1970</div>")
-            header.append("<div class='next button'>&#10095</div>")
+            header.append("<div></div>")
             
             return header;
         },
@@ -104,11 +125,7 @@
     var attachEventListeners = function(settings) {
         $(".row").on("mousedown.newevent", {'settings': settings}, listeners.row);
 
-        $(".prev").on('click', {'settings': settings}, listeners.prev);
-
-        $(".next").on('click', {'settings': settings}, listeners.next);
-
-        $(".date").on('click', {'settings': settings}, listeners.date);
+       
      }
     
     // Event listener functions to attach
@@ -213,18 +230,17 @@
         // 콜백함수 같다. 모달창 
         end: function(e) {
             var $newRsvn = e.data.rsvn;
+            
+            $(".row-container").off("mousemove.newevent");
+            $(document).off("mouseup.newevent");
             console.log(e);
             if ($newRsvn.hasClass("reservation-error")) {
                 $newRsvn.remove();
             } else {
-                $newRsvn.removeClass("reservation-creating");
-                $newRsvn.addClass("reservation-final");
             	qq(startTop,startWidth,$newRsvn[0].clientWidth);
-                
             }
-
-            $(".row-container").off("mousemove.newevent");
-            $(document).off("mouseup.newevent");
+				$newRsvn.removeClass("reservation-creating");
+                $newRsvn.addClass("reservation-final");
         }   
     }
     
@@ -372,5 +388,5 @@
             $(".rsvn-container").append($rsvns[i]);
         }
     }
-    
+              });
 }(jQuery));

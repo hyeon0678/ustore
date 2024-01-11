@@ -14,6 +14,7 @@
 		<link rel="canonical" href="https://preview.keenthemes.com/craft" />
 		<link rel="stylesheet" href="resource/assets/css/jquery.scheduler.css" />
 		<link rel="shortcut icon" href="resource/assets/media/logos/favicon.ico" />
+
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
@@ -65,6 +66,7 @@
         #schedule .sc_bar.sc_bar_photo .photo img{
             max-width: 100%;
         }
+
     </style>
 </head>
 
@@ -93,8 +95,11 @@
 							<div class="container-xxl">
 								<div class="card">
 									<div class="card-header">
-										<h2 class="card-title fw-bold">자원 예약</h2>
-									</div>
+						                <h2 class="card-title">자원 예약</h2>
+						                <div>						                
+										<input class="fs-6" type="date" id="dateInput"  onchange="dateChanged()">
+						                </div>
+						            </div>
 									<div class="card-body">
 									<div class="hover-scroll-x h-auto px-5">
 									    <div style="width: 1200px">
@@ -112,7 +117,7 @@
 												<h3 class="modal-title">예약</h3>
 
 												<!--begin::Close-->
-												<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+												<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()">
 													<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
 												</div>
 												<!--end::Close-->
@@ -159,7 +164,7 @@
 
 											<div class="modal-footer">
 												<button type="button" class="btn btn-primary submit_btn" id="addBookingBut">예약</button>
-												<button type="button" class="btn btn-light">취소</button>
+												<button type="button" class="btn btn-light" id="cancelBookingBut">취소</button>
 											</div>
 										</div>
 									</div>
@@ -170,91 +175,82 @@
 								
 								
 								<div class="modal fade" tabindex="-1" id="kt_modal_0_1">
-									<!--begin::Modal dialog-->
-									<div class="modal-dialog modal-dialog-centered mw-650px">
-										<!--begin::Modal content-->
+									<<div class="modal-dialog modal-dialog-centered mw-650px">
 										<div class="modal-content">
-											<!--begin::Modal header-->
-											<div class="modal-header border-0 justify-content-end">
-												
-												
-												<!--end::Edit-->
+											<div class="modal-header">
+												<h3 class="modal-title">예약 정보</h3>
+
 												<!--begin::Close-->
-												<div class="btn btn-icon btn-sm btn-color-gray-500 btn-active-icon-primary" data-bs-toggle="tooltip" title="Hide Event" data-bs-dismiss="modal">
-													<i class="ki-duotone ki-cross fs-2x">
-														<span class="path1"></span>
-														<span class="path2"></span>
-													</i>
+												<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+													<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
 												</div>
 												<!--end::Close-->
 											</div>
-											<!--end::Modal header-->
-											<!--begin::Modal body-->
-											<div class="modal-body pt-0 pb-20 px-lg-17">
-												<!--begin::Row-->
-												<div class="d-flex">
-													<!--begin::Icon-->
-													<i class="ki-duotone ki-calendar-8 fs-1 text-muted me-5">
-														<span class="path1"></span>
-														<span class="path2"></span>
-														<span class="path3"></span>
-														<span class="path4"></span>
-														<span class="path5"></span>
-														<span class="path6"></span>
-													</i>
-													<div class="mb-9">
-														<h3>예약 정보</h3>
-														<div class="d-flex align-items-center">
-															<p class="resourceType">자원명</p> 
-															
-														</div>
+
+											<div class="modal-body">
+												<!-- 모달창 몸통 테이블 시작-->
+												<div class="py-3" style="margin-top: -40px;">
+													<div class="table-responsive">
+														<table class="table table-row-dashed table-row-gray-300 gy-7">
+															<thead>
+																<tr class="fw-bold fs-6 text-gray-800">
+																	<th>예약 정보</th>
+																	<th id="resourceModal"></th>
+																	<th class="text-end"></th>
+																	<th class="text-end"></th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr class="fw-bold fs-6 text-gray-800">
+																	<th>예약 일시</th>
+																	<th id="resourceModalDay"></th>
+																	<th class="text-end"></th>
+																	<th class="text-end"></th>
+																</tr>
+																<tr class="fw-bold fs-6 text-gray-800">
+																	<th>예약 시간</th>
+																	<th id="resourceModalTime"></th>
+																	<th class="text-end"></th>
+																	<th class="text-end"></th>
+																</tr>
+																<tr class="fw-bold fs-6 text-gray-800">
+																	<th>이름</th>
+																	<th id="resourceModalName"></th>
+																	<th class="text-end"></th>
+																	<th class="text-end"></th>
+																</tr>
+																<tr class="fw-bold fs-6 text-gray-800">
+																	<th>부서</th>
+																	<th id="resourceModalDept"></th>
+																	<th class="text-end"></th>
+																	<th class="text-end"></th>
+																</tr>
+																<tr class="fw-bold fs-6 text-gray-800">
+																	<th>내선 번호</th>
+																	<th id="resourceModalInNum"></th>
+																	<th class="text-end"></th>
+																	<th class="text-end"></th>
+																</tr>
+																<tr class="fw-bold fs-6 text-gray-800">
+																	<th>예약 내용</th>
+																	<th id="resourceModalText"></th>
+																	<th class="text-end"></th>
+																	<th class="text-end"></th>
+																</tr>
+															</tbody>
+														</table>
 													</div>
 												</div>
-												<div class="d-flex align-items-center mb-2">
-													<span class="bullet bullet-dot h-10px w-10px bg-success ms-2 me-7"></span>
-													
-													<div class="fs-6">
-														<span class="fw-bold">Starts</span>
-														<div>
-															<input type="text" name="" value="" readonly="readonly" style="border: 0px"/>
-														</div>
-													</div>
-													<!--end::Event start date/time-->
-												</div>
-												<!--end::Row-->
-												<!--begin::Row-->
-												<div class="d-flex align-items-center">
-													<!--begin::Bullet-->
-													<span class="bullet bullet-dot h-10px w-10px bg-danger ms-2 me-7"></span>
-													<!--end::Bullet-->
-													<!--begin::Event end date/time-->
-													<div class="fs-6">
-														<span class="fw-bold">Ends</span>
-														<div>
-															<input type="text" name="" value="" readonly="readonly" style="border: 0px"/>
-														</div>
-													</div>
-												</div>
-												<div>
-													이름 <div class="fs-6"><input type="text" name="" value="" readonly="readonly" style="border: 0px"/></div>
-												</div>
-												<div>
-													부서 <div class="fs-6"><input type="text" name="" value="" readonly="readonly" style="border: 0px"/></div>
-												</div>
-												<div>
-													예약 내용 <div class="fs-6"><input type="text" name="" value="" readonly="readonly" style="border: 0px"/></div>
-												</div>
-												<div>
-													내선 번호 <div class="fs-6"><input type="text" name="" value="" readonly="readonly" style="border: 0px"/></div>
-												</div>
+												<!-- 모달창 몸통 테이블 끝-->
 											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-primary submit_btn">삭제</button>
-												<button type="button" class="btn btn-light">취소</button>
+
+											<div class="modal-footer" id="bookingFooter">
+												
 											</div>
 										</div>
 									</div>
 								</div>
+								
 
 								<div class="modal fade" tabindex="-1" id="kt_modal_1">
 									<div class="modal-dialog modal-dialog-centered mw-650px">
@@ -372,7 +368,6 @@
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		
 		<script src="resource/assets/js/date.format.min.js"></script>
-
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 		<script src="resource/assets/js/jquery.scheduler.js"></script>
 
@@ -380,51 +375,48 @@
 		
 
 		<script>
+	    // 오늘의 날짜를 얻기 위해 JavaScript Date 객체를 사용
+	    var today = new Date();
 
+	    // 년, 월, 일을 YYYY-MM-DD 형식으로 변환
+	    var formattedDate = today.toISOString().split('T')[0];
+		console.log(formattedDate);
+	    // id가 "dateInput"인 요소를 찾아서 초기값을 설정
+	    document.getElementById("dateInput").value = formattedDate;
 	
-		var resourceType = '';
-		
-		var date = new Date(),
-	    day = date.getDate(),
-	    date1 = new Date(),
-	    date2 = new Date(),
-	    date3 = new Date();
-	date1.setDate(day);
-	date2.setDate(day + 1);
-	date3.setDate(day + 2);
-	date1 = date1.format('Y-m-d');
-	date2 = date2.format('Y-m-d');
-	date3 = date3.format('Y-m-d');
+	var resourceType = '';
 
-	// 예약 예제 데이터 배열
-	var reservations = [
-	    { date: date3, start: '11:00', end: '13:00', row: 0 },
-	    { date: date1, start: '8:00', end: '16:00', row: 1 },
-	    { date: date1, start: '7:00', end: '9:00', row: 3 },
-	    { date: date1, start: '12:00', end: '20:00', row: 5 },
-	    { date: date2, start: '12:00', end: '18:00', row: 5 },
-	    { date: date3, start: '8:00', end: '18:00', row: 4 }
-	];
 
-	// 예제 항목 배열
-	var printers = ['jQuery', 'Script', 'Net', 'AngularJS', 'ReactJS', 'VueJS'];
-	$("#scheduler").scheduler({ items: printers, reservations: reservations, timeslotHeight: 70, timeslotWidth: 100 });
+	var dateInputValue = $('#dateInput').val();
+	var updatedTime = $.fn.updateTime(dateInputValue);
 
-		
+	 function dateChanged() {
+		 dateInputValue = $('#dateInput').val();
+		 updatedTime = $.fn.updateTime(dateInputValue);
+		 $.fn.updateDefaults();
+		 drawresource();
+	    }
+	
+	
+	
+	
+	
+	
 	drawresource();
-		
+
 		function drawresource(){
 			$.ajax({
 		        type: 'get',
 		        url: 'reservation/drawResource.ajax',
 		        dataType: 'json',
 		        data: {
-    	            'day': $('.date').text()
+    	            'day': dateInputValue,
+    	            'resourceType': '${resourceType}'
     	        },
 		        success: function (data) {
 					console.log(data);
 					resourceType=data.item[0].resourceType+'_';
-					resource(data.item);
+					resource(data.item, data.booking);
 		        },
 		        error: function (e) {
 		            console.log(e);
@@ -434,25 +426,13 @@
 		
 		
 		
-		function resource(item){
+		function resource(item,booking){
 			$('#scheduler').empty();
-			var date = new Date(),
-		    day = date.getDate(),
-		    date1 = new Date();
-		date1.setDate(day);
-		date1 = date1.format('Y-m-d');
-		// 예약 예제 데이터 배열
-		var reservations = [
-		    { date: date1, start: '11:00', end: '13:00', row: 0 },
-		    { date: date1, start: '8:00', end: '16:00', row: 1 },
-		    { date: date1, start: '7:00', end: '9:00', row: 3 },
-		    { date: date1, start: '8:00', end: '18:00', row: 4 }
-		];
+
+		
 
 		// 예제 항목 배열
-		var printers = [];
-		
-		
+		var printers = [];	
 		item.forEach(function(item,idx){
 			if (!printers[idx]) {
 			    printers[idx] = ''; // 인덱스에 대한 초기값 설정
@@ -463,16 +443,37 @@
 		console.log(printers);
 		
 
+		// 예약 예제 데이터 배열
+		var reservations = [];
+		booking.forEach(function (booking, idx) {
+			var index = 0;
+			for (var i = 0; i < item.length; i++) {
+			    if (item[i].resourceIdx === booking.resourceIdx) {
+			        index = i;
+			        break;
+			    }
+			}
+		    if (!reservations[idx]) {
+		        reservations[idx] = {};
+		    }
+		    reservations[idx].date = booking.bookingStartDate;
+		    reservations[idx].start = booking.bookingStartTime;
+		    reservations[idx].end = booking.bookingEndTime;
+		    reservations[idx].row = index;
+		});
+		
+
+
 
 		// 초기화
 	    // 여기에 스케줄러 플러그인 초기화 코드를 넣으세요
+	    $(document).ready(function(){
+	    	
 		$('#scheduler').scheduler({ items: printers, reservations: reservations, timeslotHeight: 70, timeslotWidth: 100 });
+	
+		
 
 
-		// 예약 삭제를 허용
-		$(document).on('click', ".reservation", function () {
-		    console.log(this);
-		});
 		
 		// 각 예약 항목에 고유한 ID 추가
 		for(var i = 0; i<item.length; i++){
@@ -484,9 +485,16 @@
 		// 각 예약 요소에 고유한 ID 추가
 		for (var i = 0; i < reservations.length; i++) {
 	    var reservationElement = $(".reservation").eq(i);
-	    reservationElement.attr("id", "reservation-" + i);
-	    
-	    reservationElement.text(i);
+	    reservationElement.attr("id", booking[i].bookingIdx);
+	    reservationElement.attr('data-product-id',booking[i].empIdx);
+	    var maxLength = 6; // 표시하고자 하는 최대 글자 수
+	    var bookingContent = booking[i].bookingContent;
+
+	    if (bookingContent.length > maxLength) {
+	        bookingContent = bookingContent.substring(0, maxLength) + '...';
+	    }
+
+	    reservationElement.text(bookingContent);
 
 	    // 텍스트 가운데 정렬을 위한 CSS 스타일 적용
 	    reservationElement.css({
@@ -494,9 +502,77 @@
 	        'line-height': reservationElement.height() + 'px'
 	    });
 	}
-		
+});
 
 }
+		
+		// 예약 삭제를 허용
+		$(document).on('click', ".reservation", function () {
+		    console.log($(this).attr('id'));
+		    $('#kt_modal_0_1').modal('show');
+		    infoBooking($(this).attr('id'),$(this).attr('data-product-id'));
+		});
+		var bookingId = '';
+		function infoBooking(bookingIdx,empIdx){
+			bookingId = bookingIdx;
+			$.ajax({
+		        type: 'get',
+		        url: 'reservation/infoBooking.ajax',
+		        dataType: 'json',
+		        data: {
+    	            'bookingIdx': bookingIdx
+    	        },
+		        success: function (data) {
+					console.log(data);
+					$('#resourceModal').text(data[0].resourceType+'_'+data[0].resourceName);
+					$('#resourceModalDay').text(data[0].bookingStartDate+' ~ '+data[0].bookingEndDate);
+					$('#resourceModalTime').text(data[0].bookingStartTime+' ~ '+data[0].bookingEndTime);
+					$('#resourceModalName').text(data[0].empName);
+					$('#resourceModalDept').text(data[0].deptName);
+					$('#resourceModalInNum').text(data[0].empExtNo);
+					$('#resourceModalText').text(data[0].bookingContent);
+					var content = '';
+					if(empIdx == data[0].empIdx){
+						content += '<button type="button" class="btn btn-light" id="okDelBookingBut">삭제</button>';
+					}
+					content += '<button type="button" class="btn btn-primary" id="okBookingBut">확인</button>';
+					$('#bookingFooter').empty();
+					$('#bookingFooter').append(content);
+		        },
+		        error: function (e) {
+		            console.log(e);
+		        }
+		    });
+
+		}
+		
+		$(document).on('click', '#okBookingBut', function () {
+		    $('#kt_modal_0_1').modal('hide');
+		});
+
+		$(document).on('click', '#okDelBookingBut', function () {
+		    $('#kt_modal_0_1').modal('hide');
+		    $.ajax({
+		        type: 'get',
+		        url: 'reservation/infoBookingDel.ajax',
+		        dataType: 'json',
+		        data: {
+    	            'bookingIdx': bookingId
+    	        },
+		        success: function (data) {
+					console.log(data);
+					if(data){
+						drawresource();
+					}else{
+						alert('예약 삭제에 실패하였습니다. 다시 시도해 주세요');
+					}
+		        },
+		        error: function (e) {
+		            console.log(e);
+		        }
+		    });
+
+		});	
 		
 		
 		function qq(startTop,startWidth,endWidth){
@@ -530,7 +606,7 @@
 			}
 			console.log(startTime);
 			console.log(endTime);
-			$('.resourceType').text(resourceType);
+			$('.resourceType').text(resourceType+row.text());
 			
 			var currentDate = new Date();
 
@@ -560,6 +636,12 @@
         	        dataType: 'json',
         	        success: function (data) {
         				console.log(data);
+        				if(data){
+        					$('#kt_modal_0').modal('hide');
+        					drawresource();		
+        				}else{
+        					alert('오류가 발생했습니다. 다시 시도해 주세요');
+        				}
         				
         	        },
         	        error: function (e) {
@@ -569,7 +651,10 @@
             });
 		}
 		
-	
+	$('#cancelBookingBut').on('click',function(){
+		drawresource();
+		$('#kt_modal_0').modal('hide');
+	});
 	
 	
 	
@@ -625,6 +710,7 @@
 	        }
 	    });
 	}
+	
 	$('#delResource').on('click',function(){
 		delResource($('#optionResourceName').val());
 	})
@@ -639,7 +725,7 @@
 	        dataType: 'json',
 	        success: function (data) {
 				console.log(data);
-				$('#kt_modal_2').modal('hide');
+				$('#kt_modal_2').modal('hide');		
 	        },
 	        error: function (e) {
 	            console.log(e);
@@ -647,6 +733,9 @@
 	    });
 	}
 	
+	function closeModal() {
+		drawresource();
+    }
 </script>
 		
 

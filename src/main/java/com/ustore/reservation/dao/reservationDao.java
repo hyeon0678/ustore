@@ -20,7 +20,11 @@ public interface reservationDao {
 
 	int addBooking(HashMap<String, String> params);
 
-	ArrayList<reservationDto> bookingInfo(String param, String string);
+	ArrayList<reservationDto> bookingInfo(String param, String string, String resourceType);
+
+	ArrayList<reservationDto> infoBooking(String bookingIdx);
+
+	int infoBookingDel(String bookingIdx);
 
 
 }

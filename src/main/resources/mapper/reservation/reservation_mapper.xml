@@ -8,7 +8,7 @@
 	</insert>	
 	
 	<select id="resourceInfo" resultType="com.ustore.reservation.dto.reservationDto">
-		SELECT resource_idx,resource_name ,resource_type FROM resource r WHERE resource_del ='N'
+		SELECT resource_idx,resource_name ,resource_type FROM resource WHERE resource_del ='N'
 	</select>
 	
 	<update id="delResource">
@@ -22,7 +22,18 @@
 	</insert>
 	
 	<select id="bookingInfo" resultType="com.ustore.reservation.dto.reservationDto">
-		 		SELECT rb.emp_idx,rb.resource_idx ,rb.booking_start_date ,rb.booking_end_date ,rb.booking_start_time ,rb.booking_end_time , rb.booking_content 
-		FROM resource_booking rb LEFT JOIN resource r ON rb.resource_idx = r.resource_idx WHERE r.resource_del = 'N' AND rb.booking_start_date =#{param1} AND rb.emp_idx=#{param2}
+		 		SELECT rb.booking_idx,rb.emp_idx,rb.resource_idx ,rb.booking_start_date ,rb.booking_end_date ,rb.booking_start_time ,rb.booking_end_time , rb.booking_content 
+		FROM resource_booking rb LEFT JOIN resource r ON rb.resource_idx = r.resource_idx WHERE r.resource_del = 'N' AND rb.booking_start_date =#{param1} AND r.resource_type=#{param3}
 	</select>
+	
+	<select id="infoBooking" resultType="com.ustore.reservation.dto.reservationDto">
+		SELECT r.resource_name,r.resource_type ,rb.booking_start_date ,rb.booking_end_date , rb.booking_start_time, rb.booking_end_time , e.emp_name , d.dept_name , e.emp_ext_no ,rb.booking_content,e.emp_idx
+		FROM resource_booking rb LEFT JOIN resource r ON rb.resource_idx = r.resource_idx 
+		LEFT JOIN employee e ON rb.emp_idx = e.emp_idx 
+		LEFT JOIN department d ON e.dept_id = d.dept_id WHERE rb.booking_idx = #{param1}
+	</select>
+	
+	<delete id="infoBookingDel">
+		 DELETE FROM resource_booking WHERE booking_idx =#{param1}
+	</delete>
 </mapper>

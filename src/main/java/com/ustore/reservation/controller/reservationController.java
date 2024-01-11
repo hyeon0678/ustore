@@ -23,22 +23,27 @@ public class reservationController {
 	@Autowired reservationService reservationService;
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
+	@RequestMapping("/room")
+	public ModelAndView room() {
+		ModelAndView mav = new ModelAndView("reservation/reservation_room");
+		mav.addObject("resourceType","회의실");
+		return mav;
+	}
+	
 	@RequestMapping("/equipment")
-	public String equipnent() {
+	public ModelAndView equipnent() {
 		ModelAndView mav = new ModelAndView("reservation/reservation_equipment");
-		ArrayList<reservationDto>list = reservationService.resourceInfo();
-		mav.addObject("equipment", list);
-
-		return "reservation/reservation_equipment";
+		mav.addObject("resourceType", "물류 장비");
+		return mav;
 	}
 	
 	@RequestMapping("/drawResource.ajax")
 	@ResponseBody
-	public Map<String, Object> drawResource(@RequestParam String day,Principal principal){
+	public Map<String, Object> drawResource(@RequestParam String day,Principal principal,@RequestParam String resourceType){
 		Map<String, Object> map = new HashMap<String, Object>();
 		logger.info("그리기 파람 도착 확인 : "+day);
 		map.put("item",reservationService.resourceInfo());
-		map.put("booking",reservationService.bookingInfo(day,principal.getName())); 
+		map.put("booking",reservationService.bookingInfo(day,principal.getName(),resourceType));
 		return map;
 	}
 	
@@ -69,7 +74,26 @@ public class reservationController {
 	@ResponseBody
 	public boolean addBooking(@RequestParam HashMap<String, String>params, Principal principal) {
 		logger.info("예약 추가 파람 도착 확인 : "+params);
-		params.put("regBy", principal.getName()); 
+		params.put("regBy", principal.getName());  
 		return reservationService.addBooking(params);
 	}
+	
+	
+	@RequestMapping("/infoBooking.ajax")
+	@ResponseBody
+	public ArrayList<reservationDto> infoBooking(@RequestParam String bookingIdx){
+		return reservationService.infoBooking(bookingIdx);  
+	}
+	
+	@RequestMapping("/infoBookingDel.ajax")
+	@ResponseBody
+	public boolean infoBookingDel(@RequestParam String bookingIdx) {
+		logger.info("파람 도착 확인 : "+bookingIdx);
+		return reservationService.infoBookingDel(bookingIdx);
+	}
+	
+	
+	
+	
+	
 }

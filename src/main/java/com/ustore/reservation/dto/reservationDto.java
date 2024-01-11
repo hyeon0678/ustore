@@ -10,6 +10,34 @@ public class reservationDto {
 	private String bookingStartTime;
 	private String bookingEndTime;
 	private String bookingContent;
+	private String bookingIdx;
+	private String empName;
+	private String deptName;
+	private String empExtNo;
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+	public String getEmpExtNo() {
+		return empExtNo;
+	}
+	public void setEmpExtNo(String empExtNo) {
+		this.empExtNo = empExtNo;
+	}
+	public String getBookingIdx() {
+		return bookingIdx;
+	}
+	public void setBookingIdx(String bookingIdx) {
+		this.bookingIdx = bookingIdx;
+	}
 	public String getEmpIdx() {
 		return empIdx;
 	}
