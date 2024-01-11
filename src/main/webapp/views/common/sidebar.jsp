@@ -440,7 +440,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="customer/home">
+											<a class="menu-link" href="/customer/home">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -452,7 +452,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="customer/businessperson">
+											<a class="menu-link" href="/customer/businessperson">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -464,7 +464,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="customer/general">
+											<a class="menu-link" href="/customer/general">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -500,5 +500,16 @@
 		<!--end::Scrolltop-->
 		<!--end::Javascript-->
 	</body>
-	<!--end::Body-->
+	<script>
+		//active menu-accordion
+		let curpage = ''
+		$(function(){
+			$('div.menu-accordion').removeClass('here show')
+			$parents = $("a[href$='"+window.location.pathname+"']").closest("div.menu-accordion");
+			console.log( $("a[href$='"+window.location.pathname+"']").closest("div.menu-accordion"));
+			$parents.addClass('here show')
+			$("a").removeClass('active');
+			$("a[href$='"+window.location.pathname+"']").addClass('active');
+		})
+	</script>
 </html>

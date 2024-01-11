@@ -382,7 +382,7 @@
 		for(let list of alarmList){
 			content+='<div class="d-flex flex-stack py-4 alarm-elem-div">'
 			content+='<div class="d-flex align-items-center"><div class="mb-0 me-2">'
-			content+='<a href=+'+list.url+'+class="fs-6 text-gray-800 text-hover-primary fw-bold">'
+			content+='<a href="'+list.url+'" class="fs-6 text-gray-800 text-hover-primary fw-bold alarm-url">'
 			content+=list.alarmSubject
 			content+='</a><div class="text-gray-500 fs-7">'
 			content+=list.alarmContent
@@ -397,6 +397,7 @@
 		
 		$('#alarm-box').append(content);
 		readAlarm();
+		clickAlarmUrl();
 	}
 	
 	function getCurrentTime(timestamp){
@@ -409,23 +410,46 @@
 		console.log('alarm!!')
 		$('.read-alarm').on('click', function(){
 			let deleteElem = $(this).next().html();
-			
-			$.ajax({
-				data:{},
-				url:'/alarm/delete/'+deleteElem,
-				dataType:'JSON',
-				success:function(){
-					console.log('readAlarm success')
-					$(this).closest('div.alarm-elem-div').remove();	
-				},error:function(error){
-					console.log(error);
-				}
-			});
+			$(this).closest('div.alarm-elem-div').remove();				
+			let result = readAlarmCall(deleteElem)
+			/*if(result == true){
+				$(this).closest('div.alarm-elem-div').remove();					
+			}*/
 		});    	
     }
+	
 	$('.chat-icon').on('click', function(){
 		location.href='/chat'
 	});
+	
+	
+	function clickAlarmUrl(){
+		$('a.alarm-url').on('click', function(event){
+			event.preventDefault();          
+			let deleteElem = $(this).next().html();
+			readAlarmCall(deleteElem,$(this))
+			var txt = $(this).attr("href");
+			location.href = txt
+		})
+	}
+	
+	function readAlarmCall(deleteElem){
+		let result = ""
+		$.ajax({
+			data:{},
+			url:'/alarm/delete/'+deleteElem,
+			dataType:'JSON',
+			success:function(data){
+				console.log('readAlarm success')
+				result=data.result;
+			},error:function(error){
+				console.log(error);
+			}
+		});
+		if(result =='SUCCESS'){
+			return true;
+		}
+	}
 </script>
 <script>
 	function SuccessModal(message) {

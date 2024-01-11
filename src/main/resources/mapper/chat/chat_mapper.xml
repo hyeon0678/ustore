@@ -141,18 +141,19 @@ ORDER BY chatting.send_date;
 	FROM chat_participants
 	WHERE chat_room_idx = #{param1} AND  emp_idx = #{param2}
 </delete>
+
 <sql id="updateRead">
 	UPDATE chat_received_history
 	SET `read` ='Y'
 </sql>
+
 <update id="updateToRead">
 	<include refid="updateRead"/>
 	WHERE chat_room_idx = #{param1} AND receiver = #{param2}
 </update>
 
 <update id="setRead">
-	UPDATE chat_received_history
-	SET `read` ='Y'
+	<include refid="updateRead"/>
 	WHERE chat_room_idx = #{param1} AND chat_idx = #{param1} AND receiver = #{param3} 
 </update>
 
@@ -161,7 +162,21 @@ SELECT  crh.receiver
 FROM chat_received_history crh 
 LEFT OUTER JOIN chat_sent_history csh
 ON csh.chat_idx = crh.chat_idx 
-WHERE csh.chat_room_idx = #{param1} AND csh.chat_idx = #{param2} AND crh.`read` like 'N';
+WHERE csh.chat_room_idx = #{param1} AND csh.chat_idx = #{param2} AND crh.`read` like 'N'
+</select>
+
+<select id="selectIndividual" resultType="int">
+SELECT cr.chat_room_idx 
+FROM chat_rooms cr 
+LEFT OUTER JOIN chat_participants cp 
+ON cp.chat_room_idx = cr.chat_room_idx 
+WHERE cr.is_individual like 'Y' AND cp.emp_idx in(#{parma1})
+</select>
+
+<select id="selectIndividualRoomExsit" resultType="int">
+select count(chat_room_idx) 
+from chat_participants  
+where chat_room_idx = #{param1} and emp_idx in(#{param2})
 </select>
 
 </mapper>

@@ -20,4 +20,16 @@
 	WHERE d.parent_dept_id is not null
 	AND d.dept_id != #{param1};
 	</select>
+	
+	<select id="getResetPwEmp" resultType="int">
+		SELECT COUNT(emp_idx)
+		FROM employee  
+		WHERE emp_birth = #{empBirth} AND emp_idx=#{empIdx};
+	</select>
+	
+	<select id="resetPw">
+		UPDATE employee 
+		SET emp_pw = #{param1}
+		WHERE emp_idx like #{param2}
+	</select>
 </mapper>

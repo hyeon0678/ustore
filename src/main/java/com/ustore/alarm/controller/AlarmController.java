@@ -26,15 +26,27 @@ public class AlarmController {
 	}
 	
 	@GetMapping("/delete/{alarmIdx}")
-	public String deleteAlarm(@PathVariable(value = "alarmIdx") int alarmIdx) {
+	public HashMap<String, Object> deleteAlarm(@PathVariable(value = "alarmIdx") int alarmIdx) {
 		int row = dao.deleteAlarm(alarmIdx);
-		return Integer.toString(row);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(row<1) {
+			map.put("result","FAIL");
+			return map;
+		}
+		map.put("result","SUCCESS");
+		return map;
 	}
 	
-	@GetMapping("/deleteAll")
-	public String deleteAll(Principal principal) {
+	@GetMapping("/deleteAll.ajax")
+	public HashMap<String, Object> deleteAll(Principal principal) {
 		int row = dao.deleteAll(principal.getName());
-		return Integer.toString(row);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(row<1) {
+			map.put("result","FAIL");
+			return map;
+		}
+		map.put("result","SUCCESS");
+		return map;
 	}
 
 	
