@@ -67,6 +67,7 @@
 		<!--end::Theme mode setup on page load-->
 		<!--begin::Main-->
 		<!--begin::Root-->
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
@@ -74,6 +75,7 @@
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 					<!--================================메인 내용들어가는부분================================================-->
 						<div style="margin-top: 100px; margin-left: 50px;">
 							<h1>${board.anony_subject}</h1>
@@ -95,9 +97,13 @@
 							<div style="text-align: right; margin-top: -40px; margin-right: 380px;">
     						<button class="btn btn-primary"  data-kt-element="send" onclick="anboardDel()">삭제하기</button>
 
-							<div style="width: 800px; height: 200px; overflow: auto; border: solid lightgrey;">
+							<div style="width: 800px; height: 1000px; overflow: auto; border: solid lightgrey; text-align: center;">
+								<c:forEach items="${newFileList}" var="files">
+									<img src="/ustore/photo/${files.newfilename}" alt="${files.newfilename}" style="margin: 10px; height: 50%"/>
+								</c:forEach>
     							<p style="text-align: left;width: 100%;">${board.anony_content}</p>
 							</div>
+							
 							<div style="text-align: left;"><i class="ki-duotone ki-message-text-2 fs-2">
 								<span class="path1"></span>
 								<span class="path2"></span>

@@ -75,7 +75,11 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin: Pic-->
 											<div class="me-7 mb-4">
 												<div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-													<img src="/media/avatars/300-1.jpg" alt="image" />
+												
+												
+													<img class="profile-photo" alt="Logo" src="resource/assets/media/profil/blank.png" />
+													
+													
 												</div>
 											</div>
 											<!--end::Pic-->
@@ -568,6 +572,28 @@ License: For each use you must have a valid license purchased only from above li
 
 	</body>
 	<script>
+	
+	$(function(){headerOnReady()}	)
+	
+	$(function(){
+		console.log("프로필 이미지 로딩");
+		$.ajax({
+	    	type:'GET',
+			data:{'emp_idx':user,'file_type':74},
+			url:'/employee/getEmpPhoto.ajax',
+			dataType:'JSON',
+			success:function(data){
+				console.log('profile success')
+				let photo = data.photo
+				let imgurl = "/ustore/photo/"+photo;
+				$('.profile-photo').prop("src", imgurl)
+			},error:function(error){
+				console.log(error);
+			}
+		});
+	})
+	
+	
 	/* $('#midnightchecker').on('click',function(){
 		var $event_start_date = $('input[name="event_start_date"]');
 		var $event_start_time = $('input[name="event_start_time"]');

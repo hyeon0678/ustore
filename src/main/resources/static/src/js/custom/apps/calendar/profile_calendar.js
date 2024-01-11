@@ -73,11 +73,14 @@ var KTAppCalendar = function () {
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                right: 'dayGridMonth'
             },
-            navLinks: true, // can click day/week names to navigate views
-            selectable: true,
-            selectMirror: true,
+
+            // ,timeGridWeek,timeGridDay
+
+            navLinks: false, // can click day/week names to navigate views
+            selectable: false,
+            selectMirror: false,
 
             // Select dates action --- more info: https://fullcalendar.io/docs/select-callback
             select: function (arg) {

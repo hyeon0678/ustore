@@ -68,6 +68,7 @@
 		<!--end::Theme mode setup on page load-->
 		<!--begin::Main-->
 		<!--begin::Root-->
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
 		<div class="d-flex flex-column flex-root">
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
@@ -75,6 +76,7 @@
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
+					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 					<!--================================메인 내용들어가는부분================================================-->
 						<div style="margin-top: 100px; margin-left: 50px;">
 							<h1>${board.notice_subject}</h1>
@@ -115,17 +117,18 @@
 	
 						<!-- </button> -->
 
-						<div style="width: 800px; height: 200px; overflow: auto; border: solid lightgrey;">
-							<c:forEach items="${fileList}" var="fileList">
-							<img src="/ustor/photo/${fileList}" >
+						<div style="width: 800px; height: 1000px; overflow: auto; border: solid lightgrey; text-align: center;">
+							<c:forEach items="${newFileList}" var="files">
+								<img src="/ustore/photo/${files.newfilename}" alt="${files.newfilename}" style="margin: 10px; height: 50%"/>
 							</c:forEach>
+								
     						<p style="text-align: left;width: 100%;">${board.notice_content}</p>
 						</div>
 						<div style="text-align: left;">조회수 : ${board.notice_hit}</div>
 						<div style="margin-right:150px;">
 						<c:forEach items="${file}" var="file">
 						<p>file : ${file.orifilname}
-						<button type="button"  style="background-color: #C6DA52; position: absolute; width:60px; height: 20px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
+						<button type="button" onclick="location.href='download.do?file=${file.newfilename}'" style="background-color: #C6DA52; position: absolute; width:60px; height: 20px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
     						다운로드
     					</button>
     					</p>
@@ -176,12 +179,77 @@
 	<!--end::Body-->
 	
 	<script>
+	/* photoCall(); */
+	
 	console.log("글 번호 호출");
 	var notice_idx = ${board.notice_idx};
 	console.log("번호값 : " + notice_idx);
 	
-	$(function(){headerOnReady()})
 	
+	/* $(function(){headerOnReady()}) */
+	
+	/* function photoCall(){
+		console.log("공지사항 이미지 호출");
+		$.ajax({
+			type:'GET',
+			data:{'notice_idx':notice_idx},
+			url:'board/photo.ajax',
+			dataType:'JSON',
+			success:function(data){
+				let photo = data.photo
+				let img = "/ustore/photo/"+photo;
+				
+				console.log('공지사항이미지');
+				console.log("img값 : + "img);
+				
+				drawlist(data.list);
+				console.log("성공 : " + data.list);
+
+			},error:function(error){
+				console.log("발생 : " + error);
+			}
+			
+		});
+	}
+	
+	function drawlist(img){
+		console.log("drawlist : " + img);
+		var content = '';
+		
+	} */
+	
+	
+	/* console.log("공지사항이미지불러오기!!:" + photoCall); */
+	
+	/* function drawlist(list){
+		console.log("drawlist:" + list);
+		var content='';
+		
+		list.forEach(function (item, new_file_name) {
+			content += '<div>'
+			content += '<img src="''"/>'
+			
+		});
+	} */
+	
+	/* $(function(){
+		
+		$.ajax({
+			type:'GET',
+			data:{'notice_idx':notice_idx},
+			url:'board/photo.ajax',
+			dataType:'JSON',
+			success:function(data){
+				console.log('공지사항이미지');
+				let photo = data.photo
+				let img = "/ustore/photo/"+photo;
+				$('.board-photo').prop("src", img)
+			},error:function(error){
+				console.log(error);
+			}
+			
+		});
+	}) */
 	
 	
 	function adboardDel(){
@@ -190,24 +258,6 @@
 	}
 	
 	
-/* 	
-	function changeCheckbox() {
-        var isChecked = document.getElementById("flexCheckDefault").checked;
-        var checkboxValue = isChecked ? "Y" : "N";
-
-        $.ajax({
-            type: "POST",
-            url: "/adboard/update.ajax",
-            data: {"top_fixed":checkboxValue},
-            success: function(response) {
-                console.log("Value updated successfully:", response);
-            },
-            error: function(error) {
-                console.error("Error updating value:", error);
-            }
-        });
-    }
-	 */
 	
 	function save() {
     	console.log ("topfixsave start");
@@ -240,57 +290,7 @@
     			
 		};
 
-		/* location.href='redirect:/adboard/list'; */
 		
-		/*function save() {
-    	console.log ("topfixsave start");
-        var topfix[];
-        $("input[name = 'top_fixed']:checked").each(fuction(i){
-        	topfix.push($(this).val());
-        });
-        console.log("topfix : " + topfix);
-        console.log("notice_idx : " + notice_idx);
-    		$.ajax({
-    			type:'post',
-    			url:'adboard/update.ajax',
-    			data:{'notice_idx':notice_idx,'top_fixed':topfix},
-    			dataType:'JSON',
-    			success:function(data){			
-    				console.log("success data : " + data);
-    				
-    			},
-    			error:function(e){
-    				console.log("error : " + e);
-    			}	
-    		});	
-    			
-		};	*/
-		
-		/* function save() {
-    	console.log ("topfixsave start");
-        var topfix[];
-        $("input[name = 'top_fixed']:checked").each(fuction(i){
-        	topfix.push($(this).val());
-        });
-        console.log("topfix : " + topfix);
-        console.log("notice_idx : " + notice_idx);
-    		$.ajax({
-    			type:'post',
-    			url:'adboard/update.ajax',
-    			data:{'notice_idx':notice_idx,'top_fixed':topfix},
-    			dataType:'JSON',
-    			success:function(data){			
-    				console.log("success data : " + data);
-    				
-    			},
-    			error:function(e){
-    				console.log("error : " + e);
-    			}	
-    		});	
-    			
-		};	*/
-		
-	
 	
 	</script>
 	

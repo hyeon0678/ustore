@@ -98,9 +98,10 @@
 									<!--begin::Card body-->
 									<div class="card-body pt-0">
 										<!--begin::Table-->
-										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
+										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_anList_table">
 											<thead>
 												<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
+													<th class="min-w-125px">no.</th>
 													<th class="min-w-125px">제목</th>
 													<th class="min-w-125px">조회수</th>
 													<th class="min-w-125px">작성일</th>
@@ -143,6 +144,8 @@
 	<script>
 	console.log("리스트 호출 시작")
 	anList();
+	var table=$("#kt_anList_table");
+
 	
 	$(function(){headerOnReady()})
 	
@@ -156,7 +159,7 @@
 			success:function(data){
 				console.log(data);
 				console.log("리스트 호출 뿌리기");
-				drawlist(data.list);
+				drawlist(data);
 			},
 			error:function(e){
 				console.log(e);
@@ -166,20 +169,25 @@
 
 	console.log("listcall : "+ anList);
 	
-	function drawlist(list){
-		console.log("drawlist : " + list);
+	function drawlist(data){
+		console.log("drawlist : " + data);
 		var content = '';
 		
-		list.forEach(function(item, anony_idx){
-			content += '<tr>'
-			content += '<td><a href="anboard/detail?anony_idx='+item.anony_idx+'" class="text-danger text-hover-primary mb-1">' + item.anony_subject + '</a></td>';
-			content += '<td>' + item.anony_hit + '</td>';
-			content += '<td>' + item.reg_date + '</a></td>';
+		for(var i = 0; i < data.size; i ++){
+			content += '<tr>';
+			content += '<td class="w-30px " >'+i+'</td>';
+			content += '<td><a href="anboard/detail?anony_idx='+data.list[i].anony_idx+'">' + data.list[i].anony_subject + '</a></td>';
+			content += '<td>' + data.list[i].anony_hit + '</td>';
+			content += '<td>' + data.list[i].reg_date + '</a></td>';
 			content += '</tr>';
 			
-		});
+			console.log("content : " + content);
+			
 			$('#list').empty();
 			$('#list').append(content);
+			
+		};
+			table.DataTable( {"ordering": false, "info": false, "destroy": true, "pageLength": 10 , "lengthChange": false } );
 		}
 	
 	function search(){

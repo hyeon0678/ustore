@@ -136,33 +136,13 @@ public class BoardService {
 		
 	}
 
-	public List<HashMap<String, String>> adfileshow(int notice_idx) {
+	public ArrayList<FileDto> adfileshow(int notice_idx) {
 		return dao.adfileshow(notice_idx);
 	}
 
-	
+	public ArrayList<FileDto> anfileshow(String anony_idx) {
+		return dao.anfileshow(anony_idx);
+	}
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-//	public ArrayList<BoardDto> adList(Map<String, String> params) {
-//		return dao.adList(params);
-//	}
-
-	
-
-	
-
-	
-	
 	
 }
