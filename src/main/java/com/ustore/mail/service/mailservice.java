@@ -71,6 +71,36 @@ public class mailservice {
 	public ArrayList<HashMap<String, String>> delsearchSM(String emproynum, String keyword) {
 		return dao.delsearchSM(emproynum, keyword);
 	}
+
+
+
+
+	public HashMap<String, String> detailRM(String emproynum, int idx) {
+		return dao.detailRM(emproynum,idx);
+	}
+
+
+
+
+	public HashMap<String, String> detailSM(String emproynum, int idx) {
+		return dao.detailSM(emproynum, idx);
+	}
+
+
+
+
+	public void updateRM(int idx) {
+		dao.updateRM(idx);
+		
+	}
+
+
+
+
+	public void delupdateRM(String emproynum, int selecteidx) {
+		dao.delupdateRM(emproynum, selecteidx);
+		
+	}
 	
 	
 	

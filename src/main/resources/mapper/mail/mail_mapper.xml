@@ -91,8 +91,31 @@
 				or (sm.emp_idx =#{param1} and  e.emp_name LIKE CONCAT('%',#{param2},'%') and sm.mail_del='Y')
 		</select>
 		
-
-
+		<select id="detailRM" resultType="map">
+			select sm.mail_idx as mailnum , rm.emp_idx as personnum, sm.mail_create_date , sm.mail_subject , sm.mail_content , rm.mail_del , rm.mail_read ,
+			CONCAT(e.emp_name,'(',d.dept_name ,')') as personname  
+			from send_mail sm 
+			left join receive_mail rm  on rm.mail_idx = sm.mail_idx
+			left join employee e on sm.emp_idx =e.emp_idx 
+			left join department d on e.dept_id = d.dept_id where rm.emp_idx = #{param1} and sm.mail_idx = #{param2}		
+		</select>
+		
+		<select id="detailSM" resultType="map">
+			select sm.mail_idx as mailnum , rm.emp_idx as personnum, sm.mail_create_date , sm.mail_subject , sm.mail_content , rm.mail_del , rm.mail_read ,
+			CONCAT(e.emp_name,'(',d.dept_name ,')') as personname  
+			from receive_mail rm
+			left join send_mail sm  on rm.mail_idx = sm.mail_idx
+			left join employee e on rm.emp_idx =e.emp_idx 
+			left join department d on e.dept_id = d.dept_id where sm.emp_idx = #{param1} and rm.mail_idx = #{param2}
+		</select>
+		
+		<update id="updateRM">
+			update receive_mail set mail_read ='Y' where mail_idx = #{param1}
+		</update>
+		
+		<update id="delupdateRM">
+			update receive_mail set mail_del ='Y' where emp_idx =#{param1} and mail_idx = #{param2}
+		</update>
 
 
 </mapper>

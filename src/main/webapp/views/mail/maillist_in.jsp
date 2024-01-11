@@ -77,7 +77,21 @@
 								<div class="comm-right">
 									<input type="text" class="form-control" name="searchlist" placeholder="내용을 입력해주세요" style="width: 200px; height: 40px;">
 									<button type="button" class="btn btn-primary span-search-button" style="margin-left: 10px;" onclick="searchbutton()">검색</button>
-									<button class="img-button" style="margin-left: 10px;"><img src="resource/assets/media/icon/gen027.svg" onclick=""/></button>
+									<!--begin::Actions-->
+												<div class="d-flex">
+													<!--begin::Delete-->
+													<a class="btn btn-sm btn-icon btn-light btn-active-light-primary me-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="updatedel()">
+														<i class="ki-duotone ki-trash fs-1 m-0">
+															<span class="path1"></span>
+															<span class="path2"></span>
+															<span class="path3"></span>
+															<span class="path4"></span>
+															<span class="path5"></span>
+														</i>
+													</a>
+													<!--end::Delete-->
+												</div>
+												<!--end::Actions-->
 								</div>
 							</div>
 						</div>
@@ -87,7 +101,7 @@
 										id="kt_datatable_zero_configuration_mail" style="overflow-x: hidden;">
 									<thead>
 										<tr class="text-start fw-bold fs-7 text-uppercase gs-0 text-center" style=" color: #c6da52;">
-											<th class="min-w-30px text-center"><input type="checkbox" onclick="checked()"/></th>
+											<th class="min-w-30px text-center"><input type="checkbox" onclick="checked()" value="12"/></th>
 											<th class="min-w-30px text-center" >NO.</th>
 											<th class="min-w-80px text-center" >상태</th>
 											<th class="min-w-200px text-center" >제목</th>
@@ -179,7 +193,7 @@
 		
 	function drawList(obj){
 		console.log(obj);
-		
+		var pageState = 'RM';
 		var content ='';
 		
 		 $('#list').empty();
@@ -192,14 +206,14 @@
 		}else {
 		for (var i = 0; i < obj.size; i++) {
 			 	content = '<tr>';
-			 	content += '<th class="min-w-30px text-center"><input type="checkbox"/></th>';
-			 	content += '<th class="min-w-30px text-center" >'+i+'</th>';
+			 	content += '<th class="min-w-30px text-center"><input type="checkbox" name="mailidx" value="'+obj.list[i].mailnum+'" /></th>';
+			 	content += '<th class="min-w-30px text-center">'+i+'</th>';
 			 	if(obj.list[i].mail_read == 'N'){
 			 		content += '<th class="min-w-80px text-center" >NEW</th>';
 				 } else {
 					 content += '<th class="min-w-80px text-center" >read</th>'; 
 				}
-			 	content += '<th class="min-w-200px text-center" ><a href="mail/detail?idx='+obj.list[i].mailnum+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].mail_subject+'</a></th>';
+			 	content += '<th class="min-w-200px text-center" ><a href="mail/detail?idx='+obj.list[i].mailnum+'&&pageState='+pageState+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].mail_subject+'</a></th>';
 			 	content += '<th class="min-w-130px text-center" >'+obj.list[i].personname+'</th>';
 			 	var date = new Date(obj.list[i].mail_create_date);
 				 var dateStr = date.toLocaleDateString("ko-KR");
@@ -217,7 +231,40 @@
 		}
 	}
 	
-	
+	function updatedel(){
+		
+		console.log("메일 휴지통으로 보내기");
+		
+		var pageState = 'RM';
+		var selecteidx = [];
+		var checkboxes = document.querySelectorAll('input[name="mailidx"]:checked');
+		console.log("선택된 idx"+checkboxes);
+		
+         $("input[name='mailidx']:checked").each(function() {
+             var checkVal = $(this).val();
+             console.log(checkVal);
+             selecteidx.push(checkVal);
+             
+             $.ajax({
+ 				type:'get',
+ 				url:'mail/home.ajax/update', 
+ 				data:{'selecteidx':checkVal},
+ 				dataType:'JSON',
+ 				success:function(data){
+ 					console.log(data);
+ 					console.log("업데이트 성공");
+ 				},
+ 				error:function(e){
+ 					console.log(e);
+ 				}
+ 				});//	
+         });
+         
+         
+                
+		
+		
+	}
 	
 	
 	

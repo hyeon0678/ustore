@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ustore.mail.service.mailservice;
 
@@ -30,6 +31,16 @@ public class mailcontroller {
 		public String home() {
 			logger.info("받은메일 페이지 들어가기");			
 			return "mail/maillist_in";
+		}
+		
+		@GetMapping(value = "/mail/home.ajax/update")
+		public void homeupdate(Principal Principal ,@RequestParam int selecteidx) {
+			logger.info("휴지통 페이지로 보내기");
+			String  emproynum = Principal.getName();
+			logger.info("emproynum : "+emproynum);
+			logger.info("selecteidx"+selecteidx);
+			
+			service.delupdateRM(emproynum, selecteidx);
 		}
 		
 		@RequestMapping(value = "mail/home.ajax/list")
@@ -206,10 +217,56 @@ public class mailcontroller {
 			logger.info("글쓰기 페이지 들어가기");
 			return "mail/maillist_new";
 		}
-		@GetMapping(value = "/mail/detail")
-		public String detail() {
+		
+		@RequestMapping(value = "mail/new.ajax/save")
+		@ResponseBody
+		public ModelAndView newsave(Principal Principal, @RequestParam HashMap<String, String> empnum) {
+			
+			logger.info("회원들"+empnum);
+			
+			return null;
+		}
+		
+		
+		
+		
+		
+		
+		
+		@RequestMapping(value = "/mail/detail")
+		@ResponseBody
+		public ModelAndView detail(Principal Principal,@RequestParam int  idx, @RequestParam String pageState) {
 			logger.info("상세보기 페이지 들어가기");
-			return "mail/mail_detail";
+			String  emproynum = Principal.getName();
+			logger.info("idx : "+idx);
+			logger.info("pageState : "+pageState);
+			
+			ModelAndView mav = new ModelAndView("mail/mail_detail");
+			
+			HashMap<String, String> map ;
+			
+			
+			if (pageState.equals("RM")) {
+				logger.info("받은 메일함====  상세보기");
+				service.updateRM(idx);
+				
+				// 받은 메일함
+				 map = service.detailRM(emproynum,idx);				
+			}else {
+				logger.info("보낸 메일함=====상세보기간다");
+				//service.updateSM(emproynum, idx);
+				
+				
+				// 보낸 메일함
+				 map = service.detailSM(emproynum ,idx);				
+			}
+			
+			logger.info("map"+map);
+			mav.addObject("map", map);
+			//result.put("size", list.size());
+			//logger.info("result : " +result);	
+			
+			return mav;
 		}
 		
 

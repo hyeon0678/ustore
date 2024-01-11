@@ -95,7 +95,7 @@
 										id="kt_datatable_zero_configuration_del" style="overflow-x: hidden;">
 									<thead>
 										<tr class="text-start fw-bold fs-7 text-uppercase gs-0 text-center" style=" color: #c6da52;">
-											<th class="min-w-30px text-center"><input type="checkbox" onclick="checked()"/></th>
+											<th class="min-w-30px text-center"><input type="checkbox" onclick="checked()" value="all" /></th>
 											<th class="min-w-30px text-center" >NO.</th>
 											<th class="min-w-50px text-center" >상태</th>
 											<th class="min-w-200px text-center" >제목</th>
@@ -205,19 +205,21 @@
 	
 function drawList(obj){
 	console.log(obj);
-	var pageState = $('#pageState').val();
+	var pageState = $('#pageState').val().toString();
 	
 	var content ='';
 	
 	 $('#list').empty();
 		 
 	if (obj.size <= 0) {		
-		$('#kt_datatable_zero_configuration_del').DataTable().destroy();
+		
 		 content = '<tr>';				 
 		 content += '<td style="text-align: center; color: red;" colspan="7"> 휴지통에 메일이 없습니다 . </td>';
 		 content += '</tr>';		
 		 $('#list').append(content);
 	}else {
+		
+		// <a href="adminUserDetail?userid='+obj.list[i].userId+'&&state='+state+'&&auth='+auth+'">
 		
 		if (pageState == 'RM') {
 			for (var i = 0; i < obj.size; i++) {
@@ -229,7 +231,7 @@ function drawList(obj){
 				 } else {
 					 content += '<th class="min-w-50px text-center" >읽음</th>'; 
 				}
-			 	content += '<th class="min-w-200px text-center" ><a href="mail/detail?idx='+obj.list[i].mailnum+' && mailstate='+pageState+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].mail_subject+'</a></th>';
+			 	content += '<th class="min-w-200px text-center" ><a href="mail/detail?idx='+obj.list[i].mailnum+'&&pageState='+pageState+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].mail_subject+'</a></th>';
 			 	content += '<th class="min-w-130px text-center" >'+obj.list[i].personname+'</th>';
 			 	var date = new Date(obj.list[i].mail_create_date);
 				 var dateStr = date.toLocaleDateString("ko-KR");
@@ -243,13 +245,13 @@ function drawList(obj){
 			for (var i = 0; i < obj.size; i++) {
 			 	content = '<tr>';
 			 	content += '<th class="min-w-30px text-center"><input type="checkbox"/></th>';
-			 	content += '<th class="min-w-30px text-center" >'+i+'</th>';
+			 	content += '<th class="min-w-30px text-center" >'+(i+1)+'</th>';
 			 	if(obj.list[i].mail_read == 'N'){
 			 		content += '<th class="min-w-50px text-center" >안읽음</th>';
 				 } else {
 					 content += '<th class="min-w-50px text-center" >읽음</th>'; 
 				}
-			 	content += '<th class="min-w-200px text-center" ><a href="mail/detail?idx='+obj.list[i].mailnum+' && mailstate='+pageState+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].mail_subject+'</a></th>';
+			 	content += '<th class="min-w-200px text-center" ><a href="mail/detail?idx='+obj.list[i].mailnum+'&&pageState='+pageState+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].mail_subject+'</a></th>';
 			 	content += '<th class="min-w-130px text-center" >'+obj.list[i].personname+'</th>';
 			 	var date = new Date(obj.list[i].mail_create_date);
 				 var dateStr = date.toLocaleDateString("ko-KR");
