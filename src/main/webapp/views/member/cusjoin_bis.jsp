@@ -156,13 +156,6 @@
 															<div class="col-lg-8 fv-row" style="display: flex; align-items: center;">
 																<input type="text" name="business_num" class="form-control form-control-lg form-control-solid" placeholder="사업자번호를 입력해 주세요." value="" style="width: 300px; margin-right: 10px"/>
 																<input type="file" name="photos"  id="file" multiple="multiple"  />
-																<!--
-																<i class="ki-duotone ki-scroll fs-2qx" id="bis_file" style="margin-right: 5px; margin-left: 10px;">
-																<span class="path1"></span>
-																<span class="path2"></span>
-																<span class="path3"></span>
-																</i>
-																-->
 															</div> 
 															<span style="color: red; font-size: small; float: right;">
 															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp

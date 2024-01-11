@@ -24,6 +24,14 @@ public interface maildao {
 
 	ArrayList<HashMap<String, String>> delsearchSM(String emproynum, String keyword);
 
+	HashMap<String, String> detailRM(String emproynum, int idx);
+
+	HashMap<String, String> detailSM(String emproynum, int idx);
+
+	void updateRM(int idx);
+
+	void delupdateRM(String emproynum, int selecteidx);
+
 	
 	
 	

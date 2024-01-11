@@ -94,7 +94,7 @@
 												<div class="d-flex flex-wrap gap-2 justify-content-between mb-8" >
 													<div class="d-flex align-items-center flex-wrap gap-2" style="margin-bottom: 20px; display: flex; align-items: center;">
 														<!--begin::Heading-->
-														<h2>제목 : </h2><h2 class="fw-semibold me-3 my-1">안녕 하십니다 롯대 오리온 식품 개발팀 김댕댕 과장 입니다.</h2>
+														<h2>제목 : </h2><h2 class="fw-semibold me-3 my-1">${map.mail_subject}</h2>
 														<!--begin::Heading-->
 													</div>
 													<div class="d-flex">
@@ -109,7 +109,7 @@
 															<div class="pe-5">
 																<!--begin::Author details-->
 																<div class="d-flex align-items-center flex-wrap gap-1">
-																	<span>글쓴이 : </span><a href="#" class="fw-bold text-gray-900 text-hover-primary">김장미</a>																	
+																	<span>글쓴이 : </span><a href="#" class="fw-bold text-gray-900 text-hover-primary">${map.personname}</a>																	
 																</div>
 																<!--end::Author details-->
 																<!--begin::Message details-->
@@ -117,7 +117,7 @@
 																</div>
 																<!--end::Message details-->
 																<!--begin::Preview message-->
-																<div class="text-muted fw-semibold mw-450px d-none" data-kt-inbox-message="preview">With resrpect, i must disagree with Mr.Zinsser. We all know the most part of important part....</div>
+																<div class="text-muted fw-semibold mw-450px d-none" data-kt-inbox-message="preview"></div>
 																<!--end::Preview message-->
 															</div>
 														</div>
@@ -127,11 +127,7 @@
 													<!--begin::Message content-->
 													<div class="collapse fade show" data-kt-inbox-message="message">
 														<div class="py-5">
-															<p>Hi Bob,</p>
-															<p>With resrpect, i must disagree with Mr.Zinsser. We all know the most part of important part of any article is the title.Without a compelleing title, your reader won't even get to the first sentence.After the title, however, the first few sentences of your article are certainly the most important part.</p>
-															<p>Jornalists call this critical, introductory section the "Lede," and when bridge properly executed, it's the that carries your reader from an headine try at attention-grabbing to the body of your blog post, if you want to get it right on of these 10 clever ways to omen your next blog posr with a bang</p>
-															<p>Best regards,</p>
-															<p class="mb-0">Jason Muller</p>
+															<p>${map.mail_content}</p>
 														</div>
 													</div>
 													<!--end::Message content-->
@@ -204,23 +200,6 @@
 	</body>
 	<!--end::Body-->
 	<script>
-		
-
-	function findlocation() {
-		new daum.Postcode({
-        oncomplete: function(data) {
-               
-               if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                       addr = data.roadAddress;
-                   } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                       addr = data.roadAddress;
-                   }
-               
-               $('#post_num').val(data.zonecode);
-               $('#roadaddress').val(addr);
-            }
-         }).open();
-      }
 	</script>
 
 </html>
