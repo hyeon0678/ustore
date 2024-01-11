@@ -6,7 +6,7 @@
 <!--begin::Head-->
 <head>
 <base href="../../../" />
-<title>incoming_managment</title>
+<title>order_list</title>
 <meta charset="utf-8" />
 <meta name="description"
 	content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
@@ -143,6 +143,7 @@
 												data-kt-ecommerce-category-filter="search"
 												class="form-control form-control-solid w-250px ps-12"
 												placeholder="내용을 입력해주세요." />
+												<button class="btn btn-primary">검색</button>
 										</div>
 										<!--end::Search-->
 
@@ -215,7 +216,7 @@
 	<script src="resource/assets/js/scripts.bundle.js"></script>
 	<!--end::Global Javascript Bundle-->
 	<!--begin::Vendors Javascript(used for this page only)-->
-	<script
+	 --><script
 		src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 	<!--end::Vendors Javascript-->
 	<!--begin::Custom Javascript(used for this page only)-->

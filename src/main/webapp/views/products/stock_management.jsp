@@ -10,8 +10,7 @@
 <!--begin::Head-->
 <head> 	
 <base href="../../../" />
-<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by
-	KeenThemes</title>
+<title>stock_management</title>
 <meta charset="utf-8" />
 <meta name="description"
 	content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
@@ -127,6 +126,7 @@
 												data-kt-ecommerce-category-filter="search"
 												class="form-control form-control-solid w-250px ps-12"
 												placeholder="내용을 입력 해주세요." />
+												<button class="btn btn-primary">검색</button>
 										</div>
 										<!--end::Search-->
 									</div>
@@ -309,31 +309,38 @@
 
 
 	<script>
-		$(document).ready(function() {
-			$("#Bselect").change(function() {
-				
-				var selectedCategory = $(this).val();
+	$(document).ready(function() {
+	    // 초기에 페이지 로딩 시 대분류를 선택하지 않은 경우 중분류 선택 비활성화
+	    $("#Sselect").prop("disabled", true);
 
-			
-				$("#Sselect").empty();
+	    $("#Bselect").change(function() {
+	        var selectedLargeCategory = $(this).val();
 
-				
-				if (selectedCategory === "식품") {
-					$("#Sselect").append('<option value="01">주류</option>');
-					$("#Sselect").append('<option value="02">가공</option>');
-					$("#Sselect").append('<option value="03">신선</option>');
-				} else if (selectedCategory === "생필품") {
-					$("#Sselect").append('<option value="04">주방</option>');
-					$("#Sselect").append('<option value="05">청소</option>');
-					$("#Sselect").append('<option value="06">생활잡화</option>');
-				} else if (selectedCategory === "전자제품") {
-					$("#Sselect").append('<option value="07">가전</option>');
-					$("#Sselect").append('<option value="08">컴퓨터</option>');
-					$("#Sselect").append('<option value="09">디지털</option>');
-				}
-			});
-			headerOnReady();
-		});
+	        // 대분류가 선택되지 않은 경우
+	        if (!selectedLargeCategory) {
+	            // 중분류 선택을 비활성화하고 기존 옵션 제거
+	            $("#Sselect").prop("disabled", true).empty();
+	        } else {
+	            // 대분류에 따른 중분류 옵션 추가 및 중분류 선택 활성화
+	            $("#Sselect").prop("disabled", false).empty();
+	            if (selectedLargeCategory === "식품") {
+	                $("#Sselect").append('<option value="01">주류</option>');
+	                $("#Sselect").append('<option value="02">가공</option>');
+	                $("#Sselect").append('<option value="03">신선</option>');
+	            } else if (selectedLargeCategory === "생필품") {
+	                $("#Sselect").append('<option value="04">주방</option>');
+	                $("#Sselect").append('<option value="05">청소</option>');
+	                $("#Sselect").append('<option value="06">생활잡화</option>');
+	            } else if (selectedLargeCategory === "전자제품") {
+	                $("#Sselect").append('<option value="07">가전</option>');
+	                $("#Sselect").append('<option value="08">컴퓨터</option>');
+	                $("#Sselect").append('<option value="09">디지털</option>');
+	            }
+	        }
+	    });
+
+	    headerOnReady();
+	});
 	//------------------------------------------
 	 function confirmDelete(productId) {
     Swal.fire({

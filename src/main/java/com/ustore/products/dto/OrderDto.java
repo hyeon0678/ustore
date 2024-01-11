@@ -32,6 +32,7 @@ public class OrderDto {
 	private int resourceIdx;
 	private String resourceName;
 	private String empName;
+	private String searchValue;
 
 	
 	// 대금지급 관련 추가
@@ -41,6 +42,12 @@ public class OrderDto {
 	private int totalAmount; // 발주 건 총 금액
 	
 	
+	public String getSearchValue() {
+		return searchValue;
+	}
+	public void setSearchValue(String searchValue) {
+		this.searchValue = searchValue;
+	}
 	public String getEmpName() {
 		return empName;
 	}

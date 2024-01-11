@@ -393,28 +393,20 @@ $(document).ready(function() {
     var myChart; 
     var isWeeklyClicked = false; 
     
-    
-
-
     var fiveDaysAgo = new Date(currentDate);
     fiveDaysAgo.setDate(currentDate.getDate() - 5);
 
     var fontFamily = KTUtil.getCssVariableValue('--bs-font-sans-serif');
 
- 
     const labels = [];
     for (var i = 0; i <= 5; i++) {
         var dateToAdd = new Date(fiveDaysAgo);
         dateToAdd.setDate(fiveDaysAgo.getDate() + i);
         labels.push(formatDate(dateToAdd));
     }
-    
-
 
     var ctx = document.getElementById('kt_chartjs_1').getContext('2d');
 
- 
-    var dashboardData = [];
     var totalPriceData = []; 
     var totalPriceOrderData = []; 
     var totalUsedPointsData = [];
@@ -425,106 +417,101 @@ $(document).ready(function() {
         return month + '월' + day + '일';
     }
 
- 
+    // 차트 초기 설정 함수
+    function initializeChart(data) {
+        const maxTotalPrice = Math.max(...data.list1.map(item => item.totalPrice));
+        const maxTotalPriceOrder = Math.max(...data.list3.map(item => item.totalUsedPoints));
+        const maxTotalUsedPoints = Math.max(...data.list2.map(item => item.totalPriceOrder));
+       
+        var sortedData = [
+            { label: '발주 금액', data: normalizeData(data.list2.map(item => item.totalPriceOrder), maxTotalPrice), backgroundColor: successColor },
+            { label: '포인트 사용', data: normalizeData(data.list3.map(item => item.totalUsedPoints), maxTotalPriceOrder), backgroundColor: dangerColor },
+            { label: '파손/폐기', data: normalizeData(data.list1.map(item => item.totalPrice), maxTotalUsedPoints), backgroundColor: primaryColor },
+        ].sort((a, b) => Math.max(...b.data) - Math.max(...a.data));
+
+        var datasets = sortedData;
+
+        var config = {
+            type: 'bar',
+            data: { labels: labels, datasets: datasets },
+            options: {
+                plugins: {
+                    title: {
+                        display: false,
+                    },
+                },
+                responsive: true,
+                interaction: {
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        stacked: true,
+                    },
+                },
+            },
+            defaults: {
+                global: {
+                    defaultFont: fontFamily,
+                },
+            },
+        };
+
+        myChart = new Chart(ctx, config);
+    }
+
+    // 데이터 정규화 함수
+    function normalizeData(data, maxValue) {
+        return data.map(value => (maxValue !== 0 ? (value / maxValue) * 100 : value));
+    }
+
+    // 초기 차트 데이터 로드
     $.ajax({
         url: '/accounting/dashboardday/list',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-        	console.log('Received data from server:', data);
-    
-            totalPriceData = data.list1.map(item => item.totalPrice);
-            totalPriceOrderData = data.list3.map(item => item.totalUsedPoints); 
-            totalUsedPointsData = data.list2.map(item => item.totalPriceOrder); 
-            
-            
-            const maxTotalPrice = Math.max(...totalPriceData);
-            const maxTotalPriceOrder = Math.max(...totalPriceOrderData);
-            const maxTotalUsedPoints = Math.max(...totalUsedPointsData);
-
-            var sortedData = [
-                { label: '포인트 사용', data: normalizeData(totalUsedPointsData,maxTotalPrice), backgroundColor: successColor },
-                { label: '발주 금액', data: normalizeData(totalPriceOrderData,maxTotalPriceOrder), backgroundColor: dangerColor },
-                { label: '파손/폐기', data: normalizeData(totalPriceData,maxTotalUsedPoints), backgroundColor: primaryColor },
-            ].sort((a, b) => Math.max(...b.data) - Math.max(...a.data));
-
-            var datasets = sortedData;
-
-            var config = {
-                type: 'bar',
-                data: { labels: labels, datasets: datasets },
-                options: {
-                    plugins: {
-                        title: {
-                            display: false,
-                        },
-                    },
-                    responsive: true,
-                    interaction: {
-                        intersect: false,
-                    },
-                    scales: {
-                        x: {
-                            stacked: true,
-                        },
-                        y: {
-                            stacked: true,
-                        },
-                    },
-                },
-                defaults: {
-                    global: {
-                        defaultFont: fontFamily,
-                    },
-                },
-            };
-
-      
-            myChart = new Chart(ctx, config);
+            console.log('Received data from server:', data);
+            initializeChart(data); // 초기 차트 설정 함수 호출
         },
         error: function(error) {
             console.error('Error fetching dashboard data:', error);
         }
     });
 
-    function normalizeData(data) {
-        
-        const maxValue = Math.max(...data);
-
-     
-        return data.map(value => (maxValue !== 0 ? (value / maxValue) * 100 : value));
-    }
-
+    // 검색 버튼 클릭 시 이벤트 처리
     $(document).on('click', '#priceBtn', function() {
-       
-        var chartConfig = myChart.config;
-
-      
         if ($('#Bselect').val() === '주간' && !isWeeklyClicked) {
             isWeeklyClicked = true;
-            chartConfig.data.labels = ['5주전', '4주전', '3주전', '2주전', '1주전', '이번주'];
-            chartConfig.data.datasets.forEach(function(dataset) {
-               
+            myChart.data.labels = ['5주전', '4주전', '3주전', '2주전', '1주전', '이번주'];
+            myChart.data.datasets.forEach(function(dataset) {
                 dataset.data = Array.from({ length: 6 }, () => Math.floor(Math.random() * 700));
             });
         } else if ($('#Bselect').val() === '일간') {
             isWeeklyClicked = false; 
-            chartConfig.data.labels = labels;
-            chartConfig.data.datasets.forEach(function(dataset, index) {
-                if (index === 0) {
-                    dataset.data = normalizeData(totalPriceData);
-                } else if (index === 1) {
-                    dataset.data = normalizeData(totalPriceOrderData);
-                } else if (index === 2) {
-                    dataset.data = normalizeData(totalUsedPointsData);
+            // 데이터를 다시 불러오고 차트를 업데이트
+            $.ajax({
+                url: '/accounting/dashboardday/list',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log('Received data from server:', data);
+                    myChart.destroy(); // 기존 차트 파괴
+                    initializeChart(data); // 새로운 데이터로 초기 차트 설정
+                },
+                error: function(error) {
+                    console.error('Error fetching dashboard data:', error);
                 }
             });
         }
 
-
         myChart.update();
     });
 });
+
 
 </script>
 

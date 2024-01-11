@@ -7,8 +7,7 @@
 <!--begin::Head-->
 <head>
 <base href="../../../" />
-<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by
-	KeenThemes</title>
+<title>stock_detail</title>
 <meta charset="utf-8" />
 <meta name="description"
 	content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
@@ -146,12 +145,12 @@ h1 {
         </tr>
         <tr>
             <td>단위(파렛트)</td>
-            <td id="unitQuantity"></td>
+            <td id="unitQuantity" style="text-align: center;"></td>
             <td><button onclick="modifyUnitQuantity()" id="unitQuantityBtn" class="btn btn-primary">단위 수정</button></td>
         </tr>
         <tr>
             <td>단가</td>
-            <td id="purchasePrice"></td>
+            <td id="purchasePrice" style="text-align: center;"></td>
             <td><button onclick="modifyPurchasePrice()" id="purchaseBtn" class="btn btn-primary">단가 수정</button></td>
         </tr>
     

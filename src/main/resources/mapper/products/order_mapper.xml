@@ -133,6 +133,9 @@ WHERE od.order_idx = #{orderIdx}
     <select id="driverSch" resultType="OrderDto">
      select resource_idx ,resource_name  from resource where resource_del ="N";  
     </select>
-   
 
+  <!--  <select id="orderListSearch" resultType="OrderDto">
+
+</select>
+ -->
 </mapper>

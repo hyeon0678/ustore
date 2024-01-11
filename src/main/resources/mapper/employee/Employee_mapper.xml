@@ -201,5 +201,12 @@ update_by = #{empIdx}
 	emp_changepw_date = curdate() 
 	WHERE emp_idx like #{empIdx}
 </insert>
+<select id="annualCount" resultType="int">
 
+SELECT leave_incdec
+FROM annual_leave
+WHERE emp_idx = #{emp_idx}
+ORDER BY leave_incdec asc 
+limit 1;
+</select>
 </mapper>

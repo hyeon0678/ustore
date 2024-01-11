@@ -7,8 +7,7 @@
 <!--begin::Head-->
 <head>
 <base href="../../../" />
-<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by
-	KeenThemes</title>
+<title>order</title>
 <meta charset="utf-8" />
 <meta name="description"
 	content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
@@ -143,6 +142,7 @@ button i.bi {
 								<div class="card-header align-items-center py-5 gap-2 gap-md-5">
 									<!--begin::Card title-->
 									<div class="card-title">
+									
 										<!--begin::Search-->
 										<div class="d-flex align-items-center position-relative my-1"
 											id="searchContainer">
@@ -153,9 +153,11 @@ button i.bi {
 												data-kt-ecommerce-category-filter="search"
 												class="form-control form-control-solid w-250px ps-12"
 												placeholder="내용을 입력하세요" />
+												<button class="btn btn-primary">검색</button>
 										</div>
-
 										<!--end::Search-->
+										
+										
 									</div>
 
 									<div class="mb-0">
@@ -260,12 +262,12 @@ button i.bi {
 									<!--end::Table-->
 
 								</div>
-
+<div style=" margin-top: 20px;">
 								<button type="button" class="btn btn-primary"
 									data-bs-toggle="modal" data-bs-target="#kt_modal_scrollable_2"
 									style="position: absolute; bottom: 0; right: 0;">발주할
 									물품 목록</button>
-
+</div>
 							</div>
 
 							<div class="modal fade" tabindex="-1" id="kt_modal_scrollable_2">

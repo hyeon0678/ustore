@@ -46,6 +46,8 @@ public interface EmpProfileDao {
 
 	int updateEmpInfo(EmployeeDto dto);
 
+	int annualCount(String emp_idx);
+
 
 	
 

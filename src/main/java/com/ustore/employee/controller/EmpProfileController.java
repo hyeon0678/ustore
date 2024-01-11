@@ -57,7 +57,7 @@ public class EmpProfileController {
 	}
 	
 	@GetMapping("/employee/home")
-	public ModelAndView home(Principal principal, HttpSession session)throws Exception {
+	public ModelAndView home(Principal principal, HttpSession session,Model model)throws Exception {
 
 		ModelAndView mav = new ModelAndView();
 
@@ -86,6 +86,9 @@ public class EmpProfileController {
 			mav.addObject("employee", dto);
 			mav.setViewName("employee/profile");
 			
+int annual = service.annualCount(emp_idx);
+			
+			model.addAttribute("annual",annual);
 			logger.info("로그인 성공");
 			
 			return mav;

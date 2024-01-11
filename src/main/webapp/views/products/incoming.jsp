@@ -118,6 +118,7 @@
 												data-kt-ecommerce-category-filter="search"
 												class="form-control form-control-solid w-250px ps-12"
 												placeholder="내용을 입력해주세요." />
+												<button class="btn btn-primary">검색</button>
 										</div>
 										<!--end::Search-->
 

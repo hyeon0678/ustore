@@ -229,7 +229,19 @@ public class OrderController {
 		
 		return list3;
 	}
+	// --------------------------검색------------------------------------
 	
+//@GetMapping(value = "/order/orderlist/search")
+//	@ResponseBody
+//	public ArrayList<OrderDto> orderListSearch(@RequestParam("searchValue")String searchValue){
+		
+	//	logger.info("searchValue : "+searchValue);
+		
+	//	return service.orderListSearch(searchValue);
+//	}
+	
+	
+
 }
 
 
