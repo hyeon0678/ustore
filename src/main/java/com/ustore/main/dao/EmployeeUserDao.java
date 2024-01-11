@@ -1,5 +1,6 @@
 package com.ustore.main.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -13,4 +14,6 @@ import com.ustore.main.dto.EmployeeUserDto;
 public interface EmployeeUserDao {
 	public EmployeeUserDto getUser(String loginUserId);
 	public List<DeptDto> getDeptList(int deptId);
+	public int getResetPwEmp(HashMap<String, String> map);
+	public void resetPw(String encode, String string);
 }

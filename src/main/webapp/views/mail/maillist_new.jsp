@@ -187,21 +187,20 @@
 												<button class="btn btn-primary span-search-button">send</button>
 											</div>
 											<!--begin::Upload attachement-->
-											<span
+											<!-- <span
 												class="btn btn-icon btn-sm btn-clean btn-active-light-primary me-2 dz-clickable"
 												id="upload_btn"
 												data-kt-inbox-form="dropzone_upload">
-												<i class="ki-duotone ki-paper-clip fs-2 m-0"></i> </span>
-											<!--end::Upload attachement-->
+												<i class="ki-duotone ki-paper-clip fs-2 m-0"></i> </span>-->
+												 <div>
+									                <input type="file" id="upload_btn" >
+									            </div>
 
 											
 										</div>
 										<div class="px-15 px-10">
 												<ul class="upload_ul">
-													<li class="upload_li">
-														<div>첨부파일 1</div>
-														<div class="upload_cancel badge badge-light fs-8">x</div>
-													</li>
+													
 												</ul>	
 										</div>
 									</form>
@@ -228,17 +227,63 @@
 		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 </body>
 <script>
-	var ajax = true;
+var ajax = true;
 
-	ClassicEditor
-		.create(document.querySelector('#kt_docs_ckeditor_classic'))
-		.then(editor => {
-			console.log(editor);
-		})
-		.catch(error => {
-			console.error(error);
-		});
+ClassicEditor
+	.create(document.querySelector('#kt_docs_ckeditor_classic'))
+	.then(editor => {
+		console.log(editor);
+	})
+	.catch(error => {
+		console.error(error);
+	});
+	
+let fileList = [];
+
+function fileDeleteClick(){
+	$('.upload_cancel').on('click', function() {
+		console.log('upload_cancel');
+        var index = $(this).next().html();
+        console.log(index);
+        fileList.splice(index, 1);
+        var reIndex = $(this).closest('.upload_li').nextAll();
+        if(reIndex.length > 0){
+            for(var elem of reIndex){
+                console.log(elem);
+                let index = elem.lastChild.innerHTML;
+                elem.lastChild.innerHTML = index-1;
+            }
+        }
+        
+        $(this).closest('.upload_li').remove();
+        console.log(fileList);
+     });
+}
+
+$('#upload_btn').change(function() {
+	content = '';  
+	if(fileList.length == 3){
+        alert('파일첨부는 4개까지 가능합니다');
+        return false;
+    }
+    var files = this.files;
+    for(var i = 0; i < files.length; i++) {
+        var file = files[i];
+        fileList.push(file);
+     	content+='<li class="upload_li"><div>'
+     	content+= file.name
+     	content+='</div><div class="upload_cancel badge badge-light fs-8">x</div>'
+     	content+='<p style="display:none">'
+     	if(fileList.length > 0){
+     		content+= fileList.length-1+'</p></li>'	 
+     	}else{
+     		content+= 0+'</p></li>'     		
+     	}
+     }
+     $('.upload_ul').append(content);
+     console.log(content);
+	 this.value = ''; 
+	 fileDeleteClick();
+});
 </script>
-<!--end::Body-->
-
 </html>
