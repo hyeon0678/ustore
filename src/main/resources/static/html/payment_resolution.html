@@ -181,7 +181,7 @@
 					<div class="modal-header">
 						<h3 class="modal-title">발주번호 검색</h3>
 						<!--begin::Close-->
-						<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modalorder" aria-label="Close">
+						<div class="btnOrder btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
 							<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
 						</div>
 						<!--end::Close-->
@@ -290,7 +290,8 @@
 		        success: function (data) {
 		        	console.log(data);
 		        	console.log(orderIdx);
-		            displayItems(data, orderIdx);
+		            displayItems(data, orderIdx);		            
+				    $('.btnOrder[data-bs-dismiss="modal"]').click();
 		        },
 		        error: function (error) {
 		            console.error('발주번호에 해당하는 물품 리스트를 가져오는 중 오류가 발생했습니다.');
@@ -320,8 +321,7 @@
 		    
 		    $('#orderNum').val(orderIdx);
 		    $('#totalAmount').val(totalAmount.toLocaleString());
-		    
-		    $('.btn[data-bs-dismiss="modalorder"]').click();
+		   
 		}
 		
 	/* 	

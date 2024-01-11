@@ -972,6 +972,12 @@
         }
     	console.log(ApprovalDto);
 	    
+    	if(!apprSubject){
+			console.log('제목이 비어있어 저장 할 수 없습니다.')
+			alert('제목이 비어있어 저장 할 수 없습니다.');
+			return;
+		}
+    	
         $.ajax({
             url: '/tempsaveappr', 
             type: 'POST',
@@ -1039,6 +1045,12 @@
 	    }
 		console.log(ApprovalDto);
 	    
+		if(approvalLines.length < 2  || !apprSubject || $('#inputReceiver').val()=== ''){
+			console.log('결재정보가 비어있거나 제목이 비어있어 상신할 수 없습니다.')
+			alert('결재정보가 비어있거나 제목이 비어있어 상신할 수 없습니다.');
+			return;
+		}
+		
 	    $.ajax({
 	        url: '/sendappr',
 	        method: 'POST',

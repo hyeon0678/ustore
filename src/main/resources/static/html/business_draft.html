@@ -164,11 +164,11 @@ var myEditor;
      .create(document.querySelector('#kt_docs_ckeditor_classic'))
      .then(editor => {
     	 myEditor = editor;
-        // 메인 페이지에서 받아온 데이터를 사용하여 CKEditor에 설정
+        // 메인 페이지에서 받아온 데이터를 사용하여 CKEditor에 설정, 문서를 불러오는 경우 서버에서 받아온 데이터 중 ckeditor에 작성한 내용을 담기 위해 var apprContent를 선언하여 여기에 담았고, 그것을 editor.setData()안에 넣어줘야 함
         if (apprContent) {
            myEditor.setData(apprContent);
         }
-        
+        // 문서 작성해야하는 페이지가 아닌 경우 readonly만 되어야 하므로, 해당 페이지들에 var readonly=true를 선언해놓음
         if (readonly) {
         	myEditor.enableReadOnlyMode('my-feature-id');
         }
