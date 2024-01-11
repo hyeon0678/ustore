@@ -1,7 +1,6 @@
 package com.ustore.board.controller;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +34,6 @@ public class BoardController {
 
 	@Autowired BoardService service;
 	@Autowired FileDao filedao;
-	@Value("${spring.servlet.multipart.location}") private String root;
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -212,50 +210,11 @@ public class BoardController {
 		BoardDto dto = new BoardDto();
 
 		List<HashMap<String, String>> adfile = service.adfile(notice_idx);
-		List<HashMap<String, String>> adfileshow = service.adfileshow(notice_idx);
 		
-		// adfileshow에서 가져온 파일 정보를 fileList에 추가
-		
-//		for (HashMap<String, String> fileData : adfileshow) {
-//		    String fileName = fileData.get("new_file_name"); // 파일 이름을 가져오는 방식에 따라 수정 필요
-//		    logger.info("FileName!!! : " + fileName);
-//		    fileList.add(fileName);
-//		}
-		
+		ArrayList<FileDto> adfileshow = service.adfileshow(notice_idx);
+
 		logger.info("adfileshow : " + adfileshow);
 		logger.info("adfile : " + adfile);
-		
-		List<String> fileList = new ArrayList<String>();
-		
-		logger.info("fileList : " + fileList);
-		File[] files = new File(root).listFiles();
-		logger.info("fileList : " + files);
-		for (File file : files) {
-			if(file.isFile()) {
-				fileList.add(file.getName());
-			}
-		}
-		
-//		for (HashMap<String, String> fileData : adfileshow) {
-//		    String fileName = fileData.get("new_file_name"); // 파일 이름을 가져오는 방식에 따라 수정 필요
-//		    
-//		    logger.info("fileName : " + fileName);
-//
-//		    // 파일 시스템에서 가져온 파일 목록(files)과 매칭되는 파일이 있는지 확인하고, 있으면 fileList에 추가
-//		    for (File file : files) {
-//		        if (file.isFile() && file.getName().equals(fileName)) {
-//		            fileList.add(fileName);
-//		            break; // 파일을 찾았으므로 더 이상 확인할 필요가 없음
-//		        }
-//		    }
-//		}
-		
-		
-//		for (File file : files) {
-//			if(file.isFile()) {
-//				fileList.add(file.getName());
-//			}
-//		}
 		
 		logger.info("공지사항파일 : " + adfile);
 		
@@ -267,10 +226,10 @@ public class BoardController {
 		
 		mav.addObject("board", map);
 		mav.addObject("file", adfile);
-		mav.addObject("fileList", fileList);
+		mav.addObject("newFileList", adfileshow);		
 		mav.setViewName("board/admin_board_detail");
 		
-		logger.info("mavresult : " + mav);
+		logger.info("ADDETAILmavresult : " + mav);
 		logger.info("상세보기 이동");
 		
 		return mav;
@@ -286,8 +245,10 @@ public class BoardController {
 		
 		BoardDto dto = new BoardDto();
 		
-//		HashMap<String, String> file = filedao.anboardfile(anony_idx);
-//		logger.info("file : " + file);
+		ArrayList<FileDto> anfileshow = service.anfileshow(anony_idx);
+
+		logger.info("anfileshow : " + anfileshow);
+
 		
 		logger.info("글 상세보기 : " + anony_idx);
 		
@@ -296,10 +257,10 @@ public class BoardController {
 		logger.info("map 값 : " + map);
 		
 		mav.addObject("board", map);
-//		mav.addObject("file", file);
+		mav.addObject("newFileList", anfileshow);
 		mav.setViewName("board/anonymous_board_detail");
 		
-		logger.info("mav 값 : " + mav);
+		logger.info("ANDETAILmavresult : " + mav);
 		logger.info("상세보기 이동");
 		
 		return mav;

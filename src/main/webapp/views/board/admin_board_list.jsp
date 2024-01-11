@@ -101,6 +101,8 @@
 										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_adList_table">
 											<thead>
 												<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
+													<th></th>
+													<th class="min-w-125px">no.</th>
 													<th class="min-w-125px">제목</th>
 													<th class="min-w-125px">작성자</th>
 													<th class="min-w-125px">조회수</th>
@@ -148,6 +150,7 @@
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
+		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 	</body>
 	<!--end::Body-->
 		
@@ -155,7 +158,8 @@
 		<script>
 		console.log("리스트 호출 시작")
 		adList();
-		
+		var table=$("#kt_adList_table");
+
 		
 		$(function(){headerOnReady()})
 		
@@ -168,8 +172,8 @@
 				dataType:'JSON',
 				success:function(data){
 					console.log(data);
-					console.log("리스트 호출 뿌리기");
-					drawlist(data.list);
+					console.log("리스트 호출");
+					drawlist(data);
 				},
 				error:function(e){
 					console.log(e);
@@ -179,23 +183,34 @@
 
 		console.log("listcall : "+ adList);
 		
-		function drawlist(list){
-			console.log("drawlist : " + list);
+		function drawlist(data){
+			console.log("drawlist : " + data);
 			var content = '';
 			
-			list.forEach(function(item, notice_idx){
-				content += '<tr>'
-				content += '<td><a href="adboard/detail?notice_idx='+item.notice_idx+'" class="text-danger text-hover-primary mb-1">' + item.notice_subject + '</a></td>';
-				content += '<td><a href="empprifile/detail?emp_idx='+item.emp_idx+'" class="text-danger text-hover-primary mb-1">' + item.emp_name + '</a></td>';
-				content += '<td>' + item.notice_hit + '</td>';
-				content += '<td>' + item.reg_date + '</td>';
+			for(var i = 0; i < data.size; i ++){
+				content += '<tr>';
+				content += '<td>';
+				if(data.list[i].top_fixed=="Y"){
+					content += '<img src="resource/assets/media/board/topfixStar.png" style="width: 20px;"/>';
+				}else{
+					content += '';
+				}
+				content += '</td>';
+				content += '<td class="w-30px " >'+i+'</td>';
+				content += '<td><a href="adboard/detail?notice_idx='+data.list[i].notice_idx+'" class="text-danger text-hover-primary mb-1">' + data.list[i].notice_subject + '</a></td>';
+				content += '<td>' + data.list[i].emp_name + '</td>';
+				content += '<td>' + data.list[i].notice_hit + '</td>';
+				content += '<td>' + data.list[i].reg_date + '</td>';
 				content += '</tr>';
 				
 				console.log("content : " + content);
 				
-			});
 				$('#list').empty();
 				$('#list').append(content);
+
+			};
+				
+				table.DataTable( {"ordering": false, "info": false, "destroy": true, "pageLength": 10 , "lengthChange": false } );
 			}
 		
 		function search(){

@@ -53,17 +53,8 @@ public interface BoardDao {
 
 	List<HashMap<String, String>> adfile(int notice_idx);
 
-	List<HashMap<String, String>> adfileshow(int notice_idx);
+	ArrayList<FileDto> adfileshow(int notice_idx);
 
-
-
-
-
-
-	
-
-//	ArrayList<BoardDto> adList(Map<String, String> params);
-
-
+	ArrayList<FileDto> anfileshow(String anony_idx);
 
 }

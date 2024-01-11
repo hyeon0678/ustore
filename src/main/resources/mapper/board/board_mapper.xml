@@ -15,11 +15,13 @@ values (#{anony_subject},#{anony_content})
 </insert>
 
 <select id="adList" resultType="map">
-	select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , n.reg_date , n.notice_del  from notice n inner join employee e on n.emp_idx = e.emp_idx and n.notice_del ='n' order by top_fixed desc, notice_idx
+select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , n.reg_date , n.notice_del, n.top_fixed  
+from notice n inner join employee e on n.emp_idx = e.emp_idx and n.notice_del ='n' 
+order by top_fixed desc, notice_idx desc
 </select>
 
 <select id="anList" resultType="map">
-	select anony_idx, anony_subject, anony_hit , reg_date from anony_board
+select anony_idx, anony_subject, anony_hit , reg_date from anony_board order by anony_idx desc
 </select>
 
 <select id="adboardDetail" resultType="map">
@@ -80,11 +82,15 @@ from anony_board  where anony_idx = #{param1}
 </select>
 
 <select id="adfile" resultType="map">
-	SELECT CONCAT(file_name,extension) as orifilname, new_file_name as newfilename FROM  file f where file_type =70 and conn_idx = 50
+	SELECT CONCAT(file_name,extension) as orifilname, CONCAT(new_file_name,extension) as newfilename FROM  file f where file_type =70 and conn_idx = #{param1}
 </select>
 
 <select id="adfileshow" resultType="map">
-	SELECT CONCAT(new_file_name,extension) as newfilename FROM  file f where file_type =70 and conn_idx = 50
+	SELECT CONCAT(new_file_name,extension) as newfilename FROM  file f where file_type =70 and conn_idx = #{param1}
+</select>
+
+<select id="anfileshow" resultType="map">
+	SELECT CONCAT(new_file_name,extension) as newfilename FROM  file f where file_type =71 and conn_idx = #{param1}
 </select>
 
 </mapper>
