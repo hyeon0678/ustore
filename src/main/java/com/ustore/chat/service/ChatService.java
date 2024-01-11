@@ -37,7 +37,7 @@ public class ChatService {
 
 	@Transactional
 	public ChatDto saveChat(ChatDto chat) {
-		// 발신 히스토리 쌓기
+		
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		chat.setSendDate(timestamp);
 		int row = chatDao.insertSendMsg(chat);
@@ -53,26 +53,37 @@ public class ChatService {
 			logger.info("room_num : "+chat.getRoomNum());
 			row += chatDao.insertReceivedMsg(chat);	
 		}
+		
+		if(row<1) {
+			chat = new ChatDto();
+			chat.setSender("server");
+			chat.setData("FAIL");
+			return chat;
+		}
 		return chat;
 	}
 	
 	@Transactional
-	public void makeRoom(List<Participant> list, String emp_idx) {
-		//예외 처리 하기
+	public String makeRoom(List<Participant> list, String emp_idx) {
 		String roomemp_idx="";
-		
+		int row = 0;
 		logger.info(roomemp_idx);
+		
+		if(list.size()==1 && isExsitIndividualRoom(list, emp_idx)>0) {
+			return "EXIST";
+		}
+		
 		ChatRoomDto chatRoomDto = new ChatRoomDto();
 		chatRoomDto.setChatRoomName(roomemp_idx);
 		chatRoomDto.setRegBy(emp_idx);
 		chatRoomDto.setIsIndividual(list.size()>1 ? "N":"Y");
 		//만든 후 채팅방 생성
-		chatDao.insertChatRoom(chatRoomDto);
+		row+=chatDao.insertChatRoom(chatRoomDto);
 		int roomIdx = chatRoomDto.getChatRoomIdx();
 		for(Participant chatParticipants : list) {
-			chatDao.insertChatParticipants(roomIdx, chatParticipants.getEmpIdx());			
+			row+=chatDao.insertChatParticipants(roomIdx, chatParticipants.getEmpIdx());			
 		} 
-		chatDao.insertChatParticipants(roomIdx, emp_idx);	
+		row+=chatDao.insertChatParticipants(roomIdx, emp_idx);	
 		
 		ChatDto wellcomMsg = new ChatDto();
 		wellcomMsg.setRoomNum(Integer.toString(roomIdx));
@@ -80,6 +91,22 @@ public class ChatService {
 		wellcomMsg.setData("");
 		saveChat(wellcomMsg);
 		
+		if(row>0) {
+			return "SUCCESS";
+		}
+		
+		return "FAIL";
+	}
+	
+	public int isExsitIndividualRoom(List<Participant> list,String emp_idx) {
+		List<Integer> myIndividualRoomList = chatDao.selectIndividual(emp_idx);
+		String orderIdx = list.get(0).getEmpIdx();
+		int row = 0;
+		for(int i : myIndividualRoomList) {
+			row = chatDao.selectIndividualRoomExsit(i,orderIdx);
+		}
+		logger.info("-----------------------------selectIndividualRoomCount : {}", row);
+		return row;
 	}
 	
 	public List<ChatRoomDto> getChatRoomList(String emp_idx) {
@@ -110,6 +137,7 @@ public class ChatService {
 		return list;
 	}
 
+	
 	public String setRoomName(List<Participant> participant, String isIndividual, String emp_idx) {
 		String roomName = "";
 		if(isIndividual.equals("Y")) {
@@ -133,9 +161,9 @@ public class ChatService {
 		if(participant.size()>3) {
 			roomName+=" 외 "+(participant.size()-3)+"명";
 		}
-		
 		return roomName;
 	}
+	
 	
 	public List<ChatDto> getChatData(int roomNum, String emp_idx) {
 		chatDao.updateToRead(roomNum, emp_idx);
@@ -143,22 +171,28 @@ public class ChatService {
 		return chatList;
 	}
 	
+	
 	public List<Participant> getParticipantLists(int roomNum) {
 		List<Participant> participants = chatDao.selectParticipants(roomNum);
 		return participants;
 	}
 
-	public ChatDto quitRoom(int roomNum, String name) {
+	
+	public String quitRoom(int roomNum, String name) {
 		// -> 나가면 system 메시지 보내기
-		String userInfo = chatDao.selectUserInfo(name);
-		ChatDto leaveMsg = new ChatDto();
-		leaveMsg.setRoomNum(Integer.toString(roomNum));
-		leaveMsg.setSender("system");
-		leaveMsg.setData(userInfo+"님이 채팅방을 나가셨습니다");
-		saveChat(leaveMsg);
-		chatDao.deleteParticipants(roomNum,name);
-		messageTemplete.convertAndSend("/topic/chat/"+roomNum,leaveMsg);
-		return leaveMsg;
+		int row = chatDao.deleteParticipants(roomNum,name);
+		logger.info("-------------------------------------deleteParticipants {}", row);
+		if(row>0) {
+			String userInfo = chatDao.selectUserInfo(name);
+			ChatDto leaveMsg = new ChatDto();
+			leaveMsg.setRoomNum(Integer.toString(roomNum));
+			leaveMsg.setSender("system");
+			leaveMsg.setData(userInfo+"님이 채팅방을 나가셨습니다");
+			saveChat(leaveMsg);
+			messageTemplete.convertAndSend("/topic/chat/"+roomNum,leaveMsg);
+			return "SUCCESS";
+		}
+		return "FAIL";
 	}
 
 	public void setRead(int roomNum, int chatIdx, String name) {

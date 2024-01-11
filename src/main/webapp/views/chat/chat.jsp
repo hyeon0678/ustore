@@ -307,11 +307,6 @@
    	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
    	<script src="resource/assets/plugins/custom/jstree/jstree.bundle.js"></script>
 </body>
-<!--end::Body-->
-<script>
-//리스트 보여주기
-
-</script>
 <script>
 
 	let makeRoomParticipantList = [];
@@ -447,11 +442,18 @@
 			type:'POST',
 			dataType:'JSON',
 			success:function(data){
-				console.log("make roooomm"+data);
-				$('#make_room_enter_emp').empty();
-				makeRoomParticipantList=[];
-				
-				callChatRoomList();
+				console.log("make roooomm"+data.result);
+				if(data.result == 'FAIL'){
+					FalseModal("채팅방 생성을 실패했습니다")
+				}else if(data.result == 'SUCCESS'){
+					$('#make_room_enter_emp').empty();
+					makeRoomParticipantList=[];
+					callChatRoomList();
+				}else if(data.result == 'EXIST'){
+					$('#make_room_enter_emp').empty();
+					makeRoomParticipantList=[];
+					FalseModal("이미 1:1 채팅이 존재합니다")
+				}
 			},error:function(error){
 				console.log(error);				
 			}
@@ -471,7 +473,9 @@
 						$("#make_room_jstree").jstree("disable_node", username);
 					}
 				}
-			});
+			},
+			'plugins' : ["search"]
+		);
 		treeDbClick();
 		participantClick();
 		
@@ -746,14 +750,18 @@
 				type:'GET',
 				dataType:'JSON',
 				success:function(data){
-					console.log(data);
-					$('#msg-content').empty();
-					$('.chat-room-name').html('');
-					$('.chat-msg-tool-bar').css({'display':'none'});
-					$('#send-msg').prop('disabled', true);
-					$('#msg-box').prop('readonly', true);
-					subscription.unsubscribe('/topic/chat/'+roomNum);
-					callChatRoomList()
+					console.log(data.result);
+					if(data.result == 'SUCCESS'){
+						$('#msg-content').empty();
+						$('.chat-room-name').html('');
+						$('.chat-msg-tool-bar').css({'display':'none'});
+						$('#send-msg').prop('disabled', true);
+						$('#msg-box').prop('readonly', true);
+						subscription.unsubscribe('/topic/chat/'+roomNum);
+						callChatRoomList();												
+					}else{
+						FalseModal("채팅방 나가기에 실패했습니다 잠시 후 다시 시도해주세요");
+					}
 				},error:function(error){
 					console.log(error);				
 				}

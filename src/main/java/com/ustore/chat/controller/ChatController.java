@@ -66,10 +66,10 @@ public class ChatController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<Participant> list = mapper.readValue(json, new TypeReference<ArrayList<Participant>>(){});
 		
-		// make room 후에 send    
-		chatService.makeRoom(list, principal.getName());
-		
-		return new HashMap<String, Object>();
+		String msg = chatService.makeRoom(list, principal.getName());
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("result", msg);
+		return result;
 	}
 	
 	@GetMapping("/chatList.ajax")
@@ -99,10 +99,11 @@ public class ChatController {
 	@GetMapping("/quitRoom.ajax")
 	@ResponseBody
 	public HashMap<String, Object> quitRoom(@RequestParam int roomNum, Principal principal){
+		logger.info("quitRoom : {}, {}",principal.getName(), roomNum);
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		ChatDto dto = chatService.quitRoom(roomNum, principal.getName());
+		String msg = chatService.quitRoom(roomNum, principal.getName());
 		
-		logger.info("send");
+		result.put("result", msg);
 		return result;
 	}
 	
