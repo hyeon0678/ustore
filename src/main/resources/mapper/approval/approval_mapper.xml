@@ -375,19 +375,19 @@
 		<if test="common_idx == 30">
 		UPDATE approval_line al
 		INNER JOIN business_draft bd ON bd.appr_idx = al.appr_idx AND bd.doc_step = al.appr_order
-		SET bd.appr_status=42, al.comment=#{comment}, al.appr_confirm='2' 
+		SET bd.appr_status=42, al.comment=#{comment}, al.appr_confirm='2', al.appr_date = now()
 		WHERE bd.appr_idx = #{apprIdx}
 		</if>
         <if test="common_idx == 31">
         UPDATE approval_line al
         INNER JOIN payment_resolution pr ON pr.appr_idx = al.appr_idx AND pr.doc_step = al.appr_order
-		SET pr.appr_status=42, al.comment=#{comment}, al.appr_confirm='2'
+		SET pr.appr_status=42, al.comment=#{comment}, al.appr_confirm='2', al.appr_date = now()
 		WHERE pr.appr_idx = #{apprIdx}
         </if>
         <if test="common_idx == 32">
         UPDATE approval_line al
         INNER JOIN req_vacation rv ON rv.appr_idx = al.appr_idx AND rv.doc_step = al.appr_order
-		SET rv.appr_status=42, al.comment=#{comment}, al.appr_confirm='2' 
+		SET rv.appr_status=42, al.comment=#{comment}, al.appr_confirm='2', al.appr_date = now()
 		WHERE rv.appr_idx = #{apprIdx}
 		</if>
 	</update>
@@ -513,5 +513,40 @@
 		VALUES (#{drafterEmpIdx}, #{date}, #{leaveType}, #{totalLeaveDays}, #{drafterEmpIdx})
 	</insert>
 
+	<select id="getApprSubject" resultType="String">
+		<if test="common_idx == 30">
+		SELECT appr_subject FROM business_draft
+		WHERE appr_idx = #{apprIdx}
+		</if>
+        <if test="common_idx == 31">
+        SELECT appr_subject FROM payment_resolution
+		WHERE appr_idx = #{apprIdx}
+        </if>
+        <if test="common_idx == 32">
+        SELECT appr_subject FROM req_vacation
+		WHERE appr_idx = #{apprIdx}
+		</if>
+	</select>
+
+
+	<select id="getMyApprOrder" resultType="int">
+		SELECT appr_order FROM approval_line WHERE emp_idx = #{fnApprEmp_idx} AND appr_idx = #{apprIdx}
+	</select>
+	
+	<select id="getNextApprEmpIdx" resultType="String">
+		SELECT emp_idx FROM approval_line WHERE appr_idx = #{apprIdx} AND appr_order = #{nextApprOrder}
+	</select>
+	
+	
+	<insert id="addApprCompleteAlarm">
+		INSERT INTO alarm (emp_idx, alarm_subject, alarm_content, url, alarm_type)
+			VALUES (#{drafterEmpIdx}, #{alarmSubject}, #{alarmContent},#{url}, 100)
+	</insert>
+	
+	
+	<insert id="addNextApprAlarm">
+		INSERT INTO alarm (emp_idx, alarm_subject, alarm_content, url, alarm_type)
+			VALUES (#{nextApprEmp_idx}, #{alarmSubject}, #{alarmContent},#{url}, 100)
+	</insert>
 
 </mapper>

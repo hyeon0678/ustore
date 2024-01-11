@@ -83,6 +83,16 @@ public interface ApprovalDao {
 
 	void updateApprDate(Integer apprIdx, String empIdx);
 
+	int getMyApprOrder(String fnApprEmp_idx, Integer apprIdx);
+
+	String getNextApprEmpIdx(int nextApprOrder, Integer apprIdx);
+
+	String getApprSubject(Integer apprIdx, int common_idx);
+
+	void addApprCompleteAlarm(String drafterEmpIdx, String alarmSubject, String alarmContent, String url);
+
+	void addNextApprAlarm(String nextApprEmp_idx, String alarmSubject, String alarmContent, String url);
+
 
 
 
