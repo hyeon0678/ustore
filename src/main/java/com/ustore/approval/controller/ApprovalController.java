@@ -96,13 +96,13 @@ public class ApprovalController {
         String formPage = null;
         switch (common_idx) {
             case 30: // 업무기안문
-                formPage = "static/business_draft.html";
+				formPage = "/static/html/business_draft.html";
                 break;
             case 31: // 대금지급결의서
-                formPage = "static/payment_resolution.html";
+				formPage = "/static/html/payment_resolution.html";
                 break;
             case 32: // 휴가신청서
-                formPage = "static/reqVac.html";
+				formPage = "/static/html/reqVac.html";
                 break;
         }
         return formPage;
