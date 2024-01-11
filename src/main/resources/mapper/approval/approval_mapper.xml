@@ -513,5 +513,40 @@
 		VALUES (#{drafterEmpIdx}, #{date}, #{leaveType}, #{totalLeaveDays}, #{drafterEmpIdx})
 	</insert>
 
+	<select id="getApprSubject" resultType="String">
+		<if test="common_idx == 30">
+		SELECT appr_subject FROM business_draft
+		WHERE appr_idx = #{apprIdx}
+		</if>
+        <if test="common_idx == 31">
+        SELECT appr_subject FROM payment_resolution
+		WHERE appr_idx = #{apprIdx}
+        </if>
+        <if test="common_idx == 32">
+        SELECT appr_subject FROM req_vacation
+		WHERE appr_idx = #{apprIdx}
+		</if>
+	</select>
+
+
+	<select id="getMyApprOrder" resultType="int">
+		SELECT appr_order FROM approval_line WHERE emp_idx = #{fnApprEmp_idx} AND appr_idx = #{apprIdx}
+	</select>
+	
+	<select id="getNextApprEmpIdx" resultType="String">
+		SELECT emp_idx FROM approval_line WHERE appr_idx = #{apprIdx} AND appr_order = #{nextApprOrder}
+	</select>
+	
+	
+	<insert id="addApprCompleteAlarm">
+		INSERT INTO alarm (emp_idx, alarm_subject, alarm_content, url, alarm_type)
+			VALUES (#{drafterEmpIdx}, #{alarmSubject}, #{alarmContent},#{url}, 100)
+	</insert>
+	
+	
+	<insert id="addNextApprAlarm">
+		INSERT INTO alarm (emp_idx, alarm_subject, alarm_content, url, alarm_type)
+			VALUES (#{nextApprEmp_idx}, #{alarmSubject}, #{alarmContent},#{url}, 100)
+	</insert>
 
 </mapper>

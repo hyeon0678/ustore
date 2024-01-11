@@ -238,6 +238,7 @@
 	});
 	
 	var common_idx = ${common_idx};	
+	var apprTypeIdx = common_idx;
 	var loggedInEmp_idx = ${principal.username};
 	console.log(loggedInEmp_idx);
 	addLoggedInEmpToApprLine(loggedInEmp_idx);
@@ -834,6 +835,7 @@
     		apprContent = myEditor.getData();	
             ApprovalDto = {
             	    commonIdx: common_idx,
+            	    apprTypeIdx: apprTypeIdx,
             	    apprSubject: apprSubject,
             	    apprContent: apprContent,
             	    approvalLines: approvalLines,
@@ -843,6 +845,7 @@
 	    	var orderIdx = $('#orderNum').val();
 	    	ApprovalDto = {
 	    		    commonIdx: common_idx,
+	    		    apprTypeIdx: apprTypeIdx,
 	    		    apprSubject: apprSubject,
 	    		    approvalLines: approvalLines,
 	    	        receivers: receivers,
@@ -859,6 +862,7 @@
             console.log(leaveEndDate);
 	    	ApprovalDto = {
 	        	    commonIdx: common_idx,
+	        	    apprTypeIdx: apprTypeIdx,
 	        	    apprSubject: apprSubject,
 	        	    approvalLines: approvalLines,
 	                receivers: receivers,

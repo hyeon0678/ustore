@@ -282,6 +282,26 @@ public class ApprovalService {
 		return dao.getOrderProductList(orderIdx);
 	}
 
+	public int getMyApprOrder(String fnApprEmp_idx, Integer apprIdx) {
+		return dao.getMyApprOrder(fnApprEmp_idx, apprIdx);
+	}
+
+	public String getNextApprEmpIdx(int nextApprOrder, Integer apprIdx) {
+		return dao.getNextApprEmpIdx(nextApprOrder, apprIdx);
+	}
+
+	public String getApprSubject(Integer apprIdx, int common_idx) {
+		return dao.getApprSubject(apprIdx, common_idx);
+	}
+
+	public void addApprCompleteAlarm(String drafterEmpIdx, String alarmSubject, String alarmContent, String url) {
+		dao.addApprCompleteAlarm(drafterEmpIdx, alarmSubject, alarmContent, url);
+	}
+
+	public void addNextApprAlarm(String nextApprEmp_idx, String alarmSubject, String alarmContent, String url) {
+		dao.addNextApprAlarm(nextApprEmp_idx, alarmSubject, alarmContent, url);
+	}
+
 
 	
 

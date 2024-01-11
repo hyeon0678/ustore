@@ -196,6 +196,26 @@ public class ApprovalController {
 		 String emp_idx = principal.getName();
 		 dto.setEmpIdx(emp_idx);
 		 service.sendAppr(dto);
+		 
+		 
+		// 알람 처리(결재 상신되면 다음 결재자에게 결재요청 문서 도착했다고 알림)
+		Integer apprIdx = dto.getApprIdx();
+		logger.info("생성된 기안번호 : "+apprIdx);
+		int nextApprOrder = 1;
+		logger.info("다음 결재자 결재순번 : "+nextApprOrder);
+		String nextApprEmp_idx = service.getNextApprEmpIdx(nextApprOrder, apprIdx);
+		logger.info("다음 결재자 사원번호 : "+nextApprEmp_idx);
+		String alarmSubject = "결재문서 도착 알림";
+		int common_idx = dto.getCommonIdx();
+		int apprTypeIdx = dto.getApprTypeIdx(); // 여기서 common_idx와 apprTypeIdx 같은값임..(공통 테이블 사용이 처음이라 제대로 활용을 못하였음)
+		logger.info("apprTypeIdx : "+apprTypeIdx);
+		String alarmContent = service.getApprSubject(apprIdx, common_idx);			
+		String url = "/approval/approvalreq/detail?apprIdx="+apprIdx+"&apprTypeIdx="+apprTypeIdx;
+		logger.info("url : "+url);
+		service.addNextApprAlarm(nextApprEmp_idx, alarmSubject, alarmContent, url);
+		 
+		 
+		 
 		 return ResponseEntity.ok("문서가 결재상신 되었습니다.");
 	}
 	
@@ -356,7 +376,7 @@ public class ApprovalController {
 			mav.addObject("docId", docId);  
 			
 						
-			// 2. 결재완료 문서가 휴가신청서라면 휴가 일자 차감처리			
+			// 결재완료 문서가 휴가신청서라면 휴가 일자 차감처리			
 			if(dto.getApprTypeIdx()==32) {
 				// 기안자의 휴가신청 결재문서 기안번호에 대한 휴가신청서 내용 가져오기
 				ApprovalDto leaveDto = service.getEmpLeaveInfo(drafterEmpIdx, apprIdx);
@@ -413,18 +433,35 @@ public class ApprovalController {
 					}else {
 						service.insertOtherLeaveInfo(drafterEmpIdx, date, leaveType, totalLeaveDays);
 					}
-				}
-				
-				
-			}   
+				}								
+			}
+			
+			// 결재 완료되면 기안자에게 결재완료 알림 가게 처리하기
+			String alarmSubject = "결재완료 알림";
+			int common_idx = dto.getCommonIdx();
+			int apprTypeIdx = dto.getApprTypeIdx();
+			String alarmContent = service.getApprSubject(apprIdx, common_idx);			
+			String url = "/approval/teamapproval/detail?apprIdx="+apprIdx+"&apprTypeIdx="+apprTypeIdx;
+			service.addApprCompleteAlarm(drafterEmpIdx, alarmSubject, alarmContent, url);
 			
 		}else {
 			// 그게 아니라면 결재문서의 단계 상태 update
 			service.updateApprDocStep(dto);
-			
+						
 			// 알람 처리(알람 테이블에 알람받을 emp_idx와 주소 넣어줘야 함, 알림 종류는 common_idx = 100)
-			
-			
+			String fnApprEmp_idx = principal.getName();
+			Integer apprIdx = dto.getApprIdx();
+			int myApprOrder = service.getMyApprOrder(fnApprEmp_idx, apprIdx);
+			int nextApprOrder = myApprOrder +1 ;
+			logger.info("다음 결재자 결재순번 : "+nextApprOrder);
+			String nextApprEmp_idx = service.getNextApprEmpIdx(nextApprOrder, apprIdx);
+			logger.info("다음 결재자 사원번호 : "+nextApprEmp_idx);
+			String alarmSubject = "결재문서 도착 알림";
+			int common_idx = dto.getCommonIdx();
+			int apprTypeIdx = dto.getApprTypeIdx();
+			String alarmContent = service.getApprSubject(apprIdx, common_idx);			
+			String url = "/approval/approvalreq/detail?apprIdx="+apprIdx+"&apprTypeIdx="+apprTypeIdx;
+			service.addNextApprAlarm(nextApprEmp_idx, alarmSubject, alarmContent, url);
 		}		
 		
         return mav;
