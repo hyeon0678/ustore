@@ -148,7 +148,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="mail/home">
+											<a class="menu-link" href="/mail/home">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -160,7 +160,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="mail/out">
+											<a class="menu-link" href="/mail/out">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -172,7 +172,7 @@
 										<!--begin:Menu item-->
 										<div class="menu-item">
 											<!--begin:Menu link-->
-											<a class="menu-link" href="mail/del">
+											<a class="menu-link" href="/mail/del">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
