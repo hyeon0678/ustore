@@ -599,5 +599,35 @@ public class ApprovalController {
 		return mav;
 	}	 
 	
-	
+	// 부서문서함 detail 전달하기 페이지(출력 기능만 되게하는 페이지 링크로 보내기)
+	@Transactional(isolation = Isolation.DEFAULT)
+	@GetMapping(value="/approval/teamapproval/detailforward")
+	public ModelAndView forwardTeamDocDetail(@RequestParam Integer apprIdx, @RequestParam int apprTypeIdx) throws JsonProcessingException {
+		ModelAndView mav = new ModelAndView("approval/forwardTeamApprDocDetail");
+		logger.info("apprIdx : "+apprIdx);
+		logger.info("apprTypeIdx : "+apprTypeIdx);
+		
+		int common_idx = apprTypeIdx;
+		logger.info("common_idx : "+common_idx);
+		String formPage = getFormPageByCommonIdx(common_idx);
+		mav.addObject("common_idx", common_idx);
+		mav.addObject("formPage", formPage);
+		
+		ApprovalDto content = service.getContent(apprIdx, common_idx);
+		List<Map<String, Object>> apprline = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> receiver = new ArrayList<Map<String, Object>>();
+		apprline.addAll(service.getApprLine(apprIdx));
+		receiver.addAll(service.getRecv(apprIdx));
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String apprlineJson = objectMapper.writeValueAsString(apprline);
+		String receiverJson = objectMapper.writeValueAsString(receiver);
+				
+		mav.addObject("apprIdx", apprIdx);
+		mav.addObject("content", content);
+		mav.addObject("apprline", apprlineJson);
+		mav.addObject("receiver", receiverJson);
+		
+		return mav;
+	}	
 }

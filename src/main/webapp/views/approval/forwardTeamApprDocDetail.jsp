@@ -65,69 +65,37 @@
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
-		<jsp:include page="/views/common/header.jsp"></jsp:include>
-				
-		<!--begin::Main-->
-		<!--begin::Root-->
-		<div class="d-flex flex-column flex-root">
-			<!--begin::Page-->
-			<div class="page d-flex flex-row flex-column-fluid">
-				<!--begin::Wrapper-->
-				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px">
-					<!--================================메인 내용들어가는부분================================================-->
-					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
-						<!--begin::Toolbar-->
-						<div class="toolbar" id="kt_toolbar">
-							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
-								<!--begin::Info-->
-								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
-									<!--begin::Title-->
-									<h1 class="text-gray-900 fw-bold my-1 fs-2">부서문서함</h1>
-									<!--end::Title-->									
-								</div>
-								<!--end::Info-->
-								<!--begin::Toolbaricon-->
-								<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-									<!--begin::Filter-->
-									<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" id="btnApprovalInfo" data-kt-menu-placement="bottom-end" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
-									<i class="ki-duotone ki-filter fs-2">
-										<span class="path1"></span>
-										<span class="path2"></span>
-									</i>결재정보</button>
-									<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" id="btnForwardDoc" data-kt-menu-placement="bottom-end">
-									<i class="ki-duotone ki-filter fs-2">
-										<span class="path1"></span>
-										<span class="path2"></span>
-									</i>전달하기</button>
-									<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" id="btnPrintDoc" data-kt-menu-placement="bottom-end">
-									<i class="ki-duotone ki-filter fs-2">
-										<span class="path1"></span>
-										<span class="path2"></span>
-									</i>출력하기</button>
-									<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" id="btnGoBack" data-kt-menu-placement="bottom-end">
-									<i class="ki-duotone ki-filter fs-2">
-										<span class="path1"></span>
-										<span class="path2"></span>
-									</i>목록으로</button>						
-								</div>
-								<!--end::Toolbaricon-->		
-							</div>
-						</div>
-						<!--end::Toolbar-->
-						<!-- 결재 양식 들어오는 곳 -->		
-						<div class="loadApprDoc">	
-							<div style="pointer-events: none;">${htmlContent}</div>			
-						</div>							
+		<!--================================메인 내용들어가는부분================================================-->
+		<!--begin::Content-->
+		<div>	
+			<!--begin::Toolbar-->
+			<div class="toolbar" id="kt_toolbar">
+				<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
+					<!--begin::Info-->
+					<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
+						<!--begin::Title-->
+						<h1 class="text-gray-900 fw-bold my-1 fs-2">문서 전달</h1>
+						<!--end::Title-->									
 					</div>
-				<!--end::Content--> 
-    			</div>
-				<!--end::Wrapper-->
+					<!--end::Info-->
+					<!--begin::Toolbaricon-->
+					<div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+						<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" id="btnPrintDoc" data-kt-menu-placement="bottom-end">
+						<i class="ki-duotone ki-filter fs-2">
+							<span class="path1"></span>
+							<span class="path2"></span>
+						</i>출력하기</button>													
+					</div>
+					<!--end::Toolbaricon-->		
+				</div>
 			</div>
-			<!--end::Page-->
+			<!--end::Toolbar-->
+			<!-- 결재 양식 들어오는 곳 -->		
+			<div class="loadApprDoc">	
+				<div style="pointer-events: none;">${htmlContent}</div>			
+			</div>							
 		</div>
-		<!--end::Root-->
+		<!--end::Content--> 
 		
 		<!--begin::modal-->
 		<div class="modal fade" tabindex="-1" id="kt_modal_1" role="dialog">
@@ -238,31 +206,8 @@
 				</div>
 			</div>
 		</div>
+    			
 		
-		<div class="modal fade" tabindex="-1" id="kt_modal_2">
-		    <div class="modal-dialog">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <h3 class="modal-title">문서 전달하기</h3>
-		
-		                <!--begin::Close-->
-		                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-		                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-		                </div>
-		                <!--end::Close-->
-		            </div>
-		
-		            <div class="modal-body">
-		                <p>아래의 링크를 복사하세요</p>
-		                <div id="linkContainer"></div>
-		            </div>
-		
-		            <div class="modal-footer">
-		                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-		            </div>
-		        </div>
-		    </div>
-		</div>
 		<sec:authorize access="isAuthenticated()">
 			<sec:authentication property="principal" var="principal"/>
 		</sec:authorize>
@@ -380,56 +325,9 @@
 		    		
 			$("#apprListTable #approverRow").html(generateApproverRow());
 			$("#apprListTable tr:last").html(generateSignatureRow());
-		    
+		    					
 			
-			// tbody 요소를 가져옴
-			var commentbody = document.querySelector("#commentlist tbody");
-
-			// approvalLines 배열 순회
-			approvalLines.forEach(function(data, index) {
-			    // comment가 있는 경우에만 처리
-			    if (data.comment !== null) {
-			        // tr 요소 생성
-			        var row = document.createElement("tr");
-
-			        // 각 컬럼에 데이터 추가
-			        var columns = ["name", "apprConfirm", "apprDate", "comment"];
-			        columns.forEach(function(column) {
-			            var cell = document.createElement("td");
-			            // 날짜 데이터의 경우 포맷 변경
-			            if (column === "apprDate") {
-			                var date = data[column] ? new Date(data[column]) : null;
-			                if(date){
-				                cell.textContent = date.toLocaleDateString("ko-KR", { year: 'numeric', month: '2-digit', day: '2-digit' });
-			                }else{
-			                	cell.textContent = '';
-			                }              	
-			                
-			            } else if(column === "apprConfirm") {
-			            	var confirmType = data[column]
-			            	if(confirmType==0){
-			            		cell.textContent = ''; 
-			            	}else if(confirmType==1 && index ===0){
-			            		cell.textContent = '기안';
-			            	}else if(confirmType==1){
-			            		cell.textContent = '결재';
-			            	}else{
-			            		cell.textContent = '반려';
-			            	}
-			            } else {
-			                cell.textContent = data[column];
-			            }
-			            row.appendChild(cell);
-			        });
-
-			        // tbody에 행 추가
-			        commentbody.appendChild(row);
-			    }
-			});
-			
-			
-			// 수신자 정보 불러오기
-		    
+			// 수신자 정보 불러오기		    
 		    var beforeConvertRecvData = ${receiver};
         	function convertRecvData(secondData){
         		return{
@@ -537,9 +435,7 @@
    	
 	
 	$(document).ready(function () {    	
-    	
-		headerOnReady();
-		
+    			
 		var common_idx=${common_idx};
     	console.log("common_idx : "+common_idx);
     	// 초기에 선택된 양식에 대한 HTML 파일 로드
@@ -547,123 +443,15 @@
         if (formPage) {
             loadFormPage(formPage, common_idx, apprTypeIdx);
         }
-		
-        // 결재정보 버튼 클릭 시의 동작
-        $('#btnApprovalInfo').on('click', function () {
-            console.log('결재정보 버튼 클릭');            
-            $('#kt_modal_1').modal('show');
-        });
-        
-        // 전달하기 버튼 클릭시의 동작(해당 문서 내용부분만 링크로 전달하게)
-        $('#btnForwardDoc').on('click', function () {
-            console.log('전달하기 버튼 클릭');  
-            
-            makeForwardDocLink(apprIdx, apprTypeIdx);            
-        });
-                
+      
 
         // 출력하기 버튼 클릭 시의 동작
         $('#btnPrintDoc').on('click', function () {
             console.log('임시저장 버튼 클릭');
             window.print();
-        });
-
-        // 뒤로가기 버튼 클릭 시의 동작
-        $('#btnGoBack').on('click', function () {
-        	if (confirm('리스트 페이지로 이동하시겠습니까?')) {
-                window.location.href = '/approval/teamapproval';
-            } else {
-                console.log('뒤로가기 버튼 클릭 - 취소');
-            }            
-        });
-        
-        $('#kt_modal_1').on('shown.bs.modal', function(){
-			getTreeData();
-		});
-		
-		$('#checkapprinfo').on('click', function(){
-			$('.btn[data-bs-dismiss="modal"]').click();
-		});
+        });       
         
     });
 	
-	function makeForwardDocLink(apprIdx, apprTypeIdx){		
-		$('#kt_modal_2').modal('show');		
-		var url ='/approval/teamapproval/detailforward?apprIdx=' + apprIdx + '&apprTypeIdx=' + apprTypeIdx;
-		
-		var container = document.getElementById('linkContainer');
-		while(container.firstChild){
-			container.removeChild(container.firstChild);
-		}
-		
-		var link = document.createElement('a');
-	    link.href = url;
-	    link.target = '_blank';
-	    link.innerText = '전달할 문서 링크';
-	    container.appendChild(link);
-	};	
-	
-		
-	function getTreeData(){
-		$.ajax({
-			url:'/organizationChart.ajax',
-			method:'GET',
-			dataType:'JSON',
-			success:function(data){
-				console.log(data);
-				jsTreeData = data.treeData;
-				jsTree(data.treeData);
-			},error: function(error){
-				console.log(error);
-			}
-		})
-	}
-	
-	function jsTree(treeData){
-		$('#kt_docs_jstree_basic').jstree({
-			"core" : {
-				"data" : treeData,
-				"themes" : {
-					"responsive": true
-				}
-			},
-			"types" : {
-				  "department": {
-					    "icon": "fa fa-building" // 부서 아이콘
-				  },
-				  "employee": {
-				    "icon": "fa fa-user", // 직원 아이콘
-				    "selectable": true // 선택 가능하도록 설정
-				  }
-			},
-			"plugins": ["types","search"]
-			,
-			"search":{
-				/* "show_only_matches" : true,  */
-				"show_only_matches_children" : true
-			}
-		});
-	}
-
-	function empSearch() {
-		console.log("검색");
-		$('#kt_docs_jstree_basic').jstree(true).search($('#empName').val());
-	}
-
-	//이벤트
-	$('#kt_docs_jstree_basic').on("changed.jstree", function (e, data) {
-		console.log("changed 했을 때", data.selected);
-	});
-
-	// Node 열렸을 때
-	let isAdded = false;
-	$('#kt_docs_jstree_basic').on("open_node.jstree", function (e, data) {
-		console.log("open되었을때", data.node);
-	});
-
-	// Node 선택했을 때
-	$('#kt_docs_jstree_basic').on("select_node.jstree", function (e, data) {
-		console.log("select했을때", data.node);
-	});
 	</script>
 </html>
