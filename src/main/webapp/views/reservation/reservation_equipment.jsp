@@ -536,7 +536,8 @@
 					$('#resourceModalInNum').text(data[0].empExtNo);
 					$('#resourceModalText').text(data[0].bookingContent);
 					var content = '';
-					if(empIdx == data[0].empIdx){
+					console.log(data[0].bookingStartDate+formattedDate);
+					if(empIdx == data[0].empIdx && data[0].bookingStartDate >= formattedDate){
 						content += '<button type="button" class="btn btn-light" id="okDelBookingBut">삭제</button>';
 					}
 					content += '<button type="button" class="btn btn-primary" id="okBookingBut">확인</button>';
@@ -579,13 +580,17 @@
 		});	
 		
 		
-		function qq(startTop,startWidth,endWidth){
+		function qq(startTop,startWidth,finalWidth){
+			if($('.date').text()>= formattedDate){
+				var endWidth = Math.ceil(finalWidth / 100) * 100;
+
 			console.log('startTop',startTop);
 			console.log('startWidth',startWidth);
-			console.log('endWidth',endWidth);
+			
+			console.log('endWidth',Math.ceil(finalWidth / 100) * 100);
 			
 			console.log(startTop/70);
-
+			
 
 			// startTop을 기반으로 'product-id'가 일치하는 요소를 선택합니다. row값을 가져오기 위한 코드
 			var row = $('.cell').filter('[data-product-id="' + (startTop / 70) + '"]');
@@ -612,15 +617,7 @@
 			console.log(endTime);
 			$('.resourceType').text(resourceType+row.text());
 			
-			var currentDate = new Date();
 
-			// 년, 월, 일을 추출
-			var year = currentDate.getFullYear();
-			var month = ('0' + (currentDate.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 1을 더해줌
-			var day = ('0' + currentDate.getDate()).slice(-2);
-
-			// "yyyy-mm-dd" 형식으로 조합
-			var formattedDate = year + '-' + month + '-' + day;
 			
 			$('#day').text($('.date').text());
 			$('#time').text(startTime+'~'+endTime);
@@ -653,6 +650,10 @@
         	        }
         	    });
             });
+		}else{
+			alert('날짜를 확인해 주세요.');
+			drawresource();
+		}
 		}
 		
 	$('#cancelBookingBut').on('click',function(){
