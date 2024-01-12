@@ -384,7 +384,22 @@
 		
 	    // 년, 월, 일을 YYYY-MM-DD 형식으로 변환
 	    var formattedDate = today.toISOString().split('T')[0];
-		console.log(formattedDate);
+		
+		// 현재 시간을 가져오기
+	    var currentHour = new Date().getHours();
+
+	    // 시간을 "hh" 형식으로 포맷팅
+	    var formattedHour = (currentHour < 10 ? '0' : '') + currentHour;
+
+	    console.log(formattedHour);
+
+
+	    
+	    
+	    
+	    
+	    
+		
 	    // id가 "dateInput"인 요소를 찾아서 초기값을 설정
 	    document.getElementById("dateInput").value = formattedDate;
 	
@@ -403,7 +418,7 @@
 	
 	
 	
-	
+	var loginInfo = '${loginInfo}';
 	
 	
 	drawresource();
@@ -516,8 +531,8 @@
 		// 예약 삭제를 허용
 		$(document).on('click', ".reservation", function () {
 		    console.log($(this).attr('id'));
-		    $('#kt_modal_0_1').modal('show');
 		    infoBooking($(this).attr('id'),$(this).attr('data-product-id'));
+		    $('#kt_modal_0_1').modal('show');
 		});
 		var bookingId = '';
 		function infoBooking(bookingIdx,empIdx){
@@ -540,7 +555,9 @@
 					$('#resourceModalText').text(data[0].bookingContent);
 					var content = '';
 					console.log(data[0].bookingStartDate+formattedDate);
-					if(empIdx == data[0].empIdx && data[0].bookingStartDate >= formattedDate){
+					if(loginInfo == data[0].empIdx && data[0].bookingStartDate >= formattedDate){
+						console.log(empIdx);
+						console.log(data[0].empIdx);
 						content += '<button type="button" class="btn btn-light" id="okDelBookingBut">삭제</button>';
 					}
 					content += '<button type="button" class="btn btn-primary" id="okBookingBut">확인</button>';
@@ -584,7 +601,20 @@
 		
 		
 		function qq(startTop,startWidth,finalWidth){
-			if($('.date').text()>= formattedDate){
+			var startTime = '';
+			var endTime = '';
+			if((startWidth/100).toString().length < 2){
+				startTime = '0'+startWidth/100+':'+'00';
+			}else{
+				startTime = startWidth/100+':'+'00';
+			}
+			if((startWidth/100+endWidth/100).toString().length < 2){
+				endTime = '0'+(startWidth/100+endWidth/100)+':'+'00';
+			}else{
+				endTime = (startWidth/100+endWidth/100)+':'+'00';
+			}
+			
+			if($('.date').text()>= formattedDate && formattedHour < startTime){
 				var endWidth = Math.ceil(finalWidth / 100) * 100;
 
 			console.log('startTop',startTop);
@@ -604,18 +634,6 @@
 			// 가져온 'id' 값을 출력합니다.
 			console.log('id:', resourceIdx);
 			
-			var startTime = '';
-			var endTime = '';
-			if((startWidth/100).toString().length < 2){
-				startTime = '0'+startWidth/100+':'+'00';
-			}else{
-				startTime = startWidth/100+':'+'00';
-			}
-			if((startWidth/100+endWidth/100).toString().length < 2){
-				endTime = '0'+(startWidth/100+endWidth/100)+':'+'00';
-			}else{
-				endTime = (startWidth/100+endWidth/100)+':'+'00';
-			}
 			console.log(startTime);
 			console.log(endTime);
 			$('.resourceType').text(resourceType+row.text());
@@ -654,7 +672,7 @@
         	    });
             });
 		}else{
-			alert('날짜를 확인해 주세요.');
+			alert('날짜와 시간을 확인해 주세요.');
 			drawresource();
 		}
 		}
