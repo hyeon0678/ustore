@@ -114,6 +114,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin::Card header-->
 											<div class="card-header pt-7">
 											
+											
 												<!--begin::Details-->
 										<div class="d-flex flex-wrap flex-sm-nowrap mb-3">
 											<!--begin: Pic-->
@@ -133,7 +134,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--begin::Name-->
 														<div class="d-flex align-items-center mb-2">
 															<p class="text-gray-900 fs-2 fw-bold me-1">이름</p>
-															<p class="fw-bold fs-3 text-gray-800 mx-20" id="empName"></p>
+															<p class="fw-bold fs-3 text-gray-800 mx-20" id="empDetailName"></p>
 														</div>
 														<!--end::Name-->
 														<!--begin::Info-->
@@ -153,15 +154,16 @@ License: For each use you must have a valid license purchased only from above li
 													</div>
 													<!--end::User-->
 													<!--begin::Actions-->
-												<button class="btn btn-primary" id="update" style="float: right; ">프로필 수정</button>
 													
 													
 													<!--end::Actions-->
 												</div>
+
 											</div>
 											<!--end::Info-->
 										</div>
 										<!--end::Details-->
+											<button class="btn btn-primary" id="update" style="float: right; height: 20%;">프로필 수정</button>
 											</div>
 											<!--end::Card header-->
 											<!--begin::Card body-->
@@ -503,7 +505,7 @@ License: For each use you must have a valid license purchased only from above li
 					console.log(data);
 					
 		            // 요소의 텍스트 변경
-		            $('#empName').text(data.list[0].empName);
+		            $('#empDetailName').text(data.list[0].empName);
 		            $('#deptName').text(data.list[0].deptName);
 		            $('#empDetailAddr').text(data.list[0].empDetailAddr);
 		            $('#empEmail').text(data.list[0].empEmail);

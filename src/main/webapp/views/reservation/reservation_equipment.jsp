@@ -95,7 +95,10 @@
 							<div class="container-xxl">
 								<div class="card">
 									<div class="card-header">
-						                <h2 class="card-title">자원 예약</h2>
+						                <h2 class="card-title">
+						                자원 예약
+						                <br/>
+						                </h2>
 						                <div>						                
 										<input class="fs-6" type="date" id="dateInput"  onchange="dateChanged()">
 						                </div>
