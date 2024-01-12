@@ -320,7 +320,7 @@
    	}
     
     function onError(error){
-		alert('서버와 연결할 수 없습니다. 다시 시도해 주세요');
+		//alert('서버와 연결할 수 없습니다. 다시 시도해 주세요');
 		console.log(error);
 	}
 	
@@ -344,7 +344,7 @@
 	$('#read-all').on('click', function(){
 		$.ajax({
 			data:{},
-			url:'/alarm/delete-all',
+			url:'/alarm/deleteAll.ajax',
 			dataType:'JSON',
 			success:function(){
 				$('#alarm-box').empty();
