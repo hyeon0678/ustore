@@ -61,6 +61,7 @@ ORDER BY path;
 	        null AS empName
 	    FROM
 	        department d
+	    WHERE d.dept_delete LIKE 'N'
 	    ORDER BY
 	        COALESCE(d.parent_dept_id, '#'), d.dept_id
 	</select>
@@ -82,6 +83,7 @@ ORDER BY path;
 	        department d ON e.dept_id = d.dept_id
 	    JOIN
 	        common c ON e.position = c.common_idx
+		WHERE e.emp_quit LIKE 'N'
 	    ORDER BY
 	        e.dept_id, e.emp_idx
 	</select>
