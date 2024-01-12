@@ -39,12 +39,13 @@ public class PosController {
 		return mav;
 	}
 	
+	
 	private String allSellingSum(ArrayList<PosDto> itemCart) {
 		int allSellingSum = 0;
 		for (PosDto posDto : itemCart) {
-			allSellingSum += Integer.parseInt(posDto.getSellingSum());
+			allSellingSum += Integer.parseInt(posDto.getSellingSum().replaceAll(",", ""));
 		}
-		return String.valueOf(allSellingSum);
+		return String.valueOf(allSellingSum).replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");
 	}
 
 	@RequestMapping("/updateCart.ajax")	

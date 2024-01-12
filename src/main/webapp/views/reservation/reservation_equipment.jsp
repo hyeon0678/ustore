@@ -79,7 +79,7 @@
 			<div class="page d-flex flex-row flex-column-fluid">
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
-						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">물류 장비 예약</h1>
+						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">${resourceType} 예약</h1>
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
 								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
@@ -111,7 +111,7 @@
 									
 									
 								<div class="modal fade" tabindex="-1" id="kt_modal_0">
-									<<div class="modal-dialog modal-dialog-centered mw-650px">
+									<div class="modal-dialog modal-dialog-centered mw-650px">
 										<div class="modal-content">
 											<div class="modal-header">
 												<h3 class="modal-title">예약</h3>
@@ -131,7 +131,7 @@
 															<thead>
 																<tr class="fw-bold fs-6 text-gray-800">
 																	<th>자원 종류</th>
-																	<th class="resourceType">물류 장비</th>
+																	<th class="resourceType">${resourceType}</th>
 																	<th class="text-end"></th>
 																	<th class="text-end"></th>
 																</tr>
@@ -271,7 +271,7 @@
 															<thead>
 																<tr class="fw-bold fs-6 text-gray-800">
 																	<th>자원 종류</th>
-																	<th id="resourceType">물류 장비</th>
+																	<th id="resourceType">${resourceType}</th>
 																	<th class="text-end"></th>
 																	<th class="text-end"></th>
 																</tr>
@@ -323,7 +323,7 @@
 															<thead>
 																<tr class="fw-bold fs-6 text-gray-800">
 																	<th>자원 종류</th>
-																	<th>물류 장비</th>
+																	<th>${resourceType}</th>
 																	<th class="text-end"></th>
 																	<th class="text-end"></th>
 																</tr>
@@ -375,9 +375,10 @@
 		
 
 		<script>
-	    // 오늘의 날짜를 얻기 위해 JavaScript Date 객체를 사용
+	    console.log('${resourceType}');
+		// 오늘의 날짜를 얻기 위해 JavaScript Date 객체를 사용
 	    var today = new Date();
-
+		
 	    // 년, 월, 일을 YYYY-MM-DD 형식으로 변환
 	    var formattedDate = today.toISOString().split('T')[0];
 		console.log(formattedDate);
@@ -415,8 +416,11 @@
     	        },
 		        success: function (data) {
 					console.log(data);
-					resourceType=data.item[0].resourceType+'_';
-					resource(data.item, data.booking);
+					if(data.item.length != 0){
+						resourceType=data.item[0].resourceType+'_';
+						resource(data.item, data.booking);	
+					}
+					
 		        },
 		        error: function (e) {
 		            console.log(e);
@@ -621,7 +625,7 @@
 			$('#day').text($('.date').text());
 			$('#time').text(startTime+'~'+endTime);
             $('#kt_modal_0').modal('show');
-            
+            $('#addBookingBut').off('click');
             $('#addBookingBut').on('click',function(){
             	$.ajax({
         	        type: 'get',
@@ -678,6 +682,7 @@
 				if(!data){
 					alert('자원 추가 실패 다시 확인해주세요');
 				}else{
+					drawresource();
 					$('#kt_modal_1').modal('hide');
 				}
 	        },
@@ -695,6 +700,9 @@
 		$.ajax({
 	        type: 'get',
 	        url: 'reservation/resourceInfo.ajax',
+	        data: {
+	        	'resourceType': '${resourceType}'
+	        },
 	        dataType: 'json',
 	        success: function (data) {
 				console.log(data);
@@ -725,6 +733,7 @@
 	        dataType: 'json',
 	        success: function (data) {
 				console.log(data);
+				drawresource();
 				$('#kt_modal_2').modal('hide');		
 	        },
 	        error: function (e) {
