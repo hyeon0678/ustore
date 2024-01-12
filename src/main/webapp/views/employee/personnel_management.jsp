@@ -79,8 +79,8 @@ License: For each use you must have a valid license purchased only from above li
 											
 												<div class="card-toolbar input-group mb-3">
 													<!--begin::Menu-->
-													<input type="text" class="form-control form-control-solid" placeholder="이름 입력" style="width: 20%; height: 40px;">
-            										<button type="button" class="btn btn-primary mx-2 deptmanagement-modal" style="white-space:nowrap;">
+													<input type="text" class="form-control form-control-solid" id="empName" placeholder="이름 입력" style="width: 20%; height: 40px;">
+            										<button onclick="empSearch()" class="btn btn-primary mx-2 deptmanagement-modal" style="white-space:nowrap;">
 															검색
 													</button>	
 												</div>
@@ -90,16 +90,9 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="card-body pt-1">
 												
 												<!-- js트리 그리는 공간 -->
-												<div class="scroll pe-5"
-												data-kt-scroll="true"
-												data-kt-scroll-height="80px"
-												data-kt-scroll-wrappers="#kt_example_js_content"
-												data-kt-scroll-dependencies="#kt_example_js_header, #kt_example_js_footer, #kt_header"
-												data-kt-scroll-offset="100px">
-												    <div id="kt_example_js_content">
+												<div class="scroll h-650px px-5">
 													<div id="kt_docs_jstree_basic">
 													</div>
-												    </div>
 												</div>
 												<!-- js트리 끝나는 곳-->
 
@@ -120,6 +113,7 @@ License: For each use you must have a valid license purchased only from above li
 										<div class="card card-flush h-xl-100">
 											<!--begin::Card header-->
 											<div class="card-header pt-7">
+											
 												<!--begin::Details-->
 										<div class="d-flex flex-wrap flex-sm-nowrap mb-3">
 											<!--begin: Pic-->
@@ -159,9 +153,9 @@ License: For each use you must have a valid license purchased only from above li
 													</div>
 													<!--end::User-->
 													<!--begin::Actions-->
-													<div class="d-flex my-4 mx-20">
-													<button class="btn btn-primary" id="update">프로필 수정</button>
-													</div>
+												<button class="btn btn-primary" id="update" style="float: right; ">프로필 수정</button>
+													
+													
 													<!--end::Actions-->
 												</div>
 											</div>
@@ -669,6 +663,36 @@ License: For each use you must have a valid license purchased only from above li
 			$('.dept-tbody').append(deptElem);
 			deptDetail();
 			deptDelete();
+		}
+		
+		function empSearch() {
+			console.log("검색");
+			$('#kt_docs_jstree_basic').jstree(true).search($('#empName').val());
+		}
+
+		function jsTree(treeData){
+			$('#kt_docs_jstree_basic').jstree({
+				"core" : {
+					"data" : treeData,
+					"themes" : {
+						"responsive": true
+					}
+				},
+				"types" : {
+					  "department": {
+						    "icon": "fa fa-building" // 부서 아이콘
+					  },
+					  "employee": {
+					    "icon": "fa fa-user", // 직원 아이콘
+					    "selectable": true // 선택 가능하도록 설정
+					  }
+				},
+				"plugins": ["types","search"]
+				,
+				"search":{
+					"show_only_matches_children" : true
+				}
+			});
 		}
 	</script>
 </html>

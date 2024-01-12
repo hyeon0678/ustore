@@ -580,13 +580,14 @@
 		});	
 		
 		
-		function qq(startTop,startWidth,endWidth){
+		function qq(startTop,startWidth,finalWidth){
 			if($('.date').text()>= formattedDate){
-				
+				var endWidth = Math.ceil(finalWidth / 100) * 100;
 
 			console.log('startTop',startTop);
 			console.log('startWidth',startWidth);
-			console.log('endWidth',endWidth);
+			
+			console.log('endWidth',Math.ceil(finalWidth / 100) * 100);
 			
 			console.log(startTop/70);
 			
