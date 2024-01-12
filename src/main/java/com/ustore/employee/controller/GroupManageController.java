@@ -91,7 +91,7 @@ public class GroupManageController {
 			SaveFile saveFile = new SaveFile();
 			
 			FileDto file = new FileDto();
-			file = saveFile.returnFileList(uploadFile, FileEnum.findDefindCode("empoyee"), params.get("emp_idx"));
+			file = saveFile.returnFileList(uploadFile, FileEnum.findDefindCode("employee"), params.get("emp_idx"));
 			
 			
 			saveFile.saveFile(file);
