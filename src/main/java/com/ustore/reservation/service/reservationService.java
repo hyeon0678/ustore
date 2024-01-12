@@ -28,8 +28,8 @@ public class reservationService {
 		}
 	}
 
-	public ArrayList<reservationDto> resourceInfo() {
-		return reservationDao.resourceInfo();
+	public ArrayList<reservationDto> resourceInfo(String resourceType) {
+		return reservationDao.resourceInfo(resourceType);
 	}
 
 	public boolean delResource(String resourceIdx, String empIdx) {

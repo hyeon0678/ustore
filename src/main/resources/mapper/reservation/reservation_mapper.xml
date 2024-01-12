@@ -8,7 +8,7 @@
 	</insert>	
 	
 	<select id="resourceInfo" resultType="com.ustore.reservation.dto.reservationDto">
-		SELECT resource_idx,resource_name ,resource_type FROM resource WHERE resource_del ='N'
+		SELECT resource_idx,resource_name ,resource_type FROM resource WHERE resource_del ='N' AND resource_type=#{param1}
 	</select>
 	
 	<update id="delResource">

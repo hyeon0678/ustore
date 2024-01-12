@@ -80,9 +80,9 @@ License: For each use you must have a valid license purchased only from above li
 												<div class="card-toolbar input-group mb-3">
 													<!--begin::Menu-->
 													<input type="text" class="form-control form-control-solid" placeholder="이름 입력" style="width: 20%; height: 40px;">
-            											<button type="button" class="btn btn-primary mx-2 deptmanagement-modal" data-bs-toggle="modal" data-bs-target="#kt_modal_1" style="white-space:nowrap;">
-															부서관리
-														</button>
+            										<button type="button" class="btn btn-primary mx-2 deptmanagement-modal" style="white-space:nowrap;">
+															검색
+													</button>	
 												</div>
 											</div>
 											<!--end::Header-->
@@ -90,13 +90,26 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="card-body pt-1">
 												
 												<!-- js트리 그리는 공간 -->
-												<div id="kt_docs_jstree_basic">
-													
+												<div class="scroll pe-5"
+												data-kt-scroll="true"
+												data-kt-scroll-height="80px"
+												data-kt-scroll-wrappers="#kt_example_js_content"
+												data-kt-scroll-dependencies="#kt_example_js_header, #kt_example_js_footer, #kt_header"
+												data-kt-scroll-offset="100px">
+												    <div id="kt_example_js_content">
+													<div id="kt_docs_jstree_basic">
+													</div>
+												    </div>
 												</div>
 												<!-- js트리 끝나는 곳-->
 
 											</div>
 											<!--end::Body-->
+											<div class="card-footer">
+										        <button type="button" class="btn btn-primary mx-2 deptmanagement-modal" data-bs-toggle="modal" data-bs-target="#kt_modal_1" style="white-space:nowrap; float: right;">
+															부서관리
+												</button>
+										    </div>
 										</div>
 										<!--end::List Widget 5-->
 									</div>

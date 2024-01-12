@@ -14,7 +14,7 @@ public interface reservationDao {
 
 	int addResource(HashMap<String, String> params);
 
-	ArrayList<reservationDto> resourceInfo();
+	ArrayList<reservationDto> resourceInfo(String resourceType);
 
 	int delResource(String resourceIdx, String empIdx);
 

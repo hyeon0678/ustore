@@ -33,7 +33,7 @@ public class reservationController {
 	@RequestMapping("/equipment")
 	public ModelAndView equipnent() {
 		ModelAndView mav = new ModelAndView("reservation/reservation_equipment");
-		mav.addObject("resourceType", "물류 장비");
+		mav.addObject("resourceType", "물류 장비"); 
 		return mav;
 	}
 	
@@ -42,7 +42,7 @@ public class reservationController {
 	public Map<String, Object> drawResource(@RequestParam String day,Principal principal,@RequestParam String resourceType){
 		Map<String, Object> map = new HashMap<String, Object>();
 		logger.info("그리기 파람 도착 확인 : "+day);
-		map.put("item",reservationService.resourceInfo());
+		map.put("item",reservationService.resourceInfo(resourceType));
 		map.put("booking",reservationService.bookingInfo(day,principal.getName(),resourceType));
 		return map;
 	}
@@ -58,8 +58,8 @@ public class reservationController {
 	
 	@RequestMapping("/resourceInfo.ajax")
 	@ResponseBody
-	public ArrayList<reservationDto> resourceInfo() {
-		ArrayList<reservationDto> list = reservationService.resourceInfo();
+	public ArrayList<reservationDto> resourceInfo(@RequestParam String resourceType) {
+		ArrayList<reservationDto> list = reservationService.resourceInfo(resourceType);
 		return list;
 	}
 	

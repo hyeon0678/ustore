@@ -435,14 +435,14 @@ License: For each use you must have a valid license purchased only from above li
 	    inputValue = inputValue.replace(/[^0-9]/g, '');
 		
 	    // 최대 이상의 숫자를 입력할 경우 값을 최대로 제한
-	    var upPoint = parseInt($('#upPoint').text(),10);
+	    var upPoint = parseInt(replace($('#upPoint').text()),10);
 	    if (parseInt(inputValue, 10) > upPoint) {
-	        inputValue = upPoint.toString();
+	        inputValue = viewNum(upPoint.toString());
 	    }
 	    
-	    var totalPoint = parseInt($('#totalPoint').text(), 10);
+	    var totalPoint = parseInt(replace($('#totalPoint').text()), 10);
 	    if (parseInt(inputValue, 10) > totalPoint) {
-	        inputValue = totalPoint.toString();
+	        inputValue = viewNum(totalPoint.toString());
 	    }
 
 
@@ -455,9 +455,19 @@ License: For each use you must have a valid license purchased only from above li
 		posPayModal(${memberIdx});
 	});
 	
+	function viewNum(Num){
+		var i = Num.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+		return i;
+	}
+	function replace(Num){
+		var i = Num.replace(/[^0-9]/g, '');
+		return i;
+	}
+	
 	var accumulationRate = 0;  // 멈버쉽 비율
 	var endPoint = 0; // 적립 가능 포인트 최대 한도
 	var contactNum = ''; // 구매자 전화번호
+	var sellingSum = 0;
 	function posPayModal(memberId){
 		$.ajax({
 	        type: 'get',
@@ -470,14 +480,15 @@ License: For each use you must have a valid license purchased only from above li
 				console.log(data);
 				contactNum = data.contactNum;
 				$('#name').text(data.name);
-				$('#totalPoint').text(data.totalPoint);
+				$('#totalPoint').text(viewNum(data.totalPoint));
 				$('#expiryDate').text(data.expiryDate);
-				$('#sellingSum').text(data.sellingSum);
-				$('#upPoint').text(data.upPoint);
-				$('#endSellingSum').text(data.sellingSum);  // 실결제 금액
-				$('#endSellingSum').attr('data-product-id', data.sellingSum)
+				sellingSum = data.sellingSum;
+				$('#sellingSum').text(viewNum(data.sellingSum));
+				$('#upPoint').text(viewNum(data.upPoint));
+				$('#endSellingSum').text(viewNum(data.sellingSum));  // 실결제 금액
+				$('#endSellingSum').attr('data-product-id', viewNum(data.sellingSum))
 				endPoint = data.endPoint;
-				$('#endPoint').attr('data-product-id', endPoint);
+				$('#endPoint').attr('data-product-id', viewNum(endPoint));
 				accumulationRate = data.accumulationRate;
 				var calculatedValue = Math.floor(data.upPoint * (accumulationRate / 100));
 				if(endPoint<calculatedValue){					
@@ -487,7 +498,7 @@ License: For each use you must have a valid license purchased only from above li
 						calculatedValue = endPoint;
 					}
 				}
-				$('#endPoint').text(calculatedValue);
+				$('#endPoint').text(viewNum(calculatedValue));
 	        },
 	        error: function (e) {
 	            console.log(e);
@@ -499,11 +510,11 @@ License: For each use you must have a valid license purchased only from above li
 	
 		var pointText = 0;
 	$('#pointBut').on('click',function(){
-		pointText = $('#pointText').val();
+		pointText = replace($('#pointText').val());
 		console.log('포인트 버튼 확인',pointText);
-		var upPoint = $('#upPoint').text() - pointText;
-		var endSellingSum = $('#endSellingSum').text() - pointText;
-		$('#endSellingSum').text(endSellingSum);
+		var upPoint = replace($('#upPoint').text()) - pointText;
+		var endSellingSum = sellingSum - pointText;
+		$('#endSellingSum').text(viewNum(endSellingSum));
 		var calculatedValue = Math.floor(upPoint * (accumulationRate / 100));
 		console.log("endSellingSum",calculatedValue);
 		if(endPoint<calculatedValue){					
@@ -513,7 +524,7 @@ License: For each use you must have a valid license purchased only from above li
 				calculatedValue = endPoint;
 			}
 		}
-		$('#endPoint').text(calculatedValue);
+		$('#endPoint').text(viewNum(calculatedValue));
 	});
 	
 	
@@ -626,15 +637,15 @@ License: For each use you must have a valid license purchased only from above li
 			content += '</button>'
 			content += '</div>'
 			content += '</td>' 
-			content += '<td>'+itemCart.sellingPrice+' 원</td>'
+			content += '<td>'+viewNum(itemCart.sellingPrice)+' 원</td>'
 			content += '<td>'+itemCart.productName+'</td>'
 			content += '<td>'+itemCart.productId+'</td>'
-			content += '<td class ="sum">'+itemCart.sellingSum+' 원</td>'
+			content += '<td class ="sum">'+viewNum(itemCart.sellingSum)+' 원</td>'
 			content += '</tr>'
 		});
 		$('#cartBody').empty();
 		$('#cartBody').append(content);
-		$('#allSellingSum').text("총 결제 금액 : " + data.allSellingSum + " 원");
+		$('#allSellingSum').text("총 결제 금액 : " + viewNum(data.allSellingSum) + " 원");
 		
 		
 		dialerElements = document.querySelectorAll(".input-group[data-kt-dialer='true']");
@@ -728,10 +739,10 @@ License: For each use you must have a valid license purchased only from above li
 		var content = '';
 		data.itemList.forEach(function(itemList,idx){
 			content += '<tr style="vertical-align: middle;">'
-			content += '<td style="text-align: center; padding-left: 9.75px;">'+itemList.stock+'</td>'
+			content += '<td style="text-align: center; padding-left: 9.75px;">'+viewNum(itemList.stock)+'</td>'
 			content += '<td>'+itemList.productName+'</td>'
 			content += '<td class="productId">'+itemList.productId+'</td>'
-			content += '<td>'+itemList.sellingPrice+'</td>'
+			content += '<td>'+viewNum(itemList.sellingPrice)+'</td>'
 			content += '<th style="text-align: center;">'
 			content += '<button type="button" class="btn btn-primary fs-7 productButton" '
 			content += 'data-product-id="'+itemList.productId+'"'
@@ -757,7 +768,7 @@ License: For each use you must have a valid license purchased only from above li
 		    pay_method: "card",    //  결제 메서드  -- 필수 입력값
 		    merchant_uid : memberId+"_"+Date.now(), // 결제 번호 --- 필수 입력값
 		    name : 'UStore',  // 결제 이름 -- 필수 입력값
-		    amount : 100,   // 가격 -- 필수 입력값    -- $('#endSellingSum').text()
+		    amount : replace($('#endSellingSum').text()),   // 가격 -- 필수 입력값    -- replace($('#endSellingSum').text())
 		    buyer_tel: contactNum,
 		  }, function (rsp) { // callback
 			  console.log(rsp);
@@ -772,10 +783,10 @@ License: For each use you must have a valid license purchased only from above li
 				        	 'paid_amount' : rsp.paid_amount,
 				        	 'paymentStatus' : '90',
 				        	 'memberId' : memberId,    // 회원 번호
-				        	 'endPoint' : $('#endPoint').text(),    // 적립 포인트
+				        	 'endPoint' : replace($('#endPoint').text()),    // 적립 포인트
 				        	 'pointText' : pointText,  // 사용 포인트
 				        	 'paymentsType': '92',
-				        	 'remainPoints' : $('#totalPoint').text()-pointText
+				        	 'remainPoints' : replace($('#totalPoint').text())-pointText
 				        },
 				        dataType: 'json',
 				        success: function (data) {

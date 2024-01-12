@@ -79,7 +79,7 @@
 			<div class="page d-flex flex-row flex-column-fluid">
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
-						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">회의실 예약</h1>
+						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">${resourceType} 예약</h1>
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
 								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
@@ -111,7 +111,7 @@
 									
 									
 								<div class="modal fade" tabindex="-1" id="kt_modal_0">
-									<<div class="modal-dialog modal-dialog-centered mw-650px">
+									<div class="modal-dialog modal-dialog-centered mw-650px">
 										<div class="modal-content">
 											<div class="modal-header">
 												<h3 class="modal-title">예약</h3>
@@ -131,7 +131,7 @@
 															<thead>
 																<tr class="fw-bold fs-6 text-gray-800">
 																	<th>자원 종류</th>
-																	<th class="resourceType">물류 장비</th>
+																	<th class="resourceType">${resourceType}</th>
 																	<th class="text-end"></th>
 																	<th class="text-end"></th>
 																</tr>
@@ -271,7 +271,7 @@
 															<thead>
 																<tr class="fw-bold fs-6 text-gray-800">
 																	<th>자원 종류</th>
-																	<th id="resourceType">물류 장비</th>
+																	<th id="resourceType">${resourceType}</th>
 																	<th class="text-end"></th>
 																	<th class="text-end"></th>
 																</tr>
@@ -323,7 +323,7 @@
 															<thead>
 																<tr class="fw-bold fs-6 text-gray-800">
 																	<th>자원 종류</th>
-																	<th>물류 장비</th>
+																	<th>${resourceType}</th>
 																	<th class="text-end"></th>
 																	<th class="text-end"></th>
 																</tr>
@@ -416,8 +416,11 @@
     	        },
 		        success: function (data) {
 					console.log(data);
-					resourceType=data.item[0].resourceType+'_';
-					resource(data.item, data.booking);
+					if(data.item.length != 0){
+						resourceType=data.item[0].resourceType+'_';
+						resource(data.item, data.booking);	
+					}
+					
 		        },
 		        error: function (e) {
 		            console.log(e);
@@ -533,7 +536,8 @@
 					$('#resourceModalInNum').text(data[0].empExtNo);
 					$('#resourceModalText').text(data[0].bookingContent);
 					var content = '';
-					if(empIdx == data[0].empIdx){
+					console.log(data[0].bookingStartDate+formattedDate);
+					if(empIdx == data[0].empIdx && data[0].bookingStartDate >= formattedDate){
 						content += '<button type="button" class="btn btn-light" id="okDelBookingBut">삭제</button>';
 					}
 					content += '<button type="button" class="btn btn-primary" id="okBookingBut">확인</button>';
@@ -577,12 +581,15 @@
 		
 		
 		function qq(startTop,startWidth,endWidth){
+			if($('.date').text()>= formattedDate){
+				
+
 			console.log('startTop',startTop);
 			console.log('startWidth',startWidth);
 			console.log('endWidth',endWidth);
 			
 			console.log(startTop/70);
-
+			
 
 			// startTop을 기반으로 'product-id'가 일치하는 요소를 선택합니다. row값을 가져오기 위한 코드
 			var row = $('.cell').filter('[data-product-id="' + (startTop / 70) + '"]');
@@ -609,20 +616,12 @@
 			console.log(endTime);
 			$('.resourceType').text(resourceType+row.text());
 			
-			var currentDate = new Date();
 
-			// 년, 월, 일을 추출
-			var year = currentDate.getFullYear();
-			var month = ('0' + (currentDate.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 1을 더해줌
-			var day = ('0' + currentDate.getDate()).slice(-2);
-
-			// "yyyy-mm-dd" 형식으로 조합
-			var formattedDate = year + '-' + month + '-' + day;
 			
 			$('#day').text($('.date').text());
 			$('#time').text(startTime+'~'+endTime);
             $('#kt_modal_0').modal('show');
-            
+            $('#addBookingBut').off('click');
             $('#addBookingBut').on('click',function(){
             	$.ajax({
         	        type: 'get',
@@ -650,6 +649,10 @@
         	        }
         	    });
             });
+		}else{
+			alert('날짜를 확인해 주세요.');
+			drawresource();
+		}
 		}
 		
 	$('#cancelBookingBut').on('click',function(){
@@ -679,6 +682,7 @@
 				if(!data){
 					alert('자원 추가 실패 다시 확인해주세요');
 				}else{
+					drawresource();
 					$('#kt_modal_1').modal('hide');
 				}
 	        },
@@ -696,6 +700,9 @@
 		$.ajax({
 	        type: 'get',
 	        url: 'reservation/resourceInfo.ajax',
+	        data: {
+	        	'resourceType': '${resourceType}'
+	        },
 	        dataType: 'json',
 	        success: function (data) {
 				console.log(data);
@@ -726,6 +733,7 @@
 	        dataType: 'json',
 	        success: function (data) {
 				console.log(data);
+				drawresource();
 				$('#kt_modal_2').modal('hide');		
 	        },
 	        error: function (e) {

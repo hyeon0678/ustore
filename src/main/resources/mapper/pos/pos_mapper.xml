@@ -32,12 +32,12 @@
 		
 		<!-- pos 상품 리스트 불러오기 -->
 		<select id="posItem" resultType="com.ustore.pos.dto.PosDto">
-			   SELECT p.product_id ,p.product_name ,p.selling_price ,p.stock FROM products p WHERE p.stock != 0
+			   SELECT p.product_id ,p.product_name ,FORMAT(p.selling_price,0) AS selling_price ,FORMAT(p.stock,0)AS stock FROM products p WHERE p.stock != 0
 		</select>
 		
 		<!-- pos 회원 장바구니 리스트 불러오기 -->
 		<select id="posCart" resultType="com.ustore.pos.dto.PosDto">
-			SELECT c.quantity , p.selling_price, p.product_name, p.product_id,(p.selling_price * c.quantity)AS selling_sum  
+			SELECT c.quantity , FORMAT(p.selling_price,0) AS selling_price, p.product_name, p.product_id,FORMAT(p.selling_price * c.quantity,0)AS selling_sum  
 			FROM  products p
 			LEFT JOIN payment_cart c ON c.product_id = p.product_id
 			WHERE c.member_id = #{param1}
@@ -70,7 +70,7 @@
 		
 		<!-- pos 물품 검색 -->
 		<select id="productSearch" resultType="com.ustore.pos.dto.PosDto">
-			SELECT p.product_id ,p.product_name ,p.selling_price ,p.stock FROM products p WHERE p.stock != 0			
+			SELECT p.product_id ,p.product_name ,FORMAT(p.selling_price,0) AS selling_price  ,FORMAT(p.stock,0)AS stock FROM products p WHERE p.stock != 0			
 			<if test="searchText != ''">
 				<if test="selectedOption == 'productName'">
 				AND product_name = #{searchText}
