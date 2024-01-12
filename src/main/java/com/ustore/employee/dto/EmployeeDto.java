@@ -31,7 +31,22 @@ public class EmployeeDto {
 	private String newPw;
 	private String photo;
 	private String isChangePw;
+	private String newFileName;
+	private String extension;
 	
+	
+	public String getExtension() {
+		return extension;
+	}
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+	public String getNewFileName() {
+		return newFileName;
+	}
+	public void setNewFileName(String newFileName) {
+		this.newFileName = newFileName;
+	}
 	public String getNewPw() {
 		return newPw;
 	}
