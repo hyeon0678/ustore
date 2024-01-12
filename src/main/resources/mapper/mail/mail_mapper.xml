@@ -116,6 +116,22 @@
 		<update id="delupdateRM">
 			update receive_mail set mail_del ='Y' where emp_idx =#{param1} and mail_idx = #{param2}
 		</update>
+		
+		<insert id="saveRM" parameterType="String">
+			insert into send_mail(emp_idx, mail_content,mail_subject,mail_del)value(#{param1},#{param2},#{param3},'N')
+		</insert>
+		
+		<select id="mailidx" resultType="String">
+			select mail_idx from send_mail sm where emp_idx =#{param1} and mail_subject =#{param3} and mail_del ='N' and mail_content =#{param2}
+		</select>
+		
+		<insert id="saveSM" parameterType="String">
+				insert into receive_mail (mail_idx, emp_idx, mail_del, mail_read)value(#{param1},#{param2},'N','N')
+		</insert>
+		
+		
+		
+		
 
 
 </mapper>

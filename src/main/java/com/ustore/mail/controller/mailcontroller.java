@@ -3,20 +3,25 @@ package com.ustore.mail.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.websocket.Session;
+import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ustore.fileSystem.dao.FileDao;
+import com.ustore.fileSystem.dto.FileDto;
+import com.ustore.mail.dto.maildto;
 import com.ustore.mail.service.mailservice;
+import com.ustore.utils.SaveFile;
 
 @Controller
 public class mailcontroller {
@@ -25,7 +30,7 @@ public class mailcontroller {
 	
 		Logger logger = LoggerFactory.getLogger(getClass());
 		@Autowired mailservice service;
-		
+		@Autowired FileDao filedao;
 
 		@GetMapping(value = "/mail/home")
 		public String home() {
@@ -218,11 +223,55 @@ public class mailcontroller {
 			return "mail/maillist_new";
 		}
 		
+		
+		
+		// @RequestParam(required = false) String[] saveempnum
+		//@ModelAttribute maildto dto
+		//filename ++ MultipartFile upload_btn
 		@RequestMapping(value = "mail/new.ajax/save")
 		@ResponseBody
-		public ModelAndView newsave(Principal Principal, @RequestParam HashMap<String, String> empnum) {
+		public ModelAndView newsave(Principal Principal, @RequestParam(required = false, value = "saveempnum[]") String[] saveempnum,
+				@RequestParam(required = false, value = "filename[]") String[] filename, @RequestParam String content, @RequestParam String subject 
+				) {
+			logger.info(" 메일 글쓰기 저장 기능 플레이 ");
+			String  emproynum = Principal.getName();
+			logger.info("emproynum : "+emproynum);
+			boolean result= false;
 			
-			logger.info("회원들"+empnum);
+			
+			//logger.info("files : "+upload_btn);
+		//logger.info("회원들"+empnum);
+			logger.info("saveempnum : "+saveempnum.toString());
+			logger.info("saveempnum : "+saveempnum.length);
+			service.saveRM(emproynum,content,subject);
+			 String mail_idx = service.mailidx(emproynum, content,subject);
+			logger.info("mailIdx : "+mail_idx);
+			for (String emp : saveempnum) {
+				logger.info("emp : "+emp);
+				logger.info("content : "+content);
+				logger.info("subject : "+subject);
+				
+				service.saveSM(mail_idx, emp );
+				
+			}
+			
+			/*	
+			for (String namefile : filename) {
+				logger.info("file : "+emp);
+				// 파일 저장 코드
+				//groupManageService.imgInfo(idx);
+				SaveFile saveFile = new SaveFile();
+				
+				FileDto file = new FileDto();
+				file = saveFile.returnFileList(namefile, 76,emp);
+				logger.info("file : "+file);			
+				saveFile.saveFile(file);			
+				filedao.saveFile(file);			
+			}
+			*/
+		//	logger.info("formData : "+dto.getEmpnum());
+		//	logger.info("formData : "+dto.getSubject());
+		//	logger.info("formData : "+dto.getContent());
 			
 			return null;
 		}

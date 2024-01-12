@@ -101,6 +101,27 @@ public class mailservice {
 		dao.delupdateRM(emproynum, selecteidx);
 		
 	}
+
+
+
+
+	public void saveRM(String emproynum, String content, String subject) {
+		dao.saveRM(emproynum, content,subject);
+	}
+
+
+
+
+	public void saveSM(String mailIdx, String emp) {
+		dao.saveSM(mailIdx, emp);
+	}
+
+
+
+
+	public String mailidx(String emproynum, String content, String subject) {
+		return dao.mailidx(emproynum, content,subject);
+	}
 	
 	
 	

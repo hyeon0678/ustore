@@ -32,6 +32,12 @@ public interface maildao {
 
 	void delupdateRM(String emproynum, int selecteidx);
 
+	void saveRM(String emproynum, String content, String subject);
+
+	void saveSM(String mailIdx, String emp);
+
+	String mailidx(String emproynum, String content, String subject);
+
 	
 	
 	
