@@ -83,7 +83,7 @@ public class OrderService {
 		dto.setResourceIdx(Integer.parseInt(resourceIdx));
 		
 		
-		
+		dao.resourceAdd(dto);
 		dao.orderInsert(dto);
 		dao.driverSchedule(dto);
 
@@ -137,9 +137,14 @@ public class OrderService {
 		return dao.orderListModal(dto);
 	}
 
-	public ArrayList<OrderDto> driverSch() {
+	public ArrayList<OrderDto> driverSch(String formattedBirthdate) {
 	
-		return dao.driverSch();
+		OrderDto dto = new OrderDto(); 
+		
+		dto.setResourceDate(formattedBirthdate);
+		
+		
+		return dao.driverSch(dto);
 	}
 
 //	public ArrayList<OrderDto> orderListSearch(String searchValue) {

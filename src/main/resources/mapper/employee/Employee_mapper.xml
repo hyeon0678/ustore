@@ -201,9 +201,13 @@ update_by = #{empIdx}
 	emp_changepw_date = curdate() 
 	WHERE emp_idx like #{empIdx}
 </insert>
+
 <select id="annualCount" resultType="Integer" parameterType="String">
-SELECT IFNULL(MIN(leave_incdec), 0) AS leave_incdec
+
+SELECT SUM(leave_incdec) AS leave_incdec
 FROM annual_leave
 WHERE emp_idx = #{empIdx}
+
+
 </select>
 </mapper>

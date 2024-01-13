@@ -33,13 +33,23 @@ public class OrderDto {
 	private String resourceName;
 	private String empName;
 	private String searchValue;
-
+    private String resourceDate;
+    
+    
+    
 	
 	// 대금지급 관련 추가
 	private int netQuantity; // 주문량 - 반품량
+	public String getResourceDate() {
+		return resourceDate;
+	}
+	public void setResourceDate(String resourceDate) {
+		this.resourceDate = resourceDate;
+	}
 	private int returnQuantity; // 반품량
 	private int totalPricePerProduct; // 발주 건 제품의 판매 금액(구매금액*단위수량*(주문량-반품량))
 	private int totalAmount; // 발주 건 총 금액
+	
 	
 	
 	public String getSearchValue() {

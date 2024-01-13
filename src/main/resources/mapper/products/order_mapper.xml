@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ustore.products.dao.OrderDao">
 
 
@@ -58,8 +57,8 @@ WHERE p.product_name = #{productName}
     </delete>
     
     <insert id="orderInsert" parameterType="OrderDto">
-    insert into `order` (emp_idx,exp_arrival_date,driver_idx) values
-(#{empIdx},#{expArrivalDate},#{driverIdx})
+    insert into `order` (emp_idx,exp_arrival_date,driver_idx,resource_idx) values
+(#{empIdx},#{expArrivalDate},#{driverIdx},#{resourceIdx})
     
     </insert>
     
@@ -106,8 +105,8 @@ WITH RankedOrders AS (
         delivery_driver d ON o.driver_idx = d.driver_idx
     JOIN
         driver_schedule ds ON o.driver_idx = ds.driver_idx
-    JOIN
-        resource r ON ds.resource_idx = r.resource_idx
+    LEFT JOIN
+        resource r ON o.resource_idx = r.resource_idx
 )
 SELECT
     order_idx,
@@ -121,6 +120,7 @@ WHERE
 ORDER BY
     order_idx DESC;
 
+
     </select>
     
     <select id="orderListModal" resultType="OrderDto">
@@ -130,12 +130,32 @@ JOIN products p ON od.product_id = p.product_id
 WHERE od.order_idx = #{orderIdx}
     
     </select>
-    <select id="driverSch" resultType="OrderDto">
-     select resource_idx ,resource_name  from resource where resource_del ="N";  
-    </select>
-
-  <!--  <select id="orderListSearch" resultType="OrderDto">
-
+    
+  <select id="driverSch" resultType="OrderDto">
+  
+SELECT r.resource_idx, r.resource_name
+FROM resource r
+WHERE r.resource_del = 'N'
+  AND (
+    r.resource_idx NOT IN (
+      SELECT rb.resource_idx
+      FROM resource_booking rb
+      WHERE 
+        rb.booking_start_date = #{resourceDate}
+    )
+  );
+  
 </select>
- -->
+
+ <insert id="resourceAdd" parameterType="OrderDto">
+
+insert into resource_booking (emp_idx,resource_idx,booking_start_date,booking_end_date,booking_start_time,booking_end_time,booking_content,reg_by)
+values(#{empIdx},#{resourceIdx},#{expArrivalDate},DATE_ADD(#{expArrivalDate}, INTERVAL 1 DAY),CONCAT(HOUR(NOW()), ':', MINUTE(NOW()), ':', SECOND(NOW())), CASE
+        WHEN (HOUR(NOW()) + 3) > 24 THEN 
+            CONCAT(HOUR(NOW()) + 3 - 24, ':', MINUTE(NOW()), ':', SECOND(NOW()))
+        ELSE
+            CONCAT(HOUR(NOW()) + 3, ':', MINUTE(NOW()), ':', SECOND(NOW()))
+    END,'발주차량 예약test',#{empIdx})
+ 
+ </insert>
 </mapper>
