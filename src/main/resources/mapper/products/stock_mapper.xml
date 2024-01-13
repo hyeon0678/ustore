@@ -117,8 +117,8 @@ WITH RankedOrders AS (
         order_detail od ON o.order_idx = od.order_idx
     JOIN
         driver_schedule ds ON d.driver_idx = ds.driver_idx
-    JOIN
-        resource r ON ds.resource_idx = r.resource_idx
+    LEFT JOIN
+        resource r ON o.resource_idx = r.resource_idx
     WHERE
         od.conf_status = 'N'
 )
@@ -132,7 +132,7 @@ FROM
 WHERE
     row_num = 1
 ORDER BY
-    order_idx DESC
+    order_idx DESC;
 </select>
 
 <select id="incomModalList" resultType="OrderDto">

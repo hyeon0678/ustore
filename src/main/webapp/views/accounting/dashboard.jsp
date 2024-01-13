@@ -259,7 +259,7 @@
                         data: {
                             labels: labels,
                             datasets: [{
-                                label: 'Selling Price',
+                                label: 'Price',
                                 data: dataValues,
                               
                             }],
@@ -359,7 +359,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Selling Price',
+                        label: 'Price',
                         data: dataValues,
                     }],
                 },
@@ -634,7 +634,7 @@ $(document).ready(function() {
                 labels: ['식품', '생필품', '전자제품'],
                 datasets: [
                     {
-                        label: 'price',
+                        label: 'Price',
                         data: [foodData, necessityData, electronicsData],
                         backgroundColor: [
                         	 '#5cb85c',
