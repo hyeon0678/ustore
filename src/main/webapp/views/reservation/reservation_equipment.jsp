@@ -82,13 +82,14 @@
 						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">${resourceType} 예약</h1>
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
-								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
-									
+								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">							
 								</div>
+
 								<div class="card-toolbar">
 									<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">자원 추가하기</button>
 									<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_2" id="delResourceModal">자원 삭제하기</button>
 								</div>
+
 							</div>
 						</div>
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
@@ -394,7 +395,10 @@
 	    console.log(formattedHour);
 
 
-	    
+	    function replaceNum(Num){
+			var i = Num.replace(/[^0-9]/g, '');
+			return i;
+		}
 	    
 	    
 	    
@@ -478,10 +482,31 @@
 		    if (!reservations[idx]) {
 		        reservations[idx] = {};
 		    }
+		    if(booking.bookingStartDate != booking.bookingEndDate){
+		    	if(booking.bookingStartDate == dateInputValue){
+		    		reservations[idx].date = dateInputValue;
+				    reservations[idx].start = booking.bookingStartTime;
+				    reservations[idx].end = '24:00:00';
+				    reservations[idx].row = index;
+		    	}else if(booking.bookingEndDate == dateInputValue){
+		    		reservations[idx].date = dateInputValue;
+				    reservations[idx].start = '00:00:00';
+				    reservations[idx].end = booking.bookingEndTime;
+				    reservations[idx].row = index;
+		    	}else{
+		    		reservations[idx].date = dateInputValue;
+		 		    reservations[idx].start = '00:00:00';
+		 		    reservations[idx].end = '24:00:00';
+		 		    reservations[idx].row = index;
+		    	}
+		    }else{		    	
 		    reservations[idx].date = booking.bookingStartDate;
 		    reservations[idx].start = booking.bookingStartTime;
 		    reservations[idx].end = booking.bookingEndTime;
 		    reservations[idx].row = index;
+		    }
+		    
+		    
 		});
 		
 
@@ -548,7 +573,7 @@
 					console.log(data);
 					$('#resourceModal').text(data[0].resourceType+'_'+data[0].resourceName);
 					$('#resourceModalDay').text(data[0].bookingStartDate+' ~ '+data[0].bookingEndDate);
-					$('#resourceModalTime').text(data[0].bookingStartTime+' ~ '+data[0].bookingEndTime);
+					$('#resourceModalTime').text(data[0].bookingStartTime.substring(0,5)+' ~ '+data[0].bookingEndTime.substring(0,5));
 					$('#resourceModalName').text(data[0].empName);
 					$('#resourceModalDept').text(data[0].deptName);
 					$('#resourceModalInNum').text(data[0].empExtNo);
@@ -603,6 +628,11 @@
 		function qq(startTop,startWidth,finalWidth){
 			var startTime = '';
 			var endTime = '';
+			var endWidth = Math.ceil(finalWidth / 100) * 100;
+			
+			
+			
+			
 			if((startWidth/100).toString().length < 2){
 				startTime = '0'+startWidth/100+':'+'00';
 			}else{
@@ -614,8 +644,18 @@
 				endTime = (startWidth/100+endWidth/100)+':'+'00';
 			}
 			
+			if(replaceNum(endTime)>=2400){
+				var a = (replaceNum(endTime)-((replaceNum(endTime)-replaceNum(startTime))*2)+100);
+				console.log(a);
+				endTime = (parseInt(replaceNum(startTime),0)+100).toString().replace(/(..)(..)/, "$1:$2");
+				startTime = a.toString().replace(/(..)(..)/, "$1:$2");
+				console.log(startTime);
+			}
+			
+			
+			
 			if($('.date').text()>= formattedDate && formattedHour < startTime){
-				var endWidth = Math.ceil(finalWidth / 100) * 100;
+				
 
 			console.log('startTop',startTop);
 			console.log('startWidth',startWidth);

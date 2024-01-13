@@ -126,6 +126,7 @@ public class GroupManageService {
 
 	public void imgInfo(String idx) {
 		String file_idx = groupManageDao.imgInfo(idx);
+		logger.info(file_idx);
 		if (file_idx != null) {
 			groupManageDao.delImgInfo(file_idx);
 		}

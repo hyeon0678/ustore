@@ -82,13 +82,14 @@
 						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">${resourceType} 예약</h1>
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
-								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
-									
+								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">							
 								</div>
+
 								<div class="card-toolbar">
 									<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">자원 추가하기</button>
 									<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_2" id="delResourceModal">자원 삭제하기</button>
 								</div>
+
 							</div>
 						</div>
 						<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
@@ -603,6 +604,7 @@
 		function qq(startTop,startWidth,finalWidth){
 			var startTime = '';
 			var endTime = '';
+			var endWidth = Math.ceil(finalWidth / 100) * 100;
 			if((startWidth/100).toString().length < 2){
 				startTime = '0'+startWidth/100+':'+'00';
 			}else{
@@ -615,7 +617,7 @@
 			}
 			
 			if($('.date').text()>= formattedDate && formattedHour < startTime){
-				var endWidth = Math.ceil(finalWidth / 100) * 100;
+				
 
 			console.log('startTop',startTop);
 			console.log('startWidth',startWidth);

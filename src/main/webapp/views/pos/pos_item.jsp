@@ -557,7 +557,7 @@ License: For each use you must have a valid license purchased only from above li
 	        data: {
 	            'memberId': memberId,
 	            'productId':productId,
-	            'quantity':quantity
+	            'quantity':replace(quantity)
 	        },
 	        dataType: 'json',
 	        success: function (data) {
@@ -595,7 +595,7 @@ License: For each use you must have a valid license purchased only from above li
 	        data: {
 	            'memberId': memberIdx,
 	            'productId':productId,
-	            'quantity':quantity
+	            'quantity':replace(quantity)
 	        },
 	        dataType: 'json',
 	        success: function (data) {
@@ -655,7 +655,8 @@ License: For each use you must have a valid license purchased only from above li
 	        
 	        dialerObject.on('kt.dialer.changed', function (value) {
 	            // 다이얼러 값이 변경될 때 처리할 내용을 여기에 작성합니다.
-	            updateCart(${memberIdx},value.inputElement.id,value.inputElement.value)
+	            console.log(value.inputElement.value.length);
+	            updateCart(${memberIdx},value.inputElement.id, value.inputElement.value);
 	        });
 	    });
 		
