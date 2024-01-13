@@ -101,7 +101,7 @@
 										id="kt_datatable_zero_configuration_mail" style="overflow-x: hidden;">
 									<thead>
 										<tr class="text-start fw-bold fs-7 text-uppercase gs-0 text-center" style=" color: #c6da52;">
-											<th class="min-w-30px text-center"><input type="checkbox" onclick="checked()" value="12"/></th>
+											<th class="min-w-30px text-center"></th>
 											<th class="min-w-30px text-center" >NO.</th>
 											<th class="min-w-80px text-center" >상태</th>
 											<th class="min-w-200px text-center" >제목</th>
@@ -209,9 +209,9 @@
 			 	content += '<th class="min-w-30px text-center"><input type="checkbox" name="mailidx" value="'+obj.list[i].mailnum+'" /></th>';
 			 	content += '<th class="min-w-30px text-center">'+i+'</th>';
 			 	if(obj.list[i].mail_read == 'N'){
-			 		content += '<th class="min-w-80px text-center" >NEW</th>';
+			 		content += '<th class="min-w-80px text-center" style="color: orange;" >NEW</th>';
 				 } else {
-					 content += '<th class="min-w-80px text-center" >read</th>'; 
+					 content += '<th class="min-w-80px text-center" >읽음</th>'; 
 				}
 			 	content += '<th class="min-w-200px text-center" ><a href="mail/detail?idx='+obj.list[i].mailnum+'&&pageState='+pageState+'" class="text-gray-800 text-hover-primary mb-1">'+obj.list[i].mail_subject+'</a></th>';
 			 	content += '<th class="min-w-130px text-center" >'+obj.list[i].personname+'</th>';
@@ -222,7 +222,7 @@
 			 	content += '</tr>';
 				
 				$('#list').append(content);
-		};
+			};
 		};
 		    
 		if (obj.size > 0) {
@@ -248,19 +248,24 @@
              $.ajax({
  				type:'get',
  				url:'mail/home.ajax/update', 
- 				data:{'selecteidx':checkVal},
+ 				data:{'selecteidx':checkVal,'pageState':pageState},
  				dataType:'JSON',
  				success:function(data){
  					console.log(data);
  					console.log("업데이트 성공");
+ 					
  				},
  				error:function(e){
  					console.log(e);
  				}
  				});//	
+ 				
+ 				
+ 				
          });
          
          
+             location.href='mail/home';	
                 
 		
 		

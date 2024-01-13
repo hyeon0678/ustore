@@ -191,6 +191,15 @@ public class MemberService {
 
 
 
+	public String bischeck(String bisnum) {
+		int row = dao.bischeck(bisnum);
+		return row >0? "이미 등록된 사업자 번호입니다":"등록 가능한 회원 번호입니다";
+	}
+
+
+
+
+
 	
 	
 	

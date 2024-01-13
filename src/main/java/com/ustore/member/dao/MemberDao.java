@@ -47,6 +47,8 @@ public interface MemberDao {
 	ArrayList<HashMap<String, String>> detailbill(String paymentidx);
 
 	HashMap<String, String> billlist(String paymentidx);
+
+	int bischeck(String bisnum);
 	
 
 }

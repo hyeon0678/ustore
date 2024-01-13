@@ -161,8 +161,8 @@
 									<label class="col-lg-2 fw-semibold text-muted">주소</label>
 									<!--end::Label-->
 									<!--begin::Col-->
-									<div class="col-lg-3">
-										<span class="fw-bold fs-6 text-gray-800">${info.street_address}</span>
+									<div class="col-lg-7">
+										<span class="fw-bold fs-6 text-gray-800" style="width: 1200px;">${info.street_address}</span>
 									</div>
 									<!--end::Col-->
 								</div>
@@ -219,7 +219,7 @@
 										일자</label>
 									<!--end::Label-->
 									<!--begin::Col-->
-									<div class="col-lg-3">
+									<div class="col-lg-7">
 										<span class="fw-bold fs-6 text-gray-800">${info.create_date} ~ ${info.expiry_date}</span>
 									</div>
 									<!--end::Col-->
@@ -280,10 +280,10 @@
 																	
 																	
 																	<label for="date" style="padding-left: 150px;">
-																        <input type="date" id="" value="" />
+																        <input type="date" id="pointlistS" value="" />
 																        ~
-																        <input type="date" id="" value="" />
-																        <input type="button" id="usearchButton" class="comm-btn" value="검색"
+																        <input type="date" id="pointlistE" value="" />
+																        <input type="button" id="usearchButton" class="comm-btn" value="검색" onclick="datepoint()"
 																         style="margin:0px 5px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" />
 																    </label>
 																    <!--begin::Close-->
@@ -570,6 +570,12 @@ var weekbutton = false;
 		
 	}
 	
+	
+	
+	
+	
+	
+	
 	/* productlistcall  */
 	function basicproduct(){
 		console.log(" 기본 제품 구매 이력 리스트 호출");
@@ -667,12 +673,24 @@ var weekbutton = false;
 			});//	
 	}
 	
+	
+	// 포인트 날짜 확인
 function datepoint(){
-		
+	
+			const startdate = document.getElementById('pointlistS').value;
+			const enddate = document.getElementById('pointlistE').value;
+			var memberidx= ${info.member_idx};		
+			
+			if(startdate > enddate){
+				
+			 	 alert("해당 기간의 조회가 불가능합니다.");
+			 	 
+			 }else{
+				 
 		$.ajax({
 			type:'post',
 			url:'customer/detail.ajax/datepoint', 
-			data:{'memberidx':memberidx},
+			data:{'memberidx':memberidx,'startdate':startdate, 'enddate':enddate},
 			dataType:'JSON',
 			success:function(obj){
 				console.log(obj);
@@ -707,6 +725,11 @@ function datepoint(){
 				console.log(e);
 			}
 			});//	
+				 
+				 
+			 }
+				 
+		
 	}
 	
 	

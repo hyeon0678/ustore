@@ -155,9 +155,9 @@
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row" style="display: flex; align-items: center;">
 																<input type="text" name="business_num" class="form-control form-control-lg form-control-solid" placeholder="사업자번호를 입력해 주세요." value="" style="width: 300px; margin-right: 10px"/>
-																<input type="file" name="photos"  id="file" multiple="multiple"  />
+																<input type="file" name="photos"  id="file"  onclick="numfind()"/>
 															</div> 
-															<span style="color: red; font-size: small; float: right;">
+															<span style="color: red; font-size: small; float: right; visibility: hidden;" >
 															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
@@ -368,7 +368,7 @@
         param.detail_address = detail_address;
         param.member_state = member_state;
         param.business_num = business_num;        
-        console.log(param);
+        console.log(param.responseText);
 		
 		
 		
@@ -379,6 +379,28 @@
 		
 	});
 	
+	let fileList = [];	
+	function numfind(){
+		
+		var bisnum = $('input[name="business_num"]').val();
+		
+		$.ajax({
+			type:'post',
+			url:'customer/joinbis.ajax/bisnum', 
+			data:{'bisnum':bisnum},
+			dataType:'JSON',
+			success:function(obj){
+				console.log(obj);
+				InfoModal(obj.msg);
+			},
+			error:function(e){
+				console.log(e);
+			}
+			});//	
+		
+		
+		
+	}
 	
 	
 

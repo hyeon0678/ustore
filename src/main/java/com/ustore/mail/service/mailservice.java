@@ -104,6 +104,11 @@ public class mailservice {
 
 
 
+	public void delupdateSM(String emproynum, int selecteidx) {
+		dao.delupdateSM(emproynum, selecteidx);
+		
+	}
+	
 
 	public void saveRM(String emproynum, String content, String subject) {
 		dao.saveRM(emproynum, content,subject);
@@ -122,7 +127,26 @@ public class mailservice {
 	public String mailidx(String emproynum, String content, String subject) {
 		return dao.mailidx(emproynum, content,subject);
 	}
-	
+
+
+
+
+	public void reupdateRM(String emproynum, int selecteidx) {
+		dao.reupdateRM(emproynum, selecteidx);
+		
+	}
+
+
+
+
+	public void reupdateSM(String emproynum, int selecteidx) {
+		dao.reupdateSM(emproynum, selecteidx);
+		
+	}
+
+
+
+
 	
 	
 	

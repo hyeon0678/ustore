@@ -266,6 +266,31 @@ public class MemberController {
 		}
 		
 		
+		
+		@RequestMapping(value = "/customer/detail.ajax/datepoint")
+		@ResponseBody
+		public HashMap<String, Object> datepoint(@RequestParam String startdate,@RequestParam String enddate,@RequestParam int memberidx) {
+			logger.info("날짜 리스트 불러오기  호출하기");
+			logger.info("member idx : "+memberidx);
+			logger.info("startdate : "+startdate);
+			logger.info("enddate : "+enddate);
+			
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			
+			ArrayList<HashMap<String, String>> list = service.pointlistcall(memberidx,startdate, enddate);
+			logger.info("num"+list.toString());
+			result.put("list", list);
+			result.put("size", list.size());
+			logger.info("result : " +result);	
+			
+			
+			
+			return result; // 앞으로 보낸다
+		}
+		
+		
+		
+		
 				@RequestMapping(value = "/customer/detail.ajax/basicpointlist")
 				@ResponseBody
 				public HashMap<String, Object> basicpointlist(@RequestParam int memberidx) {
@@ -377,6 +402,8 @@ public class MemberController {
 		return mav; // 앞으로 보낸다
 	}
 	
+	
+	
 	//customer/update.ajax/updatesave
 	@RequestMapping(value = "customer/update.ajax/updatesave")
 	@ResponseBody
@@ -439,6 +466,47 @@ public class MemberController {
 		logger.info("side 페이지 들어가기");
 		return "common/sidebar";
 	}
+	
+	
+	
+	
+	@RequestMapping(value = "customer/joinbis.ajax/bisnum")
+	@ResponseBody
+	public ModelAndView bisnum(@RequestParam String bisnum) {
+		logger.info("사업자 회원 번호 확인   호출하기");
+		logger.info("member idx : "+bisnum);
+		ModelAndView mav = new ModelAndView();
+		
+		String msg = service.bischeck(bisnum);
+		mav.addObject("msg",msg);
+		
+		return mav; // 앞으로 보낸다
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
