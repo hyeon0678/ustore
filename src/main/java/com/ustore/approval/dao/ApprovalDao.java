@@ -73,9 +73,9 @@ public interface ApprovalDao {
 
 	ApprovalDto getEmpLeaveInfo(String drafterEmpIdx, Integer apprIdx);
 
-	void insertAnnualLeaveInfo(String drafterEmpIdx, Date date, int leaveType, int totalLeaveDays);
+	void insertAnnualLeaveInfo(String drafterEmpIdx, Date date, int leaveType, int leaveDec);
 
-	void insertOtherLeaveInfo(String drafterEmpIdx, Date date, int leaveType, int totalLeaveDays);
+	void insertOtherLeaveInfo(String drafterEmpIdx, Date date, int leaveType, int leaveDec);
 
 	int getTotalLeaveDays(String drafterEmpIdx);
 
