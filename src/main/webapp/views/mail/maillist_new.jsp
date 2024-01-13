@@ -110,6 +110,7 @@
 						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">메일 작성</h1>
 					<!--================================메인 내용들어가는부분================================================-->
+					
 					<div class="container flex-column flex-lg-row ">
 						<div class="comm-head">
 						</div>
@@ -117,16 +118,15 @@
 							<div class="comm-left">
 							</div>
 							<div class="comm-right">
-								<button type="button" class="btn btn-primary span-search-button" onclick="savemail()"
+								<button type="submit" class="btn btn-primary span-search-button" onclick="savemail()"
 									style="margin-left: 10px;">메일 보내기</button>
 							</div>
 						</div>
 					</div>
-
 					<div class="container d-flex flex-column flex-lg-row comm-content-body"
 						id="kt_docs_content_container">
-						<div class="card card-docs px-5 px-10 flex-row-fluid mb-2" id="kt_docs_content_card"
-							style="margin-right: 5px; width: 15%;">
+						<div class="card card-docs  flex-row-fluid mb-2" id="kt_docs_content_card"
+							style="margin-right: 5px; width: 26%; padding-left: 10px;">
 							<div style="display: flex; align-items: center; margin-top: 30px;" >
 								<input type="text" class="form-control form-control-solid" id="empName"
 									placeholder="이름을 입력하세요"
@@ -136,7 +136,7 @@
 							</div>
 							<!-- js트리 그리는 곳-->							
 								<div class="content_tree"
-									style="float: left; width: 300px; height: 400px; overflow-y: auto; margin-top: 50px;">
+									style="float: left; width: 300px; height: 450px; overflow-y: auto; margin-top: 50px;">
 									<div id="make_room_jstree"></div>
 								</div>							
 							<!-- js트리 끝나는 곳-->
@@ -169,17 +169,19 @@
 
 											<!--begin::Message-->
 											<div id="kt_docs_ckeditor_classic">
-													<textarea name="text" id="editor" value="" style="height: 800px;"></textarea>
+													<textarea name="text" id="editor"  style="height: 800px;"></textarea>
 													
 											</div>
 											<!--end::Message-->
 										</div>
 										<!--end::Body-->
+										
 										<div class="d-flex flex-stack flex-wrap gap-2 py-5 ps-8 pe-5 border-top">
 											<div class="d-flex align-items-center me-3" >
-												<input type="file" name="photos"  id="upload_btn"  multiple="multiple" className="btnOfInput" onchange="filechange()"/>
+												<!-- <input type="file" name="file"  id="upload_btn"  multiple="multiple"  onchange="filechange()"/> -->
 											</div>											
 										</div>
+										
 										<div class="px-15 px-10">
 												<ul class="upload_ul">													
 												</ul>	
@@ -190,11 +192,12 @@
 							<!--end::Card-->
 
 					</div>
-
+					
 				</div>
 				<!--end::Content-->
 			</div>
 			<!--end::Wrapper-->
+		</div>
 		</div>
 		<!--end::Page-->
 
@@ -246,11 +249,13 @@
 				}
 
 				$('#upload_btn').change(function() {
+					//this.value = ''; 
 				   content = '';  
 				   if(fileList.length == 3){
 				        alert('파일첨부는 4개까지 가능합니다');
 				        return false;
 				    }
+				   
 				    var files = this.files;
 				    for(var i = 0; i < files.length; i++) {
 				        var file = files[i];
@@ -268,30 +273,40 @@
 				     }
 				     $('.upload_ul').append(content);
 				     console.log(content);
-				    this.value = ''; 
+				    //this.value = ''; 
 				    fileDeleteClick();
 				});
 			
 				// editor.setData('<p>example</p>');
 
 			function savemail(){
+				/*
+				var formData = new FormData();
+				var inputFile = $("input[name='file']");
+				var files = inputFile[0].files;
+				console.log(files);
+				for(var i =0;i<files.length;i++){
+					formData.append("uploadFile", files[i]);
+				}
+				*/
+				
 				console.log("메일 보내기");
 				//console.log(saveempnum);
 				console.log("empnum : "+empnum);
 				// formData.append( "upload_btn", $("#upload_btn")[0].files[0] );
-				// formData.append('empnum',empnum);
-				// formData.append('subject',$("#subject").val());
-				// formData.append('content',$("#editor").val());
+				formData.append('saveempnum',empnum);
+				formData.append('subject',$("#subject").val());
+				formData.append('content',content);
 				console.log(formData);
 				 var content = editor.getData();
 				 console.log(content);
 				$.ajax({
 					url:'mail/new.ajax/save',
 					method:'post',
-					data:{			
-						
+					data:{	
+						//formData
 						'saveempnum':empnum,
-						'filename':filename,
+						// 'filename':filename,
 						'subject':$("#subject").val(),
 						'content':content
 						//'formData':JSON.stringify(formData)
@@ -303,7 +318,7 @@
 						console.log(error);
 					}
 				})//
-				location.href='mail/out';	
+				 location.href='mail/out';	
 			}
 			
 			
@@ -426,6 +441,10 @@
 			
 			function filechange(event) {
 				console.log($('#file').val());
+				$('#upload_btn').value='';
+				//this.value = ''; 
+				$('.upload_ul').empty();
+				fileList = [];
 			}
 			
 			

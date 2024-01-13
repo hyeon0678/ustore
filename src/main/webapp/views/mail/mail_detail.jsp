@@ -70,6 +70,7 @@
 											<div class="card-header  py-5 gap-5" style="background-color: white; justify-content: flex-end;">
 												<!--begin::Actions-->
 												<div class="d-flex">
+												
 													<!--begin::Delete-->
 													<a href="#" class="btn btn-sm btn-icon btn-light btn-active-light-primary me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
 														<i class="ki-duotone ki-trash fs-2 m-0">
@@ -89,9 +90,9 @@
 												</div>
 												<!--end::Pagination-->
 											</div>
-											<div class="card-body">
+											<div class="card-body" >
 												<!--begin::Title-->
-												<div class="d-flex flex-wrap gap-2 justify-content-between mb-8" >
+												<div class="d-flex flex-wrap gap-2 justify-content-between mb-8" style="display: flex; align-content: flex-start; flex-direction: column;">
 													<div class="d-flex align-items-center flex-wrap gap-2" style="margin-bottom: 20px; display: flex; align-items: center;">
 														<!--begin::Heading-->
 														<h2>제목 : </h2><h2 class="fw-semibold me-3 my-1">${map.mail_subject}</h2>
