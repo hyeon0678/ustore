@@ -38,7 +38,7 @@
 		</select>
 
 		<select id="listall" resultType="map">
-			SELECT * FROM members where member_state = #{param1}
+			SELECT * FROM members where member_state = #{param1} order by expiry_date desc
 		</select>
 
 		<select id="detail" resultType="map">
@@ -55,7 +55,7 @@
 		 
 		 <select id="pointlistcall" resultType="map">
 		 	select payment_status , payment_date , earned_points , used_points , remain_points from payments p  
-			where member_id =#{param1} and payment_date BETWEEN #{param2} and #{param3}	 			 	
+			where member_id =#{param1} and payment_date BETWEEN #{param2} and #{param3} 		 	
 		 </select>
 		 
 		 <select id="cussearch" resultType="map">
@@ -101,7 +101,9 @@
 		</select>
 		
 		
-		
+		<select id="bischeck" resultType="Integer" >
+				select count(member_idx) from members m where business_num = #{param1}
+		</select>
 		
 		
 		
