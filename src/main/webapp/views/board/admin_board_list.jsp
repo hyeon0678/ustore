@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 	<!--begin::Head-->
@@ -75,7 +76,9 @@
 									<!--end::Col-->
 									<input type="text" class="form-control form-control-solid" name="adListSerch" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
 									<button type="button" class="btn btn-primary" style="margin: 10px;" onclick="search()">검색</button>
-									<button onclick="location.href='adboard/WriteForm'" class="btn btn-primary">글작성</button>
+									<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
+										<button onclick="location.href='adboard/WriteForm'" class="btn btn-primary">글작성</button>
+									</sec:authorize>
 								</div>
 								<!--end::Actions-->
 							</div>
@@ -102,7 +105,6 @@
 											<thead>
 												<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
 													<th></th>
-													<th class="min-w-125px">no.</th>
 													<th class="min-w-125px">제목</th>
 													<th class="min-w-125px">작성자</th>
 													<th class="min-w-125px">조회수</th>
@@ -157,13 +159,84 @@
 		
 		<script>
 		console.log("리스트 호출 시작")
-		adList();
 		var table=$("#kt_adList_table");
-
 		
 		$(function(){headerOnReady()})
+		adList();
 		
 		function adList(){
+			console.log("리스트 호출");
+			$.ajax({
+				type:'get',
+				url:'adboard/list.ajax',
+				data:{},
+				dataType:'JSON',
+				success:function(data){
+					console.log(data);
+					console.log("리스트 호출 뿌리기");
+					drawlist(data.list);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		};
+
+		console.log("listcall : "+ adList);
+		
+		function drawlist(list){
+			console.log("drawlist : " + list);
+			var content = '';
+			
+			list.forEach(function(item, notice_idx){
+				content += '<tr>';
+				content += '<td>';
+				if(item.top_fixed=="Y"){
+					content += '<img src="resource/assets/media/board/topfixStar.png" style="width: 20px;"/>';
+				}else{
+					content += '';
+				}
+				content += '</td>';
+				content += '<td><a href="adboard/detail?notice_idx='+item.notice_idx+'" class="text-danger text-hover-primary mb-1">' + item.notice_subject + '</a></td>';
+				content += '<td>' + item.emp_name + '</td>';
+				content += '<td>' + item.notice_hit + '</td>';
+				content += '<td>' + item.reg_date + '</td>';
+				content += '</tr>';
+				
+				console.log("content : " + content);
+				
+				$('#list').empty();
+				$('#list').append(content);
+				
+			});
+				table.DataTable( {"ordering": false, "info": false, "destroy": true, "pageLength": 10 , "lengthChange": false } );
+			}
+		
+		function search(){
+			console.log("검색 메서드  호출");
+			
+			// location.href='adminReportDetail?idx='+idx+'&&type='+type;
+			// var $state = $("input[type=checkbox][name=hisstate]:checked").val();
+			
+			var keyword = $('input[name="adListSerch"]').val();
+			$.ajax({
+				type:'get',
+				url:'adboard/listSearch.ajax', 
+				data:{'keyword':keyword},
+				dataType:'JSON',
+				success:function(data){
+					console.log(data);
+					console.log("리스트 호출 뿌려주기");
+					
+					drawlist(data.list);
+				},
+				error:function(e){
+					console.log(e);
+				}
+				});
+		}
+		
+		/* function adList(){
 			console.log("리스트 호출");
 			$.ajax({
 				type:'get',
@@ -180,7 +253,7 @@
 				}
 			});
 		};
-
+		
 		console.log("listcall : "+ adList);
 		
 		function drawlist(data){
@@ -213,15 +286,13 @@
 				table.DataTable( {"ordering": false, "info": false, "destroy": true, "pageLength": 10 , "lengthChange": false } );
 			}
 		
+		
 		function search(){
 			console.log("검색 메서드  호출");
-			
+						
 			// location.href='adminReportDetail?idx='+idx+'&&type='+type;
 			// var $state = $("input[type=checkbox][name=hisstate]:checked").val();
-			
-			
-			
-			
+		
 			var keyword = $('input[name="adListSerch"]').val();
 			$.ajax({
 				type:'get',
@@ -231,15 +302,46 @@
 				success:function(data){
 					console.log(data);
 					console.log("리스트 호출 뿌려주기");
-					
-					drawlist(data.list);
+					drawlist(data);
 				},
 				error:function(e){
 					console.log(e);
 				}
 				});
-		}
+		}; */
+		
+		/* function drawlist(data){
+			console.log("drawlist : " + data);
+			var content = '';
 			
+			for(var i = 0; i < data.size; i ++){
+				content += '<tr>';
+				content += '<td>';
+				if(data.list[i].top_fixed=="Y"){
+					content += '<img src="resource/assets/media/board/topfixStar.png" style="width: 20px;"/>';
+				}else{
+					content += '';
+				}
+				content += '</td>';
+				content += '<td class="w-30px " >'+i+'</td>';
+				content += '<td><a href="adboard/detail?notice_idx='+data.list[i].notice_idx+'" class="text-danger text-hover-primary mb-1">' + data.list[i].notice_subject + '</a></td>';
+				content += '<td>' + data.list[i].emp_name + '</td>';
+				content += '<td>' + data.list[i].notice_hit + '</td>';
+				content += '<td>' + data.list[i].reg_date + '</td>';
+				content += '</tr>';
+				
+				console.log("content : " + content);
+				
+				$('#list').empty();
+				$('#list').append(content);
+
+			};
+				
+				table.DataTable( {"ordering": false, "info": false, "destroy": true, "pageLength": 10 , "lengthChange": false } );
+			} */
+		
+		
+		
 		</script>
 		
 </html>

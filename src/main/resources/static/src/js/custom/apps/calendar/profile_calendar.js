@@ -12,7 +12,9 @@ var KTAppCalendar = function () {
         scheduleType: '',
         eventLocation: '',
         startDate: '',
+        startTime: '',
         endDate: '',
+        endTime: '',
         allDay: false
     };
 
@@ -49,6 +51,8 @@ var KTAppCalendar = function () {
     var viewModal;
     var viewEditButton;
     var viewDeleteButton;
+    var viewStartTime;
+    var viewEndTime;
 
 
     // Private functions
@@ -78,9 +82,9 @@ var KTAppCalendar = function () {
 
             // ,timeGridWeek,timeGridDay
 
-            navLinks: false, // can click day/week names to navigate views
-            selectable: false,
-            selectMirror: false,
+            navLinks: true, // can click day/week names to navigate views
+            selectable: true,
+            selectMirror: true,
 
             // Select dates action --- more info: https://fullcalendar.io/docs/select-callback
             select: function (arg) {
@@ -96,8 +100,10 @@ var KTAppCalendar = function () {
                     description: arg.event.extendedProps.description,
                     schedule: arg.event.extendedProps.schedule,
                     location: arg.event.extendedProps.location,
-                    startStr: arg.event.startStr,
-                    endStr: arg.event.endStr,
+                    startStr: arg.event.startday,
+                    startTimeStr: arg.event.startTime,
+                    endTimeStr: arg.event.endTime,
+                    endStr: arg.event.endday,
                     allDay: arg.event.allDay
                 });
                 
@@ -202,7 +208,9 @@ var KTAppCalendar = function () {
                 eventDescription: '',
                 scheduleType: '',
                 startDate: new Date(),
-                endDate: new Date(),
+                startTime: new Date(),
+                endDate: '',
+                endTime: '',
                 allDay: false
             };
             handleNewEvent();
@@ -276,22 +284,26 @@ var KTAppCalendar = function () {
                                     submitButton.disabled = false;
 
                                     // Detect if is all day event
-                                    let allDayEvent = false;
+                                    // let allDayEvent = false;
                                     // if (allDayToggle.checked) { allDayEvent = true; }
                                     // if (startTimeFlatpickr.selectedDates.length === 0) { allDayEvent = true; }
 
                                     // Merge date & time
                                     var startDateTime = moment(startFlatpickr.selectedDates[0]).format();
                                     var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length - 1]).format();
-                                    if (!allDayEvent) {
+                                    // if (!allDayEvent) {
                                         const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
-                                        const endDate = startDate;
+                                        const endDate = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length - 1]).format('YYYY-MM-DD');
+                                        // const endDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
+                                        // const endDate = startDate;
                                         const startTime = moment(startTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
                                         const endTime = moment(endTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
 
                                         startDateTime = startDate + 'T' + startTime;
                                         endDateTime = endDate + 'T' + endTime;
-                                    }
+
+
+                                    // }
 
                                     // Add new event to calendar
                                     // calendar.addEvent({
@@ -429,22 +441,23 @@ var KTAppCalendar = function () {
                                     console.log(data.id,"번 일정 삭제");
 
                                     // Detect if is all day event
-                                    let allDayEvent = false;
-                                    if (allDayToggle.checked) { allDayEvent = true; }
-                                    if (startTimeFlatpickr.selectedDates.length === 0) { allDayEvent = true; }
+                                    // let allDayEvent = false;
+                                    // if (allDayToggle.checked) { allDayEvent = true; }
+                                    // if (startTimeFlatpickr.selectedDates.length === 0) { allDayEvent = true; }
 
                                     // Merge date & time
                                     var startDateTime = moment(startFlatpickr.selectedDates[0]).format();
                                     var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length - 1]).format();
-                                    if (!allDayEvent) {
+                                    // if (!allDayEvent) {
                                         const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
-                                        const endDate = startDate;
+                                        const endDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
+                                        // const endDate = startDate;
                                         const startTime = moment(startTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
                                         const endTime = moment(endTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
 
                                         startDateTime = startDate + 'T' + startTime;
                                         endDateTime = endDate + 'T' + endTime;
-                                    }
+                                    // }
 
                                     // Add new event to calendar
                                     // calendar.addEvent({
@@ -497,17 +510,29 @@ var KTAppCalendar = function () {
         var eventNameMod;
         var startDateMod;
         var endDateMod;
+        var startTimeMod;
+        var EndTimeMod;
 
         // Generate labels
-        if (data.allDay) {
-            eventNameMod = 'All Day';
-            startDateMod = moment(data.startDate).format('Do MMM, YYYY');
-            endDateMod = moment(data.endDate).format('Do MMM, YYYY');
-        } else {
+        // if (data.allDay) {
+            // eventNameMod = 'All Day';
+            // startDateMod = moment(data.startDate).format('Do MMM, YYYY');
+            // endDateMod = moment(data.endDate).format('Do MMM, YYYY');
+
+            // startDateMod = moment(data.startDate).format('YYYY.MM.DD');
+            // endDateMod = moment(data.endDate).format('YYYY.MM.DD');
+
+        // } else {
             eventNameMod = '';
-            startDateMod = moment(data.startDate).format('Do MMM, YYYY - h:mm a');
-            endDateMod = moment(data.endDate).format('Do MMM, YYYY - h:mm a');
-        }
+            // startDateMod = moment(data.startDate).format('Do MMM, YYYY - h:mm a');
+            // endDateMod = moment(data.endDate).format('Do MMM, YYYY - h:mm a');
+
+            startDateMod = moment(data.startDate).format('YYYY.MM.DD');
+            startTimeMod = moment(data.startTime).format('HH:mm');
+            endDateMod = moment(data.endDate).format('YYYY.MM.DD');
+            EndTimeMod = moment(data.endTime).format('HH:mm');
+            
+        // }
 
         // Populate view data
         viewEventName.innerText = data.eventName;
@@ -516,15 +541,82 @@ var KTAppCalendar = function () {
         // viewEventLocation.innerText = data.eventLocation ? data.eventLocation : '--';
         viewStartDate.innerText = startDateMod;
         viewEndDate.innerText = endDateMod;
+        viewStartTime.innerText = startTimeMod;
+        viewEndTime.innerText = EndTimeMod;
+
+        console.log("viewstartDate : " + data.startDate);
+        console.log("viewendDate : " + data.endDate);
+        console.log("viewstartTime : " + data.startTime);
+        console.log("viewEndTime : " + data.endTime);
+        
+        
 
         if (data.scheduleType == 10) {
             viewScheduleType.innerText = '개인 일정';
+            viewDeleteButton.style.display = 'inline-flex';
+            viewEditButton.style.display = 'inline-flex';
+            viewEventDescription.style.display = 'block';
+            viewScheduleType.style.display = 'inline-flex';
+            if(data.endDate == ''){
+                viewEndDate.style.display = 'none';
+                console.log("viewenddate is ''");
+            }else{
+                viewEndDate.style.display = 'inline-flex';
+                console.log("viewenddate is not ''");
+            }
         } else if (data.scheduleType == 11) {
             viewScheduleType.innerText = '팀 일정';
+            viewDeleteButton.style.display = 'inline-flex';
+            viewEditButton.style.display = 'inline-flex';
+            viewEventDescription.style.display = 'block';
+            viewScheduleType.style.display = 'inline-flex';
+            if(data.endDate == ''){
+                viewEndDate.style.display = 'none';
+                console.log("viewenddate is ''");
+            }else{
+                viewEndDate.style.display = 'inline-flex';
+                console.log("viewenddate is not ''");
+            }        
         } else if (data.scheduleType == 12) {
             viewScheduleType.innerText = '출근';
+            viewDeleteButton.style.display = 'none';
+            viewEditButton.style.display = 'none';
+            viewEventDescription.style.display = 'block';
+            viewScheduleType.style.display = 'none';
+            // viewEndDate.style.display = 'none';
         } else if (data.scheduleType == 13) {
             viewScheduleType.innerText = '퇴근';
+            viewDeleteButton.style.display = 'none';
+            viewEditButton.style.display = 'none';
+            viewEventDescription.style.display = 'block';
+            viewScheduleType.style.display = 'none';
+            // viewEndDate.style.display = 'none';
+        } else if (data.scheduleType == 14) {
+            viewScheduleType.innerText = '연차';
+            viewDeleteButton.style.display = 'none';
+            viewEditButton.style.display = 'none';
+            viewEventDescription.style.display = 'block';
+            viewScheduleType.style.display = 'inline-flex';
+            if(data.endDate == ''){
+                viewEndDate.style.display = 'none';
+                console.log("viewenddate is ''");
+            }else{
+                viewEndDate.style.display = 'inline-flex';
+                console.log("viewenddate is not ''");
+            }        
+        } else if (data.scheduleType == 15) {
+            viewScheduleType.innerText = '휴무';
+            viewDeleteButton.style.display = 'none';
+            viewEditButton.style.display = 'none';
+            viewEventDescription.style.display = 'block';
+            viewScheduleType.style.display = 'inline-flex';
+            if(data.endDate == ''){
+                viewEndDate.style.display = 'none';
+                console.log("viewenddate is ''");
+            }else{
+                viewEndDate.style.display = 'inline-flex';
+                console.log("viewenddate is not ''");
+            }
         } else {
             viewScheduleType.innerText = '--'; // 기본적으로 지정된 값이 없을 경우 '--'를 표시합니다.
         }
@@ -689,7 +781,7 @@ var KTAppCalendar = function () {
         startFlatpickr.setDate(data.startDate, true, 'Y-m-d');
 
         // Handle null end dates
-        const endDate = data.endDate ? data.endDate : moment(data.startDate).format();
+        // const endDate = data.endDate ? data.endDate : moment(data.startDate).format();
         endFlatpickr.setDate(endDate, true, 'Y-m-d');
 
         // const allDayToggle = form.querySelector('#kt_calendar_datepicker_allday');
@@ -717,8 +809,10 @@ var KTAppCalendar = function () {
         data.eventDescription = res.description;
         data.scheduleType = res.schedule;
         data.eventLocation = res.location;
-        data.startDate = res.startStr;
-        data.endDate = res.endStr;
+        data.startDate = res.startday;
+        data.startTime = res.startTime;
+        data.endTime = res.endTime;
+        data.endDate = res.endday;
         data.allDay = res.allDay;
     }
 
@@ -758,7 +852,9 @@ var KTAppCalendar = function () {
             viewScheduleType = viewElement.querySelector('[data-kt-calendar="schedule_type"]');
             viewEventLocation = viewElement.querySelector('[data-kt-calendar="event_location"]');
             viewStartDate = viewElement.querySelector('[data-kt-calendar="event_start_date"]');
+            viewStartTime = viewElement.querySelector('[data-kt-calendar="event_start_time"]');
             viewEndDate = viewElement.querySelector('[data-kt-calendar="event_end_date"]');
+            viewEndTime = viewElement.querySelector('[data-kt-calendar="event_end_time"]');
             viewEditButton = viewElement.querySelector('#kt_modal_view_event_edit');
             viewDeleteButton = viewElement.querySelector('#kt_modal_view_event_delete');
 

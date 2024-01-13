@@ -66,7 +66,9 @@ from anony_board  where anony_idx = #{param1}
 </delete>
 
 <select id="adlistSearch" resultType="map">
-	select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , n.reg_date , n.notice_del  from notice n inner join employee e on n.emp_idx = e.emp_idx and n.notice_del ='n' WHERE notice_subject LIKE CONCAT('%',#{param1},'%')
+	select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , n.reg_date , n.notice_del, n.top_fixed  
+	from notice n inner join employee e on n.emp_idx = e.emp_idx and n.notice_del ='n' WHERE notice_subject LIKE CONCAT('%',#{param1},'%')
+	order by top_fixed desc, notice_idx desc
 </select>
 
 <select id="anlistSearch" resultType="map">

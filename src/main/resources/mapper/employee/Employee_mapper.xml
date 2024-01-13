@@ -68,18 +68,23 @@ insert into schedule(
 	)
 	values(
 	#{emp_idx}
-	, #{event_start_date}
-	, #{event_start_date}
+	, curdate()
+	, curdate()
 	, '출근'
-	, '출근'
-	, #{event_start_time}
-	, #{event_start_time}
+	, '출퇴근'
+	, curtime()
+	, curtime()
 	, 12
 	, #{emp_idx}
 	)
 </insert>
 
-<insert id="leavework" parameterType="EmpProrileDto">
+<update id="leavework">
+update schedule set sch_content = '퇴근', sch_subject = '출퇴근', sch_end_date=curdate(), sch_end_time= curtime(), sch_type='13', reg_by='20220001'
+where sch_idx in (SELECT sch_idx FROM schedule WHERE sch_subject = '출퇴근' AND DATE(sch_start_date) = CURDATE() and emp_idx = '20220001')
+</update>
+
+<!-- <insert id="leavework" parameterType="EmpProrileDto">
 	insert into schedule(
 	emp_idx
 	, sch_start_date
@@ -102,7 +107,7 @@ insert into schedule(
 	, 13
 	, #{emp_idx}
 	)
-</insert>
+</insert> -->
 
 <delete id="employeDel">
 	DELETE FROM schedule WHERE sch_idx = #{param1}

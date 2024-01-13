@@ -119,10 +119,10 @@ License: For each use you must have a valid license purchased only from above li
 															<input type="text" name="emp_idx" value="${employee.empIdx}" /> 
 															<fmt:formatDate var="curDt" value="${leavework}" type="DATE" pattern="yyyy-MM-dd" />
 															<fmt:formatDate var="curTime" value="${leavework}" type="DATE" pattern="HH:mm:ss" />
-															<input type="text" name="event_start_date" value="${curDt}"/>
-															<input type="text" name="event_start_time" value="${curTime}"/>
+															<input type="text" name="event_end_date" value="${curDt}"/>
+															<input type="text" name="event_end_time" value="${curTime}"/>
 														</div>
-														<button class="btn btn-flex btn-primary" id="midnightchecker">퇴근</button>
+														<button class="btn btn-flex btn-primary">퇴근</button>
 													</form>
 														
 													</div>
@@ -497,6 +497,7 @@ License: For each use you must have a valid license purchased only from above li
 													<div class="fs-6">
 														<span class="fw-bold">Starts</span>
 														<span data-kt-calendar="event_start_date"></span>
+														<span data-kt-calendar="event_start_time"></span>
 													</div>
 													<!--end::Event start date/time-->
 												</div>
@@ -509,7 +510,8 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin::Event end date/time-->
 													<div class="fs-6">
 														<span class="fw-bold">Ends</span>
-														<span data-kt-calendar="event_end_date"></span>
+														<span data-kt-calendar="event_end_date" ></span>
+														<span data-kt-calendar="event_end_time" ></span>
 													</div>
 													<!--end::Event end date/time-->
 												</div>

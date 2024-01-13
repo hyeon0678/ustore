@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<!--begin::Head-->
@@ -84,7 +85,7 @@
 						</div>
 						
 						<div class="text-end">
-							<button type="button" onclick="save()" style="background-color: #C6DA52; position: absolute; width:70px; height: 40px; top:200px; right:200px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
+							<button type="button" onclick="location.href='/adboard/list'" style="background-color: #C6DA52; position: absolute; width:70px; height: 40px; top:200px; right:200px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
     							목록으로
 							</button>
 						</div>
@@ -96,12 +97,14 @@
 						</i> 
 						<i>${board.emp_name}</i>
 						<i>${board.reg_date}</i>
+						<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
 						<div class="form-check" style="margin-left: 640px;">
-    						<input class="form-check-input" type="checkbox" name="top_fixed" id="flexCheckDefault" value="Y"/>
+    						<input class="form-check-input" type="checkbox" name="top_fixed" id="flexCheckDefault" value="Y" onchange="save()"/>
     						<label class="form-check-label" for="flexCheckDefault">
         						상단 고정 여부
     						</label>
 						</div>
+						</sec:authorize>
 						</p>
 						<div style="text-align: right; margin-top: -48px; margin-right: 380px;">
     
@@ -128,9 +131,13 @@
 						<div style="margin-right:150px;">
 						<c:forEach items="${file}" var="file">
 						<p>file : ${file.orifilname}
+						
+						<!-- 시작 : 다운로드 코드 -->
 						<button type="button" onclick="location.href='download.do?file=${file.newfilename}'" style="background-color: #C6DA52; position: absolute; width:60px; height: 20px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
     						다운로드
     					</button>
+    					<!-- 종료 : 다운로드 코드 -->
+    					
     					</p>
     					</c:forEach>
     					</div>
@@ -280,11 +287,9 @@
     			dataType:'JSON',
     			success:function(data){			
     				console.log("success data : " + data);
-    				location.href='/adboard/list';
     			},
     			error:function(e){
     				console.log("error : " + e);
-    				location.href='/adboard/list';
     			}	
     		});		
     			

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ustore.board.dto.BoardDto;
 import com.ustore.board.service.BoardService;
@@ -88,9 +89,11 @@ public class BoardController {
 		String emp_idx = principal.getName();
 		String empidx = (String) session.getAttribute("emp_idx");
 		String deptID = (String) session.getAttribute("dept_id");
+		logger.info("접속자 부서 : " + deptID);
+		
 		String page = "redirect:/adboard/list";
 		
-		if(deptID.equals("인사팀")) {
+		if(deptID.equals("인사팀") || deptID.equals("UStore")) {
 			page = "/board/admin_board_write";
 			logger.info("공지사항 작성자 : " + emp_idx);
 			logger.info("작성자 부서 : " + deptID);
@@ -129,7 +132,7 @@ public class BoardController {
 		
 		mav.setViewName("redirect:/adboard/list");		
 		
-		if (deptID != null && deptID.equals("인사팀")) {	
+		if (deptID != null && deptID.equals("인사팀") || deptID.equals("UStore")) {
 		logger.info("공지 작성 직원 부서 : " + deptID);
 		logger.info("공지사항글 작성자 : "+emp_idx);
 		logger.info("params : " + params);
@@ -200,6 +203,7 @@ public class BoardController {
 		return mav;
 	}
 	
+	// 공지사항 상세 : 파일 다운
 	@RequestMapping(value = "/adboard/detail")
 	public ModelAndView adboardDetail(@RequestParam int notice_idx) {
 		
@@ -209,6 +213,7 @@ public class BoardController {
 
 		BoardDto dto = new BoardDto();
 
+		// 다운 받을 파일 newfilename 추출
 		List<HashMap<String, String>> adfile = service.adfile(notice_idx);
 		
 		ArrayList<FileDto> adfileshow = service.adfileshow(notice_idx);
@@ -225,6 +230,7 @@ public class BoardController {
 		logger.info("mapresult : " + map);
 		
 		mav.addObject("board", map);
+		
 		mav.addObject("file", adfile);
 		mav.addObject("newFileList", adfileshow);		
 		mav.setViewName("board/admin_board_detail");
@@ -269,7 +275,7 @@ public class BoardController {
 	
 	@RequestMapping(value = "adboard/delete.ajax")
 	@ResponseBody
-	public ModelAndView adboardDelete(@RequestParam int notice_idx) {
+	public ModelAndView adboardDelete(@RequestParam int notice_idx, RedirectAttributes rAttr) {
 		
 		logger.info("삭제 공지사항 : " + notice_idx);
 		
@@ -278,7 +284,7 @@ public class BoardController {
 		logger.info("삭제 성공 : " + notice_idx);
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("msg", msg);
+		rAttr.addFlashAttribute("msg", msg);
 		mav.setViewName("redirect:/adboard/list");
 		
 		logger.info("삭제 mav값 : " + mav);
@@ -308,27 +314,39 @@ public class BoardController {
 	
 	@RequestMapping(value = "adboard/update.ajax")
 	@ResponseBody
-	public ModelAndView adboardTopFix(@RequestParam HashMap<String, String> params) {
-		
-		logger.info("글 상단 고정");
-		logger.info("상단 고정 : " + params);
-		String msg = service.adboardTopFix(params);
-		logger.info("상단 고정 msg : " + msg);
+	public ModelAndView adboardTopFix(@RequestParam HashMap<String, String> params, HttpSession session, RedirectAttributes rAttr) {
 		
 		ModelAndView mav = new ModelAndView();
+		String deptID = (String) session.getAttribute("dept_id");
+		
+		String page = "redirect:/adboard/list";
+		
+		logger.info("page : " + page);
+		
+		if(deptID.equals("인사팀") || deptID.equals("UStore")) {
+			
+		logger.info("글 상단 고정");
+		logger.info("상단 고정 : " + params);
+		
+		String msg = service.adboardTopFix(params);
+		
+		logger.info("상단 고정 msg : " + msg);
+		logger.info("상세보기 접근자 부서 : " + deptID);
 		
 		mav.addObject("msg", msg);
 		mav.addObject("notice_idx", params.get("notice_idx"));
 		
-		mav.setViewName("redirect:/adboard/list");
-		
 		logger.info("상단 고정 mav : " + mav);
-		
+		}else {
+			rAttr.addFlashAttribute("alert", "상단 고정 권한이 없습니다.");
+		}
+		mav.setViewName(page);
 		return mav;
 	}
 	
 	// 댓글 기능
-	@RequestMapping(value = "/anboard/reply")
+	@RequestMapping(value = "anboard/reply.ajax")
+	@ResponseBody
 	public String anreply(@RequestParam String anony_board_idx, @RequestParam String repl_content) {
 		
 		logger.info("댓글 작성 실행");

@@ -146,8 +146,10 @@ public class EmpProfileController {
 		for (int i = 0; i < list.size(); i++) {
 			hash.put("id", list.get(i).get("sch_idx"));
 			hash.put("title", list.get(i).get("sch_subject"));
-			hash.put("start", list.get(i).get("sch_start_date"));
-			hash.put("end", list.get(i).get("sch_end_date"));
+			hash.put("startday", list.get(i).get("sch_start_date"));
+			hash.put("startTime", list.get(i).get("sch_start_time"));
+			hash.put("endday", list.get(i).get("sch_end_date"));
+			hash.put("endTime", list.get(i).get("sch_end_time"));
 			hash.put("description", list.get(i).get("sch_content"));
 			hash.put("schedule", list.get(i).get("sch_type"));
 			
