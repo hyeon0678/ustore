@@ -23,7 +23,8 @@
 	
 	<select id="bookingInfo" resultType="com.ustore.reservation.dto.reservationDto">
 		 		SELECT rb.booking_idx,rb.emp_idx,rb.resource_idx ,rb.booking_start_date ,rb.booking_end_date ,rb.booking_start_time ,rb.booking_end_time , rb.booking_content 
-		FROM resource_booking rb LEFT JOIN resource r ON rb.resource_idx = r.resource_idx WHERE r.resource_del = 'N' AND rb.booking_start_date =#{param1} AND r.resource_type=#{param3}
+		FROM resource_booking rb LEFT JOIN resource r ON rb.resource_idx = r.resource_idx WHERE r.resource_del = 'N' AND 
+		#{param1} BETWEEN rb.booking_start_date AND rb.booking_end_date  AND r.resource_type=#{param3}
 	</select>
 	
 	<select id="infoBooking" resultType="com.ustore.reservation.dto.reservationDto">

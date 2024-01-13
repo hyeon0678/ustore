@@ -233,7 +233,7 @@
             
             $(".row-container").off("mousemove.newevent");
             $(document).off("mouseup.newevent");
-            console.log(e);
+            console.log($newRsvn);
             if ($newRsvn.hasClass("reservation-error")) {
                 $newRsvn.remove();
             } else {

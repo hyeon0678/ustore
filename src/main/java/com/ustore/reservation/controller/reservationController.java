@@ -33,7 +33,7 @@ public class reservationController {
 	
 	@RequestMapping("/equipment")
 	public ModelAndView equipnent(Principal principal) {
-		ModelAndView mav = new ModelAndView("reservation/reservation_equipment");
+		ModelAndView mav = new ModelAndView("reservation/reservation_equipment"); 
 		mav.addObject("resourceType", "물류 장비"); 
 		mav.addObject("loginInfo", principal);
 		return mav;
