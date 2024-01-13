@@ -39,5 +39,6 @@ where emp_idx = #{param1}
 SELECT a.alarm_idx, a.alarm_subject , a.alarm_content , a.alarm_datetime, a.url
 FROM alarm a 
 WHERE a.alarm_read like 'N' AND a.emp_idx like #{param1}
+ORDER BY a.alarm_datetime DESC
 </select>
 </mapper>

@@ -113,8 +113,9 @@
 													<input type="text" class="form-control form-control-solid" id="search-input"
 														placeholder="이름을 입력하세요"
 														style="width: 200px; height: 30px;" />
-													<button type="button" class="btn btn-primary" id="search-btn"
-														style="margin: 5px;">검색</button>
+													<button type="button" class="btn btn-primary"
+														style="margin: 5px;" onclick="empSearch()">검색</button>
+														
 												</div>
 												<div
 													class="btn btn-icon btn-sm btn-active-light-primary ms-2"
@@ -334,33 +335,6 @@
 		
 	});
 	
-	
-	$('#search-btn').on('click', function(){
-		let keyword = $('#search-input').val();
-		searchTreeData = [];
-		searchTreeData.push(...departmentData);
-		for(let data of treeEmpData){
-			let text = data.text;
-			
-			if(text.includes(keyword) == true){
-				console.log(text);
-				searchTreeData.push(data);
-			}
-		}
-		let setData = [...new Set()];
-		console.log(setData);
-		makeRoomJsTree(setData);
-	});
-	
-	$('#search-input').on('keyup',function(){
-		let keyword = $(this).val();
-		if(keyword == ''){
-			searchTreeData = []
-			searchTreeData = departmentData;
-			makeRoomJsTree(jsTreeData);
-		}
-		
-	});
     
 	function callChatRoomList(){
 		$.ajax({
@@ -466,16 +440,26 @@
 		$('#make_room_jstree').jstree('destroy');
 		$('#make_room_jstree').jstree({
 			"core" : {
-				"data" : treeData
-			},"Disable" : {
-					"label" : "Disable",
-					"action" : function(obj) {
-						$("#make_room_jstree").jstree("disable_node", username);
-					}
+				"data" : treeData,
+				"themes" : {
+					"responsive": true
 				}
 			},
-			'plugins' : ["search"]
-		);
+			"types" : {
+				  "department": {
+					    "icon": "fa fa-building" // 부서 아이콘
+				  },
+				  "employee": {
+				    "icon": "fa fa-user", // 직원 아이콘
+				    "selectable": true // 선택 가능하도록 설정
+				  }
+			},
+			"plugins": ["types","search"]
+			,
+			"search":{
+				"show_only_matches_children" : true
+			}
+		});
 		treeDbClick();
 		participantClick();
 		
@@ -515,6 +499,10 @@
 						participantClick();
 					}
 				});
+	}
+	function empSearch() {
+		console.log("검색");
+		$('#make_room_jstree').jstree(true).search($('#search-input').val());
 	}
 
 	function findEmp(empIdx) {

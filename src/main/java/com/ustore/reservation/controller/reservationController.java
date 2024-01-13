@@ -24,16 +24,18 @@ public class reservationController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@RequestMapping("/room")
-	public ModelAndView room() {
+	public ModelAndView room(Principal principal) {
 		ModelAndView mav = new ModelAndView("reservation/reservation_room");
 		mav.addObject("resourceType","회의실");
+		mav.addObject("loginInfo", principal);
 		return mav;
 	}
 	
 	@RequestMapping("/equipment")
-	public ModelAndView equipnent() {
+	public ModelAndView equipnent(Principal principal) {
 		ModelAndView mav = new ModelAndView("reservation/reservation_equipment");
 		mav.addObject("resourceType", "물류 장비"); 
+		mav.addObject("loginInfo", principal);
 		return mav;
 	}
 	
