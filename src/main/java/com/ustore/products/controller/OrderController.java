@@ -35,7 +35,7 @@ public class OrderController {
 		ArrayList<OrderDto> list = service.list(); //발주 리스트 
 	
 	
-		// 날짜 형식 변환하는 코드..
+		
 		String birthdateString  = (String) session.getAttribute("birthdate");
 		if (birthdateString == null) {
 		    birthdateString = "01/01/2100";
@@ -61,7 +61,7 @@ public class OrderController {
 		model.addAttribute("list3",list3);
 				logger.info("list3 : "+list3);
 				
-				ArrayList<OrderDto> list4 = service.driverSch();
+				ArrayList<OrderDto> list4 = service.driverSch(formattedBirthdate);
 				model.addAttribute("list4",list4);
 		
 		
@@ -71,8 +71,12 @@ public class OrderController {
 	}
 	@PostMapping("/order/ordercart/insert") // 물품 장바구니에 추가하는 컨트롤러 
     @ResponseBody
-    public String ordercartInsert(@RequestParam Map<String, String> params, HttpSession session) {
-        String birthdate = params.get("birthdate");
+    public String ordercartInsert(@RequestParam Map<String, String> params, HttpSession session,@RequestParam("firstbirthdate")String firstbirthdate) {
+     
+		logger.info("firstbirthdate : "+firstbirthdate);
+		
+		
+		String birthdate = params.get("birthdate");
         session.setAttribute("birthdate", birthdate);
         
         
@@ -93,11 +97,12 @@ public class OrderController {
 	@ResponseBody
 	public ResponseEntity<ArrayList<OrderDto>> getOrderList(HttpSession session,Model model) {
 	   
+		
 		boolean orderCheck = service.orderCartCheck();	
 	    logger.info("장바구니에 값이 있나?  없으면 false : "+orderCheck);
 	    if (orderCheck==false) {
 	      
-	        return ResponseEntity.noContent().build();
+	        return ResponseEntity.noContent().build(); // return 하지 않음 x
 	    }
 		ArrayList<OrderDto> orderList = service.orderList();
 		
@@ -116,6 +121,7 @@ public class OrderController {
 		
 		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String formattedBirthdate = birthdate.format(outputFormatter);
+		
 		ArrayList<OrderDto> list3 = service.driveList(formattedBirthdate); // 배달기사 리스트
 		model.addAttribute("list3",list3);
 				logger.info("list3 : "+list3);
@@ -160,8 +166,10 @@ public class OrderController {
 		logger.info("선택한 날짜  : "+formattedBirthdate);
 		logger.info("선택한 배송기사 : "+ driverIdx);
 		
-		service.orderInsert(formattedBirthdate,driverIdx,empIdx,resourceIdx); // 여기에 emp_idx 필요 세션에서 가져오기
+		service.orderInsert(formattedBirthdate,driverIdx,empIdx,resourceIdx); // 여기에 emp_idx 필요 
 		ArrayList<OrderDto> ProductCount = service.orderCartSelect();
+		
+		
 		
 		logger.info("상품 개수: "+ProductCount);
 		

@@ -38,7 +38,9 @@ public interface OrderDao {
 
 	ArrayList<OrderDto> orderListModal(OrderDto dto);
 
-	ArrayList<OrderDto> driverSch();
+	ArrayList<OrderDto> driverSch(OrderDto dto);
+
+	void resourceAdd(OrderDto dto);
 
 	//ArrayList<OrderDto> orderListSearch(String searchValue);
 	

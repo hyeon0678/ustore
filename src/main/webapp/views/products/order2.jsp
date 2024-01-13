@@ -417,47 +417,35 @@ button i.bi {
             cancelButtonText: '취소',
         }).then((result) => {
             if (result.isConfirmed) {
-                var selectedDate = $('#kt_daterangepicker_3').val().trim();
-
              
-                if (new Date(selectedDate) < new Date()) {
-                    Swal.fire({
-                        title: '확인',
-                        text: '오늘 날짜 이전 날짜에는 발주 할 수 없습니다.',
-                        icon: 'info',
-                        showCancelButton: false,
-                        confirmButtonText: '확인',
-                    });
-                } else {
-             
-                    $.ajax({
-                        url: '/order/ordercart/insert',
-                        method: 'POST',
-                        data: {
-                            productId: row.querySelector('input[name="productId"]').value.trim(),
-                            count: countValue,
-                            birthdate: selectedDate,
-                            empIdx: emp,
-                            firstbirthdate: selectedDate,
-                        },
-                        success: function (response) {
-                            console.log('물품 추가 결과:', response);
+                $.ajax({
+                    url: '/order/ordercart/insert',
+                    method: 'POST',
+                    data: {
+                        productId: row.querySelector('input[name="productId"]').value.trim(),
+                        count: countValue,
+                        birthdate: document.getElementById('kt_daterangepicker_3').value.trim(),
+                        empIdx:emp,
+                        firstbirthdate: $('#kt_daterangepicker_3').val().trim()
+                
+                    },
+                    success: function (response) {
+                        console.log('물품 추가 결과:', response);
 
-                            Swal.fire({
-                                title: response === 'success' ? '물품이 추가되었습니다.' : '이미 추가된 물품입니다.',
-                                icon: response === 'success' ? 'success' : 'error',
-                                confirmButtonText: '확인',
-                                buttonsStyling: false,
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                }
-                            });
-                        },
-                        error: function (e) {
-                            console.error('물품 추가 에러:', e);
-                        }
-                    });
-                }
+                        Swal.fire({
+                            title: response === 'success' ? '물품이 추가되었습니다.' : '이미 추가된 물품입니다.',
+                            icon: response === 'success' ? 'success' : 'error',
+                            confirmButtonText: '확인',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        console.error('물품 추가 에러:', e);
+                    }
+                });
             }
         });
     }
