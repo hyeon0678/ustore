@@ -265,13 +265,13 @@ public class ApprovalService {
 	}
 	
 	// 휴가종류가 연차일때 연차테이블에 insert시키기
-	public void insertAnnualLeaveInfo(String drafterEmpIdx, Date date, int leaveType, int totalLeaveDays) {
-		dao.insertAnnualLeaveInfo(drafterEmpIdx, date, leaveType, totalLeaveDays);
+	public void insertAnnualLeaveInfo(String drafterEmpIdx, Date date, int leaveType, int leaveDec) {
+		dao.insertAnnualLeaveInfo(drafterEmpIdx, date, leaveType, leaveDec);
 	}
 
 	// 휴가종류가 연차가 아닐때 연차테이블에 insert시키기
-	public void insertOtherLeaveInfo(String drafterEmpIdx, Date date, int leaveType, int totalLeaveDays) {
-		dao.insertOtherLeaveInfo(drafterEmpIdx, date, leaveType, totalLeaveDays);
+	public void insertOtherLeaveInfo(String drafterEmpIdx, Date date, int leaveType, int leaveDec) {
+		dao.insertOtherLeaveInfo(drafterEmpIdx, date, leaveType, leaveDec);
 	}
 
 	public int getTotalLeaveDays(String drafterEmpIdx) {

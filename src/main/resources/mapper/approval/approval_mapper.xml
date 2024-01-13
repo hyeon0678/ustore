@@ -503,14 +503,14 @@
 	<insert id="insertAnnualLeaveInfo">
 		INSERT INTO annual_leave
 		(emp_idx, leave_date, leave_type, leave_incdec, reg_by)
-		VALUES (#{drafterEmpIdx}, #{date}, #{leaveType}, #{totalLeaveDays}, #{drafterEmpIdx})
+		VALUES (#{drafterEmpIdx}, #{date}, #{leaveType}, #{leaveDec}, #{drafterEmpIdx})
 	</insert>
 	
 	<!-- 결재받은 휴가신청서의 연차타입이 연차 외의 항목(병가, 공가)일때 연차히스토리 테이블에 업데이트(연차 미차감) -->
 	<insert id="insertOtherLeaveInfo">
 		INSERT INTO annual_leave
 		(emp_idx, leave_date, leave_type, leave_incdec, reg_by)
-		VALUES (#{drafterEmpIdx}, #{date}, #{leaveType}, #{totalLeaveDays}, #{drafterEmpIdx})
+		VALUES (#{drafterEmpIdx}, #{date}, #{leaveType}, #{leaveDec}, #{drafterEmpIdx})
 	</insert>
 
 	<select id="getApprSubject" resultType="String">

@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -41,7 +42,10 @@ import com.ustore.approval.service.ApprovalService;
 import com.ustore.employee.dao.GroupManageDao;
 import com.ustore.employee.dto.EmployeeDto;
 import com.ustore.employee.service.EmpProfileService;
+import com.ustore.fileSystem.dto.FileDto;
 import com.ustore.products.dto.OrderDto;
+import com.ustore.utils.SaveFile;
+import com.ustore.utils.defineEnums.FileTypeEnum;
 
 
 @Controller
@@ -191,16 +195,28 @@ public class ApprovalController {
 
     // 결재문서 상신하기(새결재문서)
 	@PostMapping(value="/sendappr") 
-	public ResponseEntity<String> sendAppr(Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
+	public ResponseEntity<String> sendAppr(MultipartFile[] files, Principal principal, @RequestBody ApprovalDto dto, RedirectAttributes rAttr) {
 		 
 		 String emp_idx = principal.getName();
 		 dto.setEmpIdx(emp_idx);
 		 service.sendAppr(dto);
 		 
+		 /*	 
+		 if(files != null) {
+			 SaveFile savefile = new SaveFile();
+			 FileDto fileDto = new FileDto();
+			 for (MultipartFile file : files) {
+				if(files != null && !file.isEmpty()) {
+					savefile.returnFileList(files, FileTypeEnum.findDefindCode("approval"), emp_idx, apprIdx);
+				}
+			}
+		 }
+		 */		 
+		 
 		 
 		// 알람 처리(결재 상신되면 다음 결재자에게 결재요청 문서 도착했다고 알림)
-		Integer apprIdx = dto.getApprIdx();
-		logger.info("생성된 기안번호 : "+apprIdx);
+		 Integer apprIdx = dto.getApprIdx();
+		 logger.info("생성된 기안번호 : "+apprIdx);
 		int nextApprOrder = 1;
 		logger.info("다음 결재자 결재순번 : "+nextApprOrder);
 		String nextApprEmp_idx = service.getNextApprEmpIdx(nextApprOrder, apprIdx);
@@ -212,9 +228,7 @@ public class ApprovalController {
 		String alarmContent = service.getApprSubject(apprIdx, common_idx);			
 		String url = "/approval/approvalreq/detail?apprIdx="+apprIdx+"&apprTypeIdx="+apprTypeIdx;
 		logger.info("url : "+url);
-		service.addNextApprAlarm(nextApprEmp_idx, alarmSubject, alarmContent, url);
-		 
-		 
+		service.addNextApprAlarm(nextApprEmp_idx, alarmSubject, alarmContent, url);		 
 		 
 		 return ResponseEntity.ok("문서가 결재상신 되었습니다.");
 	}
@@ -428,10 +442,11 @@ public class ApprovalController {
 				logger.info(dates.toString());
 				for (Date date : dates) {						
 					if(leaveType==50) {	
-						totalLeaveDays--;
-						service.insertAnnualLeaveInfo(drafterEmpIdx, date, leaveType, totalLeaveDays);						
+						int leaveDec = -1;
+						service.insertAnnualLeaveInfo(drafterEmpIdx, date, leaveType, leaveDec);						
 					}else {
-						service.insertOtherLeaveInfo(drafterEmpIdx, date, leaveType, totalLeaveDays);
+						int leaveDec = 0;
+						service.insertOtherLeaveInfo(drafterEmpIdx, date, leaveType, leaveDec);
 					}
 				}								
 			}
