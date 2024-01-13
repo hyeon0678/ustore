@@ -31,12 +31,19 @@ public interface maildao {
 	void updateRM(int idx);
 
 	void delupdateRM(String emproynum, int selecteidx);
+	
+	void delupdateSM(String emproynum, int selecteidx);
 
 	void saveRM(String emproynum, String content, String subject);
 
 	void saveSM(String mailIdx, String emp);
 
 	String mailidx(String emproynum, String content, String subject);
+
+	void reupdateRM(String emproynum, int selecteidx);
+
+	void reupdateSM(String emproynum, int selecteidx);
+
 
 	
 	

@@ -9,7 +9,7 @@
 				select sm.mail_idx as mailnum , sm.emp_idx as personnum, sm.mail_create_date , sm.mail_subject , sm.mail_content , rm.mail_del , rm.mail_read ,
 				CONCAT(e.emp_name,'(',d.dept_name ,')') as personname
 				from send_mail sm left join receive_mail rm on sm.mail_idx = rm.mail_idx left join employee e on sm.emp_idx =e.emp_idx left join department d on e.dept_id = d.dept_id 
-				where rm.emp_idx = #{param1} and rm.mail_del='N'
+				where rm.emp_idx = #{param1} and rm.mail_del='N' order by sm.mail_create_date desc
 		
 		</select>
 		
@@ -22,6 +22,7 @@
 				left join department d on e.dept_id = d.dept_id 
 				where (rm.emp_idx = #{param1} and sm.mail_subject LIKE CONCAT('%',#{param2},'%') and rm.mail_del='N') 
 				or (rm.emp_idx = #{param1} and  e.emp_name LIKE CONCAT('%',#{param2},'%') and rm.mail_del='N')
+				 order by sm.mail_create_date desc
 						
 		</select>
 		
@@ -32,7 +33,7 @@
 				left join receive_mail rm on rm.mail_idx = sm.mail_idx 
 				left join employee e on rm.emp_idx =e.emp_idx 
 				left join department d on e.dept_id = d.dept_id 
-				where sm.emp_idx =#{param1} and sm.mail_del='N'
+				where sm.emp_idx =#{param1} and sm.mail_del='N' order by sm.mail_create_date desc
 		</select>
 		
 		<select id="outsearchlist" resultType="map">
@@ -43,7 +44,7 @@
 				left join employee e on rm.emp_idx =e.emp_idx 
 				left join department d on e.dept_id = d.dept_id 
 				where (sm.emp_idx =#{param1} and sm.mail_subject LIKE CONCAT('%',#{param2},'%') and sm.mail_del='N') 
-				or (sm.emp_idx =#{param1} and  e.emp_name LIKE CONCAT('%',#{param2},'%') and sm.mail_del='N')
+				or (sm.emp_idx =#{param1} and  e.emp_name LIKE CONCAT('%',#{param2},'%') and sm.mail_del='N') order by sm.mail_create_date desc
 				
 		</select>
 		
@@ -54,7 +55,7 @@
 			left join send_mail sm  on rm.mail_idx = sm.mail_idx  
 			left join employee e on sm.emp_idx =e.emp_idx 
 			left join department d on e.dept_id = d.dept_id 
-			where rm.emp_idx =#{param1} and rm.mail_del='Y'
+			where rm.emp_idx =#{param1} and rm.mail_del='Y' order by sm.mail_create_date desc
 			
 		</select>
 		
@@ -65,7 +66,7 @@
 			left join send_mail sm  on rm.mail_idx = sm.mail_idx  
 			left join employee e on rm.emp_idx =e.emp_idx 
 			left join department d on e.dept_id = d.dept_id 
-			where sm.emp_idx =#{param1} and sm.mail_del='Y'
+			where sm.emp_idx =#{param1} and sm.mail_del='Y' order by sm.mail_create_date desc
 		</select>
 		
 		<select id="delsearchRM" resultType="map">
@@ -76,7 +77,7 @@
 			left join employee e on sm.emp_idx =e.emp_idx 
 			left join department d on e.dept_id = d.dept_id 
 			where (rm.emp_idx = #{param1} and sm.mail_subject LIKE CONCAT('%',#{param2},'%') and rm.mail_del='Y') 
-				or (rm.emp_idx = #{param1} and  e.emp_name LIKE CONCAT('%',#{param2},'%') and rm.mail_del='Y')
+				or (rm.emp_idx = #{param1} and  e.emp_name LIKE CONCAT('%',#{param2},'%') and rm.mail_del='Y') order by sm.mail_create_date desc
 			
 		</select>
 		
@@ -88,7 +89,7 @@
 			left join employee e on rm.emp_idx =e.emp_idx 
 			left join department d on e.dept_id = d.dept_id 
 			where (sm.emp_idx =#{param1} and sm.mail_subject LIKE CONCAT('%',#{param2},'%') and sm.mail_del='Y') 
-				or (sm.emp_idx =#{param1} and  e.emp_name LIKE CONCAT('%',#{param2},'%') and sm.mail_del='Y')
+				or (sm.emp_idx =#{param1} and  e.emp_name LIKE CONCAT('%',#{param2},'%') and sm.mail_del='Y') order by sm.mail_create_date desc
 		</select>
 		
 		<select id="detailRM" resultType="map">
@@ -117,6 +118,10 @@
 			update receive_mail set mail_del ='Y' where emp_idx =#{param1} and mail_idx = #{param2}
 		</update>
 		
+		<update id="delupdateSM">
+			update send_mail set mail_del ='Y' where emp_idx =#{param1} and mail_idx = #{param2}
+		</update>
+		
 		<insert id="saveRM" parameterType="String">
 			insert into send_mail(emp_idx, mail_content,mail_subject,mail_del)value(#{param1},#{param2},#{param3},'N')
 		</insert>
@@ -129,7 +134,13 @@
 				insert into receive_mail (mail_idx, emp_idx, mail_del, mail_read)value(#{param1},#{param2},'N','N')
 		</insert>
 		
+		<update id="reupdateRM">
+			update receive_mail set mail_del ='N' where emp_idx =#{param1} and mail_idx = #{param2}
+		</update>
 		
+		<update id="reupdateSM">
+			update send_mail set mail_del ='N' where emp_idx =#{param1} and mail_idx = #{param2}
+		</update>
 		
 		
 

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,13 +40,37 @@ public class mailcontroller {
 		}
 		
 		@GetMapping(value = "/mail/home.ajax/update")
-		public void homeupdate(Principal Principal ,@RequestParam int selecteidx) {
+		public void homeupdate(Principal Principal ,@RequestParam int selecteidx, @RequestParam String pageState) {
 			logger.info("휴지통 페이지로 보내기");
 			String  emproynum = Principal.getName();
 			logger.info("emproynum : "+emproynum);
 			logger.info("selecteidx"+selecteidx);
+			logger.info("pageState"+pageState);
 			
-			service.delupdateRM(emproynum, selecteidx);
+			if (pageState.equals("RM")) {
+				service.delupdateRM(emproynum, selecteidx);
+				
+			}else if (pageState.equals("SM")) {
+				service.delupdateSM(emproynum, selecteidx);
+	
+			}
+		}
+		
+		@PostMapping(value = "/mail/del.ajax/update")
+		public void delupdate(Principal Principal ,@RequestParam int selecteidx, @RequestParam String pageState) {
+			logger.info("휴지통 산태 바꾸기 보내기");
+			String  emproynum = Principal.getName();
+			logger.info("emproynum : "+emproynum);
+			logger.info("selecteidx"+selecteidx);
+			logger.info("pageState"+pageState);
+			
+			if (pageState.equals("RM")) {
+				service.reupdateRM(emproynum, selecteidx);
+				
+			}else  {
+				service.reupdateSM(emproynum, selecteidx);
+	
+			}
 		}
 		
 		@RequestMapping(value = "mail/home.ajax/list")
@@ -225,13 +250,13 @@ public class mailcontroller {
 		
 		
 		
-		// @RequestParam(required = false) String[] saveempnum
+		// @RequestParam(required = false) String[] saveempnum//@RequestParam(required = false, value = "filename[]") String[] filename
 		//@ModelAttribute maildto dto
 		//filename ++ MultipartFile upload_btn
 		@RequestMapping(value = "mail/new.ajax/save")
 		@ResponseBody
 		public ModelAndView newsave(Principal Principal, @RequestParam(required = false, value = "saveempnum[]") String[] saveempnum,
-				@RequestParam(required = false, value = "filename[]") String[] filename, @RequestParam String content, @RequestParam String subject 
+				 @RequestParam String content, @RequestParam String subject 
 				) {
 			logger.info(" 메일 글쓰기 저장 기능 플레이 ");
 			String  emproynum = Principal.getName();
