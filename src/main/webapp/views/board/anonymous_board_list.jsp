@@ -5,7 +5,7 @@
 	<!--begin::Head-->
 	<head>
 <base href="../" />
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+		<title>UStore</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
@@ -74,7 +74,7 @@
 									<!--begin::Col 드롭박스 >> 회원 상태-->
 									<!--end::Col-->
 									<input type="text" class="form-control form-control-solid" name = "anListSerch" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
-									<button type="button" class="btn btn-primary" style="margin: 10px;" onclick="search()">검색</button>
+									<button type="button" class="btn btn-primary" style="margin: 10px;" onclick="search()" id= "search" >검색</button>
 									<button onclick="location.href='anboard/WriteForm'" class="btn btn-primary">글작성</button>
 								</div>
 								<!--end::Actions-->
@@ -180,13 +180,19 @@
 			content += '</tr>';
 			
 			console.log("content : " + content);
-			
+		});
 			$('#list').empty();
 			$('#list').append(content);
 			
-		});
 			table.DataTable( {"ordering": false, "info": false, "destroy": true, "pageLength": 10 , "lengthChange": false } );
 		}
+	
+	
+	$('#search').on('click',function(){
+		table.DataTable().destroy();
+		search();
+	});
+	
 	
 	function search(){
 		console.log("검색 메서드  호출");

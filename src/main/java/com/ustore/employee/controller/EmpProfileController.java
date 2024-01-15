@@ -2,6 +2,7 @@ package com.ustore.employee.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import com.ustore.employee.dao.EmpProfileDao;
 import com.ustore.employee.dto.EmpProrileDto;
 import com.ustore.employee.dto.EmployeeDto;
 import com.ustore.employee.service.EmpProfileService;
+import com.ustore.reservation.dto.reservationDto;
 
 @EnableScheduling
 @Controller
@@ -146,10 +148,8 @@ public class EmpProfileController {
 		for (int i = 0; i < list.size(); i++) {
 			hash.put("id", list.get(i).get("sch_idx"));
 			hash.put("title", list.get(i).get("sch_subject"));
-			hash.put("startday", list.get(i).get("sch_start_date"));
-			hash.put("startTime", list.get(i).get("sch_start_time"));
-			hash.put("endday", list.get(i).get("sch_end_date"));
-			hash.put("endTime", list.get(i).get("sch_end_time"));
+			hash.put("start", list.get(i).get("sch_start_date"));
+			hash.put("end", list.get(i).get("sch_end_date"));
 			hash.put("description", list.get(i).get("sch_content"));
 			hash.put("schedule", list.get(i).get("sch_type"));
 			
@@ -161,6 +161,12 @@ public class EmpProfileController {
 		
 		return jsonArr;
 		
+	}
+	
+	@RequestMapping("employee/scheduleinfo.ajax")
+	@ResponseBody
+	public ArrayList<EmpProrileDto> scheduleinfo(@RequestParam String sch_idx){
+		return service.scheduleinfo(sch_idx);  
 	}
 	
 	@GetMapping(value="/employee/schedule/delete")

@@ -6,7 +6,7 @@
 	<!--begin::Head-->
 	<head>
 		<base href="../../../" />
-				<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+				<title>UStore</title>
 				<meta charset="utf-8" />
 				<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 				<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
@@ -98,7 +98,7 @@
 							<div style="text-align: right; margin-top: -40px; margin-right: 380px;">
     						<button class="btn btn-primary"  data-kt-element="send" onclick="anboardDel()">삭제하기</button>
 
-							<div style="width: 800px; height: 1000px; overflow: auto; border: solid lightgrey; text-align: center;">
+							<div style="width: 100%; height: 1000px; overflow: auto; border: solid lightgrey; text-align: center;">
 								<c:forEach items="${newFileList}" var="files">
 									<img src="/ustore/photo/${files.newfilename}" alt="${files.newfilename}" style="margin: 10px; height: 50%"/>
 								</c:forEach>

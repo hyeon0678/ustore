@@ -345,8 +345,7 @@ public class BoardController {
 	}
 	
 	// 댓글 기능
-	@RequestMapping(value = "anboard/reply.ajax")
-	@ResponseBody
+	@RequestMapping(value = "/anboard/reply")
 	public String anreply(@RequestParam String anony_board_idx, @RequestParam String repl_content) {
 		
 		logger.info("댓글 작성 실행");

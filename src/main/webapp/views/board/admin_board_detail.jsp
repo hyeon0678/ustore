@@ -6,7 +6,7 @@
 	<!--begin::Head-->
 	<head>
 		<base href="../../../" />
-				<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+				<title>UStore</title>
 				<meta charset="utf-8" />
 				<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 				<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
@@ -81,7 +81,7 @@
 					<!--================================메인 내용들어가는부분================================================-->
 						<div style="margin-top: 100px; margin-left: 50px;">
 							<h1>${board.notice_subject}</h1>
-							!!!!! ${board.notice_idx} !!!!!
+							
 						</div>
 						
 						<div class="text-end">
@@ -97,14 +97,12 @@
 						</i> 
 						<i>${board.emp_name}</i>
 						<i>${board.reg_date}</i>
-						<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
-						<div class="form-check" style="margin-left: 640px;">
-    						<input class="form-check-input" type="checkbox" name="top_fixed" id="flexCheckDefault" value="Y" onchange="save()"/>
-    						<label class="form-check-label" for="flexCheckDefault">
-        						상단 고정 여부
-    						</label>
+						<div class="form-check" style="position: absolute; top:380px; right:550px;">
+    						<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
+    							<input class="form-check-input" type="checkbox" name="top_fixed" id="flexCheckDefault" value="Y" onchange="save()"/>
+    							<label class="form-check-label" for="flexCheckDefault">상단 고정 여부</label>
+							</sec:authorize>
 						</div>
-						</sec:authorize>
 						</p>
 						<div style="text-align: right; margin-top: -48px; margin-right: 380px;">
     
@@ -120,7 +118,7 @@
 	
 						<!-- </button> -->
 
-						<div style="width: 800px; height: 1000px; overflow: auto; border: solid lightgrey; text-align: center;">
+						<div style="width: 100%; height: 1000px; overflow: auto; border: solid lightgrey; text-align: center;">
 							<c:forEach items="${newFileList}" var="files">
 								<img src="/ustore/photo/${files.newfilename}" alt="${files.newfilename}" style="margin: 10px; height: 50%"/>
 							</c:forEach>
