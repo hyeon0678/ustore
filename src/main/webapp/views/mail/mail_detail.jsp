@@ -136,24 +136,6 @@
 												<!--end::Message accordion-->
 											</div>
 										</div>
-										<!--end::Card-->
-										<div class="card-footer  py-5 gap-5" style="background-color: white; justify-content: flex-end;">
-												<!--begin::Actions-->
-												<div class="d-flex">
-													<div class="px-15 px-10">
-														<ul class="upload_ul">
-															<li class="upload_li">
-																<div>첨부파일 1</div>
-																<div class="upload_cancel badge badge-light fs-8">x</div>
-															</li>
-														</ul>
-													</div>
-													<input type="button" class="btn btn-primary" value="저장"/>
-												</div>
-												<!--end::Actions-->
-												<!--begin::Pagination-->
-												<div class="d-flex align-items-center">
-													
 
 												</div>
 												<!--end::Pagination-->
