@@ -8,10 +8,10 @@ import java.util.stream.Stream;
 
 public enum DepartmentEnum {
 	USTORE("UStore", 1),
-	HUMAN_RESOURCES_TEAM("인사팀", 2),
-	ACCOUNTING_TEAM("회계팀", 3),
-	CUSTOMER_TEAM("고객관리팀", 4),
-	STORE_TEMA("매장관리팀", 5),
+	HUMAN_RESOURCES_TEAM("매장관리팀", 2),
+	ACCOUNTING_TEAM("인사팀", 3),
+	CUSTOMER_TEAM("회계팀", 4),
+	STORE_TEMA("고객관리팀", 5),
 	FOOD_TEAM("식품팀", 6),
 	NECESSARIES_TEAM("생필품팀", 7),
 	ELECTRONICS_TEAM("전자제품팀", 8);
