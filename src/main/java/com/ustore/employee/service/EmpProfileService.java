@@ -1,6 +1,7 @@
 package com.ustore.employee.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,6 +136,10 @@ public class EmpProfileService {
 			fileDao.saveFile(fileDto);
 		}
 		return row;
+	}
+
+	public ArrayList<EmpProrileDto> scheduleinfo(String sch_idx) {
+		return dao.scheduleinfo(sch_idx);
 	}
 
 	

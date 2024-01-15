@@ -5,7 +5,7 @@
 	<!--begin::Head-->
 	<head>
 <base href="../" />
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+		<title>UStore</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
@@ -59,7 +59,7 @@
 							</div>
 						</div>
 						<form action="adboard/Write" method="post" enctype="multipart/form-data">
-							<div>
+							<div hidden="true">
 								<input type="text" value="${sessionScope.emp_idx}" name="emp_idx"/>
 								<input type="text" value="${sessionScope.dept_id}" name="dept_id"/>
 							</div>

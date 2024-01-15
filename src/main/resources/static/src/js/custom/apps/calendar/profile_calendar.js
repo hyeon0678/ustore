@@ -100,10 +100,10 @@ var KTAppCalendar = function () {
                     description: arg.event.extendedProps.description,
                     schedule: arg.event.extendedProps.schedule,
                     location: arg.event.extendedProps.location,
-                    startStr: arg.event.startday,
-                    startTimeStr: arg.event.startTime,
-                    endTimeStr: arg.event.endTime,
-                    endStr: arg.event.endday,
+                    startStr: arg.event.startStr,
+                    startTimeStr: arg.event.startTimeStr,
+                    endTimeStr: arg.event.endTimeStr,
+                    endStr: arg.event.endStr,
                     allDay: arg.event.allDay
                 });
                 
@@ -209,9 +209,8 @@ var KTAppCalendar = function () {
                 scheduleType: '',
                 startDate: new Date(),
                 startTime: new Date(),
-                endDate: '',
-                endTime: '',
-                allDay: false
+                endDate: new Date(),
+                endTime: new Date(),
             };
             handleNewEvent();
         });
@@ -293,9 +292,7 @@ var KTAppCalendar = function () {
                                     var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length - 1]).format();
                                     // if (!allDayEvent) {
                                         const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
-                                        const endDate = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length - 1]).format('YYYY-MM-DD');
-                                        // const endDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
-                                        // const endDate = startDate;
+                                        const endDate = startDate;
                                         const startTime = moment(startTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
                                         const endTime = moment(endTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
 
@@ -441,23 +438,22 @@ var KTAppCalendar = function () {
                                     console.log(data.id,"번 일정 삭제");
 
                                     // Detect if is all day event
-                                    // let allDayEvent = false;
-                                    // if (allDayToggle.checked) { allDayEvent = true; }
-                                    // if (startTimeFlatpickr.selectedDates.length === 0) { allDayEvent = true; }
+                                    let allDayEvent = false;
+                                    if (allDayToggle.checked) { allDayEvent = true; }
+                                    if (startTimeFlatpickr.selectedDates.length === 0) { allDayEvent = true; }
 
                                     // Merge date & time
                                     var startDateTime = moment(startFlatpickr.selectedDates[0]).format();
                                     var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length - 1]).format();
-                                    // if (!allDayEvent) {
+                                    if (!allDayEvent) {
                                         const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
-                                        const endDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
-                                        // const endDate = startDate;
+                                        const endDate = startDate;
                                         const startTime = moment(startTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
                                         const endTime = moment(endTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
 
                                         startDateTime = startDate + 'T' + startTime;
                                         endDateTime = endDate + 'T' + endTime;
-                                    // }
+                                    }
 
                                     // Add new event to calendar
                                     // calendar.addEvent({
@@ -523,7 +519,7 @@ var KTAppCalendar = function () {
             // endDateMod = moment(data.endDate).format('YYYY.MM.DD');
 
         // } else {
-            eventNameMod = '';
+            // eventNameMod = '';
             // startDateMod = moment(data.startDate).format('Do MMM, YYYY - h:mm a');
             // endDateMod = moment(data.endDate).format('Do MMM, YYYY - h:mm a');
 
@@ -556,7 +552,6 @@ var KTAppCalendar = function () {
             viewDeleteButton.style.display = 'inline-flex';
             viewEditButton.style.display = 'inline-flex';
             viewEventDescription.style.display = 'block';
-            viewScheduleType.style.display = 'inline-flex';
             if(data.endDate == ''){
                 viewEndDate.style.display = 'none';
                 console.log("viewenddate is ''");
@@ -569,7 +564,6 @@ var KTAppCalendar = function () {
             viewDeleteButton.style.display = 'inline-flex';
             viewEditButton.style.display = 'inline-flex';
             viewEventDescription.style.display = 'block';
-            viewScheduleType.style.display = 'inline-flex';
             if(data.endDate == ''){
                 viewEndDate.style.display = 'none';
                 console.log("viewenddate is ''");
@@ -581,22 +575,19 @@ var KTAppCalendar = function () {
             viewScheduleType.innerText = '출근';
             viewDeleteButton.style.display = 'none';
             viewEditButton.style.display = 'none';
-            viewEventDescription.style.display = 'block';
-            viewScheduleType.style.display = 'none';
-            // viewEndDate.style.display = 'none';
+            viewEventDescription.style.display = 'none';
+            viewEndDate.style.display = 'none';
         } else if (data.scheduleType == 13) {
             viewScheduleType.innerText = '퇴근';
             viewDeleteButton.style.display = 'none';
             viewEditButton.style.display = 'none';
-            viewEventDescription.style.display = 'block';
-            viewScheduleType.style.display = 'none';
-            // viewEndDate.style.display = 'none';
+            viewEventDescription.style.display = 'none';
+            viewEndDate.style.display = 'none';
         } else if (data.scheduleType == 14) {
             viewScheduleType.innerText = '연차';
             viewDeleteButton.style.display = 'none';
             viewEditButton.style.display = 'none';
             viewEventDescription.style.display = 'block';
-            viewScheduleType.style.display = 'inline-flex';
             if(data.endDate == ''){
                 viewEndDate.style.display = 'none';
                 console.log("viewenddate is ''");
@@ -609,7 +600,6 @@ var KTAppCalendar = function () {
             viewDeleteButton.style.display = 'none';
             viewEditButton.style.display = 'none';
             viewEventDescription.style.display = 'block';
-            viewScheduleType.style.display = 'inline-flex';
             if(data.endDate == ''){
                 viewEndDate.style.display = 'none';
                 console.log("viewenddate is ''");
@@ -782,7 +772,8 @@ var KTAppCalendar = function () {
 
         // Handle null end dates
         // const endDate = data.endDate ? data.endDate : moment(data.startDate).format();
-        endFlatpickr.setDate(endDate, true, 'Y-m-d');
+        // endFlatpickr.setDate(endDate, true, 'Y-m-d');
+        endFlatpickr.setDate(data.endDate, true, 'Y-m-d');
 
         // const allDayToggle = form.querySelector('#kt_calendar_datepicker_allday');
         const datepickerWrappers = form.querySelectorAll('[data-kt-calendar="datepicker"]');
@@ -809,10 +800,10 @@ var KTAppCalendar = function () {
         data.eventDescription = res.description;
         data.scheduleType = res.schedule;
         data.eventLocation = res.location;
-        data.startDate = res.startday;
-        data.startTime = res.startTime;
-        data.endTime = res.endTime;
-        data.endDate = res.endday;
+        data.startDate = res.startStr;
+        data.startTime = res.startTimeStr;
+        data.endTime = res.endTimeStr;
+        data.endDate = res.endStr;
         data.allDay = res.allDay;
     }
 
@@ -832,8 +823,10 @@ var KTAppCalendar = function () {
             eventDescription = form.querySelector('[name="calendar_event_description"]');
             scheduleType = form.querySelector('[name="schedule_type"]');
             eventLocation = form.querySelector('[name="calendar_event_location"]');
-            startDatepicker = form.querySelector('#kt_calendar_datepicker_start_date');
-            endDatepicker = form.querySelector('#kt_calendar_datepicker_end_date');
+            // startDatepicker = form.querySelector('#kt_calendar_datepicker_start_date');
+            startDatepicker = form.querySelector('[name="event_start_date"]');
+            // endDatepicker = form.querySelector('#kt_calendar_datepicker_end_date');
+            endDatepicker = form.querySelector('[name="event_end_date"]');
             startTimepicker = form.querySelector('#kt_calendar_datepicker_start_time');
             endTimepicker = form.querySelector('#kt_calendar_datepicker_end_time');
             addButton = document.querySelector('[data-kt-calendar="add"]');

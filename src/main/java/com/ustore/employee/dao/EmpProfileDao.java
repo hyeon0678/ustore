@@ -1,5 +1,6 @@
 package com.ustore.employee.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,8 @@ public interface EmpProfileDao {
 	int updateEmpInfo(EmployeeDto dto);
 
 	int annualCount(String emp_idx);
+
+	ArrayList<EmpProrileDto> scheduleinfo(String sch_idx);
 
 
 	

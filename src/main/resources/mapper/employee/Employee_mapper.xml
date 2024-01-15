@@ -80,8 +80,8 @@ insert into schedule(
 </insert>
 
 <update id="leavework">
-update schedule set sch_content = '퇴근', sch_subject = '출퇴근', sch_end_date=curdate(), sch_end_time= curtime(), sch_type='13', reg_by='20220001'
-where sch_idx in (SELECT sch_idx FROM schedule WHERE sch_subject = '출퇴근' AND DATE(sch_start_date) = CURDATE() and emp_idx = '20220001')
+update schedule set sch_content = '퇴근', sch_subject = '출퇴근', sch_end_date=curdate(), sch_end_time= curtime(), sch_type='13', reg_by=#{emp_idx}
+where sch_idx in (SELECT sch_idx FROM schedule WHERE sch_subject = '출퇴근' AND DATE(sch_start_date) = CURDATE() and emp_idx = #{emp_idx})
 </update>
 
 <!-- <insert id="leavework" parameterType="EmpProrileDto">
@@ -109,6 +109,10 @@ where sch_idx in (SELECT sch_idx FROM schedule WHERE sch_subject = '출퇴근' A
 	)
 </insert> -->
 
+<select id="scheduleinfo" resultType="EmpProrileDto">
+select * from schedule s where sch_idx = #{param1}
+</select>
+
 <delete id="employeDel">
 	DELETE FROM schedule WHERE sch_idx = #{param1}
 </delete>
@@ -118,11 +122,11 @@ where sch_idx in (SELECT sch_idx FROM schedule WHERE sch_subject = '출퇴근' A
 </delete>
 
 <select id="attCheck" resultType="Integer">
-SELECT COUNT(*) FROM schedule WHERE sch_subject = '출근' AND DATE(sch_start_date) = CURDATE() and emp_idx = #{emp_idx}
+SELECT COUNT(*) FROM schedule WHERE sch_content = '출근' AND DATE(sch_start_date) = CURDATE() and emp_idx = #{emp_idx}
 </select>
 
 <select id="levCheck" resultType="Integer">
-SELECT COUNT(*) FROM schedule WHERE sch_subject = '퇴근' AND DATE(sch_start_date) = CURDATE() and emp_idx = #{emp_idx}
+SELECT COUNT(*) FROM schedule WHERE sch_content = '퇴근' AND DATE(sch_start_date) = CURDATE() and emp_idx = #{emp_idx}
 </select>
 
 <select id="homeProfileDetail" resultType="EmpProrileDto">

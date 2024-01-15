@@ -19,7 +19,7 @@ License: For each use you must have a valid license purchased only from above li
 	<!--begin::Head-->
 	<head>
 <base href="../" />
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+		<title>UStore</title>
 		<meta charset="utf-8" />
 	
 		
@@ -107,7 +107,9 @@ License: For each use you must have a valid license purchased only from above li
 															<fmt:formatDate var="curDt" value="${attendance}" type="DATE" pattern="yyyy-MM-dd" />
 															<fmt:formatDate var="curTime" value="${attendance}" type="DATE" pattern="HH:mm:ss" />
 															<input type="text" name="event_start_date" value="${curDt}"/>
+															<input type="text" name="event_end_date" value="${curDt}"/>
 															<input type="text" name="event_start_time" value="${curTime}"/>
+															<input type="text" name="event_end_time" value="${curTime}"/>
 														</div>
 														<button class="btn btn-flex btn-primary" id="midnightchecker" style="margin-right: 5px">출근</button>
 													</form>
@@ -496,8 +498,8 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin::Event start date/time-->
 													<div class="fs-6">
 														<span class="fw-bold">Starts</span>
-														<span data-kt-calendar="event_start_date"></span>
-														<span data-kt-calendar="event_start_time"></span>
+														<span data-kt-calendar="event_start_date" id="schModalStartDay"></span>
+														<span data-kt-calendar="event_start_time" id="schModalStartTime"></span>
 													</div>
 													<!--end::Event start date/time-->
 												</div>
@@ -533,6 +535,12 @@ License: For each use you must have a valid license purchased only from above li
 												</div>
 												<!--end::Row-->
 											</div>
+											
+											<div class="modal-footer" id="sch_info">
+												
+											</div>
+											
+											
 											<!--end::Modal body-->
 										</div>
 									</div>
@@ -595,6 +603,33 @@ License: For each use you must have a valid license purchased only from above li
 		});
 	})
 	
+	/* 
+	function scheduleinfo(sch_idx){
+			$.ajax({
+		        type: 'get',
+		        url: 'employee/scheduleinfo.ajax',
+		        dataType: 'json',
+		        data: {
+    	            'sch_idx': sch_idx
+    	        },
+		        success: function (data) {
+					console.log("일정 상세보기 성공 : "+data);
+					$('#schModalStartDay').text(data[0].sch_start_date+' ~ '+data[0].sch_end_date);
+					$('#schModalStartTime').text(data[0].sch_start_time.substring(0,5)+' ~ '+data[0].sch_end_time.substring(0,5));
+					var content = '';
+					console.log("일정 상세보기 뿌려주는 날짜 값 : " + data[0].sch_start_date+formattedDate);
+					console.log("일정 상세보기 뿌려주는 시간 값 : " + data[0].sch_start_time+formattedDate);
+					
+					$('#sch_info').empty();
+					$('#sch_info').append(content);
+		        },
+		        error: function (e) {
+		            console.log("일정 상세보기 실패 : " + e);
+		        }
+		    });
+
+		}
+	 */
 	
 	/* $('#midnightchecker').on('click',function(){
 		var $event_start_date = $('input[name="event_start_date"]');
