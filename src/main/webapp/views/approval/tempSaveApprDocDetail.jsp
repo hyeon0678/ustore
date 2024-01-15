@@ -949,7 +949,8 @@
         		};
         }else{
         	var leaveType = $('#leaveType option:selected').val();
-            var leaveDays = $('#leaveDays').html();
+            var leaveDays = $('#leaveDays').text();
+            console.log(leaveDays);
             var leaveReason = $('#leaveReason').val();
             var leaveStartDate =$('#leaveStartDate').val();
             var leaveEndDate = $('#leaveEndDate').val();
@@ -1008,7 +1009,8 @@
     	if(common_idx=='30') {  
     		var apprContent = myEditor.getData();	
             ApprovalDto = {
-            	    commonIdx: common_idx,
+            	    commonIdx: common_idx,            	    
+            	    apprTypeIdx: apprTypeIdx,
             	    apprSubject: apprSubject,
             	    apprContent: apprContent,
             	    approvalLines: approvalLines,
@@ -1018,6 +1020,7 @@
 	    	var orderIdx = $('#orderNum').val();
 	    	ApprovalDto = {
 	    		    commonIdx: common_idx,
+	    		    apprTypeIdx: apprTypeIdx,
 	    		    apprSubject: apprSubject,
 	    		    approvalLines: approvalLines,
 	    	        receivers: receivers,
@@ -1025,7 +1028,8 @@
 	    		};
 	    }else{
 	    	var leaveType = $('#leaveType').val();
-            var leaveDays = $('#leaveDays').val();
+            var leaveDays = $('#leaveDays').text();
+            console.log(leaveDays);
             var leaveReason = $('#leaveReason').val();
             var leaveStartDate =$('#leaveStartDate').val();
             var leaveEndDate = $('#leaveEndDate').val();
@@ -1033,6 +1037,7 @@
             console.log(leaveEndDate);
 	    	ApprovalDto = {
 	        	    commonIdx: common_idx,
+	        	    apprTypeIdx: apprTypeIdx,
 	        	    apprSubject: apprSubject,
 	        	    approvalLines: approvalLines,
 	                receivers: receivers,
