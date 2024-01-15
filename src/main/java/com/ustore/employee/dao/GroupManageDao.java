@@ -47,4 +47,6 @@ public interface GroupManageDao {
 
 	int deleteDept(String name, int deptIdx);
 
+	ArrayList<EmployeeDto> dept();
+
 }

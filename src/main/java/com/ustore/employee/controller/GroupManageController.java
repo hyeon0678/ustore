@@ -76,6 +76,7 @@ public class GroupManageController {
 		ModelAndView mav = new ModelAndView("employee/personnel_update");
 		logger.info("업데이트 수정 아이디 값 도착"+emp_idx);
 		mav.addObject("list", groupManageService.employeeInfo(emp_idx));
+		mav.addObject("dept", groupManageService.dept());
 		return mav;
 	}
 

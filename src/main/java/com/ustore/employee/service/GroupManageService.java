@@ -131,5 +131,10 @@ public class GroupManageService {
 			groupManageDao.delImgInfo(file_idx);
 		}
 	}
+
+	public ArrayList<EmployeeDto> dept() {
+		ArrayList<EmployeeDto> list = groupManageDao.dept();
+		return list;
+	}
 	
 }

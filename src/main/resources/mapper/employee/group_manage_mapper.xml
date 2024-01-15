@@ -114,7 +114,7 @@
 		  	e.`position` = (SELECT common_idx FROM common WHERE common_type= #{common_type}),
 		</if>
 		<if test="dept_name != null">
-		   	e.dept_id = (SELECT dept_id FROM department WHERE dept_name=#{dept_name}),
+		   	e.dept_id = #{dept_name},
 		 </if>
 		 e.update = #{update},
 		 e.update_by=#{principal}
@@ -205,4 +205,8 @@
 		, dept_delete = 'Y'
 		WHERE dept_id=#{param2}
 	</update>
+	
+	<select id="dept" resultType="com.ustore.employee.dto.EmployeeDto">
+		SELECT *FROM department d WHERE dept_delete ='N'
+	</select>
 </mapper>

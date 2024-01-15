@@ -231,13 +231,9 @@ License: For each use you must have a valid license purchased only from above li
 															<div class="col-lg-8 fv-row">
 																<!-- 셀렉트 박스 -->
 																<select class="form-select w-50" aria-label="Select option"  name = "dept_name" id="dept_name">
-																    <option value="고객관리팀" ${list.get(0).deptName eq '고객관리팀' ? 'selected' : ''}>고객관리팀</option>
-																    <option value="회계팀" ${list.get(0).deptName eq '회계팀' ? 'selected' : ''}>회계팀</option>
-																    <option value="인사팀" ${list.get(0).deptName eq '인사팀' ? 'selected' : ''}>인사팀</option>
-																	<option value="매장관리팀" ${list.get(0).deptName eq '매장관리팀' ? 'selected' : ''}>매장관리팀</option>
-																	<option value="식품팀" ${list.get(0).deptName eq '식품팀' ? 'selected' : ''}>매장관리팀(식품팀)</option>
-																	<option value="생필품팀" ${list.get(0).deptName eq '생필품팀' ? 'selected' : ''}>매장관리팀(생필품팀)</option>
-																	<option value="전자제품팀" ${list.get(0).deptName eq '전자제품팀' ? 'selected' : ''}>매장관리팀(전자제품팀)</option>
+																	<c:forEach var="list" items="${dept}">													
+																		<option value=${list.deptId}>${list.deptName}</option>
+																	</c:forEach>
 																</select>
 															</div>
 															<!--end::Col-->
@@ -626,10 +622,19 @@ License: For each use you must have a valid license purchased only from above li
 		$("#kt_datepicker_2").flatpickr();	
 		
 
-		
 		<!-- 수정하기 -->
+	console.log('${list.get(0).deptName}');
 	
 		$(document).ready(function () {
+			$("#dept_name option").filter(function() {
+	            return $(this).text() === '${list.get(0).deptName}';
+	        }).prop('selected', true);
+			
+			
+			
+			
+			
+			
 		       $("#delete").on("click",function(e){
 					e.preventDefault();
 					var emp_idx = $("#emp_idx").text();
