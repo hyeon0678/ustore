@@ -98,7 +98,10 @@ VALUES (
 select stock from products where product_id = #{productId}
 </select>
 <select id="stockHistoryList" resultType="StockDto">
-select reg_date,operation_type,quantity,reason from stock_history where product_id =#{productId}
+ SELECT reg_date, operation_type, quantity, reason
+FROM stock_history
+WHERE product_id = #{productId}
+ORDER BY stock_history_idx  DESC
 </select>
 
 <select id="incomingList" resultType="OrderDto">

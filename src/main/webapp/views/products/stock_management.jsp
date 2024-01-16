@@ -124,8 +124,8 @@
 												<span class="path1"></span> <span class="path2"></span>
 											</i> <input type="text"
 												data-kt-ecommerce-category-filter="search"
-												class="form-control form-control-solid w-250px ps-12"
-												placeholder="내용을 입력 해주세요." />
+												class="form-control form-control-solid w-300px ps-12"
+												placeholder="상품 명과 상품 번호를 입력 해주세요." />
 												<button class="btn btn-primary">검색</button>
 										</div>
 										<!--end::Search-->
@@ -405,18 +405,45 @@
         var purchasePrice = document.querySelector('[name="purchasePrice"]').value;
 
      
-        if (productName.trim() === '' || Bselect.trim() === '' || categoryId.trim() === '' || unitQuantity.trim() === '' || purchasePrice.trim() === '') {
-        
+        if (productName.trim() === '') {
             Swal.fire({
-                text: '입력되지 않은 내용이 있습니다.',
+                text: '물품명을 입력해주세요.',
                 icon: 'info',
                 confirmButtonText: '확인',
                 customClass: {
                     confirmButton: 'btn btn-primary'
                 }
             });
-
-         
+            event.preventDefault();
+        } else if (Bselect.trim() === '') {
+            Swal.fire({
+                text: '분류를 선택해주세요.',
+                icon: 'info',
+                confirmButtonText: '확인',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                }
+            });
+            event.preventDefault();
+        }else if (unitQuantity.trim() === '') {
+            Swal.fire({
+                text: '단위를 입력해주세요.',
+                icon: 'info',
+                confirmButtonText: '확인',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                }
+            });
+            event.preventDefault();
+        } else if (purchasePrice.trim() === '') {
+            Swal.fire({
+                text: '단가를 입력해주세요.',
+                icon: 'info',
+                confirmButtonText: '확인',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                }
+            });
             event.preventDefault();
         } else {
         

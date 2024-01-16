@@ -142,7 +142,7 @@
 											</i> <input type="text"
 												data-kt-ecommerce-category-filter="search"
 												class="form-control form-control-solid w-250px ps-12"
-												placeholder="내용을 입력해주세요." />
+												placeholder="입고 날짜를 입력 해주세요." />
 												<button class="btn btn-primary">검색</button>
 										</div>
 										<!--end::Search-->

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -71,7 +72,7 @@ public class OrderController {
 	}
 	@PostMapping("/order/ordercart/insert") // 물품 장바구니에 추가하는 컨트롤러 
     @ResponseBody
-    public String ordercartInsert(@RequestParam Map<String, String> params, HttpSession session,@RequestParam("firstbirthdate")String firstbirthdate) {
+    public String ordercartInsert(@RequestParam Map<String, String> params, HttpSession session,@RequestParam("firstbirthdate")String firstbirthdate,Model model) {
      
 		logger.info("firstbirthdate : "+firstbirthdate);
 		
@@ -79,9 +80,12 @@ public class OrderController {
 		String birthdate = params.get("birthdate");
         session.setAttribute("birthdate", birthdate);
         
-        
+
         logger.info("birthdate :"+birthdate);
         logger.info("params : "+params);
+        
+        
+        
 
         boolean checkPro = service.checkProduct(params);
 
@@ -126,11 +130,26 @@ public class OrderController {
 		model.addAttribute("list3",list3);
 				logger.info("list3 : "+list3);
 	    
+	  
+	  
 	    
+
 	    
 	    logger.info("장바구니 리스트:"+orderList);
 	    return ResponseEntity.ok(orderList);
 	}
+	@GetMapping(value = "/order/ordercartdate/list")
+	public String orderCartDate(HttpSession session,Model model) {
+	
+		
+		
+		return "";
+	}
+		
+		
+		
+		
+	
 	
 	
 	@PostMapping("/order/ordercart/delete") //장바구니 삭제 
