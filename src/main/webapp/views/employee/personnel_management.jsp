@@ -302,15 +302,15 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="modal-header">
 												<h3 class="modal-title"></h3>
 												<div style="display:flex">
-													<div class="me-n4 back-btn" style="display: none;">
-														<button class="btn btn-sm btn-icon back-btn" data-kt-menu-trigger="click" 
-															data-kt-menu-placement="bottom-end" style="margin-right: 10px; padding: 10px; ">
+													<div class="me-n4 back-btn">
+														<button class="btn btn-sm btn-icon back-btn"
+															style="margin-right: 10px; padding: 10px;">
 															<span class="ki-duotone ki-dots-square fs-2">
 																<img src="resource/assets/media/icon/arr063.svg"/>
 															</span>
 														</button>
 													</div>
-													<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+													<div class="btn btn-icon btn-sm btn-active-light-primary ms-2 close-dept-modal"  data-bs-dismiss="modal" aria-label="Close">
 														<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
 													</div>
 												</div>
@@ -544,9 +544,11 @@ License: For each use you must have a valid license purchased only from above li
 		}
 		
 		$('.deptmanagement-modal').on('click', function(){
+			deptManagementStack = [];
 			let deptIdx = 1;
-			deptManagementStack.push(1);
+			deptManagementStack.push('1');
 			$('.modal-title').html('부서 관리')
+			
 			callDeptInfo(deptIdx);
 		});
 		
@@ -554,6 +556,10 @@ License: For each use you must have a valid license purchased only from above li
 		$('.dept-make').on('click', function(){
 			let currentDept = deptManagementStack[deptManagementStack.length-1]
 			deptName = $('.dept-make-name').val();
+			if(deptName == ''){
+				FalseModal('부서명을 입력해주세요')
+				return false;
+			}
 			console.log(deptName);
 			$.ajax({
 				type:'POST',
@@ -564,7 +570,7 @@ License: For each use you must have a valid license purchased only from above li
 				},
 				dataType:'JSON',
 				success:function(data){
-					console.log("success");
+					console.log(" -------------dept-make success");
 					callDeptInfo(currentDept)
 				},error:function(error){
 					console.log(error);
@@ -572,36 +578,49 @@ License: For each use you must have a valid license purchased only from above li
 			});
 			$('.dept-make-name').val('');
 		});
+		let btnClick = 0;
 		
 		$('.back-btn').on('click', function(){
-			let deptIdx = 1;
-			if(deptManagementStack.length <= 1){
-				$('.modal-title').html('부서 관리')
-				$('.back-btn').css({"display":"none"})
-			}else{
-				$('.modal-title').html('부서 상세')
-				deptManagementStack.pop();
-				deptIdx = deptManagementStack[deptManagementStack.length-1]
+			btnClick+=1;
+			console.log(deptManagementStack);
+			console.log(deptManagementStack.length-1);
+			if(btnClick==2){
+				btnClick = 0;
+				return false;
 			}
-			callDeptInfo(deptIdx);
+			let idx = deptManagementStack.pop();
+			let currentPage = deptManagementStack[deptManagementStack.length-1];
+			console.log('idx : '+idx +'curPage : '+currentPage)
+			if(idx == '1'){
+				FalseModal('뒤로갈 페이지가 없습니다')
+				deptManagementStack.push('1');
+				return false;
+			}else{
+				console.log('back btn--------'+idx)
+				callDeptInfo(currentPage);
+			}
+			
 		});
 		
 		function deptDetail(){
-			
 			$('.dept-detail').on('click', function(){
-				$('div.back-btn').css({"display":"inline"})
+				console.log('----------------deptDetail');
+				console.log("length:"+deptManagementStack.length)
 				let $elem = $(this).closest('tr');
 				$elem = $elem.children('td.info')
 				let deptIdx = $elem.children().html()
 				console.log($elem);
 				$('.modal-title').html('부서 상세')
-				callDeptInfo(deptIdx);
+				
 				deptManagementStack.push(deptIdx);
+				console.log(deptManagementStack);
+				callDeptInfo(deptIdx);
 			});
 		}
-
+		
 		function deptDelete(){
 			$('.dept-delete').on('click', function(){
+				deptDetail();
 				let currentDept = deptManagementStack[deptManagementStack.length-1]
 				let $elem = $(this).closest('tr');
 				$elem = $elem.children('td.info')
@@ -614,6 +633,7 @@ License: For each use you must have a valid license purchased only from above li
 					data:{},
 					dataType:'JSON',
 					success:function(data){
+						console.log(" -------------dept-delete success");
 						callDeptInfo(currentDept);
 					},error:function(error){
 						console.log(error);
@@ -630,7 +650,12 @@ License: For each use you must have a valid license purchased only from above li
 				data:{},
 				dataType:'JSON',
 				success:function(data){
-					console.log(data.deptList);
+					console.log(" -------------callDeptInfo success");
+					if(deptIdx == '1'){
+						$('.modal-title').html('부서 관리')
+					}else{
+						$('.modal-title').html('부서 상세')						
+					}
 					drawDeptManagement(data.deptList)
 				},error:function(error){
 					console.log(error);
@@ -666,6 +691,10 @@ License: For each use you must have a valid license purchased only from above li
 			deptDetail();
 			deptDelete();
 		}
+		
+		$('.close-dept-modal').on('click', function(){
+			deptManagementStack = [];
+		})
 		
 		function empSearch() {
 			console.log("검색");
