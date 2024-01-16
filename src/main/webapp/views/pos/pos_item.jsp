@@ -771,14 +771,14 @@ License: For each use you must have a valid license purchased only from above li
 		    pay_method: "card",    //  결제 메서드  -- 필수 입력값
 		    merchant_uid : memberId+"_"+Date.now(), // 결제 번호 --- 필수 입력값
 		    name : 'UStore',  // 결제 이름 -- 필수 입력값
-		    amount :100 ,   // 가격 -- 필수 입력값    -- replace($('#endSellingSum').text())
+		    amount : 100,   // 가격 -- 필수 입력값    -- replace($('#endSellingSum').text())
 		    buyer_tel: contactNum,
 		  }, function (rsp) { // callback
-			  console.log(rsp);
+			  console.log('결제 콜백 함수',rsp.success);
 			    if (rsp.success) { // 성공했을때
 			      $.ajax({
 				        type: 'get',
-				        url: 'request/pay.ajax',
+				        url: 'pos/request/pay.ajax',
 				        data: {
 				        	 'merchant_uid' : rsp.merchant_uid,
 				        	 'name' : rsp.name,
@@ -795,10 +795,10 @@ License: For each use you must have a valid license purchased only from above li
 				        success: function (data) {
 							console.log(data);
 							if(data){
-								alert('결제가 완료되었습니다.');
+								alert('결제가 완료 되었습니다.');
 								window.location.href = "/pos/member";
 							}else{
-								noconfirmCancelModal('결제 오류 발생 관리자에게 문의해주세요.')
+								alert('결제 오류 발생 관리자에게 문의해주세요.');
 							}
 				        },
 				        error: function (e) {
@@ -807,7 +807,7 @@ License: For each use you must have a valid license purchased only from above li
 				    });
 			    } else { // 실패했을때
 			      var msg = '결제에 실패하였습니다.';
-			      noconfirmCancelModal(msg);
+			      alert(msg);
 			    }
 		  });
 		}
