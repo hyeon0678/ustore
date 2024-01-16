@@ -32,6 +32,13 @@
 			width: 45%;
 			margin: 10px 20px;
 		}
+		#category_table tbody td:nth-child(3) a {
+		    display: block;
+		    overflow: hidden;
+		    white-space: nowrap;
+		    text-overflow: ellipsis;
+		    max-width: 35ch;
+		}
 	</style>
 	</head>
 	<!--end::Head-->
@@ -122,7 +129,7 @@
 									<!--begin::Card body-->
 									<div class="card-body py-4">
 										<!--begin::Table-->
-										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_category_table">
+										<table class="table align-middle table-row-dashed fs-6 gy-5" id="category_table">
 											<thead>
 												<tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">													
 													<th class="min-w-125px">저장일자</th>
@@ -192,6 +199,14 @@
 	
 	$(document).ready(function () {    	
 	    headerOnReady();
+	});
+	
+	$('#category_table').DataTable({
+	    "language": {
+	        "emptyTable": "문서가 없습니다.",
+	        "infoEmpty": "표시할 항목이 없습니다.",
+	        "info": "총 _TOTAL_ 개 중 _START_ - _END_ "
+	    }
 	});
 	</script>
 </html>

@@ -570,11 +570,11 @@
 
         // 뒤로가기 버튼 클릭 시의 동작
         $('#btnGoBack').on('click', function () {
-        	if (confirm('리스트 페이지로 이동하시겠습니까?')) {
-                window.location.href = '/approval/teamapproval';
-            } else {
-                console.log('뒤로가기 버튼 클릭 - 취소');
-            }            
+        	confirmCancelModal('부서문서함 목록으로 가시겠습니까?', function(result){
+        		if (result.isConfirmed) {
+                    location.href = '/approval/teamapproval'; 
+                }
+        	});           
         });
         
         $('#kt_modal_1').on('shown.bs.modal', function(){

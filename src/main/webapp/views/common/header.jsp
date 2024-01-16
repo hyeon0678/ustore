@@ -494,5 +494,41 @@
 	}
 
 </script>
+<script>
+	function confirmModal(message, callback) {
+		 Swal.fire({
+		        text: message,
+		        icon: 'success',
+		        buttonsStyling: false,
+		        confirmButtonText: '확인',
+		        customClass: {
+		            confirmButton: 'btn btn-primary'
+		        },
+		    }).then((result) => {
+		        if (result.isConfirmed) {
+		            if (callback && typeof callback === 'function') {
+		                callback();
+		            }
+		        }
+		    });
+	}
+
+</script>
+<script>
+function confirmCancelModal(message, callback) {
+    Swal.fire({
+        text: message,
+        icon: 'question',
+        buttonsStyling: false,
+        confirmButtonText: '확인',
+        showCancelButton: true, 
+        cancelButtonText: '취소',
+        customClass: {
+            confirmButton: 'btn btn-primary',
+            cancelButton: 'btn btn-secondary' 
+        }
+    }).then(callback);
+}
+</script>
 	
 </html>

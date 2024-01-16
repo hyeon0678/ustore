@@ -493,11 +493,13 @@
 	        cell3.innerHTML = approvalLines[i].positionType;
 	        cell4.innerHTML = approvalLines[i].department;
 
-	        var deleteIcon = document.createElement('i');
-	        deleteIcon.className = 'fa fa-trash';
-	        deleteIcon.onclick = createApprDeleteIconClickHandler(newRow, approvalLines[i]);
-	        cell5.appendChild(deleteIcon);
-	        cell5.style.width = '30px';
+	        if(approvalLines[i].apprType !== "기안"){
+		        var deleteIcon = document.createElement('i');
+		        deleteIcon.className = 'fa fa-trash';
+		        deleteIcon.onclick = createApprDeleteIconClickHandler(newRow, approvalLines[i]);
+		        cell5.appendChild(deleteIcon);
+		        cell5.style.width = '30px';	        	
+	        }
 
 	        newRow.dataset.node = JSON.stringify(approvalLines[i]);
 	    }
@@ -806,8 +808,8 @@
     	console.log(ApprovalDto);
 	    
     	if(!apprSubject){
-			console.log('제목이 비어있어 저장 할 수 없습니다.')
-			alert('제목이 비어있어 저장 할 수 없습니다.');
+			console.log('제목이 비어있어 저장 할 수 없습니다.');
+			FalseModal('제목이 비어있어 저장 할 수 없습니다.');
 			return;
 		}
     	
@@ -817,14 +819,14 @@
             contentType: 'application/json',
             data: JSON.stringify(ApprovalDto),
             success: function(response) {
-                console.log('임시저장이 완료되었습니다.');
-                alert('임시저장이 완료되었습니다.');
+            	confirmModal('임시저장이 완료되었습니다.', function () {
+	                console.log('임시저장이 완료되었습니다.');
+	                location.href = '/approval/tempapproval';
+	            });
             },
-            complete : function(){
-	        	location.href='/approval/newapproval';
-	        },
             error: function(error) {
                 console.error('임시저장 중 오류가 발생했습니다.', error);
+                FalseModal('임시저장 중 오류가 발생했습니다.');
             }
         });
         
@@ -884,8 +886,8 @@
 		console.log(ApprovalDto);
 	    
 		if(approvalLines.length < 2  || !apprSubject || $('#inputReceiver').val()=== ''){
-			console.log('결재정보가 비어있거나 제목이 비어있어 상신할 수 없습니다.')
-			alert('결재정보가 비어있거나 제목이 비어있어 상신할 수 없습니다.');
+			console.log('결재정보가 비어있거나 제목이 비어있어 상신할 수 없습니다.');
+			FalseModal('결재정보가 비어있거나 제목이 비어있어 상신할 수 없습니다.');
 			return;
 		}
 		
@@ -895,15 +897,14 @@
 	        contentType: 'application/json',
 	        data: JSON.stringify(ApprovalDto),
 	        success: function (response) {
-	            console.log('문서가 결재상신 되었습니다.');
-	            alert('문서가 결재상신 되었습니다.');	 
-	        },
-	        complete : function(){
-	        	location.href='/approval/newapproval';
+	        	confirmModal('문서가 결재상신 되었습니다.', function () {
+	                console.log('문서가 결재상신 되었습니다.');
+	                location.href = '/approval/newapproval';
+	            });
 	        },
 	        error: function (error) {
-	            console.error('결재상신 중 오류가 발생했습니다.');
-	            alert('결재상신 중 오류가 발생했습니다.');
+	        	FalseModal('결재상신 중 오류가 발생했습니다.');
+	        	console.error('결재상신 중 오류가 발생했습니다.');
 	        }
 	    });	    	      
 	    
@@ -914,11 +915,13 @@
 		
 	// 뒤로가기 버튼 클릭 시의 동작
     $('#btnGoBack').on('click', function () {
-    	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
-            location.href = '/approval/newapproval';
-        } else {
-            console.log('뒤로가기 버튼 클릭 - 취소');
-        }            
+    	
+    	confirmCancelModal('저장하지않고 뒤로 가시겠습니까?', function(result){
+    		if (result.isConfirmed) {
+                location.href = '/approval/newapproval'; 
+            }
+    	});   	
+    	
     });
 	
 	</script>
