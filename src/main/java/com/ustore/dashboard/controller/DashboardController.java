@@ -142,7 +142,7 @@ public class DashboardController {
 		    for (DashboardDto dto : cateUpDto) {
 		    	 if (dto == null) {
 		             logger.error("dto가 null입니다.");
-		             cateUpDto = service.dashboardCategory();
+		             cateUpDto = null;
 		             break;
 		         }
 		    }

@@ -133,15 +133,15 @@ WHERE od.order_idx = #{orderIdx}
     
   <select id="driverSch" resultType="OrderDto">
   
-SELECT r.resource_idx, r.resource_name
+ SELECT r.resource_idx, r.resource_name
 FROM resource r
 WHERE r.resource_del = 'N'
+  AND r.resource_type = '물류 장비'
   AND (
     r.resource_idx NOT IN (
       SELECT rb.resource_idx
       FROM resource_booking rb
-      WHERE 
-        rb.booking_start_date = #{resourceDate}
+      WHERE rb.booking_start_date = #{resourceDate}
     )
   );
   

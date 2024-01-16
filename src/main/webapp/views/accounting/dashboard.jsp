@@ -233,66 +233,29 @@
 	</script>
 
 <script>
-        $(document).ready(function() {
-         
-            fetchDataAndRenderChart();
-    
-            
-          
-        });
+    $(document).ready(function() {
+        fetchDataAndRenderChart(); 
 
         function fetchDataAndRenderChart() {
-          
+           
             $.ajax({
                 url: '/accounting/dashboard/produtctlist',
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                   
-                    const labels = data.map(item => item.productName);
-                    const dataValues = data.map(item => item.sellingPrice);
-
                  
-                    const ctx = document.getElementById('kt_chartjs_3').getContext('2d');
-                    const myChart = new Chart(ctx, {
-                        type: 'pie', 
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Price',
-                                data: dataValues,
-                              
-                            }],
-                        },
-                        options: {
-                            plugins: {
-                                title: {
-                                    display: false,
-                                }
-                            },
-                            responsive: true,
-                        },
-                        defaults: {
-                            global: {
-                                defaultFont: KTUtil.getCssVariableValue('--bs-font-sans-serif')
-                            }
-                        }
-                    });
+                    if (data.length > 0) {
+                        drawChart(data);
+                    }
                 },
                 error: function(error) {
                     console.error('에러:', error);
                 }
             });
         }
-    </script>
 
-<script>
-    $(document).ready(function() {
-     
         $('#searchButton').click(function() {
-   
             var selectedDate = $('#datePicker').val();
-            
             var startDateString = selectedDate.split(' - ')[0];
             var endDateString = selectedDate.split(' - ')[1];
 
@@ -309,52 +272,47 @@
                 InfoModal("오늘 날짜를 넘기면 검색이 불가능 합니다!.");
                 return;
             }
-         
+
             $.ajax({
                 url: '/accounting/dashboard/produtctdaylist',
                 method: 'GET',
                 data: { selectedDate: selectedDate },
                 dataType: 'json',
                 success: function(response) {
-                
-                    console.log('Ajax 요청 성공:', response);
-                    
-                
                     if (response === null || response.length === 0) {
-                    	var existingChart = Chart.getChart('kt_chartjs_3');
-                        if (existingChart) {
-                            existingChart.destroy();
-                        }
-                        fetchDataAndRenderChart();
-                    } else {
-                 
+                        InfoModal('데이터가 없습니다.');
+                    }
+                
+                    else {
                         updateChart(response);
                     }
                 },
                 error: function(error) {
-              
                     console.error('Ajax 요청 실패:', error);
-                    
-                 
-                    fetchDataAndRenderChart();
+                    InfoModal('데이터가 없습니다.');
                 }
             });
         });
 
-      
         function updateChart(data) {
-            const labels = data.map(item => item.productName);
-            const dataValues = data.map(item => item.sellingPrice);
+            var labels = data.map(item => item.productName);
+            var dataValues = data.map(item => item.sellingPrice);
 
-          
             var existingChart = Chart.getChart('kt_chartjs_3');
             if (existingChart) {
+            
                 existingChart.destroy();
             }
 
-      
-            const ctx = document.getElementById('kt_chartjs_3').getContext('2d');
-            const myChart = new Chart(ctx, {
+            drawChart(data);
+        }
+
+        function drawChart(data) {
+            var labels = data.map(item => item.productName);
+            var dataValues = data.map(item => item.sellingPrice);
+
+            var ctx = document.getElementById('kt_chartjs_3').getContext('2d');
+            var myChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: labels,
@@ -378,9 +336,6 @@
                 }
             });
         }
-
-
-        fetchDataAndRenderChart();
     });
 </script>
 <!-- ------------------------------------------------------------------비용 금액 -->
@@ -715,6 +670,7 @@ $(document).ready(function() {
                     if (existingChart) {
                         existingChart.destroy();
                     }
+                    InfoModal('데이터가 없습니다.');
                     fetchData();
                 } else {
              
@@ -722,7 +678,7 @@ $(document).ready(function() {
                 }
             },
             error: function(error) {
-          
+            	InfoModal('데이터가 없습니다.');
                 console.error('Ajax 요청 실패:', error);
                 
              
