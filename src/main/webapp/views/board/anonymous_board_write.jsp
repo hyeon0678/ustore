@@ -74,8 +74,8 @@
 									<textarea class="form-control" name="anony_content" placeholder="내용을 입력해주세요" style="height: 600px; resize: none;"></textarea>
 								</div>
 								<div class="card-footer d-flex justify-content-end py-6 px-9">
-									<button type="reset" onclick="location.href='/anboard/list'" class="btn btn-light btn-active-light-primary me-2">취소</button>
-										<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">작성</button>
+									<button type="reset" onclick="confirmCancellation1()" class="btn btn-light btn-active-light-primary me-2">취소</button>
+										<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit1">작성</button>
 								</div>
 							</div>
 						</div>
@@ -104,6 +104,51 @@
 	$(function(){headerOnReady()})
 	
 	</script>	
-	
-	
+	<script>
+	function confirmCancellation1() {
+	    Swal.fire({
+	        text: '정말 취소 하시겠습니까?',
+	        icon: 'info',
+	        showCancelButton: true,
+	        confirmButtonText: '확인',
+	        cancelButtonText: '취소',
+	        customClass: {
+	            confirmButton: 'btn btn-danger',
+	            cancelButton: 'btn btn-light'
+	        }
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	            window.location.href = '/anboard/list';
+	        }
+	    });
+	}
+</script>
+	<script>
+
+$(document).ready(function() {
+
+    $('#kt_account_profile_details_submit1').click(function(e) {
+ 
+        var noticeSubject = $('input[name="anony_subject"]').val();
+        var noticeContent = $('textarea[name="anony_content"]').val();
+
+ 
+        if (noticeSubject.trim() === '') {
+        
+            InfoModal('제목을 입력해주세요');
+ 
+            e.preventDefault();
+        } else if (noticeContent.trim() === '') {
+  
+            InfoModal('내용을 입력해주세요');
+  
+            e.preventDefault();
+        } else {
+            $('form').submit();
+        }
+    });
+});
+
+
+</script>
 </html>

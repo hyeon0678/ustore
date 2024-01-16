@@ -167,28 +167,24 @@ h1 {
     </table>
 </div>
 					<div>
-						<div class="table-responsive">
-							<table
-								class="table table-hover table-rounded table-striped border gy-7 gs-7"
-								style="text-align: center;">
-								<thead>
-									<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
-										<th style="text-align: center;">입고 날짜</th>
-										<th style="text-align: center;">파렛트/전체</th>
-
-
-									</tr>
-								</thead>
-								<tbody>
-								<c:forEach items="${incomingList}" var="incoming">
-									<tr>
-									<td>${incoming.receiptDate}</td>
-									<td>${incoming.quantity}/${incoming.unitQuantity * incoming.quantity}</td>
-							</tr>
-							</c:forEach>
-								</tbody>
-							</table>
-						</div>
+						<div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+    <table class="table table-hover table-rounded table-striped border gy-7 gs-7" style="text-align: center;">
+        <thead>
+            <tr class="text-start fw-bold fs-7 text-uppercase gs-0" style="color: #c6da52;">
+                <th style="text-align: center;">입고 날짜</th>
+                <th style="text-align: center;">파렛트/전체</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${incomingList}" var="incoming">
+                <tr>
+                    <td>${incoming.receiptDate}</td>
+                    <td>${incoming.quantity}/${incoming.unitQuantity * incoming.quantity}</td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
 
 					</div>
 					<hr width="100%" color="black" align="center">
