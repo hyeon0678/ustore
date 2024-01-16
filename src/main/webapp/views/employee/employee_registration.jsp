@@ -87,13 +87,10 @@
 								<form action="/employee/registration" method="post">
 								<div style="margin-top:20px">
 								부서
-								<select class="form-select" aria-label="Select example" name="deptName">
-    								<option value="인사팀">인사팀</option>
-    								<option value="회계팀">회계팀</option>
-    								<option value="고객관리팀">고객관리팀</option>
-    								<option value="식품팀">식품팀</option>
-    								<option value="생필품팀">생필품팀</option>
-    								<option value="전자제품팀">전자제품팀</option>
+								<select class="form-select" aria-label="Select example" name="deptId">
+    								<c:forEach var="list" items="${dept}">													
+										<option value=${list.deptId}>${list.deptName}</option>
+									</c:forEach>
 								</select>
 								</div>
 								
@@ -205,7 +202,7 @@
 	<script>
 		
 		let elemName = {
-				'deptName':'부서명',
+				'deptId':'부서명',
 				'positionType':'직책',
 				'empEmergencyPhone':'비상 연락망',
 				'empName':'사원명',
@@ -239,7 +236,7 @@
 		// get elements value
 		function getElems(){
 			elements = [];
-			elements.push($('select[name=deptName]'))
+			elements.push($('select[name=deptId]'))
 			elements.push($('select[name=positionType]'));
 			elements.push($('input[name=empEmergencyPhone]'));
 			elements.push($('input[name=empName]'));
@@ -280,14 +277,20 @@
 				$('form').submit();
 			}
 		});
+		
+		function oninputPhone(target) {
+			target.value = target.value
+				.replace(/[^0-9]/g, '')
+				.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
+			
+			if (target.value.length >= 13) {
+				console.log(target.value);
+				target.value = target.value.substring(0, 13);
+			    return;
+			}
+				
+		}
 
-</script>
-<script>
-	function oninputPhone(target) {
-		target.value = target.value
-			.replace(/[^0-9]/g, '')
-			.replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
-	}
 </script>
 <script>
 	function onempExtNo(target) {

@@ -83,7 +83,9 @@ public class ChatService {
 		for(Participant chatParticipants : list) {
 			row+=chatDao.insertChatParticipants(roomIdx, chatParticipants.getEmpIdx());			
 		} 
-		row+=chatDao.insertChatParticipants(roomIdx, emp_idx);	
+		if(!list.contains(emp_idx)) {
+			row+=chatDao.insertChatParticipants(roomIdx, emp_idx);	
+		}
 		
 		ChatDto wellcomMsg = new ChatDto();
 		wellcomMsg.setRoomNum(Integer.toString(roomIdx));
@@ -179,7 +181,7 @@ public class ChatService {
 
 	
 	public String quitRoom(int roomNum, String name) {
-		// -> 나가면 system 메시지 보내기
+		
 		int row = chatDao.deleteParticipants(roomNum,name);
 		logger.info("-------------------------------------deleteParticipants {}", row);
 		if(row>0) {

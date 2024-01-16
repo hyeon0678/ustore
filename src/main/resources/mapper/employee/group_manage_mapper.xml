@@ -209,4 +209,10 @@
 	<select id="dept" resultType="com.ustore.employee.dto.EmployeeDto">
 		SELECT *FROM department d WHERE dept_delete ='N'
 	</select>
+	
+	<select id="selectChildDeptList">
+		SELECT dept_id
+		FROM department
+		WHERE parent_dept_id = #{param1}
+	</select>
 </mapper>

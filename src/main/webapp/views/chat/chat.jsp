@@ -408,6 +408,10 @@
 	
 	$('#make_room').on('click', function(){
 		console.log("make_room_click")
+		if(makeRoomParticipantList == ''){
+			FalseModal('채팅 참여자를 선택해주세요')
+			return false;
+		}
 		$.ajax({
 			data:{
 				particList:JSON.stringify(makeRoomParticipantList)
@@ -433,6 +437,15 @@
 			}
 		})	
 	});
+	
+    function findEmp(empIdx) {
+        for (let i = 0; i < makeRoomParticipantList.length; i++) {
+            if (makeRoomParticipantList[i].empIdx == empIdx) {
+                return i
+            }
+        }
+        return -1;
+    }
 	
 	function makeRoomJsTree(treeData){
 		console.log("makeRoom"+treeData);
@@ -485,6 +498,9 @@
 					console.log(id)
 					id = id.substr(0, index)
 					console.log(findEmp(id));
+					if(id == username){
+						return false;
+					}
 					if (findEmp(id) < 0) {
 						let participant = {}
 						participant.empIdx = id;
@@ -497,23 +513,17 @@
 						$('#selectedNodeInput').val("선택된 노드 :" + selectedNode);
 						$('#make_room_enter_emp').append(content);
 						participantClick();
+					}else{
+						FalseModal("이미 선택된 사원입니다");
 					}
 				});
 	}
+	
 	function empSearch() {
 		console.log("검색");
 		$('#make_room_jstree').jstree(true).search($('#search-input').val());
 	}
 
-	function findEmp(empIdx) {
-		for (let i = 0; i < makeRoomParticipantList.length; i++) {
-			if (makeRoomParticipantList[i].empIdx == empIdx) {
-				return i
-			}
-		}
-		return -1;
-	}
-	
 	$('#send-msg').on('click', function(){
 		console.log('msgclick')
 		var message = $('#msg-box').val().trim();
@@ -605,16 +615,8 @@
 		
 	}
 	
-	/*function connect() {
-		socket = new SockJS('http://192.168.0.20:80/ws');
-	    stompClient = Stomp.over(socket);
-	    stompClient.connect({}, function(frame){
-	    	console.log("connect")
-	    }, onError);
-	}*/
-	
 	function onError(error){
-		alert('서버와 연결할 수 없습니다. 다시 시도해 주세요');
+		//alert('서버와 연결할 수 없습니다. 다시 시도해 주세요');
 		console.log(error);
 	}
 	

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,14 +42,16 @@ public class GroupManageController {
 	FileDao FileDao;
 	
 	@GetMapping("/registration")
-	public String empRegistration() {
+	public String empRegistration(Model model) {
+		
+		model.addAttribute("dept", groupManageService.dept());
 		return "employee/employee_registration";
 	}
 	
 	@PostMapping("/registration")
 	public String insertEmp(@ModelAttribute EmployeeDto params, 
 			RedirectAttributes rattr, Principal principal) {
-		logger.info("params : " + params.getEmpBirth());
+		logger.info("params : " + params.getDeptId());
 		logger.info(principal.getName());
 		String success = groupManageService.insertEmp(params, principal.getName());
 		if(success != null) {
