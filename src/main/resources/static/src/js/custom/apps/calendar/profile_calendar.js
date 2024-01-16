@@ -550,8 +550,20 @@ var KTAppCalendar = function () {
 
                 startDDate = data[0].sch_start_date;
                 startTTime = data[0].sch_start_time
-                endDDate = data[0].sch_end_date;
-                endTTime = data[0].sch_end_time;
+                
+                if (!data[0].sch_end_date) {
+                	endDDate = '';
+            	}else{
+            		endDDate = data[0].sch_end_date;
+            	}
+                
+                if (!data[0].sch_end_time) {
+                	endTTime = '';
+            	}else{
+            		endTTime = data[0].sch_end_time;
+            	}
+                                         
+                
 
                 viewStartDate.innerText = startDDate;
                 viewEndDate.innerText = endDDate;
