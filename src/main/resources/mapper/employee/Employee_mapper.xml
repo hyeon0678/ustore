@@ -58,21 +58,17 @@ insert into schedule(
 	insert into schedule(
 	emp_idx
 	, sch_start_date
-	, sch_end_date
 	, sch_content
 	, sch_subject
 	, sch_start_time 
-	, sch_end_time 
 	, sch_type 
 	, reg_by
 	)
 	values(
 	#{emp_idx}
 	, curdate()
-	, curdate()
-	, '출근'
 	, '출퇴근'
-	, curtime()
+	, '출퇴근'
 	, curtime()
 	, 12
 	, #{emp_idx}
@@ -80,7 +76,7 @@ insert into schedule(
 </insert>
 
 <update id="leavework">
-update schedule set sch_content = '퇴근', sch_subject = '출퇴근', sch_end_date=curdate(), sch_end_time= curtime(), sch_type='13', reg_by=#{emp_idx}
+update schedule set sch_end_date=curdate(), sch_end_time= curtime(), sch_type='13', reg_by=#{emp_idx}
 where sch_idx in (SELECT sch_idx FROM schedule WHERE sch_subject = '출퇴근' AND DATE(sch_start_date) = CURDATE() and emp_idx = #{emp_idx})
 </update>
 
