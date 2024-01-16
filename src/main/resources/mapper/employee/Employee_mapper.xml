@@ -58,18 +58,22 @@ insert into schedule(
 	insert into schedule(
 	emp_idx
 	, sch_start_date
+	, sch_end_date
 	, sch_content
 	, sch_subject
-	, sch_start_time 
+	, sch_start_time
+	, sch_end_time 
 	, sch_type 
 	, reg_by
 	)
 	values(
 	#{emp_idx}
 	, curdate()
+	, null
 	, '출퇴근'
 	, '출퇴근'
 	, curtime()
+	, null
 	, 12
 	, #{emp_idx}
 	)
