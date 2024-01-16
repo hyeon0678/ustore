@@ -73,7 +73,7 @@
 								<div style="display: flex; align-items: center; height: 30px;">
 									<!--begin::Col 드롭박스 >> 회원 상태-->
 									<!--end::Col-->
-									<input type="text" class="form-control form-control-solid" name = "anListSerch" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
+									<input type="text" class="form-control form-control-solid" name = "anListSerch" placeholder="제목을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
 									<button type="button" class="btn btn-primary" style="margin: 10px;" onclick="search()" id= "search" >검색</button>
 									<button onclick="location.href='anboard/WriteForm'" class="btn btn-primary">글작성</button>
 								</div>

@@ -90,6 +90,7 @@
 							</button>
 						</div>
 						<div style="text-align: left; margin-top: 100px; margin-left: 50px;">
+						<!-- <div class="card" style="background-color: white;"> -->
 						<p>
 						<i class="ki-duotone ki-user fs-2">
 							<span class="path1"></span>
@@ -109,9 +110,9 @@
 						</sec:authorize>
 						<!-- </button> -->
 
-						<div style="width: 100%; height: 1000px; overflow: auto; border: solid lightgrey; text-align: center;">
+						<div style="width: 100%; /* height: 95%; */ /* overflow: auto; */ /* border: solid lightgrey; */ text-align: center;">
 							<c:forEach items="${newFileList}" var="files">
-								<img src="/ustore/photo/${files.newfilename}" alt="${files.newfilename}" style="margin: 10px; height: 50%"/>
+								<img src="/ustore/photo/${files.newfilename}" alt="${files.newfilename}" style="margin: 10px; width: 75%"/>
 							</c:forEach>
 								
     						<p style="text-align: left;width: 100%;">${board.notice_content}</p>
@@ -180,6 +181,7 @@
 	console.log("글 번호 호출");
 	var notice_idx = ${board.notice_idx};
 	console.log("번호값 : " + notice_idx);
+	$(function(){headerOnReady()})
 	
 	
 	/* $(function(){headerOnReady()}) */

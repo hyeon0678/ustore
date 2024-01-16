@@ -74,7 +74,7 @@
 								<div style="display: flex; align-items: center; height: 30px;">
 									<!--begin::Col 드롭박스 >> 회원 상태-->
 									<!--end::Col-->
-									<input type="text" class="form-control form-control-solid" name="adListSerch" placeholder="내용을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
+									<input type="text" class="form-control form-control-solid" name="adListSerch" placeholder="제목을 입력하세요." style="width:200px; height:30px; background-color: white;"/>
 									<button type="button" class="btn btn-primary" style="margin: 10px;" onclick="search()" id= "search" >검색</button>
 									<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
 										<button onclick="location.href='adboard/WriteForm'" class="btn btn-primary">글작성</button>

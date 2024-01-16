@@ -38,6 +38,7 @@
 				   background-color: #C6DA52;
 				  
 				   border-color: #C6DA52;
+				   
 				}
 				.container{
 				text-align: right;
@@ -83,41 +84,46 @@
 						</div>
 						
 						<div class="text-end">
-							<button type="button" onclick="location.href='/anboard/list'" style="background-color: #C6DA52; position: absolute; width:70px; height: 40px; top:200px; right:200px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
+							<button type="button" onclick="location.href='/anboard/list'" class="btn btn-primary" style="position: absolute; top:200px; right:200px; font-size: 10px; ">
     							목록으로
 							</button>
 						</div>
 						<div style="text-align: left; margin-top: 100px; margin-left: 50px;">
-						<p>
+						<div>
 						<i class="ki-duotone ki-user fs-2">
 							<span class="path1"></span>
 							<span class="path2"></span>
 						</i>
 						${board.reg_date}
-						</p>
+						</div>
 							<div style="text-align: right; margin-top: -40px; margin-right: 380px;">
+							<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
+							
     						<button class="btn btn-primary"  data-kt-element="send" onclick="anboardDel()">삭제하기</button>
-
-							<div style="width: 100%; height: 1000px; overflow: auto; border: solid lightgrey; text-align: center;">
+							</sec:authorize>
+							<div style="width: 100%; text-align: start; margin-top: 20px; margin-bottom: 30px;/* height: 95%; */ /* overflow: auto; */ /* border: solid lightgrey; */">
 								<c:forEach items="${newFileList}" var="files">
-									<img src="/ustore/photo/${files.newfilename}" alt="${files.newfilename}" style="margin: 10px; height: 50%"/>
+									<img src="/ustore/photo/${files.newfilename}" alt="${files.newfilename}" style="margin: 10px; width: 100%"/>
 								</c:forEach>
-    							<p style="text-align: left;width: 100%;">${board.anony_content}</p>
+    							${board.anony_content}
 							</div>
 							
-							<div style="text-align: left;"><i class="ki-duotone ki-message-text-2 fs-2">
+							<div style="text-align: left;">
+								<i class="ki-duotone ki-message-text-2 fs-2">
 								<span class="path1"></span>
 								<span class="path2"></span>
 								<span class="path3"></span>
-								</i>조회수 : ${board.anony_hit}</div>
+								</i>조회수 : ${board.anony_hit}
+							</div>
 								<hr color="black" width="100%">
 								<thread>
-							<div style="margin-right: 60px;"><i class="ki-duotone ki-user fs-2">
-								<span class="path1"></span>
-								<span class="path2"></span>
+							<div style="margin-right: 60px;text-align: start;">
+								<i class="ki-duotone ki-user fs-2">
+									<span class="path1"></span>
+									<span class="path2"></span>
 								</i>
-									<input type="text"style="width: 650px; text-align: left;" id="reply" placeholder="댓글을 입력 해주세요."/>
-									<button type="button" id="getreply" style="background-color: #C6DA52; width: 50px; height: 30px; font-size: 10px; border: 1px solid #C6DA52;  color: #FFFFFF;">
+									<input type="text"style="width: 50%; text-align: left;" id="reply" placeholder="댓글을 입력 해주세요."/>
+									<button type="button" id="getreply" class="btn btn-primary" style="font-size: 10px;">
     									작성
 									</button>
 									</div>
@@ -245,7 +251,7 @@
 			content += '<tr>';
 			content += '<td>'+item.repl_content+'</td>';
 			content += '<td>'+item.reg_date+'</td>';	
-			content += '<td>'+'<div id="d" onclick='+"'location.href="+'"anboard/replyDel?anony_board_idx='+item.anony_board_idx+'&repl_idx='+item.repl_idx+'"'+"'>"+'삭제하기</div>'+'</td>';
+			content += '<td>'+'<button id="d" class="btn btn-primary" style="padding:5px;" onclick='+"'location.href="+'"anboard/replyDel?anony_board_idx='+item.anony_board_idx+'&repl_idx='+item.repl_idx+'"'+"'>"+'삭제하기</div>'+'</button>';
 			content += '</tr>';
 			
 			console.log(content);
