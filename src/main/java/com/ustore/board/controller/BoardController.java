@@ -380,7 +380,7 @@ public class BoardController {
 		String deptID = (String) session.getAttribute("dept_id");
 		logger.info("댓글 삭제 부서 : " + deptID);
 		
-		if(deptID.equals("인사팀")) {
+		if(deptID.equals("인사팀") || deptID.equals("UStore")) {
 			service.delreply(repl_idx);
 		}
 		

@@ -165,8 +165,11 @@ public class EmpProfileController {
 	
 	@RequestMapping("employee/scheduleinfo.ajax")
 	@ResponseBody
-	public ArrayList<EmpProrileDto> scheduleinfo(@RequestParam String sch_idx){
-		return service.scheduleinfo(sch_idx);  
+	public List<Map<String, Object>> scheduleinfo(@RequestParam String sch_idx){
+		logger.info(sch_idx+"번 일정 상세보기 호출 성공");
+		List<Map<String, Object>> list = service.scheduleinfo(sch_idx);
+		
+		return list;
 	}
 	
 	@GetMapping(value="/employee/schedule/delete")

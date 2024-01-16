@@ -97,25 +97,16 @@
 						</i> 
 						<i>${board.emp_name}</i>
 						<i>${board.reg_date}</i>
+						<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
 						<div class="form-check" style="position: absolute; top:380px; right:550px;">
-    						<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
-    							<input class="form-check-input" type="checkbox" name="top_fixed" id="flexCheckDefault" value="Y" onchange="save()"/>
-    							<label class="form-check-label" for="flexCheckDefault">상단 고정 여부</label>
-							</sec:authorize>
+    						<input class="form-check-input" type="checkbox" name="top_fixed" id="flexCheckDefault" value="Y" onchange="save()"/>
+    						<label class="form-check-label" for="flexCheckDefault">상단 고정 여부</label>
 						</div>
 						</p>
 						<div style="text-align: right; margin-top: -48px; margin-right: 380px;">
     
-						<!-- <button type="button" class="btn btn-light">
-						<i class="ki-duotone ki-basket fs-2 text-gray-600">
-        					<span class="path1"></span>
-      						<span class="path2"></span>
-        					<span class="path3"></span>
-        					<span class="path4"></span>
-    					</i> -->
 						<button class="btn btn-primary"  data-kt-element="send" onclick="adboardDel()">삭제하기</button>
-    					
-	
+						</sec:authorize>
 						<!-- </button> -->
 
 						<div style="width: 100%; height: 1000px; overflow: auto; border: solid lightgrey; text-align: center;">

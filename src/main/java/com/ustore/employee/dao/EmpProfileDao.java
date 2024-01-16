@@ -49,7 +49,7 @@ public interface EmpProfileDao {
 
 	int annualCount(String emp_idx);
 
-	ArrayList<EmpProrileDto> scheduleinfo(String sch_idx);
+	List<Map<String, Object>> scheduleinfo(String sch_idx);
 
 
 	

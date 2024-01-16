@@ -44,11 +44,19 @@ public class FileController {
 		
 		String path = FileDefine.FILEPATH+"/" +file;
 		logger.info(FileDefine.FILEPATH+"/" +file);
+		logger.info("file값 : " + file);
 		
 		String ext = file.substring(file.lastIndexOf("."));
+		logger.info("ext값 : " + ext);
 //		//본문(파일)
 		Resource resource = new FileSystemResource(path); //파일시스템의 특정 차일ㅇ르 읽어오는 기능
-//		
+		
+		int randomnum =  (int)(Math.random()*10000000);
+		long MillisTime = System.currentTimeMillis();
+		long RandomPhotoName = randomnum+MillisTime;
+		logger.info("무작위 난수 : " + RandomPhotoName);
+//		더미 코드 : 파일 이름 불러오기 방식에 따라 비활성화 할 것
+		
 //		//보여주기와 다운로드는 헤더 속성 값의 차이
 		HttpHeaders headers = new HttpHeaders();
 		String type = Files.probeContentType(Paths.get(path));
@@ -57,7 +65,8 @@ public class FileController {
 //		//content-Disposition : 내려보낼 내용이 문자(inline)인지 파일(attachment)인지 명시
 //		//파일일 경우 파일명이 들어가는데, 한글은 다 깨진다.
 //		//DB에서 원본 파일명을 가져왔다고 가정하자
-		String oriFileName=URLEncoder.encode("원본"+ext, "utf-8");
+//		String oriFileName=URLEncoder.encode(randomnum+ext, "utf-8");
+		String oriFileName=URLEncoder.encode(file, "utf-8");
 //		 //"attachment;fileName="원본.jpg""
 		headers.add("content-Disposition", "attachment;fileName=\""+oriFileName+"\"");
 //		

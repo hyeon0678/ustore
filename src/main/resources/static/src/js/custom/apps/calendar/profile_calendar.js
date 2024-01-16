@@ -141,21 +141,21 @@ var KTAppCalendar = function () {
                     'calendar_event_name': {
                         validators: {
                             notEmpty: {
-                                message: 'Event name is required'
+                                message: '일정 이름을 입력해주세요'
                             }
                         }
                     },
                     'calendar_event_start_date': {
                         validators: {
                             notEmpty: {
-                                message: 'Start date is required'
+                                message: '시작일을 입력해주세요'
                             }
                         }
                     },
                     'calendar_event_end_date': {
                         validators: {
                             notEmpty: {
-                                message: 'End date is required'
+                                message: '종료일을 입력해주세요'
                             }
                         }
                     }
@@ -219,7 +219,7 @@ var KTAppCalendar = function () {
     // Handle add new event
     const handleNewEvent = () => {
         // Update modal title
-        modalTitle.innerText = "Add a New Event";
+        modalTitle.innerText = "일정 등록";
 
         modal.show();
 
@@ -350,7 +350,7 @@ var KTAppCalendar = function () {
         modalTitle.innerText = "Edit an Event";
 
         modal.show();
-        console.log("수정 일정1 id",data.id);
+        console.log("수정 일정!!! id",data.id);
 
         // Select datepicker wrapper elements
         const datepickerWrappers = form.querySelectorAll('[data-kt-calendar="datepicker"]');
@@ -363,31 +363,14 @@ var KTAppCalendar = function () {
                     // dw.classList.add('d-none');
                 // });
             // } else {
-                endFlatpickr.setDate(data.startDate, true, 'Y-m-d');
+                endFlatpickr.setDate(data.endDate, true, 'Y-m-d');
                 datepickerWrappers.forEach(dw => {
                     dw.classList.remove('d-none');
                 });
             // }
         // });
 
-        $('#kt_modal_add_event_submit').on('click',function(){
-            var sch_idx = data.id;
-            console.log("삭제 일정 id : " , data.id);
-            console.log("삭제 일정 idx : " , sch_idx);
-            
-            $.ajax({
-                type:'post',
-                url:'/employee/delete.ajax',
-                data:{'sch_idx' : data.id},
-                dataType:'JSON',
-                success:function(data){
-                    console.log(data,"번 일정 삭제");
-                },
-                error:function(e){
-                    console.log(e);
-                }
-            });
-        });
+        
 
         populateForm(data);
 
@@ -417,16 +400,35 @@ var KTAppCalendar = function () {
 
                             // Show popup confirmation 
                             Swal.fire({
-                                text: "New event added to calendar!",
+                                text: "새로운 일정이 등록되었습니다",
                                 icon: "success",
                                 buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "확인",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
                             }).then(function (result) {
                                 if (result.isConfirmed) {
-                                    modal.hide();
+
+                                    // $('#kt_modal_add_event_submit').on('click',function(){
+                                        var sch_idx = data.id;
+                                        console.log("삭제 일정!!!!!!!!!!!! id : " , data.id);
+                                        console.log("삭제 일정 idx : " , sch_idx);
+                                        
+                                        $.ajax({
+                                            type:'post',
+                                            url:'/employee/delete.ajax',
+                                            data:{'sch_idx' : data.id},
+                                            dataType:'JSON',
+                                            success:function(data){
+                                                console.log(data,"번 일정 삭제");
+                                                modal.hide();                                                
+                                            },
+                                            error:function(e){
+                                                console.log(e);
+                                            }
+                                        });
+                                    // });
 
                                     // Enable submit button after loading
                                     submitButton.disabled = false;
@@ -438,14 +440,14 @@ var KTAppCalendar = function () {
                                     console.log(data.id,"번 일정 삭제");
 
                                     // Detect if is all day event
-                                    let allDayEvent = false;
-                                    if (allDayToggle.checked) { allDayEvent = true; }
-                                    if (startTimeFlatpickr.selectedDates.length === 0) { allDayEvent = true; }
+                                    // let allDayEvent = false;
+                                    // if (allDayToggle.checked) { allDayEvent = true; }
+                                    // if (startTimeFlatpickr.selectedDates.length === 0) { allDayEvent = true; }
 
                                     // Merge date & time
                                     var startDateTime = moment(startFlatpickr.selectedDates[0]).format();
                                     var endDateTime = moment(endFlatpickr.selectedDates[endFlatpickr.selectedDates.length - 1]).format();
-                                    if (!allDayEvent) {
+                                    // if (!allDayEvent) {
                                         const startDate = moment(startFlatpickr.selectedDates[0]).format('YYYY-MM-DD');
                                         const endDate = startDate;
                                         const startTime = moment(startTimeFlatpickr.selectedDates[0]).format('HH:mm:ss');
@@ -453,7 +455,7 @@ var KTAppCalendar = function () {
 
                                         startDateTime = startDate + 'T' + startTime;
                                         endDateTime = endDate + 'T' + endTime;
-                                    }
+                                    // }
 
                                     // Add new event to calendar
                                     // calendar.addEvent({
@@ -499,15 +501,77 @@ var KTAppCalendar = function () {
     }
 
     // Handle view event
+    // 클릭이밴트
+    $('#kt_modal_add_event_submit').on('click',function(){
+        var sch_idx = data.id;
+        console.log("삭제 일정 id : " , data.id);
+        console.log("삭제 일정 idx : " , sch_idx);
+        
+        $.ajax({
+            type:'post',
+            url:'/employee/delete.ajax',
+            data:{'sch_idx' : data.id},
+            dataType:'JSON',
+            success:function(data){
+                console.log(data,"번 일정 삭제");
+            },
+            error:function(e){
+                console.log(e);
+            }
+        });
+    });
+
     const handleViewEvent = () => {
         viewModal.show();
 
+        var startDDate = '';
+        var startTTime = '';
+        var endDDate = '';
+        var endTTime = '';
+
+        var sch_idx = data.id;
+        console.log("클릭 일정 id : " , data.id);
+        console.log("클릭 일정 idx : " , sch_idx);
+        
+        $.ajax({
+            type:'post',
+            url:'employee/scheduleinfo.ajax',
+            data:{'sch_idx' : sch_idx},
+            dataType:'JSON',
+            success:function(data){
+                console.log(data,"번 일정 상세보기 호출");
+                console.log(data[0].sch_start_date,"시작일");
+                console.log(data[0].sch_end_date,"종료일");
+                console.log(data[0].sch_start_time,"시작시간");
+                console.log(data[0].sch_end_time,"종료시간");
+
+                startDDate = data[0].sch_start_date;
+                startTTime = data[0].sch_start_time
+                endDDate = data[0].sch_end_date;
+                endTTime = data[0].sch_end_time;
+
+                viewStartDate.innerText = startDDate;
+                viewEndDate.innerText = endDDate;
+                viewStartTime.innerText = startTTime;
+                viewEndTime.innerText = endTTime;
+        
+                console.log("viewstartDate : " + startDDate);
+                console.log("viewendDate : " + endDDate);
+                console.log("viewstartTime : " + startTTime);
+                console.log("viewEndTime : " + endTTime);
+
+            },
+            error:function(e){
+                console.log(e);
+            }
+        });
+
         // Detect all day event
-        var eventNameMod;
-        var startDateMod;
-        var endDateMod;
-        var startTimeMod;
-        var EndTimeMod;
+        // var eventNameMod;
+        // var startDateMod;
+        // var endDateMod;
+        // var startTimeMod;
+        // var EndTimeMod;
 
         // Generate labels
         // if (data.allDay) {
@@ -523,10 +587,10 @@ var KTAppCalendar = function () {
             // startDateMod = moment(data.startDate).format('Do MMM, YYYY - h:mm a');
             // endDateMod = moment(data.endDate).format('Do MMM, YYYY - h:mm a');
 
-            startDateMod = moment(data.startDate).format('YYYY.MM.DD');
-            startTimeMod = moment(data.startTime).format('HH:mm');
-            endDateMod = moment(data.endDate).format('YYYY.MM.DD');
-            EndTimeMod = moment(data.endTime).format('HH:mm');
+            // startDateMod = moment(data.startDate).format('YYYY.MM.DD');
+            // startTimeMod = moment(data.startTime).format('HH:mm');
+            // endDateMod = moment(data.endDate).format('YYYY.MM.DD');
+            // EndTimeMod = moment(data.endTime).format('HH:mm');
             
         // }
 
@@ -535,15 +599,15 @@ var KTAppCalendar = function () {
         // viewAllDay.innerText = eventNameMod;
         viewEventDescription.innerText = data.eventDescription ? data.eventDescription : '--';
         // viewEventLocation.innerText = data.eventLocation ? data.eventLocation : '--';
-        viewStartDate.innerText = startDateMod;
-        viewEndDate.innerText = endDateMod;
-        viewStartTime.innerText = startTimeMod;
-        viewEndTime.innerText = EndTimeMod;
+        viewStartDate.innerText = startDDate;
+        viewEndDate.innerText = endDDate;
+        viewStartTime.innerText = startTTime;
+        viewEndTime.innerText = endTTime;
 
-        console.log("viewstartDate : " + data.startDate);
-        console.log("viewendDate : " + data.endDate);
-        console.log("viewstartTime : " + data.startTime);
-        console.log("viewEndTime : " + data.endTime);
+        console.log("viewstartDate : " + startDDate);
+        console.log("viewendDate : " + endDDate);
+        console.log("viewstartTime : " + startTTime);
+        console.log("viewEndTime : " + endTTime);
         
         
 
@@ -552,61 +616,61 @@ var KTAppCalendar = function () {
             viewDeleteButton.style.display = 'inline-flex';
             viewEditButton.style.display = 'inline-flex';
             viewEventDescription.style.display = 'block';
-            if(data.endDate == ''){
-                viewEndDate.style.display = 'none';
-                console.log("viewenddate is ''");
-            }else{
-                viewEndDate.style.display = 'inline-flex';
-                console.log("viewenddate is not ''");
-            }
+            // if(data.endDate == ''){
+            //     viewEndDate.style.display = 'none';
+            //     console.log("viewenddate is ''");
+            // }else{
+            //     viewEndDate.style.display = 'inline-flex';
+            //     console.log("viewenddate is not ''");
+            // }
         } else if (data.scheduleType == 11) {
             viewScheduleType.innerText = '팀 일정';
             viewDeleteButton.style.display = 'inline-flex';
             viewEditButton.style.display = 'inline-flex';
             viewEventDescription.style.display = 'block';
-            if(data.endDate == ''){
-                viewEndDate.style.display = 'none';
-                console.log("viewenddate is ''");
-            }else{
-                viewEndDate.style.display = 'inline-flex';
-                console.log("viewenddate is not ''");
-            }        
+            // if(data.endDate == ''){
+            //     viewEndDate.style.display = 'none';
+            //     console.log("viewenddate is ''");
+            // }else{
+            //     viewEndDate.style.display = 'inline-flex';
+            //     console.log("viewenddate is not ''");
+            // }        
         } else if (data.scheduleType == 12) {
             viewScheduleType.innerText = '출근';
             viewDeleteButton.style.display = 'none';
             viewEditButton.style.display = 'none';
             viewEventDescription.style.display = 'none';
-            viewEndDate.style.display = 'none';
+            viewEndDate.innerText = ' - - ';
+            viewEndTime.innerText = ' : : ';
         } else if (data.scheduleType == 13) {
             viewScheduleType.innerText = '퇴근';
             viewDeleteButton.style.display = 'none';
             viewEditButton.style.display = 'none';
             viewEventDescription.style.display = 'none';
-            viewEndDate.style.display = 'none';
         } else if (data.scheduleType == 14) {
             viewScheduleType.innerText = '연차';
             viewDeleteButton.style.display = 'none';
             viewEditButton.style.display = 'none';
             viewEventDescription.style.display = 'block';
-            if(data.endDate == ''){
-                viewEndDate.style.display = 'none';
-                console.log("viewenddate is ''");
-            }else{
-                viewEndDate.style.display = 'inline-flex';
-                console.log("viewenddate is not ''");
-            }        
+            // if(data.endDate == ''){
+            //     viewEndDate.style.display = 'none';
+            //     console.log("viewenddate is ''");
+            // }else{
+            //     viewEndDate.style.display = 'inline-flex';
+            //     console.log("viewenddate is not ''");
+            // }        
         } else if (data.scheduleType == 15) {
             viewScheduleType.innerText = '휴무';
             viewDeleteButton.style.display = 'none';
             viewEditButton.style.display = 'none';
             viewEventDescription.style.display = 'block';
-            if(data.endDate == ''){
-                viewEndDate.style.display = 'none';
-                console.log("viewenddate is ''");
-            }else{
-                viewEndDate.style.display = 'inline-flex';
-                console.log("viewenddate is not ''");
-            }
+            // if(data.endDate == ''){
+            //     viewEndDate.style.display = 'none';
+            //     console.log("viewenddate is ''");
+            // }else{
+            //     viewEndDate.style.display = 'inline-flex';
+            //     console.log("viewenddate is not ''");
+            // }
         } else {
             viewScheduleType.innerText = '--'; // 기본적으로 지정된 값이 없을 경우 '--'를 표시합니다.
         }
@@ -709,12 +773,12 @@ var KTAppCalendar = function () {
             e.preventDefault();
 
             Swal.fire({
-                text: "Are you sure you would like to cancel?",
+                text: "일정 등록을 취소하시겠습니까?",
                 icon: "warning",
                 showCancelButton: true,
                 buttonsStyling: false,
-                confirmButtonText: "Yes, cancel it!",
-                cancelButtonText: "No, return",
+                confirmButtonText: "확인",
+                cancelButtonText: "취소",
                 customClass: {
                     confirmButton: "btn btn-primary",
                     cancelButton: "btn btn-active-light"
@@ -725,10 +789,10 @@ var KTAppCalendar = function () {
                     modal.hide(); // Hide modal				
                 } else if (result.dismiss === 'cancel') {
                     Swal.fire({
-                        text: "Your form has not been cancelled!.",
+                        text: "일정 취소에 오류가 발생했습니다 잠시 후 다시 시도해주세요.",
                         icon: "error",
                         buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
+                        confirmButtonText: "확인",
                         customClass: {
                             confirmButton: "btn btn-primary",
                         }

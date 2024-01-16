@@ -138,7 +138,7 @@ public class EmpProfileService {
 		return row;
 	}
 
-	public ArrayList<EmpProrileDto> scheduleinfo(String sch_idx) {
+	public List<Map<String, Object>> scheduleinfo(String sch_idx) {
 		return dao.scheduleinfo(sch_idx);
 	}
 

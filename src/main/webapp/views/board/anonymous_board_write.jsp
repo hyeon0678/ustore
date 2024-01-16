@@ -35,6 +35,7 @@
 	<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
+								<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 		<!--end::Theme mode setup on page load-->
 		<!--begin::Main-->
 		<!--begin::Root-->
@@ -46,6 +47,7 @@
 					<!--begin::Content-->
 					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 					<!--================================메인 내용들어가는부분================================================-->
+												<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
@@ -72,7 +74,7 @@
 									<textarea class="form-control" name="anony_content" placeholder="내용을 입력해주세요" style="height: 600px; resize: none;"></textarea>
 								</div>
 								<div class="card-footer d-flex justify-content-end py-6 px-9">
-									<button type="reset" class="btn btn-light btn-active-light-primary me-2">취소</button>
+									<button type="reset" onclick="location.href='/anboard/list'" class="btn btn-light btn-active-light-primary me-2">취소</button>
 										<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">작성</button>
 								</div>
 							</div>

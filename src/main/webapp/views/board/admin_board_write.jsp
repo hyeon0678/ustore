@@ -79,7 +79,7 @@
 										<textarea class="form-control" name="notice_content" placeholder="내용을 입력해주세요" style="height: 600px; resize: none;"></textarea>
 									</div>
 									<div class="card-footer d-flex justify-content-end py-6 px-9">
-										<button type="reset" class="btn btn-light btn-active-light-primary me-2">취소</button>
+										<button type="reset" onclick="location.href='/adboard/list'" class="btn btn-light btn-active-light-primary me-2">취소</button>
 										<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">작성</button>
 									</div>
 								</div>
