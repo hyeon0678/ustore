@@ -127,7 +127,7 @@ var KTAppCalendar = function () {
     });
 
     request.fail(function( jqXHR, textStatus ) {
-        alert( "Request failed: " + textStatus );
+        alert( "요청 실패: " + textStatus );
       });
 // };
     });
@@ -269,10 +269,10 @@ var KTAppCalendar = function () {
 
                             // Show popup confirmation 
                             Swal.fire({
-                                text: "New event added to calendar!",
+                                text: "새로운 일정이 등록되었습니다",
                                 icon: "success",
                                 buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
+                                confirmButtonText: "확인",
                                 customClass: {
                                     confirmButton: "btn btn-primary"
                                 }
@@ -329,10 +329,10 @@ var KTAppCalendar = function () {
                     } else {
                         // Show popup warning 
                         Swal.fire({
-                            text: "Sorry, looks like there are some errors detected, please try again.",
+                            text: "오류 발생, 잠시 후 다시 시도해주세요.",
                             icon: "error",
                             buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "확인",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }
@@ -347,7 +347,7 @@ var KTAppCalendar = function () {
     // Handle edit event
     const handleEditEvent = () => {
         // Update modal title
-        modalTitle.innerText = "Edit an Event";
+        modalTitle.innerText = "일정 수정";
 
         modal.show();
         console.log("수정 일정!!! id",data.id);
@@ -489,10 +489,10 @@ var KTAppCalendar = function () {
                     } else {
                         // Show popup warning 
                         Swal.fire({
-                            text: "Sorry, looks like there are some errors detected, please try again.",
+                            text: "오류 발생, 잠시 후 다시 시도해주세요.",
                             icon: "error",
                             buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "확인",
                             customClass: {
                                 confirmButton: "btn btn-primary"
                             }
@@ -695,8 +695,8 @@ var KTAppCalendar = function () {
                 icon: "warning",
                 showCancelButton: true,
                 buttonsStyling: false,
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, return",
+                confirmButtonText: "삭제",
+                cancelButtonText: "취소",
                 customClass: {
                     confirmButton: "btn btn-primary",
                     cancelButton: "btn btn-active-light"
@@ -728,10 +728,10 @@ var KTAppCalendar = function () {
                     viewModal.hide(); // Hide modal				
                 } else if (result.dismiss === 'cancel') {
                     Swal.fire({
-                        text: "Your event was not deleted!.",
+                        text: "선택한 일정을 불러오지 못했습니다.",
                         icon: "error",
                         buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
+                        confirmButtonText: "확인",
                         customClass: {
                             confirmButton: "btn btn-primary",
                         }
@@ -758,12 +758,12 @@ var KTAppCalendar = function () {
             e.preventDefault();
 
             Swal.fire({
-                text: "Are you sure you would like to cancel?",
+                text: "정말 취소하시겠습니까?",
                 icon: "warning",
                 showCancelButton: true,
                 buttonsStyling: false,
-                confirmButtonText: "Yes, cancel it!",
-                cancelButtonText: "No, return",
+                confirmButtonText: "확인",
+                cancelButtonText: "취소",
                 customClass: {
                     confirmButton: "btn btn-primary",
                     cancelButton: "btn btn-active-light"
@@ -774,10 +774,10 @@ var KTAppCalendar = function () {
                     modal.hide(); // Hide modal				
                 } else if (result.dismiss === 'cancel') {
                     Swal.fire({
-                        text: "Your form has not been cancelled!.",
+                        text: "오류 발생, 잠시 후 다시 시도해주세요.",
                         icon: "error",
                         buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
+                        confirmButtonText: "확인",
                         customClass: {
                             confirmButton: "btn btn-primary",
                         }
