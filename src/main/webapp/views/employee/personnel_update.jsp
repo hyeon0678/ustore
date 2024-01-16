@@ -625,6 +625,7 @@ License: For each use you must have a valid license purchased only from above li
 	console.log('${list.get(0).deptName}');
 	
 		$(document).ready(function () {
+			headerOnReady()
 			$("#dept_name option").filter(function() {
 	            return $(this).text() === '${list.get(0).deptName}';
 	        }).prop('selected', true);

@@ -526,7 +526,7 @@
 		// 초기화
 	    // 여기에 스케줄러 플러그인 초기화 코드를 넣으세요
 	    $(document).ready(function(){
-	    	
+	    	headerOnReady();
 		$('#scheduler').scheduler({ items: printers, reservations: reservations, timeslotHeight: 70, timeslotWidth: 100 });
 	
 		
