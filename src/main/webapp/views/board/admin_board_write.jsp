@@ -79,7 +79,7 @@
 										<textarea class="form-control" name="notice_content" placeholder="내용을 입력해주세요" style="height: 600px; resize: none;"></textarea>
 									</div>
 									<div class="card-footer d-flex justify-content-end py-6 px-9">
-										<button type="reset" onclick="location.href='/adboard/list'" class="btn btn-light btn-active-light-primary me-2">취소</button>
+										<button type="reset" onclick="confirmCancellation()" class="btn btn-light btn-active-light-primary me-2">취소</button>
 										<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">작성</button>
 									</div>
 								</div>
@@ -109,5 +109,55 @@
 	$(function(){headerOnReady()})
 	
 	</script>
-	
+	<script>
+	function confirmCancellation() {
+	    Swal.fire({
+	        text: '정말 취소 하시겠습니까?',
+	        icon: 'info',
+	        showCancelButton: true,
+	        confirmButtonText: '확인',
+	        cancelButtonText: '취소',
+	        customClass: {
+	            confirmButton: 'btn btn-danger',
+	            cancelButton: 'btn btn-light'
+	        }
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	            window.location.href = '/adboard/list';
+	        }
+	    });
+	}
+</script>
+<script>
+
+$(document).ready(function() {
+    // Submit 버튼 클릭 시
+    $('#kt_account_profile_details_submit').click(function(e) {
+        // 제목 입력란의 값 가져오기
+        var noticeSubject = $('input[name="notice_subject"]').val();
+        // 내용 입력란의 값 가져오기
+        var noticeContent = $('textarea[name="notice_content"]').val();
+
+        // 값이 비어있는지 확인
+        if (noticeSubject.trim() === '') {
+            // 제목이 비어있을 경우 InfoModal 호출
+            InfoModal('제목을 입력해주세요');
+            // 요청 보내지 않기
+            e.preventDefault();
+        } else if (noticeContent.trim() === '') {
+            // 내용이 비어있을 경우 다른 인포 메시지 호출
+            InfoModal('내용을 입력해주세요');
+            // 요청 보내지 않기
+            e.preventDefault();
+        } else {
+            // 값이 비어있지 않으면 폼 제출
+            // 여기서 추가적으로 필요한 유효성 검사를 수행할 수 있습니다.
+            // 예시로는 폼을 submit() 하는 것으로 대체합니다.
+            $('form').submit();
+        }
+    });
+});
+
+
+</script>
 </html>

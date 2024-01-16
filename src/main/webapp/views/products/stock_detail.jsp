@@ -267,7 +267,7 @@ h1 {
 					</div>
 
 					<div>
-						<div class="table-responsive">
+						<div class="table-responsive" id="tableContainer" style="max-height: 400px; overflow-y: auto;">
 							<table
 								class="table table-hover table-rounded table-striped border gy-7 gs-7">
 								<thead>
@@ -372,13 +372,13 @@ h1 {
     } else if (button.textContent === '수정 완료') {
         var newPurchasePrice = purchasePriceCell.querySelector('input').value;
 
-        // ',' 제외한 다른 문자열이 들어가면 alert 창 띄우기
+ 
         if (!/^[0-9,]+$/.test(newPurchasePrice)) {
             InfoModal('숫자만 입력 해주세요!');
             return;
         }
 
-        // ',' 제거
+   
         var purchasePriceWithoutComma = newPurchasePrice.replace(/,/g, '');
 
         var empIdx = ${principal.username};
@@ -428,7 +428,7 @@ h1 {
     } else if (button.textContent === '수정 완료') {
         var newUnitQuantity = unitQuantityCell.querySelector('input').value;
 
-        // ',' 제외한 다른 문자열이 들어가면 alert 창 띄우기
+       
         if (!/^[0-9,]+$/.test(newUnitQuantity)) {
             InfoModal('숫자만 입력 해주세요!');
             return;
@@ -478,7 +478,7 @@ $(document).ready(function () {
             var empIdx = ${principal.username};
             var productId = document.getElementById('productId').textContent;
 
-            // Check for empty values
+      
             if (operationType.trim() === '' || quantity.trim() === '' || reason.trim() === '') {
                 Swal.fire({
                     text: '입력하지 않은 내용이 있습니다.',
@@ -515,12 +515,12 @@ $(document).ready(function () {
                         }
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Reset input values
+                      
                             $('select[data-control="select2"]').val('');
                             $('input.form-control').val('');
                             $('textarea.form-control').val('');
 
-                            // Close modal
+                    
                             $('.btn[data-bs-dismiss="modal"]').click();
                             isClickable = true;
                             $('.btn-primary').off('click', registerButtonClickHandler); 
@@ -540,7 +540,7 @@ $(document).ready(function () {
                         }
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Close modal
+                 
                             $('.btn[data-bs-dismiss="modal"]').click();
                             isClickable = true;
                             $('.btn-primary').off('click', registerButtonClickHandler); 
@@ -562,54 +562,50 @@ $(document).ready(function () {
 });
   //--------------------------------------------------
  
-function fetchStockDetailHistory(productId) {
-    $.ajax({
-        url: "/stock/stockdetailhistory/list",
-        type: 'GET',
-        data: {productId: productId},
-        dataType: 'json',
-        success: function(data) {
-           
-            $('#tableBody').empty();
+  function fetchStockDetailHistory(productId) {
+        $.ajax({
+            url: "/stock/stockdetailhistory/list",
+            type: 'GET',
+            data: { productId: productId },
+            dataType: 'json',
+            success: function (data) {
+                $('#tableBody').empty();
 
-       
-            if (data.length === 0) {
-            
-                var noRecordMessage = '<tr><td></td><td colspan="2" style="color: lightgrey;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;폐기/파손 기록이 없습니다.</td><td></td></tr>';
-                $('#tableBody').append(noRecordMessage);
-            } else {
-           
-                $.each(data, function(index, item) {
-                    var operationTypeText = '';
-                    switch (item.operationType) {
-                        case 1:
-                            operationTypeText = '파손';
-                            break;
-                        case 2:
-                            operationTypeText = '폐기';
-                            break;
-                        case 3:
-                            operationTypeText = '분실';
-                            break;
-                        default:
-                            operationTypeText = '알 수 없음';
-                    }
+                if (data.length === 0) {
+                    var noRecordMessage = '<tr><td></td><td colspan="2" style="color: lightgrey;">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;폐기/파손 기록이 없습니다.</td><td></td></tr>';
+                    $('#tableBody').append(noRecordMessage);
+                } else {
+                    $.each(data, function (index, item) {
+                        var operationTypeText = '';
+                        switch (item.operationType) {
+                            case 1:
+                                operationTypeText = '파손';
+                                break;
+                            case 2:
+                                operationTypeText = '폐기';
+                                break;
+                            case 3:
+                                operationTypeText = '분실';
+                                break;
+                            default:
+                                operationTypeText = '알 수 없음';
+                        }
 
-                    var row = '<tr>' +
-                        '<td>' + item.regDate + '</td>' +
-                        '<td>' + operationTypeText + '</td>' +
-                        '<td>' + item.quantity + '</td>' +
-                        '<td>' + item.reason + '</td>' +
-                        '</tr>';
-                    $('#tableBody').append(row);
-                });
+                        var row = '<tr>' +
+                            '<td>' + item.regDate + '</td>' +
+                            '<td>' + operationTypeText + '</td>' +
+                            '<td>' + item.quantity + '</td>' +
+                            '<td>' + item.reason + '</td>' +
+                            '</tr>';
+                        $('#tableBody').append(row);
+                    });
+                }
+            },
+            error: function (e) {
+                console.log(e);
             }
-        },
-        error: function(e) {
-            console.log(e);
-        }
-    });
-}
+        });
+    }
 
 
 $(document).ready(function() {
