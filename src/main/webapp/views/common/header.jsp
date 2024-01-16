@@ -286,6 +286,7 @@
    	let alarmMouseover = false;
     
     function headerOnReady(){
+    	//localhost  3.36.74.122
    		socket = new SockJS('http://localhost:80/ws');
    		console.log('user : '+user);
 	    stompClient = Stomp.over(socket);
@@ -382,7 +383,8 @@
 		for(let list of alarmList){
 			content+='<div class="d-flex flex-stack py-4 alarm-elem-div">'
 			content+='<div class="d-flex align-items-center"><div class="mb-0 me-2">'
-			content+='<a href="'+list.url+'" class="fs-6 text-gray-800 text-hover-primary fw-bold alarm-url">'
+			content+='<a href="#" class="fs-6 text-gray-800 text-hover-primary fw-bold alarm-url">'list.url
+			content+='<p style="display:none;">'+list.url+'</p>'
 			content+=list.alarmSubject
 			content+='</a><div class="text-gray-500 fs-7">'
 			content+=list.alarmContent
@@ -407,14 +409,10 @@
 	}
 	
 	function readAlarm(){
-		console.log('alarm!!')
 		$('.read-alarm').on('click', function(){
 			let deleteElem = $(this).next().html();
 			$(this).closest('div.alarm-elem-div').remove();				
 			let result = readAlarmCall(deleteElem)
-			/*if(result == true){
-				$(this).closest('div.alarm-elem-div').remove();					
-			}*/
 		});    	
     }
 	
@@ -427,8 +425,9 @@
 		$('a.alarm-url').on('click', function(event){
 			event.preventDefault();          
 			let deleteElem = $(this).next().html();
-			readAlarmCall(deleteElem,$(this))
-			var txt = $(this).attr("href");
+			let url = $(this).next().html();
+			console.log(url);
+			readAlarmCall(deleteElem)
 			location.href = txt
 		})
 	}

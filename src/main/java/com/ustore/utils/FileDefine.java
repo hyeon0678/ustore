@@ -1,7 +1,8 @@
 package com.ustore.utils;
 
 public class FileDefine {
-	
-	public static final String FILEPATH = "C:/ustoreUpload/document";
+	//"C:/ustoreUpload/document"
+	//"/usr/local/tomcat/ustoreUpload/document"
+	public static final String FILEPATH = "/usr/local/tomcat/ustoreUpload/document";
 
 }
