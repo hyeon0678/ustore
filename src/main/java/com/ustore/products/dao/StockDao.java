@@ -54,6 +54,8 @@ public interface StockDao {
 
 	ArrayList<OrderDto> calendarList(String firstDate, String lastDate);
 
+	ArrayList<StockDto> infoListTrue(StockDto dto);
+
 
 
 

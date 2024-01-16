@@ -341,53 +341,53 @@ h1 {
  
     //-------------------------------------------------단가 수정
  
-   function modifyPurchasePrice() {
+    function modifyPurchasePrice() {
     var button = document.querySelector('#purchaseBtn');
     var purchasePriceCell = document.getElementById('purchasePrice');
 
     if (button.textContent === '단가 수정') {
+       
         button.textContent = '수정 완료';
 
+       
         var inputElement = document.createElement('input');
         inputElement.type = 'text';
         inputElement.value = purchasePriceCell.textContent;
 
+       
         inputElement.setAttribute('class', 'form-control');
         inputElement.style.width = '100px';
 
         purchasePriceCell.innerHTML = '';
         purchasePriceCell.appendChild(inputElement);
 
+        
         inputElement.focus();
     } else if (button.textContent === '수정 완료') {
+      
         var newPurchasePrice = purchasePriceCell.querySelector('input').value;
-
-        // ',' 제외한 다른 문자열이 들어가면 alert 창 띄우기
-        if (!/^[0-9,]+$/.test(newPurchasePrice)) {
-            InfoModal('숫자만 입력 해주세요!');
-            return;
-        }
-
-        // ',' 제거
-        var purchasePriceWithoutComma = newPurchasePrice.replace(/,/g, '');
-
         var empIdx = ${principal.username};
         var productId = document.getElementById('productId').textContent;
 
+        
         $.ajax({
             url: '/stock/stockdetailpu/update', 
             method: 'POST',
             data: {
-                purchasePrice: purchasePriceWithoutComma, 
+                purchasePrice: newPurchasePrice, 
                 productId: productId,
                 empIdx: empIdx
             },
             success: function (data) {
+          
                 console.log('Ajax request successful:', data);
+
+            
                 button.textContent = '단가 수정';
                 purchasePriceCell.innerHTML = newPurchasePrice;
             },
             error: function (error) {
+            
                 console.error('Ajax request error:', error);
                 button.textContent = '단가 수정';
                 purchasePriceCell.innerHTML = newPurchasePrice;
@@ -402,48 +402,48 @@ h1 {
     var unitQuantityCell = document.getElementById('unitQuantity');
 
     if (button.textContent === '단위 수정') {
+      
         button.textContent = '수정 완료';
 
+       
         var inputElement = document.createElement('input');
         inputElement.type = 'text';
         inputElement.value = unitQuantityCell.textContent;
 
+     
         inputElement.setAttribute('class', 'form-control');
         inputElement.style.width = '100px';
 
         unitQuantityCell.innerHTML = '';
         unitQuantityCell.appendChild(inputElement);
 
+   
         inputElement.focus();
     } else if (button.textContent === '수정 완료') {
+    
         var newUnitQuantity = unitQuantityCell.querySelector('input').value;
-
-        // ',' 제외한 다른 문자열이 들어가면 alert 창 띄우기
-        if (!/^[0-9,]+$/.test(newUnitQuantity)) {
-            InfoModal('숫자만 입력 해주세요!');
-            return;
-        }
-
-        // ',' 제거
-        var unitQuantityWithoutComma = newUnitQuantity.replace(/,/g, '');
-
         var empIdx = ${principal.username};
         var productId = document.getElementById('productId').textContent;
 
+      
         $.ajax({
             url: '/stock/stockdetailun/update', 
             method: 'POST',
             data: {
-                unitQuantity: unitQuantityWithoutComma,
+                unitQuantity: newUnitQuantity,
                 productId: productId,
                 empIdx: empIdx
             },
             success: function (data) {
+              
                 console.log('Ajax request successful:', data);
+
+             
                 button.textContent = '단위 수정';
                 unitQuantityCell.innerHTML = newUnitQuantity;
             },
             error: function (error) {
+         
                 console.error('Ajax request error:', error);
                 button.textContent = '단위 수정';
                 unitQuantityCell.innerHTML = newUnitQuantity;
