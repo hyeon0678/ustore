@@ -6,26 +6,33 @@
 
 		
 		<select id="cuscount" resultType="Integer">
-			select count(member_idx) from members m ;
+			select count(member_idx) from members m where member_state = 84
 		</select>
 		
-		<insert id="joinnum" parameterType="map">
+		<select id="delcuscount" resultType="Integer">
+			select count(member_idx) from members m where member_state = 85
+		</select>
+		
+		
+		
+		
+		<insert id="joinnum">
 			INSERT into members 
 			( grade_idx ,member_type, name, contact_num, create_date, 
 			expiry_date, brithdate, gender, postal_code, street_address, detail_address, member_state, reg_by)
 			values
-			(#{grade_idx},#{member_type},#{name},#{num},curdate(),DATE_ADD(NOW(), INTERVAL 1 YEAR), #{brithdate},#{gender},
-			 #{ postal_code}, #{street_address}, #{detail_address},#{member_state}, 00990099)
+			(#{gradeIdx},#{memberType},#{name},#{contactNum},curdate(),DATE_ADD(NOW(), INTERVAL 1 YEAR), #{birthdate},#{gender},
+			 #{ postalCode}, #{streetAddress}, #{detailAddress},#{memberState}, #{updateBy})
 		</insert>
 
 
-		<insert id="joinbis" parameterType="map">
+		<insert id="joinbis" parameterType="map" >
 			INSERT into members 
 			( grade_idx ,member_type, name, contact_num, create_date, 
 			expiry_date, brithdate, gender, postal_code, street_address, detail_address, member_state, reg_by, business_num)
 			values
-			(#{grade_idx},#{member_type},#{name},#{num},curdate(),DATE_ADD(NOW(), INTERVAL 1 YEAR), #{brithdate},#{gender},
-			 #{ postal_code}, #{street_address}, #{detail_address},#{member_state}, 00990099,#{business_num})
+			(#{gradeIdx},#{memberType},#{name},#{contactNum},curdate(),DATE_ADD(NOW(), INTERVAL 1 YEAR), #{birthdate},#{gender},
+			 #{ postalCode}, #{streetAddress}, #{detailAddress},#{memberState}, #{updateBy} ,#{businessNum})
 		</insert>
 		
 		<insert id="pointinsert" parameterType="Integer">
@@ -34,11 +41,11 @@
 		
 		
 		<select id="cusnum" resultType="Integer">
-			SELECT member_idx FROM members m where name = #{name} and brithdate =#{brithdate} and create_date = CURDATE()
+			select max(member_idx) from members m
 		</select>
 
 		<select id="listall" resultType="map">
-			SELECT * FROM members where member_state = #{param1} order by expiry_date desc
+			SELECT * FROM members where member_state = #{param1} order by member_idx desc
 		</select>
 
 		<select id="detail" resultType="map">
@@ -75,6 +82,11 @@
 		<update id="del">
 			UPDATE members  set member_state =85 where member_idx =#{param1}
 		</update>
+		
+		<update id="delupdate">
+				UPDATE total_point  set total_point = 0 where member_idx =#{param1}
+		</update>
+		
 
 		<update id="newdate">
 			UPDATE members set create_date = curdate(),expiry_date = DATE_ADD(NOW(), INTERVAL 1 YEAR) ,member_state =84 , grade_idx = #{param2}
@@ -82,7 +94,7 @@
 		</update>
 		
 		<select id="filefind" resultType="map">
-			SELECT CONCAT(file_name,extension) as orifilname, new_file_name as newfilename FROM  file f where file_type =76 and conn_idx =#{param1}
+			SELECT CONCAT(file_name,extension) as orifilname, CONCAT(new_file_name,extension) as newfilename FROM  file f where file_type =76 and conn_idx =#{param1}
 		</select>
 		
 		<select id="productlistcall" resultType="map">

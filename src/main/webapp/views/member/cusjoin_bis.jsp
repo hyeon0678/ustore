@@ -132,13 +132,13 @@
 													<!--begin::Card body-->
 													<div class="card-body border-top p-9">
 														<!--begin::Actions-->
-														<input type="hidden" name="member_type" value="83"/>
-														<input type="hidden" name="member_state" value="84"/>
+														<input type="hidden" name="memberType" value="83"/>
+														<input type="hidden" name="memberState" value="84"/>
 														<div style="display: flex; align-items: center; justify-content: flex-end;">
 															<!--begin::Col 드롭박스 >> 회원 상태-->
 															<input type="hidden" id="changeinput" value=""/>
 															<div class="col-lg-8 fv-row" style="width: 150px; height: 30px; margin-right: 20px; margin-bottom: 10px;   ">
-																<select name="grade_idx" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;" onchange="selectboxchage(this.value);"> 
+																<select name="gradeIdx" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;" onchange="selectboxchage(this.value);"> 
 																	<option  value="80">스탠다드</option>																	
 																	<option  value="81">프리미엄</option>
 																</select>
@@ -154,19 +154,21 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row" style="display: flex; align-items: center;">
-																<input type="text" name="business_num" class="form-control form-control-lg form-control-solid" placeholder="사업자번호를 입력해 주세요." value="" style="width: 300px; margin-right: 10px"/>
-																<input type="file" name="photos"  id="file"  onclick="numfind()"/>
-															</div> 
-															<span style="color: red; font-size: small; float: right; visibility: hidden;" >
-															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-															&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-															* 필수 요소를 입력하지않았습니다. *
-															</span>
+																<input type="text" name="businessNum" class="form-control form-control-lg form-control-solid" placeholder="사업자번호를 입력해 주세요." value="" style="width: 300px; margin-right: 10px"/>
+																<input type="button" name="photos"  id="file" value="사업자번호 확인" onclick="numfind()" style="cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;"/>
+															</div>
+															<!--end::Col-->
+														</div>
+														<!--end::Input group-->
+														<!--begin::Input group-->
+														<div class="row mb-6" >
+															<!--begin::Label-->
+															<label class="col-lg-4 col-form-label  fw-semibold fs-6">사업자 등록증</label>
+															<!--end::Label-->
+															<!--begin::Col-->
+															<div class="col-lg-8 fv-row" style="display: flex; align-items: center;">																
+																<input type="file" name="photos"  id="file" />
+															</div> 															
 															<!--end::Col-->
 														</div>
 														<!--end::Input group-->
@@ -189,7 +191,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="num" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
+																<input type="text" name="contactNum" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value=""  oninput="oninputPhone(this)" maxlength="13"/>
 															</div>
 															<!--end::Col-->
 														</div>
@@ -213,7 +215,7 @@
 															<label class="col-lg-4 col-form-label  fw-semibold fs-6" style="margin-right: 10px;">우편번호</label>
 															<!--end::Label-->
 															<!--begin::Col-->
-																<input type="text" name="postal_code" id="post_num"  class="form-control form-control-lg form-control-solid" placeholder="우편번호를 입력해주세요." value="" style="width: 400px;"/>
+																<input type="text" name="postalCode" id="post_num"  class="form-control form-control-lg form-control-solid" placeholder="우편번호를 입력해주세요." value="" style="width: 400px;"/>
 																<input type="button" onclick="findlocation()" class="btn btn-primary" id="kt_toolbar_primary_button" value="주소 찾기" style="width: 100px; height: 40px; margin-left: 5px;"/>
 															<!--end::Col-->
 														</div>
@@ -225,7 +227,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" id="roadaddress" name="street_address" class="form-control form-control-lg form-control-solid" placeholder="도로명 주소를 입력해주세요." value="" />
+																<input type="text" id="roadaddress" name="streetAddress" class="form-control form-control-lg form-control-solid" placeholder="도로명 주소를 입력해주세요." value="" />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -237,7 +239,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="detail_address" class="form-control form-control-lg form-control-solid" placeholder="상세주소를 입력해주세요." value="" />
+																<input type="text" name="detailAddress" class="form-control form-control-lg form-control-solid" placeholder="상세주소를 입력해주세요." value="" />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -249,8 +251,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="brithdate" class="form-control form-control-lg form-control-solid" placeholder="생년월일을 입력해주세요." value="" />
-																<span style="color: red; font-size: small; float: right;">* 포맷을 yyyy.mm.dd 로 입력 해주세요 *</span>
+																<input type="date" name="birthdate" class= "form-control form-control-lg form-control-solid"/>	
 															</div>
 															<!--end::Col-->
 														</div>
@@ -329,7 +330,6 @@
 		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="resource/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
-		begin::Vendors Javascript(used for this page only)-->
 		<script src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Vendors Javascript-->
 		<!--end::Javascript-->
@@ -339,59 +339,21 @@
 		
 	
 	
-	$('#join').on('click',function(){
-		
-		/*   var $id = $('input[name="id"]');    */
-		
-		
-		var grade_idx = $('input[name="grade_idx"]').val();
-		var member_type = $('input[name="member_type"]').val();
-		var name = $('input[name="name"]').val();
-		var contact_num = $('input[name="num"]').val();
-		var brithdate = $('input[name="brithdate"]').val();
-		var gender = $('input[name="gender"]').val();
-		var postal_code = $('input[name="postal_code"]').val();
-		var street_address = $('input[name="street_address"]').val();
-		var detail_address = $('input[name="detail_address"]').val();
-		var member_state = $('input[name="member_state"]').val();
-		var business_num = $('input[name="business_num"]').val();
-		
-		var param = {};
-        param.grade_idx = grade_idx;
-        param.member_type = member_type;
-        param.name = name;
-        param.content_num = content_num;
-        param.birthdate = birthdate;
-        param.gender = gender;
-        param.postal_code = postal_code;        
-        param.street_address = street_address;
-        param.detail_address = detail_address;
-        param.member_state = member_state;
-        param.business_num = business_num;        
-        console.log(param.responseText);
-		
-		
-		
-		
-		
-		
-		
-		
-	});
+	
 	
 	let fileList = [];	
 	function numfind(){
 		
-		var bisnum = $('input[name="business_num"]').val();
+		var businessNum = $('input[name="businessNum"]').val();
 		
 		$.ajax({
-			type:'post',
+			type:'get',
 			url:'customer/joinbis.ajax/bisnum', 
-			data:{'bisnum':bisnum},
+			data:{'bisnum':businessNum},
 			dataType:'JSON',
 			success:function(obj){
-				console.log(obj);
-				InfoModal(obj.msg);
+				console.log(obj.result);
+				InfoModal(obj.result);
 			},
 			error:function(e){
 				console.log(e);
@@ -420,7 +382,11 @@
          }).open();
       }
 	
-	
+	function oninputPhone(target) {
+		target.value = target.value
+			.replace(/[^0-9]/g, '')
+			.replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
+	}
 	
 	
 	

@@ -10,11 +10,11 @@ import com.ustore.member.dto.MemberDto;
 @Mapper
 public interface MemberDao {
 
-	int joinnum(HashMap<String, String> params);
+	int joinnum(MemberDto dto);
 
-	int joinbis(HashMap<String, String> params);
+	int joinbis(MemberDto dto);
 
-	int cusnum(HashMap<String, String> params);
+	int cusnum();
 
 	ArrayList<HashMap<String, String>> listall(int pageState);
 
@@ -34,9 +34,11 @@ public interface MemberDao {
 
 	ArrayList<HashMap<String, String>> productlistcall(int memberidx, String startdate, String enddate);
 
-	void pointinsert(int cusnum);
+	int pointinsert(int idx2);
 
 	int cuscount();
+	
+	int delcuscount();
 
 	int findnum(int idx);
 
@@ -49,6 +51,9 @@ public interface MemberDao {
 	HashMap<String, String> billlist(String paymentidx);
 
 	int bischeck(String bisnum);
+
+	void delupdate(int idx);
+
 	
 
 }

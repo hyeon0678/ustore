@@ -193,7 +193,8 @@
 										<div class="col-lg-3" style="width: 390px">
 											<span class="fw-bold fs-6 text-gray-800" style="margin-right: 10px;">${info.business_num}</span>
 											<span class="upload_cancel badge badge-light fs-8" style="margin-right: 10px;">${file.orifilname}</span>
-											<button class="" style="cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" >다운로드</button>
+											<button class="" onclick="location.href='download.do?file=${file.newfilename}'"
+											style="cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" >다운로드</button>
 										</div>
 									</c:if>
 									<c:if test="${info.member_type eq '82'}">
@@ -258,12 +259,11 @@
 								<!--begin::Row-->
 								<div class="row mb-7">
 									<!--begin::Label-->
-									<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;">보유 총
-										포인트</label>
+									<label class="col-lg-2 fw-semibold text-muted" style="width: 130px;">보유 총포인트</label>
 									<!--end::Label-->
 									<!--begin::Col-->
 									<div class="col-lg-3" style="display: flex; width: 390px;">
-										<span class="fw-bold fs-6 text-gray-800">${totalpoint} 포인트</span>
+										<div class="fw-bold fs-6 text-gray-800" id="point"></div>
 										<button class="" data-bs-toggle="modal" data-bs-target="#kt_modal_2" onclick="basicpointlist()"
 										style="margin:0px 20px; cursor: pointer; border-radius: 5px; background-color: #C6DA52; color: white; border: none;" >포인트 내역</button>
 									</div>
@@ -330,7 +330,7 @@
 
 						</div>
 						<!--===============================================풋터 시작 부분======================================================-->
-	
+								
 						<!--begin::Card footer-->
 						<div class="card-footer pt-4" id="kt_chat_messenger_footer" style="display: flex; justify-content: flex-end;">
 							<!--begin::Actions-->
@@ -410,6 +410,7 @@
 									<!--end::Send-->
 								</div>
 								<!--end::Toolbar-->
+								<c:if test="${info.member_state eq '84'}">
 								<!--begin:Toolbar-->
 								<div class="" style=" margin-right: 5px">
 									<!--begin::Actions-->
@@ -421,6 +422,8 @@
 									<!--end::Send-->
 								</div>
 								<!--end::Toolbar-->
+								</c:if>
+								<c:if test="${info.member_state eq '84'}">
 								<!--begin::Actions-->
 								<div class="" style="margin-right: 5px">
 									<button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -446,9 +449,9 @@
 														<!-- <span>여기에 조직도를 그려주세요</span> -->
 														<!--begin::Col 드롭박스 >> 회원 상태-->
 														<div class="col-lg-8 fv-row" style="width: 150px; height: 30px; display: flex; margin: 10px;">
-															<select id="membergrade" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;"> 
-																<option  value="80">스탠다드</option>																	
-																<option  value="81">프리미엄</option>
+															<select id="dategrade" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;"> 
+																<option value="80">스탠다드</option>																	
+																<option value="81">프리미엄</option>
 															</select>
 														</div>
 														<!--end::Col-->
@@ -467,6 +470,8 @@
 										</div>
 									</div>
 								<!--end::Actions-->
+								</c:if>
+								<c:if test="${info.member_state eq '85'}">
 								<!--begin::Actions-->
 								<div class="" style=" margin-right: 10px">
 									<button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -476,7 +481,7 @@
 									</div>
 								
 								<!--end::Actions-->
-	
+								</c:if>
 	
 	
 								</div>
@@ -538,13 +543,23 @@ var memberidx= ${info.member_idx};
 var gradeidx = $('#membergrade').val();
 var weekbutton = false;
 
+
+
+
 	function weekturn(){
 		weekbutton = true;
 		basicproduct();
 	}    
 
 
-
+	
+	$('#point').html(viewNum(${totalpoint})+ '  포인트');
+	
+	
+	function viewNum(Num){
+		var i = Num.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+		return i;
+	}
 
 
 
@@ -566,9 +581,17 @@ var weekbutton = false;
 	function newdate(){
 		console.log("기간 변경 하기 기능 들어가기");
 		console.log(gradeidx)
-		location.href='customer/newdate?idx='+memberidx+'&&gradeidx='+gradeidx;
+		// 기간연장
+		if (${info.member_state} == '84'){
+		var gradesatus=$('#dategrade').val();
+		location.href='customer/newdate?idx='+memberidx+'&&gradeidx='+gradesatus;			
+		}else {
+			var gradesatus=$('#dategrade').val();
+			location.href='customer/newdate?idx='+memberidx+'&&gradeidx='+gradesatus;	
+		}
 		
 	}
+	
 	
 	
 	
@@ -606,7 +629,7 @@ var weekbutton = false;
 						 } else {
 							 content += '<th class="min-w-130px" style="text-align: center;">결제취소</th>';
 						}		
-					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].actual_amount+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+viewNum(obj.list[i].actual_amount)+'</th>';
 					 	if(obj.list[i].payment_status == '91'){
 					 		content += '<th class="min-w-130px" style="text-align: center;">횐불됨</th>'; 
 						 } else {
@@ -626,9 +649,6 @@ var weekbutton = false;
 			}
 			});//	
 			
-			
-			
-			
 	}
 	
 	function basicpointlist(){
@@ -640,7 +660,8 @@ var weekbutton = false;
 			dataType:'JSON',
 			success:function(obj){
 				console.log(obj);
-				console.log("포인트 내역 호출 뿌려주기");				
+				console.log("포인트 내역 호출 뿌려주기");		
+				
 				var content = '';
 				$('#pointlist').empty();					
 				if (obj.size == 0) {					
@@ -657,9 +678,9 @@ var weekbutton = false;
 						 } else {
 							 content += '<th class="min-w-130px" style="text-align: center;">결제취소</th>';
 						}		
-					 	content += '<th class="min-w-130px" style="text-align: center;"><p class="paymentid">'+obj.list[i].earned_points+'</p></th>';
-					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].used_points+'</th>';
-					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].remain_points+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;"><p class="paymentid">'+viewNum(obj.list[i].earned_points)+'</p></th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+viewNum(obj.list[i].used_points)+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+viewNum(obj.list[i].remain_points)+'</th>';
 					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].payment_date+'</th>';
 						 content += '</tr>';				
 			            $('#pointlist').append(content);
@@ -673,13 +694,28 @@ var weekbutton = false;
 			});//	
 	}
 	
+	var today = new Date();
+
+	var year = today.getFullYear();
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+
+	var dateString = year + '-' + month  + '-' + day;
+
+	console.log(dateString);
 	
 	// 포인트 날짜 확인
 function datepoint(){
 	
 			const startdate = document.getElementById('pointlistS').value;
 			const enddate = document.getElementById('pointlistE').value;
-			var memberidx= ${info.member_idx};		
+			var memberidx= ${info.member_idx};	
+			
+			
+			if (dateString < startdate) {
+				
+				alert("미래는 조회가 불가능합니다.");
+			}
 			
 			if(startdate > enddate){
 				
@@ -711,9 +747,9 @@ function datepoint(){
 						 } else {
 							 content += '<th class="min-w-130px" style="text-align: center;">결제취소</th>';
 						}		
-					 	content += '<th class="min-w-130px" style="text-align: center;"><p class="paymentid">'+obj.list[i].earned_points+'</p></th>';
-					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].used_points+'</th>';
-					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].remain_points+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;"><p class="paymentid">'+viewNum(obj.list[i].earned_points)+'</p></th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+viewNum(obj.list[i].used_points)+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+viewNum(obj.list[i].remain_points)+'</th>';
 					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].payment_date+'</th>';
 						 content += '</tr>';				
 			            $('#pointlist').append(content);
@@ -760,7 +796,7 @@ function datepoint(){
 		            // obj.list[i].payment_id
 				}else {
 					content ='<h4>'+obj.map.payment_title+'</h4>';
-					content +='<h2 style="margin-bottom: 5px; ">'+obj.map.cash+'원</h2>';
+					content +='<h2 style="margin-bottom: 5px; ">'+viewNum(obj.map.cash)+'원</h2>';
 					content +='<span style="float: right; margin-top: 10px">결제번호('+obj.map.payment_id+')</span>';
 					content +='<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">';
 					content +='<tr class="text-start fw-bold fs-8 text-uppercase gs-0" style=" color: #c6da52;">';
@@ -772,14 +808,14 @@ function datepoint(){
 					content +='<tr class="text-start fw-bold fs-8 text-uppercase gs-0" >';
 					content +='<th class="min-w-100px" style="text-align: center;">'+obj.list[i].product_name+'('+obj.list[i].product_id+')</th>';
 					content +='<th class="min-w-80px" style="text-align: center;">'+obj.list[i].quantity+'개</th>';
-					content +='<th class="min-w-100px" style="text-align: center;">'+obj.list[i].selling_price+'원</th>';
+					content +='<th class="min-w-100px" style="text-align: center;">'+viewNum(obj.list[i].selling_price)+'원</th>';
 					content +='</tr>';
 				}
 					content +='</table>';
 					content +='<p style="float: right; margin-top: 10px">결제수단 : 카카오페이(4404)</p>';
-					content +='<p style="float: right; margin-top: 10px">포인트 사용 : '+obj.map.used_points+'원</p>';
-					content +='<p style="float: right; margin-top: 10px">포인트 적립 : '+obj.map.earned_points+'원 / </p>';
-					content +='<p style="float: right; margin-top: 10px">결제 후 남은 포인트 : '+obj.map.remain_points+'원</p>';
+					content +='<p style="float: right; margin-top: 10px">포인트 사용 : '+viewNum(obj.map.used_points)+'원</p>';
+					content +='<p style="float: right; margin-top: 10px">포인트 적립 : '+viewNum(obj.map.earned_points)+'원 / </p>';
+					content +='<p style="float: right; margin-top: 10px">결제 후 남은 포인트 : '+viewNum(obj.map.remain_points)+'원</p>';
 					content +='<p style="float: right; margin-top: 10px">결제일시 : '+obj.map.payment_date+'</p>';
 					console.log("영수증 호출 뿌려주기 진행끝");
 			     $('#cartlist').append(content);
@@ -849,7 +885,7 @@ function datepoint(){
 						 } else {
 							 content += '<th class="min-w-130px" style="text-align: center;">결제취소</th>';
 						}		
-					 	content += '<th class="min-w-130px" style="text-align: center;">'+obj.list[i].actual_amount+'</th>';
+					 	content += '<th class="min-w-130px" style="text-align: center;">'+viewNum(obj.list[i].actual_amount)+'</th>';
 					 	if(obj.list[i].payment_status == '91'){
 					 		content += '<th class="min-w-130px" style="text-align: center;">횐불됨</th>'; 
 						 } else {

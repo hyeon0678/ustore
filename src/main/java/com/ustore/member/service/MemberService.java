@@ -21,28 +21,28 @@ public class MemberService {
 	
 	
 
-	public String joinnum(HashMap<String, String> params) {
+	public int joinnum(MemberDto dto) {
 		logger.info("서비스 진입");
-		logger.info("파람 : "+params);
+		logger.info("파람 : "+dto);
 		
 		//int num= Integer.parseInt(params.get("num"));
 		//logger.info("num : "+num);
 		//params.put("num", num);
 		
 		
-		int row =dao.joinnum(params);
-		return row > 0 ? "회원등록이 성공 하였습니다.":"회원 등록에 실패하였습니다";
-	}
-
-
-
-
-
-	public String joinbis(HashMap<String, String> params) {
-		logger.info("서비스 진입");
-		logger.info("파람 : "+params);
 		
-		int row =dao.joinbis(params);
+		return dao.joinnum(dto);
+	}
+
+
+
+
+
+	public String joinbis(MemberDto dto) {
+		logger.info("서비스 진입");
+		logger.info("파람 : "+dto);
+		
+		int row =dao.joinbis(dto);
 		return row > 0 ? "회원등록이 성공 하였습니다.":"회원 등록에 실패하였습니다";
 	}
 
@@ -50,8 +50,8 @@ public class MemberService {
 
 
 
-	public int cusnum(HashMap<String, String> params) {
-		return dao.cusnum(params);
+	public int cusnum() {
+		return dao.cusnum();
 	}
 
 
@@ -133,9 +133,9 @@ public class MemberService {
 
 
 
-	public void pointinsert(int cusnum) {
-		dao.pointinsert(cusnum);
-		
+	public String pointinsert(int idx2) {
+		int row = dao.pointinsert(idx2);
+		return row>0? "회원등록에 성공하였습니다":"회원등록에 실패 하였습니다 ";
 	}
 
 
@@ -144,6 +144,10 @@ public class MemberService {
 
 	public int cuscount() {
 		return dao.cuscount();
+	}
+
+	public int delcuscount() {
+		return dao.delcuscount();
 	}
 
 
@@ -193,10 +197,24 @@ public class MemberService {
 
 	public String bischeck(String bisnum) {
 		int row = dao.bischeck(bisnum);
-		return row >0? "이미 등록된 사업자 번호입니다":"등록 가능한 회원 번호입니다";
+		logger.info("row"+row);
+		return row>0? "이미 등록된 사업자 번호입니다":"등록 가능한 회원 번호입니다";
 	}
 
 
+
+
+
+	public void delupdate(int idx) {
+		dao.delupdate(idx);
+		
+	}
+
+
+
+
+
+	
 
 
 

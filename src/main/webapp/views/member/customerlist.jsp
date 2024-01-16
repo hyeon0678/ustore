@@ -113,7 +113,9 @@
 															<!--begin::Inbox-->
 															<span class="">
 																<span class="menu-icon">																	
-																<h4>멤버쉽 가입회원 : ${cuscount} 명</h4>
+																<h4>멤버쉽 가입한 회원 : ${cuscount} 명</h4>
+																<h4>멤버쉽 탈퇴한 회원 : ${delcuscount} 명</h4>
+																</span>
 															</span>
 															<!--end::Inbox-->
 														</div>
@@ -403,7 +405,8 @@
 		
 			var msg = "${msg}";
 			if(msg != ""){
-				alert(msg);
+				SuccessModal(msg);
+				//alert(msg);
 			}
 	
 	

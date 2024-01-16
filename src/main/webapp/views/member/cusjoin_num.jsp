@@ -118,13 +118,13 @@
 													<!--begin::Card body-->
 													<div class="card-body border-top p-9">
 														<!--begin::Actions-->
-														<input type="hidden" name="member_type" value="82"/>
-														<input type="hidden" name="member_state" value="84"/>
+														<input type="hidden" name="memberType" value="82"/>
+														<input type="hidden" name="memberState" value="84"/>
 														<div style="display: flex; align-items: center; justify-content: flex-end;">
 															<!--begin::Col 드롭박스 >> 회원 상태-->
 															<input type="hidden" id="changeinput" value=""/>
 															<div class="col-lg-8 fv-row" style="width: 150px; height: 30px; margin-right: 20px; margin-bottom: 10px;   ">
-																<select name="grade_idx" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;" onchange="selectboxchage(this.value);"> 
+																<select name="gradeIdx" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;" onchange="selectboxchage(this.value);"> 
 																	<option  value="80">스탠다드</option>																	
 																	<option  value="81">프리미엄</option>
 																</select>
@@ -151,7 +151,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="num" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value="" />
+																<input type="text" name="contactNum" class="form-control form-control-lg form-control-solid" placeholder="전화번호를 입력해주세요." value=""  oninput="oninputPhone(this)" maxlength="13"/>
 															</div>
 															<!--end::Col-->
 														</div>
@@ -175,7 +175,7 @@
 															<label class="col-lg-4 col-form-label  fw-semibold fs-6" style="margin-right: 10px;">우편번호</label>
 															<!--end::Label-->
 															<!--begin::Col-->
-																<input type="text" id="post_num" name="postal_code" class="form-control form-control-lg form-control-solid" placeholder="우편번호를 입력해주세요." value="" style="width: 400px;"/>
+																<input type="text" id="post_num" name="postalCode" class="form-control form-control-lg form-control-solid" placeholder="우편번호를 입력해주세요." value="" style="width: 400px;"/>
 																<input type="button" onclick="findlocation()" class="btn btn-primary" id="kt_toolbar_primary_button" value="주소 찾기" style="width: 100px; height: 40px; margin-left: 5px;"/>
 															<!--end::Col-->
 														</div>
@@ -187,7 +187,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" id="roadaddress" name="street_address" class="form-control form-control-lg form-control-solid" placeholder="도로명 주소를 입력해주세요." value="" />
+																<input type="text" id="roadaddress" name="streetAddress" class="form-control form-control-lg form-control-solid" placeholder="도로명 주소를 입력해주세요." value="" />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -199,7 +199,7 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="detail_address" class="form-control form-control-lg form-control-solid" placeholder="상세주소를 입력해주세요." value="" />
+																<input type="text" name="detailAddress" class="form-control form-control-lg form-control-solid" placeholder="상세주소를 입력해주세요." value="" />
 															</div>
 															<!--end::Col-->
 														</div>
@@ -211,8 +211,8 @@
 															<!--end::Label-->
 															<!--begin::Col-->
 															<div class="col-lg-8 fv-row">
-																<input type="text" name="brithdate" class="form-control form-control-lg form-control-solid" placeholder="생년월일을 입력해주세요." value="" />
-																<span style="color: red; font-size: small; float: right;">* 포맷을 yyyy.mm.dd 로 입력 해주세요 *</span>
+																<input type="date" name="birthdate" class= "form-control form-control-lg form-control-solid"/>
+																<!-- <span style="color: red; font-size: small; float: right;">* 포맷을 yyyy.mm.dd 로 입력 해주세요 *</span> -->
 															</div>
 															<!--end::Col-->
 														</div>
@@ -325,6 +325,20 @@
             }
          }).open();
       }
+	
+	function oninputPhone(target) {
+		target.value = target.value
+			.replace(/[^0-9]/g, '')
+			.replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	</script>
 
 </html>

@@ -315,6 +315,8 @@ public class mailcontroller {
 			logger.info("idx : "+idx);
 			logger.info("pageState : "+pageState);
 			
+			logger.info("emproynum : "+emproynum);
+			
 			ModelAndView mav = new ModelAndView("mail/mail_detail");
 			
 			HashMap<String, String> map ;
@@ -339,7 +341,6 @@ public class mailcontroller {
 			mav.addObject("map", map);
 			//result.put("size", list.size());
 			//logger.info("result : " +result);	
-			
 			return mav;
 		}
 		

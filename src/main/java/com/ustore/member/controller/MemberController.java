@@ -1,6 +1,8 @@
 package com.ustore.member.controller;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -45,9 +47,13 @@ public class MemberController {
 		ModelAndView mav = new ModelAndView("member/customerlist");
 		
 		int cuscount = service.cuscount();
+		int delcuscount = service.delcuscount();
 		
 		logger.info("cuscount : "+cuscount);
 		mav.addObject("cuscount",cuscount);
+		logger.info("delcuscount : "+delcuscount);
+		mav.addObject("delcuscount",delcuscount);
+		
 		
 		return mav;
 	}
@@ -171,7 +177,8 @@ public class MemberController {
 		logger.info("file : "+file);
 		
 		DateCalculator datecal= new DateCalculator();
-		String nowdate = datecal.dateNow().toString();		
+		String nowdate = datecal.dateNow().toString();	
+		Date nowDate2 = datecal.dateNow();
 		logger.info("nowdate : "+nowdate);		
 		Calendar mon = Calendar.getInstance();
 		mon.add(Calendar.MONTH, -1);
@@ -184,10 +191,12 @@ public class MemberController {
 			sumpoint = "0";
 		}
 		logger.info("누적 포인트 : "+sumpoint);
+		logger.info("nowDate2 : "+nowDate2);
 		ModelAndView mav = new ModelAndView("member/cusdetail");
 		mav.addObject("info",map);
 		mav.addObject("file",file);
 		mav.addObject("nowdate",nowdate);
+		mav.addObject("nowDate2",nowDate2);
 		mav.addObject("beforeMonth",beforeMonth);
 		mav.addObject("totalpoint", point);
 		mav.addObject("sumpoint", sumpoint);
@@ -324,47 +333,55 @@ public class MemberController {
 	
 	
 	
-	@GetMapping(value = "/customer/chat")
-	public String chat() {
-		logger.info("체팅 페이지 들어가기");
-		return "chat/chat";
-	}
-	
-	
+	// @RequestBody ApprovalDto dto
 	@PostMapping(value="/customer/joinnum")
-	public ModelAndView joinnum(@RequestParam HashMap<String, String> params
-			,HttpSession session,  RedirectAttributes rAttr) {
+	public ModelAndView joinnum(MemberDto dto,  RedirectAttributes rAttr, Principal Principal) {
 		
 		logger.info("=============멤버쉽 등록 요청 ");
-		logger.info("params : "+params);
+		logger.info("dto : "+dto.getName());
+		logger.info("dto : "+dto.getGradeIdx());
+		String  emproynum = Principal.getName();
+		logger.info("emproynum : "+emproynum);
+		int empnum = Integer.parseInt(emproynum);
+		dto.setUpdateBy(empnum);
+		
+		//logger.info("params : "+params);
 		// 일반회원, 등록된 회원 , 스탠다드
 		// params : {member_type=82, member_state=84, memberstate=80, name=ds, num=sdf, postal_code=sdf, street_address=sdf, detail_address=sdf, brithdate=sdf, gender=남}
 		
-		String msg = service.joinnum(params);
-		int cusnum = service.cusnum(params);
-		service.pointinsert(cusnum);
+		int row = service.joinnum(dto);
+		int memberIdx = service.cusnum();
+		logger.info("idx : "+memberIdx);
+		String msg =service.pointinsert(memberIdx);
+		logger.info("msg : "+msg);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:/customer/home");
 		rAttr.addFlashAttribute("msg", msg);
+		//mav.addObject("msg", msg);
 		return mav;
+		
+		
 		//return null;
 	}
 
 	@PostMapping(value="/customer/joinbis")
-	public ModelAndView joinbis(MultipartFile photos,@RequestParam HashMap<String, String> params,
-			HttpSession session,  RedirectAttributes rAttr) throws IOException {
+	public ModelAndView joinbis(MultipartFile photos,MemberDto dto,Principal Principal	, RedirectAttributes rAttr) throws IOException {
 		
 		logger.info("=============멤버쉽 등록 요청 ");
-		logger.info("params : "+params);
+		logger.info("params : "+dto);
 		logger.info("photos : "+photos);
+		String  emproynum = Principal.getName();
+		logger.info("emproynum : "+emproynum);
+		int empnum = Integer.parseInt(emproynum);
+		dto.setUpdateBy(empnum);
 		
 		// 일반회원, 등록된 회원 , 스탠다드
 		// params : {member_type=83, member_state=84, grade_idx=80, business_num=x z, 
 		// photos=_멤버쉽] 사업자 회원 상세.jpg, name= zx , num=zx , postal_dode=x , street_address=zx , 
 		// detail_address=x , brithdate=zx , gender=남}
 		
-		String msg = service.joinbis(params);
-		int cusnum = service.cusnum(params);
+		String msg = service.joinbis(dto);
+		int cusnum = service.cusnum();
 		service.pointinsert(cusnum);
 		String idx = Integer.toString(cusnum);
 		if(photos != null && !photos.isEmpty()) {		
@@ -382,9 +399,35 @@ public class MemberController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:/customer/home");
 		rAttr.addFlashAttribute("msg", msg);
+		// mav.addObject("msg"+msg);
 		return mav;
-		// return null;
+		
 	}
+	
+	@RequestMapping(value = "customer/joinbis.ajax/bisnum")
+	@ResponseBody
+	public HashMap<String, Object> bisnum(@RequestParam String bisnum) {
+		logger.info("사업자 회원 번호 확인   호출하기");
+		logger.info("member idx : "+bisnum);
+		ModelAndView mav = new ModelAndView();
+		
+		String msg = service.bischeck(bisnum);
+		logger.info("msg : "+msg);
+		
+		//mav.addObject("msg",msg);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("result", msg);
+		return result;
+		//return mav; // 앞으로 보낸다
+	}
+	
+
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping(value = "customer/update")
 	@ResponseBody
@@ -425,6 +468,7 @@ public class MemberController {
 		logger.info("member idx : "+idx);
 		
 		String msg = service.del(idx);
+		service.delupdate(idx);
 		logger.info(idx+" : 탈퇴 성공");
 		ModelAndView mav = new ModelAndView("member/customerlist");
 		//logger.info("info : "+map.toString());
@@ -442,9 +486,9 @@ public class MemberController {
 		
 		String msg = service.newdate(idx,gradeidx);
 		
-		ModelAndView mav = new ModelAndView("member/customerlist");
+		ModelAndView mav = new ModelAndView("redirect:/customer/detail?idx="+idx);
 		//logger.info("info : "+map.toString());
-		mav.addObject("msg",msg);
+		//mav.addObject("msg",msg);
 		
 		return mav;
 	}
@@ -469,19 +513,6 @@ public class MemberController {
 	
 	
 	
-	
-	@RequestMapping(value = "customer/joinbis.ajax/bisnum")
-	@ResponseBody
-	public ModelAndView bisnum(@RequestParam String bisnum) {
-		logger.info("사업자 회원 번호 확인   호출하기");
-		logger.info("member idx : "+bisnum);
-		ModelAndView mav = new ModelAndView();
-		
-		String msg = service.bischeck(bisnum);
-		mav.addObject("msg",msg);
-		
-		return mav; // 앞으로 보낸다
-	}
 	
 	
 	

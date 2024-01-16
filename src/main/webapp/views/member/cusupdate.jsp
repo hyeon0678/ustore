@@ -175,6 +175,7 @@
 										</div>
 										<!--=======================다음줄===========================-->
 										<div style="width: 600px; ">
+										<c:if test="${info.member_type eq '83'}">
 											<!--begin::Input group-->
 											<div class="row mb-6"  style="width: 600px;">
 												<!--begin::Label-->
@@ -187,7 +188,8 @@
 											<!--end::Col-->
 											</div>
 											<!--end::Input group-->
-
+											</c:if>
+	
 
 										<!--begin::Row-->
 										<div class="row mb-7" style="width: 600px;">
@@ -327,7 +329,7 @@
     			dataType:'JSON',
     			success:function(obj){			
     				console.log(obj);
-    				//location.href='customer/detail?idx='+idx;    	
+    				
     				
     				
     			},
@@ -337,7 +339,7 @@
     		});//		
     		
     		
-    		
+    		location.href='customer/detail?idx='+idx;  
     		
 			
 		};

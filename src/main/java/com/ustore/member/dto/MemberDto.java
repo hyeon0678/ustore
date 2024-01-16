@@ -12,11 +12,10 @@ public class MemberDto {
 	
 	private int gradeIdx;
 	private String businessNum;
-	private int memberType;
-	
+	private int memberType;	
 	private Date createDate;
 	private Date expiryDate;
-	private Date birthdate;
+	private String birthdate;
 	private String gender;
 	private int postalCode;
 	private String streetAddress;
@@ -60,10 +59,15 @@ public class MemberDto {
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
-	public Date getBirthdate() {
+	
+	
+	
+	
+	
+	public String getBirthdate() {
 		return birthdate;
 	}
-	public void setBirthdate(Date birthdate) {
+	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
 	}
 	public String getGender() {
