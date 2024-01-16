@@ -128,7 +128,7 @@
 										<div class="card">
 									<!--===============================================^ 카드의 시작===============================================================-->
 									<!--begin::Form-->
-												<form id="kt_account_profile_details_form" class="form" action="customer/joinbis" method="post" enctype="multipart/form-data">
+												<form id="kt_account_profile_details_form" name="myform" class="form" action="customer/joinbis" method="post" enctype="multipart/form-data">
 													<!--begin::Card body-->
 													<div class="card-body border-top p-9">
 														<!--begin::Actions-->
@@ -287,7 +287,7 @@
 													<!--begin::Actions-->
 													<div class="card-footer d-flex justify-content-end py-6 px-9">
 														<button type="reset" class="btn btn-light btn-active-light-primary me-2" onclick="location.href='customer/home'">취소</button>
-														<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">회원 등록</button>
+														<button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit" onclick="return check()">회원 등록</button>
 													</div>
 													<!--end::Actions-->
 												</form>
@@ -337,7 +337,59 @@
 	<!--end::Body-->
 	<script>
 		
-	
+function check(){
+		if(myform.businessNum.value.length == 0){ // myform.id.value == "" 이것도 가능
+			FalseModal("사업자번호가 누락됐습니다.");
+			myform.name.focus(); // 포커스를 이동시켜 바로 아이디를 입력할 수 있게
+			return false;
+		};
+		
+		/*
+		 var applyFile = document.getElementById("file");
+		 console.log(applyFile)
+		if(myform.files.files.length == 0){ // myform.id.value == "" 이것도 가능
+			FalseModal("사업자 등록증이 누락됐습니다.");
+			myform.name.focus(); // 포커스를 이동시켜 바로 아이디를 입력할 수 있게
+			return false;
+		};
+		
+		*/
+		
+		
+		if(myform.name.value.length == 0){ // myform.id.value == "" 이것도 가능
+			FalseModal("이름이 누락됐습니다.");
+			myform.name.focus(); // 포커스를 이동시켜 바로 아이디를 입력할 수 있게
+			return false;
+		};
+		if(myform.contactNum.value.length == 0){ // myform.id.value == "" 이것도 가능
+			FalseModal("연락처가 누락됐습니다.");
+			myform.name.focus(); // 포커스를 이동시켜 바로 아이디를 입력할 수 있게
+			return false;
+		};
+		if(myform.postalCode.value.length == 0){ // myform.id.value == "" 이것도 가능
+			FalseModal("우편번호가 누락됐습니다.");
+			myform.name.focus(); // 포커스를 이동시켜 바로 아이디를 입력할 수 있게
+			return false;
+		};
+		if(myform.roadaddress.value.length == 0){ // myform.id.value == "" 이것도 가능
+			FalseModal("주소가 누락됐습니다.");
+			myform.name.focus(); // 포커스를 이동시켜 바로 아이디를 입력할 수 있게
+			return false;
+		};
+		if(myform.detailAddress.value.length == 0){ // myform.id.value == "" 이것도 가능
+			FalseModal("상세주소가 누락됐습니다.");
+			myform.name.focus(); // 포커스를 이동시켜 바로 아이디를 입력할 수 있게
+			return false;
+		};
+		if(myform.birthdate.value.length == 0){ // myform.id.value == "" 이것도 가능
+			FalseModal("생년월일이 누락됐습니다.");
+			myform.name.focus(); // 포커스를 이동시켜 바로 아이디를 입력할 수 있게
+			return false;
+		};
+		
+		
+		
+	}
 	
 	
 	
