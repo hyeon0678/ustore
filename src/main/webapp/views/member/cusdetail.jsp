@@ -755,15 +755,10 @@ function datepoint(){
 			var memberidx= ${info.member_idx};	
 			
 			
-			if (dateString < startdate) {
+			if (dateString < startdate || startdate > enddate) {
 				
-				alert("미래는 조회가 불가능합니다.");
-			}
-			
-			if(startdate > enddate){
+				InfoModal("해당 기간의 조회가 불가능합니다.");
 				
-			 	 alert("해당 기간의 조회가 불가능합니다.");
-			 	 
 			 }else{
 				 
 		$.ajax({
@@ -896,10 +891,10 @@ function datepoint(){
 		const enddate = document.getElementById('ulastsearchdate').value;
 		var memberidx= ${info.member_idx};		
 		
-		if(startdate > enddate){
+		if (dateString < startdate || startdate > enddate) {
 			
-		 	 alert("해당 기간의 조회가 불가능합니다.");
-		 	 
+			InfoModal("해당 기간의 조회가 불가능합니다.");
+			
 		 }else{
 			 
 		$.ajax({
