@@ -223,7 +223,11 @@ ORDER BY
     order_idx DESC;
 
 </select>
+<select id="infoListTrue" resultType="StockDto">
+select product_id from order_detail where conf_status ='N' and product_id =#{productId}
+limit 1;
 
+</select>
 
 
 </mapper>

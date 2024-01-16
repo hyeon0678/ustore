@@ -231,6 +231,14 @@ public class StockService {
 		return dao.calendarList(firstDate,lastDate);
 	}
 
+	public ArrayList<StockDto> infoListTrue(String productId) {
+		
+		StockDto dto = new StockDto();
+		dto.setProductId(productId);
+		
+		return dao.infoListTrue(dto);
+	}
+
 
 
 }

@@ -103,7 +103,7 @@ button i.bi {
 											<div class="card-body">
 												<!--==========================================서브 사이드바 컨텐츠 리스트==================================================================-->											
 													<!--begin::Menu-->
-													<div class="menu menu-column menu-rounded menu-state-bg menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary ">
+													<div class="menu menu-column menu-rounded menu-state-bg menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary" style="width: 100%; white-space:nowrap">
 														<!--begin::Menu item-->
 														
 														<!--end::Menu item-->

@@ -234,11 +234,10 @@
 										id="kt_ecommerce_category_table">
 										<thead>
 											<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
-												<th class="w-10px pe-2">상품번호</th>
-												<th class="min-w-150px">상품명</th>
-												<th class="min-w-650px">수량(파렛트/전체)</th>
-												<th class="text-end min-w-70px">삭제
-													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+												<th class="min-w-125px">상품번호</th>
+												<th class="min-w-125px">상품명</th>
+													<th class="min-w-125px">수량(파렛트/전체)</th>
+												<th class="min-w-70px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;삭제</th>
 											</tr>
 										</thead>
 										<tbody class="fw-semibold text-gray-600">
@@ -262,7 +261,7 @@
     </c:otherwise>
 </c:choose>/ ${stock.stock}</td>
 
-													<td ><button class="btn btn-primary" onclick="confirmDelete('${stock.productId}')">delete</button></td>
+													<td ><button class="btn btn-primary" onclick="confirmDelete('${stock.productId}')">삭제</button></td>
 												</tr>
 											</c:forEach>
 
@@ -342,7 +341,7 @@
 	    headerOnReady();
 	});
 	//------------------------------------------
-	 function confirmDelete(productId) {
+	function confirmDelete(productId) {
     Swal.fire({
         text: '물품을 삭제 하시겠습니까?.',
         icon: 'info',
@@ -363,33 +362,30 @@
                     productId: productId
                 },
                 success: function (data) {
-                    console.log('Data deleted successfully:', data);
-                    
-                  
-                    Swal.fire({
-                        text: '물품이 삭제 되었습니다.',
-                        icon: 'success',
-                        confirmButtonText: '확인',
-                        customClass: {
-                            confirmButton: 'btn btn-primary'
-                        }
-                    }).then(() => {
-               
-                        window.location.href = '/stock/stockmanagement/list';
-                    });
+                    if (data === "물품이 삭제 되었습니다.") {
+    
+                        Swal.fire({
+                            text: data,
+                            icon: 'success',
+                            confirmButtonText: '확인',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            }
+                        }).then(() => {
+                            window.location.href = '/stock/stockmanagement/list';
+                        });
+                    } 
                 },
                 error: function (error) {
-                    Swal.fire({
-                        text: '물품이 삭제 되었습니다.',
-                        icon: 'success',
-                        confirmButtonText: '확인',
-                        customClass: {
-                            confirmButton: 'btn btn-primary'
-                        }
-                    }).then(() => {
-                    
-                        window.location.href = '/stock/stockmanagement/list';
-                    });
+                	  Swal.fire({
+                          text: '해당 물품은 아직 입고처리중인 상품입니다.',
+                          icon: 'info',
+                          confirmButtonText: '확인',
+                          customClass: {
+                              confirmButton: 'btn btn-primary'
+                          }
+                      });
+                    console.error('Error during deletion:', error);
                 }
             });
         }

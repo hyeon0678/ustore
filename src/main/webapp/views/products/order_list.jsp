@@ -78,7 +78,7 @@
 			<div class="wrapper d-flex flex-column flex-row-fluid"
 				id="kt_wrapper">
 				<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
-				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
+				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px" > 
 					<h1 class="text-gray-900 fw-bold my-1 fs-2"
 						style="margin-left: 50px;">발주 리스트</h1>
 					<!--================================메인 내용들어가는부분================================================-->
@@ -94,7 +94,7 @@
 											<div class="card-body">
 												<!--==========================================서브 사이드바 컨텐츠 리스트==================================================================-->											
 													<!--begin::Menu-->
-													<div class="menu menu-column menu-rounded menu-state-bg menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary ">
+													<div class="menu menu-column menu-rounded menu-state-bg menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary" style="width: 100%; white-space:nowrap">
 														<!--begin::Menu item-->
 														
 														<!--end::Menu item-->
@@ -164,10 +164,10 @@
 										<thead>
 											<tr class="text-start fw-bold fs-7 text-uppercase gs-0"
 												style="color: #c6da52;">
-												<th class="w-150px pe-2">입고 날짜</th>
-												<th class="min-w-150px">발주 번호</th>
-												<th class="min-w-650px">차량 번호</th>
-												<th class="text-end min-w-70px">배송기사
+												<th class="min-w-125px">입고 날짜</th>
+												<th class="min-w-125px">발주 번호</th>
+												<th class="min-w-125px">차량 번호</th>
+												<th class="min-w-125px">배송기사
 													이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 											</tr>
 										</thead>
@@ -180,7 +180,7 @@
 														data-order-idx="${List.orderIdx}"> ${List.orderIdx} </a></td>
 													<td>${List.resourceName}</td>
 
-													<td class="text-end">${List.driverName}
+													<td>${List.driverName}
 														&nbsp;&nbsp;&nbsp;&nbsp;</td>
 
 												</tr>

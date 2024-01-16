@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -78,13 +80,23 @@ public class StockController {
 		return "products/stock_management";
 	}
 	@PostMapping("/stock/stockmanagement/delete")
-	public String stockManagementDelete(@RequestParam("productId")String productId) {
+	public ResponseEntity<String> stockManagementDelete(@RequestParam("productId")String productId) {
 		
-		logger.info("productId : " +productId);
+
+		ArrayList<StockDto> proList = service.infoListTrue(productId);
+		if(proList == null || proList.isEmpty()) {
+			
+			logger.info("값이 없습니다.");
+			service.stockManagementDelete(productId);
+			return ResponseEntity.ok("물품이 삭제 되었습니다.");
+			
+		}else {
+			
+			logger.info("proList 값이 있을경우 : "+proList);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("해당 물품은 아직 입고처리중인 상품입니다.");
+		}
+
 		
-		service.stockManagementDelete(productId);
-		
-		return "물품이 삭제 되었습니다.";
 	}
 // ---------------------------------------------------------------------- 제품 상세보기 --------------------------
 

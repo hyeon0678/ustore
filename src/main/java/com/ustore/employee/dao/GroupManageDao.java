@@ -30,7 +30,7 @@ public interface GroupManageDao {
 
 	void empModEduUpdate(HashMap<String, String> params);
 
-	void delete(String emp_idx, Principal principal);
+	void delete(String emp_idx, String string, String string2); 
 
 	String imgInfo(String idx);
 
