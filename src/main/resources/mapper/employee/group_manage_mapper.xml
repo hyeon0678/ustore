@@ -145,12 +145,12 @@
 	</insert>
 	
 	<!-- 직원 퇴사 처리 -->
-		<update id="empDelete">
+		<update id="delete">
 			UPDATE employee 
 			   SET
 			   emp_quit ='Y',
-			   emp_quit_date =CURDATE(),
-			   update = #{update},
+			   emp_quit_date =#{param3},
+			   `update` = #{param3},
 			   update_by = #{param2}
 			   WHERE 
 			   emp_idx =#{param1}

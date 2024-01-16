@@ -64,8 +64,8 @@ License: For each use you must have a valid license purchased only from above li
 								                <option value="contact_num">전화번호</option>
 								                <!-- 추가적인 옵션들을 필요에 따라 추가할 수 있습니다 -->
 								            </select>
-											<input type="text" class="form-control form-control-solid" placeholder="검색 정보를 입력해주세요"  id="memberSearchText">
-											<input type="button" class="btn btn-primary" value="검색"  id="memberSearchBtn">
+											<input type="text" class="form-control form-control-solid" placeholder="검색 정보를 입력해주세요"  id="memberSearchText" oninput="validateNumericInputNumber(this)">
+											<input type="button" class="btn btn-primary" value="검색"  id="memberSearchBtn" >
 											
 								        </div>
 								        
@@ -145,7 +145,8 @@ License: For each use you must have a valid license purchased only from above li
         // 입력된 텍스트 필드의 내용을 가져오기
         var searchText = document.getElementById("memberSearchText").value;
         if(selectedOption == 'contact_num'){
-        	if(searchText.length < 4){
+        	if(searchText.length!= 0 &&searchText.length < 4){
+        		console.log(searchText.length);
         		alert("전화번호는 뒷자리 4자리를 입력해 주세요.");
         	}else{
 			memberSearch(selectedOption,searchText);	
@@ -198,7 +199,16 @@ License: For each use you must have a valid license purchased only from above li
 	
 	
 	
+	function validateNumericInputNumber(inputElement) {
+		var selectedOption = document.getElementById("memberSearchOpt").value;
+		if(selectedOption == 'contact_num'){			
+		    inputElement.value = inputElement.value.replace(/\D/g, '');
 	
+		    if (inputElement.value.length > 4) {
+		        inputElement.value = inputElement.value.slice(0, 4);
+		    }
+		}
+	}
 	
 	
 	

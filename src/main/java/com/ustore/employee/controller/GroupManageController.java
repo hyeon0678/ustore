@@ -109,9 +109,10 @@ public class GroupManageController {
 	}
 	
 	@RequestMapping("/delete")
-	public void empDelete(@RequestParam String emp_idx, Principal principal) {
+	public String empDelete(@RequestParam String emp_idx, Principal principal) {
 		logger.info("퇴사처리 요청 확인 : "+emp_idx);
-		groupManageService.delete(emp_idx,principal);
+		groupManageService.delete(emp_idx,principal.getName()); 
+		return "redirect:/employee/management";
 	}
 	
 
