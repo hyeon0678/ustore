@@ -18,7 +18,7 @@ License: For each use you must have a valid license purchased only from above li
 	<!--begin::Head-->
 	<head>
 <base href="../" />
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+		<title>UStore</title>
 		<meta charset="utf-8" />
 		
 		<!--begin::Fonts(mandatory for all pages)-->
@@ -565,7 +565,7 @@ License: For each use you must have a valid license purchased only from above li
 	        success: function (data) {
 				console.log(data);
 				if(!data.success){					
-				alert('재고가 없습니다.');
+				noconfirmCancelModal('재고가 없습니다.');
 				}
 				drawPosCart(data);
 	        },
@@ -603,7 +603,7 @@ License: For each use you must have a valid license purchased only from above li
 	        success: function (data) {
 				console.log(data);
 				if(!data.success){					
-				alert('해당 제품이 이미 장바구니에 있습니다.');
+				noconfirmCancelModal('해당 제품이 이미 장바구니에 있습니다.');
 				}					
 				drawPosCart(data);
 	        },
@@ -728,7 +728,7 @@ License: For each use you must have a valid license purchased only from above li
 	        success: function (data) {
 				console.log(data);
 				if(data.itemList.length==0){
-					alert('검색 결과가 없습니다.');
+					noconfirmCancelModal('검색 결과가 없습니다.');
 				}
 				drawPosItem(data);
 	        },
@@ -771,7 +771,7 @@ License: For each use you must have a valid license purchased only from above li
 		    pay_method: "card",    //  결제 메서드  -- 필수 입력값
 		    merchant_uid : memberId+"_"+Date.now(), // 결제 번호 --- 필수 입력값
 		    name : 'UStore',  // 결제 이름 -- 필수 입력값
-		    amount :replace($('#endSellingSum').text()) ,   // 가격 -- 필수 입력값    -- replace($('#endSellingSum').text())
+		    amount :100 ,   // 가격 -- 필수 입력값    -- replace($('#endSellingSum').text())
 		    buyer_tel: contactNum,
 		  }, function (rsp) { // callback
 			  console.log(rsp);
@@ -798,7 +798,7 @@ License: For each use you must have a valid license purchased only from above li
 								alert('결제가 완료되었습니다.');
 								window.location.href = "/pos/member";
 							}else{
-								alert('결제 오류 발생 관리자에게 문의해주세요.')
+								noconfirmCancelModal('결제 오류 발생 관리자에게 문의해주세요.')
 							}
 				        },
 				        error: function (e) {
@@ -807,12 +807,22 @@ License: For each use you must have a valid license purchased only from above li
 				    });
 			    } else { // 실패했을때
 			      var msg = '결제에 실패하였습니다.';
-			      alert(msg);
+			      noconfirmCancelModal(msg);
 			    }
 		  });
 		}
-	
-	
+	function noconfirmCancelModal(message) {
+	    Swal.fire({
+	        text: message,
+	        icon: 'question',
+	        buttonsStyling: false,
+	        confirmButtonText: '확인',
+	        showCancelButton: false, 
+	        customClass: {
+	            confirmButton: 'btn btn-primary',
+	        }
+	    });
+	}
 	
 	</script>
 </html>

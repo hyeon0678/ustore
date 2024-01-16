@@ -117,7 +117,7 @@
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-8 fv-row">
-												<input type="text" name="birthdate" class="form-control form-control-lg form-control-solid"  value="${info.brithdate}" readonly="readonly"/>
+												<span class="fw-bold fs-6 text-gray-800" >${info.brithdate}</span>												
 											</div>
 											<!--end::Col-->
 										</div>
@@ -129,7 +129,7 @@
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-8 fv-row">
-												<input type="text" name="gender" class="form-control form-control-lg form-control-solid"  value="${info.gender}" readonly="readonly"/>
+												<span class="fw-bold fs-6 text-gray-800" >${info.gender}</span>												
 											</div>
 											<!--end::Col-->
 										</div>

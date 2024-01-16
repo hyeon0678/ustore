@@ -87,10 +87,10 @@
 					</div>
 				</div>
 				<div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
-					<div class="d-flex flex-center fw-semibold fs-6">
-						<a href="https://keenthemes.com" class="text-muted text-hover-primary px-2" target="_blank">About</a>
-						<a href="https://devs.keenthemes.com" class="text-muted text-hover-primary px-2" target="_blank">Support</a>
-						<a href="https://themes.getbootstrap.com/product/craft-bootstrap-5-admin-dashboard-theme" class="text-muted text-hover-primary px-2" target="_blank">Purchase</a>
+					<div class="d-flex flex-center fw-semibold fs-4">
+						
+						<a href="/pos/member" class="text-muted text-hover-primary px-2" target="_blank">계산대</a>
+						
 					</div>
 				</div>
 			</div>

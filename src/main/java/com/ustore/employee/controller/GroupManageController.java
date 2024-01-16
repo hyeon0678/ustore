@@ -108,6 +108,7 @@ public class GroupManageController {
 		int success = groupManageService.empModify(params);
 		logger.info("수정성공 컨트롤러까지 도착"+success);
 		ModelAndView mav = new ModelAndView("employee/personnel_management");
+		mav.addObject("success_empID",params.get("emp_idx"));
 		return mav;
 	}
 	

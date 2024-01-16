@@ -17,7 +17,7 @@ License: For each use you must have a valid license purchased only from above li
 	<!--begin::Head-->
 	<head>
 <base href="../" />
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+		<title>UStore</title>
 		<meta charset="utf-8" />
 		<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 		<!--begin::Fonts(mandatory for all pages)-->

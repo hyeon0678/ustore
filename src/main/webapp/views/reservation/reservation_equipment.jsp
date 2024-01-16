@@ -7,7 +7,7 @@
 	<head>
 	<base href="../" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+    <title>UStore</title>
     <meta charset="utf-8" />
 	<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
@@ -79,7 +79,7 @@
 		<div class="d-flex flex-column flex-root">
 			<div class="page d-flex flex-row flex-column-fluid">
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 90px;">
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; margin-left:30px; background-color: #fffff8;">
 						<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">${resourceType} 예약</h1>
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
@@ -100,16 +100,13 @@
 									<div class="card-header">
 						                <h2 class="card-title">
 						                자원 예약
-						                <br/>
-						                </h2>
-						                <div>						                
-										<input class="fs-6" type="date" id="dateInput"  onchange="dateChanged()">
-						                </div>
+						                </h2>						                
 						            </div>
+										<input class="fs-5" type="date" id="dateInput"  onchange="dateChanged()" style="width: 10%; margin-left: 2%;">
 									<div class="card-body">
-									<div class="hover-scroll-x h-auto px-5">
+									<div class="hover-scroll-x h-auto px-5" id="scroll-container">
 									    <div style="width: 1200px">
-        									<div id="scheduler" style="padding-bottom: 30px;"></div>
+									        <div id="scheduler" style="padding-bottom: 30px;"></div>
 									    </div>
 									</div>
 									</div>
@@ -263,7 +260,7 @@
 										<div class="modal-content">
 											<div class="modal-header">
 												<h3 class="modal-title">자원 추가</h3>
-												<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+												<div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" >
 													<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
 												</div>
 												<!--end::Close-->
@@ -382,9 +379,11 @@
 
 		<script>
 		$(document).on('click', '#delResourceCancel', function () {
-		    $('#kt_modal_2').modal('hide');
+			
+			$('#kt_modal_2').modal('hide');
 		});
 		$(document).on('click', '#addReservationCancel', function () {
+			$('#resourceName').val('');
 		    $('#kt_modal_1').modal('hide');
 		});
 		
@@ -680,9 +679,11 @@
         	        success: function (data) {
         				console.log(data);
         				if(data){
+
         					$('#kt_modal_0').modal('hide');
         					drawresource();		
         				}else{
+
         					alert('오류가 발생했습니다. 다시 시도해 주세요');
         				}
         				
@@ -697,6 +698,7 @@
 		
 		
 		function qq(startTop,startWidth,finalWidth){
+			$('#text').val('');
 			var startTime = '';
 			var endTime = '';
 			var endWidth = Math.ceil(finalWidth / 100) * 100;
@@ -744,6 +746,7 @@
 		}
 		
 	$('#cancelBookingBut').on('click',function(){
+		$('#text').val('');
 		drawresource();
 		$('#kt_modal_0').modal('hide');
 	});
@@ -769,7 +772,9 @@
 				console.log(data);
 				if(!data){
 					alert('자원 추가 실패 다시 확인해주세요');
+					$('#resourceName').val('');
 				}else{
+					$('#resourceName').val('');
 					drawresource();
 					$('#kt_modal_1').modal('hide');
 				}
@@ -781,6 +786,7 @@
 	}
 	
 	$('#delResourceModal').on('click',function(){
+		
 		resourceInfo();
 	});
 	
@@ -833,6 +839,21 @@
 	function closeModal() {
 		drawresource();
     }
+	
+	const scheduler = document.getElementById('scroll-container');
+
+	scheduler.addEventListener('mousemove', (e) => {
+	  const mouseX = e.clientX;
+	  const schedulerRect = scheduler.getBoundingClientRect();
+
+	  // 마우스가 스케줄러 내에 있을 때만 스크롤 이동
+	  if (mouseX >= schedulerRect.left && mouseX <= schedulerRect.right) {
+	    const schedulerWidth = scheduler.offsetWidth;
+	    const scrollAmount = 0.7 *(mouseX - schedulerRect.left) / schedulerWidth;
+
+	    scheduler.scrollLeft = scheduler.scrollWidth * scrollAmount;
+	  }
+	});
 </script>
 		
 
