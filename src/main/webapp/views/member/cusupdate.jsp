@@ -105,7 +105,7 @@
 											<!--end::Label-->
 											<!--begin::Col-->
 											<div class="col-lg-8 fv-row">
-												<input type="text" name="number" class="form-control form-control-lg form-control-solid"  value="${info.contact_num}" />
+												<input type="text" name="number" class="form-control form-control-lg form-control-solid"  value="${info.contact_num}" maxlength="13"/>
 											</div>
 											<!--end::Col-->
 										</div>
@@ -290,7 +290,10 @@
 	</body>
 	<!--end::Body-->
 	<script>
+	$(function(){
 		
+		headerOnReady();
+	})
 
 	function findlocation() {
 		new daum.Postcode({

@@ -336,6 +336,13 @@
 	</body>
 	<!--end::Body-->
 	<script>
+	
+$(function(){
+		
+		headerOnReady();
+	})
+
+
 		
 function check(){
 		if(myform.businessNum.value.length == 0){ // myform.id.value == "" 이것도 가능

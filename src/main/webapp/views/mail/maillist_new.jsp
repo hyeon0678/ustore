@@ -390,8 +390,6 @@
 					}
 			      },
 			   );
-			   treeDbClick();
-			   participantClick();
 			   
 			}
 			
@@ -403,29 +401,31 @@
 			
 			
 			// 참여자 리스트에서 클릭한 사람 삭제
-			function participantClick() {
+			
 			   $('div.participaint_emp').on('click', function() {
 			      $(this).remove();
 			      let removeId = $(this).children('a').html();
 			      let index = findEmp(removeId);
 			      makeRoomParticipantList.splice(index);
 			   });
-			}
+			
 			
 			// js트리를 더블클릭했을 때 일어나는 이벤트 함수
-			function treeDbClick() {
+			//function treeDbClick() {}
 				
-				var selectedNode = $('#make_room_jstree').jstree(true).get_selected(true)[0];
-				
-				//더블클릭에 대한 함수 안에 아래와 같이 넣기
-				if(selectedNode.types != 'department'){
-				               // 직원 수신자란에 추가하는 코드  
+				//var nodede = $('#make_room_jstree').jstree(true).get_selected(true)[0];
 				
 			   $('#make_room_jstree').bind(
 			         "dblclick.jstree",
 			         function(e, data) {
 			            var selectedNode = e.target;
+			            console.log(selectedNode);
+			            
 			
+					//더블클릭에 대한 함수 안에 아래와 같이 넣기
+					if(selectedNode.type != 'department'){
+					               // 직원 수신자란에 추가하는 코드  
+					
 			            let id = e.target.id;
 			            let index = id.indexOf('_')
 			            console.log(id)
@@ -447,11 +447,12 @@
 			               console.log("직원 추가 : "+id);
 			               participantClick();
 			            }
+			            }else{
+			               alert('부서는 추가할 수 없습니다.');
+			            }
+			            
 			         });
-	            }else{
-	               alert('부서는 추가할 수 없습니다.');
-	            }
-			}
+			
 			
 			// 채팅방 참여자 리스트에 클릭한 사람이 있는지 확인
 			function findEmp(empIdx) {

@@ -478,6 +478,44 @@
 										data-bs-target="#kt_modal_3">
 										재연장
 									</button>
+										<div class="modal fade" tabindex="-1" id="kt_modal_3">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">													
+													<!--begin::Close-->
+													<div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+														data-bs-dismiss="modal" aria-label="Close" style="float: right;">
+														<i class="ki-duotone ki-cross fs-1"><span
+																class="path1"></span><span class="path2"></span></i>
+													</div>
+													<!--end::Close-->
+												</div>
+												<div class="">
+													<div class="content_tree"
+														style="float: left; width: 280px; height: 300px; overflow-y: auto;">
+														<!-- 조직도 그리기 -->
+														<!-- <span>여기에 조직도를 그려주세요</span> -->
+														<!--begin::Col 드롭박스 >> 회원 상태-->
+														<div class="col-lg-8 fv-row" style="width: 150px; height: 30px; display: flex; margin: 10px;">
+															<select id="dategrade" class="form-select " style="padding-top: 0px; padding-bottom: 0px; background-color: white;"> 
+																<option value="80">스탠다드</option>																	
+																<option value="81">프리미엄</option>
+															</select>
+														</div>
+														<!--end::Col-->
+													</div>
+													<div class="content_tree">
+														
+														</div>
+													</div>
+	
+													<div class="modal-footer">
+														<button type="button" class="btn btn-primary"
+															data-bs-dismiss="modal" onclick="newdate()">변경</button>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								
 								<!--end::Actions-->
@@ -543,6 +581,11 @@ var memberidx= ${info.member_idx};
 var gradeidx = $('#membergrade').val();
 var weekbutton = false;
 
+
+$(function(){
+	
+	headerOnReady();
+})
 
 
 
@@ -813,9 +856,9 @@ function datepoint(){
 				}
 					content +='</table>';
 					content +='<p style="float: right; margin-top: 10px">결제수단 : 카카오페이(4404)</p>';
-					content +='<p style="float: right; margin-top: 10px">포인트 사용 : '+viewNum(obj.map.used_points)+'원</p>';
-					content +='<p style="float: right; margin-top: 10px">포인트 적립 : '+viewNum(obj.map.earned_points)+'원 / </p>';
-					content +='<p style="float: right; margin-top: 10px">결제 후 남은 포인트 : '+viewNum(obj.map.remain_points)+'원</p>';
+					content +='<p style="float: right; margin-top: 10px">포인트 사용 : '+viewNum(obj.map.used_points)+'원  </p>';
+					content +='<p style="float: right; margin-top: 10px">포인트 적립 : '+viewNum(obj.map.earned_points)+'원  </p>';
+					content +='<p style="float: right; margin-top: 10px">결제 후 남은 포인트 : '+viewNum((obj.map.remain_points+obj.map.earned_points))+'원</p>';
 					content +='<p style="float: right; margin-top: 10px">결제일시 : '+obj.map.payment_date+'</p>';
 					console.log("영수증 호출 뿌려주기 진행끝");
 			     $('#cartlist').append(content);

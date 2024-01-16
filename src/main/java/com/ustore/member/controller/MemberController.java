@@ -486,9 +486,10 @@ public class MemberController {
 		
 		String msg = service.newdate(idx,gradeidx);
 		
-		ModelAndView mav = new ModelAndView("redirect:/customer/detail?idx="+idx);
+		ModelAndView mav = new ModelAndView("redirect:/customer/detail");
 		//logger.info("info : "+map.toString());
 		//mav.addObject("msg",msg);
+		mav.addObject("idx",idx);
 		
 		return mav;
 	}
