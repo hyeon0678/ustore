@@ -624,13 +624,11 @@
 
         // 뒤로가기 버튼 클릭 시의 동작
         $('#btnGoBack').on('click', function () {
-        	if (confirm('리스트 페이지로 이동하시겠습니까?')) {
-                // 사용자가 Yes를 클릭한 경우 /approvalReq 페이지로 이동
-                window.location.href = '/approval/approvalreq';
-            } else {
-                // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
-                console.log('뒤로가기 버튼 클릭 - 취소');
-            }            
+        	confirmCancelModal('결재요청함 목록으로 가시겠습니까?', function(result){
+        		if (result.isConfirmed) {
+                    location.href = '/approval/approvalreq'; 
+                }
+        	});           
         });
         
         $('#kt_modal_1').on('shown.bs.modal', function(){
@@ -705,64 +703,64 @@
 	});
 	
 	function signApprDoc(){
-		if(confirm("결재하시겠습니까?")){	
-			
-			var ApprovalDto={
-				commonIdx : common_idx,	
-				apprIdx : apprIdx,
-				apprTypeIdx : apprTypeIdx,
-				approvalLines : approvalLines
-			}			
-			
-			$.ajax({
-		        type: 'POST',
-		        url: '/signapprdoc',
-		        data: JSON.stringify(ApprovalDto),
-		        contentType:'application/json; charset=utf-8',		 
-		        success: function (data) {
-		            console.log('결재 처리 성공');
-		            alert('결재하였습니다.');
-		            location.href = '/approval/approvalreq';
-		        },
-		        error: function (xhr, textStatus, errorThrown) {
-	                console.error('결재 처리 실패', textStatus);
-	                console.log('에러 상태:', xhr.status);
-	                console.log('에러 내용:', xhr.responseText);
-		        }
-		    });			
-		}else {
-            console.log('뒤로가기 버튼 클릭 - 취소');
-        }  
+		confirmCancelModal('문서를 결재 처리 하시겠습니까?', function(result){
+    		if (result.isConfirmed) {
+				var ApprovalDto={
+					commonIdx : common_idx,	
+					apprIdx : apprIdx,
+					apprTypeIdx : apprTypeIdx,
+					approvalLines : approvalLines
+				}			
+				
+				$.ajax({
+			        type: 'POST',
+			        url: '/signapprdoc',
+			        data: JSON.stringify(ApprovalDto),
+			        contentType:'application/json; charset=utf-8',		 
+			        success: function (data) {
+			        	confirmModal('결재 처리 되었습니다.', function () {
+			                console.log('결재 처리 되었습니다.');
+			                location.href = '/approval/approvalreq';
+			            });
+			        },
+			        error: function (xhr, textStatus, errorThrown) {
+		                console.error('결재 처리 실패', textStatus);
+		                console.log('에러 상태:', xhr.status);
+		                console.log('에러 내용:', xhr.responseText);
+			        }
+			    });			
+    			
+    		}		
+		});
 	}
 	
 	
 	function rejectAppr(){
-		if(confirm("반려하시겠습니까?")){
-			
-			console.log(common_idx);
-			var comment = $('#comment').val();
-			console.log(comment);
-			
-			$.ajax({
-		        type: 'POST',
-		        url: '/rejectapprdoc',
-		        data: { apprIdx:apprIdx, comment:comment, common_idx:common_idx},
-		        success: function (data) {
-		            console.log('반려 처리 성공');
-		            alert('반려하였습니다.');
-		            location.href = '/approval/approvalreq';
-		            
-		        },
-		        error: function (xhr, textStatus, errorThrown) {
-	                console.error('결재 처리 실패', textStatus);
-	                console.log('에러 상태:', xhr.status);
-	                console.log('에러 내용:', xhr.responseText);
-		        }
-		    });
-		}else {
-            // 사용자가 No 또는 취소를 클릭한 경우 아무 동작도 하지 않음
-            console.log('뒤로가기 버튼 클릭 - 취소');
-        }  
+		confirmCancelModal('문서를 반려 처리 하시겠습니까?', function(result){
+    		if (result.isConfirmed) {
+    			
+				console.log(common_idx);
+				var comment = $('#comment').val();
+				console.log(comment);
+				
+				$.ajax({
+			        type: 'POST',
+			        url: '/rejectapprdoc',
+			        data: { apprIdx:apprIdx, comment:comment, common_idx:common_idx},
+			        success: function (data) {
+			        	confirmModal('반려 처리 되었습니다.', function () {
+			                console.log('반려 처리 되었습니다.');
+			                location.href = '/approval/approvalreq';
+			            });
+			        },
+			        error: function (xhr, textStatus, errorThrown) {
+		                console.error('반려 처리 실패', textStatus);
+		                console.log('에러 상태:', xhr.status);
+		                console.log('에러 내용:', xhr.responseText);
+			        }
+			    });
+    		}			
+		});
 	}
 
 	</script>

@@ -163,6 +163,7 @@ public class ApprovalController {
     // 대금지급결의서 발주번호 검색(modal) -> 특정 일자의 발주번호 리스트 가져오기
     @GetMapping(value="/getorderlist")
     public ResponseEntity<List<OrderDto>> getOrderNumList(@RequestParam String orderDate) {
+    	logger.info("선택날짜 : "+orderDate);
     	List<OrderDto> orderNumList = service.getOrderNumList(orderDate);    	
     	return new ResponseEntity<>(orderNumList, HttpStatus.OK);
     }

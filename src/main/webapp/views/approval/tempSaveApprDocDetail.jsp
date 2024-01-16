@@ -538,7 +538,8 @@
 	            if(selectedNode.type!='department'){
 		            addRowToApprLineTable(approvalData);              	
 	            }else{
-	            	alert('부서는 추가할 수 없습니다.');
+	            	FalseModal('부서는 추가할 수 없습니다.');
+	            	console.log("부서는 추가할 수 없습니다.");
 	            }
 
 	            if(!isApprDuplicate(approvalData)){
@@ -546,7 +547,8 @@
 		            approvalLines.push(approvalData);
 		            console.log("approval array:", approvalLines);
 	            }else{
-	         		console.log("중복된 데이터가 들어갔습니다.")
+	         		console.log("중복된 데이터가 들어갔습니다.");
+	         		FalseModal('중복된 데이터가 들어갔습니다.');
 	         	}
 	        },
 	        error: function (error) {
@@ -678,7 +680,8 @@
 	            if(selectedNode.type!='department'){
 	            	addRowToReceiverTable(receiverData);           	
 	            }else{
-	            	alert('부서는 추가할 수 없습니다.');
+	            	FalseModal('부서는 추가할 수 없습니다.');
+	            	console.log("부서는 추가할 수 없습니다.");
 	            }	              
 
 	         	if(!isRecvDuplicate(receiverData)){
@@ -686,7 +689,8 @@
 		            receivers.push(receiverData);   
 		            console.log("Receivers array:", receivers);	         		
 	         	}else{
-	         		console.log("중복된 데이터가 들어갔습니다.")
+	         		console.log("중복된 데이터가 들어갔습니다.");
+	         		FalseModal("중복된 데이터가 들어갔습니다.");
 	         	}
 	        },
 	        error : function(e){
@@ -974,8 +978,8 @@
     	console.log(ApprovalDto);
 	    
     	if(!apprSubject){
-			console.log('제목이 비어있어 저장 할 수 없습니다.')
-			alert('제목이 비어있어 저장 할 수 없습니다.');
+			console.log('제목이 비어있어 저장 할 수 없습니다.');
+			FalseModal('제목이 비어있어 저장 할 수 없습니다.');
 			return;
 		}
     	
@@ -985,12 +989,14 @@
             contentType: 'application/json',
             data: JSON.stringify(ApprovalDto),
             success: function(response) {
-                console.log('임시저장이 완료되었습니다.');
-                alert('임시저장이 완료되었습니다.');
-                location.href='/approval/tempapproval';
+            	confirmModal('문서가 저장 되었습니다.', function () {
+	                console.log('문서가 저장 되었습니다.');
+	                location.href = '/approval/tempapproval';
+	           	});
             },            
             error: function(error) {
                 console.error('임시저장 중 오류가 발생했습니다.', error);
+                FalseModal('임시저장 중 오류가 발생했습니다.');
             }
         });
         
@@ -1051,8 +1057,8 @@
 		console.log(ApprovalDto);
 	    
 		if(approvalLines.length < 2  || !apprSubject || $('#inputReceiver').val()=== ''){
-			console.log('결재정보가 비어있거나 제목이 비어있어 상신할 수 없습니다.')
-			alert('결재정보가 비어있거나 제목이 비어있어 상신할 수 없습니다.');
+			console.log('결재정보가 비어있거나 제목이 비어있어 상신할 수 없습니다.');
+			FalseModal('결재정보가 비어있거나 제목이 비어있어 상신할 수 없습니다.');
 			return;
 		}
 		
@@ -1062,50 +1068,53 @@
 	        contentType: 'application/json',
 	        data: JSON.stringify(ApprovalDto),
 	        success: function (response) {
-	            console.log('문서가 결재상신 되었습니다.');
-	            alert('문서가 결재상신 되었습니다.');	 
-	            location.href='/approval/tempapproval';
+	        	confirmModal('문서가 결재상신 되었습니다.', function () {
+	                console.log('문서가 결재상신 되었습니다.');
+	                location.href = '/approval/tempapproval';
+	           	});
 	        },	        
 	        error: function (error) {
 	            console.error('결재상신 중 오류가 발생했습니다.');
-	            alert('결재상신 중 오류가 발생했습니다.');
+	            FalseModal('결재상신 중 오류가 발생했습니다.');
 	        }
 	    });
 	});
 	
 	
 	$('#btnDelTemp').on('click', function () {
-    	if (confirm('삭제하시겠습니까?')) {
-    		var common_idx = ${common_idx};
-    		$.ajax({
-                type: 'POST',
-                url: '/tempdocdel',
-                data:{apprIdx : apprIdx, common_idx : common_idx},
-                success: function (data) {
-                   console.log(data);
-                   console.log('삭제되었습니다.');
-                   alert('해당 문서가 삭제되었습니다.');
-                   window.location.href = '/approval/tempapproval';
-                },
-                error: function (error) {
-                    console.error('삭제 중 오류가 발생했습니다.');
-                }
-            });    		
+		
+		confirmCancelModal('문서를 삭제하시겠습니까?', function(result){
+    		if (result.isConfirmed) {
+	    		var common_idx = ${common_idx};
+	    		$.ajax({
+	                type: 'POST',
+	                url: '/tempdocdel',
+	                data:{apprIdx : apprIdx, common_idx : common_idx},
+	                success: function (data) {
+	                   console.log(data);
+	                   confirmModal('문서가 삭제 되었습니다.', function () {
+			                console.log('문서가 삭제 되었습니다.');
+			                location.href = '/approval/tempapproval';
+			           });
+	                },
+	                error: function (error) {
+	                    console.error('삭제 중 오류가 발생했습니다.');
+	                }
+	            });  
+    		}
             
-        } else {
-            console.log('뒤로가기 버튼 클릭 - 취소');
-        }            
+        });         
     });
 	
 		
 
     // 뒤로가기 버튼 클릭 시의 동작
     $('#btnGoBack').on('click', function () {
-    	if (confirm('저장하지 않고 뒤로 가시겠습니까?')) {
-            window.location.href = '/approval/tempapproval';
-        } else {
-            console.log('뒤로가기 버튼 클릭 - 취소');
-        }            
+    	confirmCancelModal('저장하지않고 뒤로 가시겠습니까?', function(result){
+    		if (result.isConfirmed) {
+                location.href = '/approval/tempapproval'; 
+            }
+    	});           
     });
 	
 	</script>

@@ -202,7 +202,7 @@
 		LEFT JOIN payment_resolution pr ON o.order_idx = pr.order_idx
 		WHERE o.order_date =#{orderDate} 
 			AND od.conf_status = 'Y' 
-			AND pr.appr_status not in (40, 41)
+			AND (pr.appr_status IS NULL OR pr.appr_status not in (40, 41))
 		ORDER BY o.order_date DESC
 	</select>
 	
@@ -394,6 +394,7 @@
 	
 	
 	<!-- 부서문서(결재완료문서) list가져오기 -->
+	<!-- 수신자로 로그인한 직원이 소속된 부서원이 있는 경우인 문서도 다 가지고 옴 / 상위 부서(매장관리팀)는 하위 부서 문서 리스트 처리 -->
 	<select id="getTeamApprList" resultType="ApprovalDto">
 		SELECT distinct bd.appr_idx, bd.appr_subject, bd.appr_status, bd.appr_type_idx, bd.emp_idx, bd.doc_id, DATE_FORMAT(al.appr_date, '%Y-%m-%d') as appr_date, d2.dept_name, drafter.emp_name
 		FROM business_draft bd
@@ -404,6 +405,7 @@
 		LEFT JOIN department d2 ON d2.dept_id = drafter.dept_id 
 		WHERE bd.appr_status = 41
 		  AND (drafter.dept_id = #{deptId}
+		  	   OR d2.parent_dept_id = #{deptId}
 		       OR drafter.emp_idx = #{emp_idx}
 		       OR r.emp_idx = #{emp_idx}
 		       OR receiver.dept_id = #{deptId})
@@ -417,6 +419,7 @@
 		LEFT JOIN department d3 ON d3.dept_id = drafter2.dept_id 
 		WHERE pr.appr_status = 41
 		  AND (drafter2.dept_id = #{deptId}
+		  	   OR d3.parent_dept_id = #{deptId}
 		       OR drafter2.emp_idx = #{emp_idx}
 		       OR r.emp_idx = #{emp_idx}
 		       OR receiver.dept_id = #{deptId})
@@ -430,11 +433,12 @@
 		LEFT JOIN department d4 ON d4.dept_id = drafter3.dept_id 
 		WHERE rv.appr_status = 41
 		  AND (drafter3.dept_id = #{deptId}
+		  	   OR d4.parent_dept_id = #{deptId}
 		       OR drafter3.emp_idx = #{emp_idx}
 		       OR r.emp_idx = #{emp_idx}
 		       OR receiver.dept_id = #{deptId})
 		GROUP BY appr_idx
-	    ORDER BY appr_date DESC, doc_id DESC
+	    ORDER BY doc_id DESC, appr_date DESC
 	</select>
 	
 	<!-- 점장이 로그인시 전체 결재완료 문서 가져오기 -->

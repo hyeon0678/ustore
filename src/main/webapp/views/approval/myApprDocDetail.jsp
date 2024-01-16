@@ -516,11 +516,11 @@
 
         // 뒤로가기 버튼 클릭 시의 동작
         $('#btnGoBack').on('click', function () {
-        	if (confirm('리스트 페이지로 이동하시겠습니까?')) {
-                window.location.href = '/approval/myapproval';
-            } else {
-                console.log('뒤로가기 버튼 클릭 - 취소');
-            }                    
+        	confirmCancelModal('내결재문서 목록으로 가시겠습니까?', function(result){
+        		if (result.isConfirmed) {
+                    location.href = '/approval/myapproval'; 
+                }
+        	});                     
         });
         
         $('#kt_modal_1').on('shown.bs.modal', function(){
@@ -595,28 +595,29 @@
 	});
 	
 	function changeStatusTemp(apprIdx){
-		if(confirm("회수하시겠습니까?")){
+		confirmCancelModal('문서를 회수처리 하시겠습니까?', function(result){
+    		if (result.isConfirmed) {
+    			
+				console.log(apprIdx);
+				var common_idx=${common_idx};
+				$.ajax({
+			        url: '/retrieveappr',
+			        method: 'POST',
+			        data: { apprIdx: apprIdx, common_idx : common_idx },
+			        success: function (response) {
+			        	confirmModal('결재문서가 회수 처리 되었습니다.', function () {
+			                console.log('결재문서가 회수 처리되었습니다.');
+			                location.href = '/approval/myapproval';
+			            });
+			        },
+			        error: function (error) {
+			            console.error('결재문서 회수 중 오류가 발생했습니다.', error);
+			            FalseModal('결재문서 회수 중 오류가 발생했습니다.');
+			        }
+			    });		
+    		}
 			
-			console.log(apprIdx);
-			var common_idx=${common_idx};
-			$.ajax({
-		        url: '/retrieveappr',
-		        method: 'POST',
-		        data: { apprIdx: apprIdx, common_idx : common_idx },
-		        success: function (response) {
-		            console.log('결재문서가 회수 처리되었습니다.');
-		            alert('결재문서가 회수 처리 되었습니다.');
-		            location.href = '/approval/myapproval';
-		        },
-		        error: function (error) {
-		            console.error('결재문서 회수 중 오류가 발생했습니다.', error);
-		        }
-		    });		
-			
-		}else{
-            console.log('뒤로가기 버튼 클릭 - 취소');
-		}
-		
+		});
 	}
 	
 	if(apprStatus==41){
