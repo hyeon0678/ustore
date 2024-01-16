@@ -925,8 +925,9 @@ function datepoint(){
 	        dataType: 'json',
 	        success: function (data) {
 				console.log(data);
-				if(data){					
-				productlistcall();
+				if(data){	
+				alert('환불이 되었습니다.');
+				basicproduct();
 				}else{
 					alert('환불이 실패했습니다.');
 				}
