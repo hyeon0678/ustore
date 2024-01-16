@@ -286,8 +286,8 @@
    	let alarmMouseover = false;
     
     function headerOnReady(){
-    	//localhost  3.36.74.122
-   		socket = new SockJS('http://localhost:80/ws');
+    	//localhost  15.164.213.223 
+   		socket = new SockJS('http://15.164.213.223/ws');
    		console.log('user : '+user);
 	    stompClient = Stomp.over(socket);
 	    stompClient.connect({}, function(frame){
@@ -382,14 +382,14 @@
 		$('#alarm-box').empty();
 		for(let list of alarmList){
 			content+='<div class="d-flex flex-stack py-4 alarm-elem-div">'
-			content+='<div class="d-flex align-items-center"><div class="mb-0 me-2">'
-			content+='<a href="#" class="fs-6 text-gray-800 text-hover-primary fw-bold alarm-url">'list.url
-			content+='<p style="display:none;">'+list.url+'</p>'
+			content+='<div class="d-flex align-items-center a-tag"><div class="mb-0 me-2">'
+			content+='<a href="#" class="fs-6 text-gray-800 text-hover-primary fw-bold alarm-url">'
 			content+=list.alarmSubject
-			content+='</a><div class="text-gray-500 fs-7">'
+			content+='</a>'
+			content+='<input style="display:none;" name="'+list.url+'"/><div class="text-gray-500 fs-7">'
 			content+=list.alarmContent
 			content+='</div></div></div><div class="mb-0 me-2">'
-			content+='<span style="float: right; margin-bottom : 5px;"class="read-alarm badge badge-light fs-8 nav-item">X</span><p style="display:none">'
+			content+='<span style="float: right; margin-bottom : 5px;"class="read-alarm badge badge-light fs-8 nav-item">X</span><p style="display:none;" >'
 			content+=list.alarmIdx
 			content+='</p><br><span class="badge badge-light fs-8">'
 			let date = getCurrentTime(list.alarmDatetime);
@@ -424,11 +424,15 @@
 	function clickAlarmUrl(){
 		$('a.alarm-url').on('click', function(event){
 			event.preventDefault();          
-			let deleteElem = $(this).next().html();
-			let url = $(this).next().html();
+			let url = $(this).next().attr("name")
+			//상위 -> 옆 -> 하위의 p테그
+			let $idx = $(this).closest('div.a-tag')
+			$idx = $idx.next();
+			$idx = $idx.children('p');
+			console.log($idx.html())
 			console.log(url);
-			readAlarmCall(deleteElem)
-			location.href = txt
+			readAlarmCall($idx.html())
+			location.href = url
 		})
 	}
 	
