@@ -362,13 +362,27 @@
 			   $('#make_room_jstree').jstree('destroy');
 			   $('#make_room_jstree').jstree({
 			      "core" : {
-			         "data" : treeData
+			         "data" : treeData,
+			         "themes" : {
+			               "responsive": true
+			            }
+
 			      },"Disable" : {
 			            "label" : "Disable",
 			            "action" : function(obj) {
 			               $("#make_room_jstree").jstree("disable_node", username);
 			            }
 			         },
+			         "types" : {
+			              "department": {
+			                   "icon": "fa fa-building" // 부서 아이콘
+			              },
+			              "employee": {
+			                "icon": "fa fa-user", // 직원 아이콘
+			                "selectable": true // 선택 가능하도록 설정
+			              }
+			         },
+
 			         "plugins": ["types","search"]
 						,
 					"search":{
@@ -400,6 +414,13 @@
 			
 			// js트리를 더블클릭했을 때 일어나는 이벤트 함수
 			function treeDbClick() {
+				
+				var selectedNode = $('#make_room_jstree').jstree(true).get_selected(true)[0];
+				
+				//더블클릭에 대한 함수 안에 아래와 같이 넣기
+				if(selectedNode.types != 'department'){
+				               // 직원 수신자란에 추가하는 코드  
+				
 			   $('#make_room_jstree').bind(
 			         "dblclick.jstree",
 			         function(e, data) {
@@ -427,6 +448,9 @@
 			               participantClick();
 			            }
 			         });
+	            }else{
+	               alert('부서는 추가할 수 없습니다.');
+	            }
 			}
 			
 			// 채팅방 참여자 리스트에 클릭한 사람이 있는지 확인
@@ -459,6 +483,7 @@
 
 <script>
 
+		
 
 
 
