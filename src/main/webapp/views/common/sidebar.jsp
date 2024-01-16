@@ -398,7 +398,7 @@
 								</sec:authorize>
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
-								<sec:authorize access="hasAnyRole('ROLE_고객지원팀','ROLE_점장')">
+								<sec:authorize access="hasAnyRole('ROLE_고객관리팀','ROLE_점장')">
 								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
