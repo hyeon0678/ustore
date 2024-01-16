@@ -133,8 +133,8 @@
 								</div>
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
-								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-									<!--begin:Menu link-->
+								
+								<!-- <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 									<span class="menu-link">
 										<span class="menu-icon">
 											<img src="resource/assets/media/icon/side_mail.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"/>
@@ -142,48 +142,34 @@
 										<span class="menu-title">메일</span>
 										<span class="menu-arrow"></span>
 									</span>
-									<!--end:Menu link-->
-									<!--begin:Menu sub-->
 									<div class="menu-sub menu-sub-accordion">
-										<!--begin:Menu item-->
 										<div class="menu-item">
-											<!--begin:Menu link-->
 											<a class="menu-link" href="/mail/home">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
 												<span class="menu-title">받은메일함</span>
 											</a>
-											<!--end:Menu link-->
 										</div>
-										<!--end:Menu item-->	
-										<!--begin:Menu item-->
 										<div class="menu-item">
-											<!--begin:Menu link-->
 											<a class="menu-link" href="/mail/out">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
 												<span class="menu-title">보낸메일함</span>
 											</a>
-											<!--end:Menu link-->
 										</div>
-										<!--end:Menu item-->	
-										<!--begin:Menu item-->
 										<div class="menu-item">
-											<!--begin:Menu link-->
 											<a class="menu-link" href="/mail/del">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
 												<span class="menu-title">휴지통</span>
 											</a>
-											<!--end:Menu link-->
-										</div>
-										<!--end:Menu item-->	
+										</div>	
 									</div>
-									<!--end:Menu sub-->
-								</div>
+								</div> -->
+								
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
 								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
@@ -381,7 +367,7 @@
 								</sec:authorize>
 								<!--end:Menu item-->
 								<!--begin:Menu item-->
-								<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
+								<sec:authorize access="hasAnyRole('ROLE_회계팀', 'ROLE_점장')">
 								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 									<!--begin:Menu link-->
 									<span class="menu-link">
