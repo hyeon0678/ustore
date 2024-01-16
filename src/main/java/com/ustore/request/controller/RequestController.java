@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ustore.request.service.RequestService;
 
 @Controller
-@RequestMapping("/request")
+@RequestMapping("/pos/request")
 public class RequestController {
 	@Autowired RequestService requestService;
 	Logger logger = LoggerFactory.getLogger(getClass());

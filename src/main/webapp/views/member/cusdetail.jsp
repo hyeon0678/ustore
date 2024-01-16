@@ -918,7 +918,7 @@ function datepoint(){
 	function refund(iamportIdx){
 		$.ajax({
 	        type: 'get',
-	        url: 'request/refund.ajax',
+	        url: 'pos/request/refund.ajax',
 	        data: {
 	            'iamportIdx': iamportIdx
 	        },
