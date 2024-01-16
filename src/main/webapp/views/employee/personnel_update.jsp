@@ -335,7 +335,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" name ="leave_incdec" id="leave_incdec" value="${list.get(0).leaveIncdec}" />
+																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" name ="leave_incdec" id="leave_incdec" value="${list.get(0).leaveIncdec}" oninput="validateNumericInput(this)"/>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -358,7 +358,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" name="emp_ext_no" id="emp_ext_no" value="${list.get(0).empExtNo}" />
+																		<input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" name="emp_ext_no" id="emp_ext_no" value="${list.get(0).empExtNo}" oninput="validateNumericInput(this)"/>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -384,7 +384,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"  name="emp_emergency_phone" id="emp_emergency_phone" value="${list.get(0).empEmergencyPhone}" />
+																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"  name="emp_emergency_phone" id="emp_emergency_phone" value="${list.get(0).empEmergencyPhone}" oninput=" validateNumericInputNumber(this)"/>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -406,7 +406,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="row">
 																	<!--begin::Col-->
 																	<div class="col-lg-6 fv-row">
-																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" name ="emp_phone" id="emp_phone" value="${list.get(0).empPhone}" />
+																		<input type="text"  class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" name ="emp_phone" id="emp_phone" value="${list.get(0).empPhone}" oninput=" validateNumericInputNumber(this)"/>
 																	</div>
 																	<!--end::Col-->
 																</div>
@@ -504,7 +504,6 @@ License: For each use you must have a valid license purchased only from above li
 																	<option value="고등학교 졸업" ${list.get(0).education eq '고등학교 졸업' ? 'selected' : ''}>고등학교 졸업</option>
 																	<option value="대학교 졸업" ${list.get(0).education eq '대학교 졸업' ? 'selected' : ''}>대학교 졸업</option>
 																	<option value="직업전문학원·학교 및 기타학력 졸업" ${list.get(0).education eq '직업전문학원·학교 및 기타학력 졸업' ? 'selected' : ''}>직업전문학원·학교 및 기타학력 졸업</option>
-																	<option value="" ${list.get(0).education eq null ? 'selected' : ''}></option>
 																	<!-- 추가적인 옵션들을 필요에 따라 추가할 수 있습니다 -->
 																</select>
 																<!--begin::Row-->
@@ -637,7 +636,7 @@ License: For each use you must have a valid license purchased only from above li
 			
 		       $("#delete").on("click",function(e){
 					e.preventDefault();
-					var emp_idx = $("#emp_idx").text();
+					var emp_idx = $("#emp_idx").val();
 					var url = "employee/delete?emp_idx="+emp_idx;
 					window.location.href = url;
 				});
@@ -653,6 +652,15 @@ License: For each use you must have a valid license purchased only from above li
 	    });
 
 
+		function validateNumericInput(inputElement) {
+		    inputElement.value = inputElement.value.replace(/\D/g, '');
+		}
+		function validateNumericInputNumber(inputElement) {
+		    inputElement.value = inputElement.value.replace(/\D/g, '');
 
+		    if (inputElement.value.length > 11) {
+		        inputElement.value = inputElement.value.slice(0, 11);
+		    }
+		}
 	</script>
 </html>

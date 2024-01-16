@@ -166,8 +166,10 @@ License: For each use you must have a valid license purchased only from above li
 										<!--begin::Table Widget 5-->
 										<div class="card  h-xl-100">
 											<div class="card-header align-items-center border-0 mt-5">
-												<h3 class="card-title align-items-start flex-column">
-													<span class="fw-bolder text-gray-900 fs-2 mb-5">상품</span>
+												<h3 class="card-title align-items-start" >
+													<span class="fw-bolder text-gray-900 fs-2 mb-5" style="white-space:nowrap;">상품</span>
+													
+													<a href="/pos/member" class="btn btn-primary" style="white-space:nowrap; margin-left: 580%;">돌아가기</a>
 													
 												</h3>
 												</div>
@@ -585,7 +587,7 @@ License: For each use you must have a valid license purchased only from above li
         var productId = $(this).data('product-id');
         console.log(productId);
         console.log(${memberIdx});
-        posCart(${memberIdx}, productId, 1);
+        posCart(${memberIdx}, productId,1);
     });
 	
 	function posCart(memberIdx,productId,quantity){
@@ -595,7 +597,7 @@ License: For each use you must have a valid license purchased only from above li
 	        data: {
 	            'memberId': memberIdx,
 	            'productId':productId,
-	            'quantity':replace(quantity)
+	            'quantity':quantity
 	        },
 	        dataType: 'json',
 	        success: function (data) {
@@ -769,7 +771,7 @@ License: For each use you must have a valid license purchased only from above li
 		    pay_method: "card",    //  결제 메서드  -- 필수 입력값
 		    merchant_uid : memberId+"_"+Date.now(), // 결제 번호 --- 필수 입력값
 		    name : 'UStore',  // 결제 이름 -- 필수 입력값
-		    amount : replace($('#endSellingSum').text()),   // 가격 -- 필수 입력값    -- replace($('#endSellingSum').text())
+		    amount :replace($('#endSellingSum').text()) ,   // 가격 -- 필수 입력값    -- replace($('#endSellingSum').text())
 		    buyer_tel: contactNum,
 		  }, function (rsp) { // callback
 			  console.log(rsp);
@@ -793,6 +795,7 @@ License: For each use you must have a valid license purchased only from above li
 				        success: function (data) {
 							console.log(data);
 							if(data){
+								alert('결제가 완료되었습니다.');
 								window.location.href = "/pos/member";
 							}else{
 								alert('결제 오류 발생 관리자에게 문의해주세요.')

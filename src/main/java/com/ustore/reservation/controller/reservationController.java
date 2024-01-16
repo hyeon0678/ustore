@@ -27,7 +27,7 @@ public class reservationController {
 	public ModelAndView room(Principal principal) {
 		ModelAndView mav = new ModelAndView("reservation/reservation_room");
 		mav.addObject("resourceType","회의실");
-		mav.addObject("loginInfo", principal);
+		mav.addObject("loginInfo", principal.getName());
 		return mav;
 	}
 	
@@ -35,7 +35,7 @@ public class reservationController {
 	public ModelAndView equipnent(Principal principal) {
 		ModelAndView mav = new ModelAndView("reservation/reservation_equipment"); 
 		mav.addObject("resourceType", "물류 장비"); 
-		mav.addObject("loginInfo", principal);
+		mav.addObject("loginInfo", principal.getName());
 		return mav;
 	}
 	

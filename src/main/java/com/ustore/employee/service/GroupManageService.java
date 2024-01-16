@@ -118,8 +118,9 @@ public class GroupManageService {
 		return success;
 	}
 
-	public void delete(String emp_idx, Principal principal) {
-		groupManageDao.delete(emp_idx,principal);
+	public void delete(String emp_idx, String string) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		groupManageDao.delete(emp_idx,string,dateFormat.format(dateCalc.dateNow())); 
 		
 	}
 

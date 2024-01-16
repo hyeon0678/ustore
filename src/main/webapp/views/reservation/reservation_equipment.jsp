@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 	<!--begin::Head-->
@@ -84,11 +85,12 @@
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
 								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">							
 								</div>
-
+								<sec:authorize access="hasAnyRole('ROLE_인사팀','ROLE_점장')">								
 								<div class="card-toolbar">
 									<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">자원 추가하기</button>
 									<button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_2" id="delResourceModal">자원 삭제하기</button>
 								</div>
+								</sec:authorize>
 
 							</div>
 						</div>
@@ -296,7 +298,7 @@
 
 											<div class="modal-footer">
 												<button type="button" class="btn btn-primary submit_btn" id="addReservation">추가</button>
-												<button type="button" class="btn btn-light">취소</button>
+												<button type="button" class="btn btn-light" id="addReservationCancel">취소</button>
 											</div>
 										</div>
 									</div>
@@ -354,7 +356,7 @@
 
 											<div class="modal-footer">
 												<button type="button" class="btn btn-primary submit_btn" id="delResource">삭제</button>
-												<button type="button" class="btn btn-light">취소</button>
+												<button type="button" class="btn btn-light" id="delResourceCancel">취소</button>
 											</div>
 										</div>
 									</div>
@@ -379,6 +381,16 @@
 		
 
 		<script>
+		$(document).on('click', '#delResourceCancel', function () {
+		    $('#kt_modal_2').modal('hide');
+		});
+		$(document).on('click', '#addReservationCancel', function () {
+		    $('#kt_modal_1').modal('hide');
+		});
+		
+		
+		
+		
 	    console.log('${resourceType}');
 		// 오늘의 날짜를 얻기 위해 JavaScript Date 객체를 사용
 	    var today = new Date();
@@ -625,38 +637,7 @@
 		});	
 		
 		
-		function qq(startTop,startWidth,finalWidth){
-			var startTime = '';
-			var endTime = '';
-			var endWidth = Math.ceil(finalWidth / 100) * 100;
-			
-			
-			
-			
-			if((startWidth/100).toString().length < 2){
-				startTime = '0'+startWidth/100+':'+'00';
-			}else{
-				startTime = startWidth/100+':'+'00';
-			}
-			if((startWidth/100+endWidth/100).toString().length < 2){
-				endTime = '0'+(startWidth/100+endWidth/100)+':'+'00';
-			}else{
-				endTime = (startWidth/100+endWidth/100)+':'+'00';
-			}
-			
-			if(replaceNum(endTime)>=2400){
-				var a = (replaceNum(endTime)-((replaceNum(endTime)-replaceNum(startTime))*2)+100);
-				console.log(a);
-				endTime = (parseInt(replaceNum(startTime),0)+100).toString().replace(/(..)(..)/, "$1:$2");
-				startTime = a.toString().replace(/(..)(..)/, "$1:$2");
-				console.log(startTime);
-			}
-			
-			
-			
-			if($('.date').text()>= formattedDate && formattedHour < startTime){
-				
-
+		function reserget(startTop,startWidth,finalWidth,startTime,endTime){
 			console.log('startTop',startTop);
 			console.log('startWidth',startWidth);
 			
@@ -711,6 +692,51 @@
         	        }
         	    });
             });
+		}
+		
+		
+		
+		function qq(startTop,startWidth,finalWidth){
+			var startTime = '';
+			var endTime = '';
+			var endWidth = Math.ceil(finalWidth / 100) * 100;
+			
+			
+			
+			
+			if((startWidth/100).toString().length < 2){
+				startTime = '0'+startWidth/100+':'+'00';
+			}else{
+				startTime = startWidth/100+':'+'00';
+			}
+			if((startWidth/100+endWidth/100).toString().length < 2){
+				endTime = '0'+(startWidth/100+endWidth/100)+':'+'00';
+			}else{
+				endTime = (startWidth/100+endWidth/100)+':'+'00';
+			}
+			
+			if(replaceNum(endTime)>2400){
+				var a = (replaceNum(endTime)-((replaceNum(endTime)-replaceNum(startTime))*2)+100);
+				console.log(a);
+				endTime = (parseInt(replaceNum(startTime),0)+100).toString().replace(/(..)(..)/, "$1:$2");
+				startTime = a.toString().replace(/(..)(..)/, "$1:$2");
+				console.log(startTime);
+			}
+			
+			
+			
+			if($('.date').text()>= formattedDate){
+				if(dateInputValue == formattedDate){
+					if(formattedHour > startTime){
+						alert('날짜와 시간을 확인해 주세요.');
+						drawresource();
+					}else{
+						reserget(startTop,startWidth,finalWidth,startTime,endTime);
+					}
+				}else{
+					reserget(startTop,startWidth,finalWidth,startTime,endTime);
+				}
+			
 		}else{
 			alert('날짜와 시간을 확인해 주세요.');
 			drawresource();
