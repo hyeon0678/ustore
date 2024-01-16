@@ -114,6 +114,16 @@ h1 {
 				<!--begin::Content-->
 				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
 				<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">재고 상세보기</h1>
+				<div class="text-end">
+    <a href="/stock/stockmanagement/list">
+        <button type="button" class="btn btn-light-primary me-3" id="btnGoBack" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+            <i class="ki-duotone ki-filter fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>뒤로가기
+        </button>
+    </a>
+</div>
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--사이드바 넣는곳  -->
 					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
@@ -613,6 +623,7 @@ function viewNum(Num) {
     return formattedNum;
 }
 </script>
+
 	<!--end::Custom Javascript-->
 	<!--end::Javascript-->
 	</sec:authorize>

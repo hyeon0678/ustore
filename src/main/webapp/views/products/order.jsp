@@ -151,8 +151,8 @@ button i.bi {
 												<span class="path1"></span> <span class="path2"></span>
 											</i> <input type="text"
 												data-kt-ecommerce-category-filter="search"
-												class="form-control form-control-solid w-250px ps-12"
-												placeholder="내용을 입력하세요" />
+												class="form-control form-control-solid w-300px ps-12"
+												placeholder="제품이름 또는 번호를 입력 해주세요." />
 												<button class="btn btn-primary">검색</button>
 										</div>
 										<!--end::Search-->
@@ -273,6 +273,7 @@ button i.bi {
 							<div class="modal fade" tabindex="-1" id="kt_modal_scrollable_2">
 								<div class="modal-dialog modal-dialog-scrollable modal-lg">
 									<div class="modal-content">
+								 
 										<div class="modal-header">
 											<h1>발주할 물품</h1>
 
@@ -316,6 +317,7 @@ button i.bi {
 															</select>
 														
 														</div>
+														<div id="selectedDate" style="margin-left: auto;"></div>
 														</div>
 														<table
 															class="table table-row-dashed table-row-gray-300 gy-7" id="orderModal">
@@ -423,7 +425,7 @@ button i.bi {
                 if (new Date(selectedDate) < new Date()) {
                     Swal.fire({
                         title: '확인',
-                        text: '오늘 날짜 이전 날짜에는 발주 할 수 없습니다.',
+                        text: '입고희망 날짜는 오늘 날짜 이후로 선택 해야 합니다.',
                         icon: 'info',
                         showCancelButton: false,
                         confirmButtonText: '확인',
@@ -644,6 +646,17 @@ if(msg != ""){
 //--------------------------------------------------------------------
 
 
+</script>
+<script>
+    $(document).ready(function() {
+        $('#kt_daterangepicker_3').change(function() {
+            var selectedDate = $(this).val();
+            // Moment.js를 사용하여 날짜 형식 변경
+            var formattedDate = moment(selectedDate, 'MM/DD/YYYY').format('YYYY-MM-DD');
+            // Display the formatted date in the div
+            $('#selectedDate').text('입고희망 날짜: ' + formattedDate);
+        });
+    });
 </script>
 </sec:authorize>
 </body>

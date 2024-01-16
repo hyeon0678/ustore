@@ -149,13 +149,19 @@ WHERE r.resource_del = 'N'
 
  <insert id="resourceAdd" parameterType="OrderDto">
 
-insert into resource_booking (emp_idx,resource_idx,booking_start_date,booking_end_date,booking_start_time,booking_end_time,booking_content,reg_by)
-values(#{empIdx},#{resourceIdx},#{expArrivalDate},DATE_ADD(#{expArrivalDate}, INTERVAL 1 DAY),CONCAT(HOUR(NOW()), ':', MINUTE(NOW()), ':', SECOND(NOW())), CASE
-        WHEN (HOUR(NOW()) + 3) > 24 THEN 
-            CONCAT(HOUR(NOW()) + 3 - 24, ':', MINUTE(NOW()), ':', SECOND(NOW()))
-        ELSE
-            CONCAT(HOUR(NOW()) + 3, ':', MINUTE(NOW()), ':', SECOND(NOW()))
-    END,'발주차량 예약test',#{empIdx})
- 
+ INSERT INTO resource_booking (emp_idx, resource_idx, booking_start_date, booking_end_date, booking_start_time, booking_end_time, booking_content, reg_by)
+VALUES (#{empIdx},#{resourceIdx},#{expArrivalDate},
+        CASE
+            WHEN (HOUR(NOW()) + 3) > 24 THEN DATE_ADD(#{expArrivalDate}, INTERVAL 1 DAY)
+            ELSE #{expArrivalDate}
+        END,
+        CONCAT(HOUR(NOW()), ':00:00'),
+        CASE
+            WHEN (HOUR(NOW()) + 3) > 24 THEN 
+                CONCAT(HOUR(NOW()) + 3 - 24, ':00:00')
+            ELSE
+                CONCAT(HOUR(NOW()) + 3, ':00:00')
+        END,
+        '발주 차량 예약',#{empIdx})
  </insert>
 </mapper>

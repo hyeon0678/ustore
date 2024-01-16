@@ -116,17 +116,17 @@
 												<span class="path1"></span> <span class="path2"></span>
 											</i> <input type="text"
 												data-kt-ecommerce-category-filter="search"
-												class="form-control form-control-solid w-250px ps-12"
-												placeholder="내용을 입력해주세요." />
+												class="form-control form-control-solid w-300px ps-12"
+												placeholder="날짜 또는 발주 번호를 입력 해주세요." />
 												<button class="btn btn-primary">검색</button>
 										</div>
 										<!--end::Search-->
 
 									</div>
-									<div class="mb-0">
+							<!-- 	<div class="mb-0">
 										<input class="form-control form-control-solid"
 											placeholder="날짜를 선택 해주세요" id="kt_daterangepicker_1" />
-									</div>
+								</div> -->	
 									<!--end::Card title-->
 									<!--begin::Card toolbar-->
 									<!--begin::Add product-->
