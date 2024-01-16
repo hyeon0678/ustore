@@ -438,6 +438,7 @@ License: For each use you must have a valid license purchased only from above li
 		let deptManagementStack = [];
 		
 		$(function(){
+			headerOnReady();
 			getTreeData();
 		})
 
@@ -526,6 +527,7 @@ License: For each use you must have a valid license purchased only from above li
 		            	$('#empImg').attr('src', 'resource/assets/media/icon/blank.svg');
 		            }
 		            
+		            	
 		            $(document).ready(function() {
 		            	$("#update").on("click", function() {
 		                var emp_idx = data.list[0].empIdx;
