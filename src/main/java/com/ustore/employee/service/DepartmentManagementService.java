@@ -58,6 +58,12 @@ public class DepartmentManagementService {
 
 	public int deleteDept(String name, int deptIdx) {
 		int row = dmDao.deleteDept(name, deptIdx);
+		List<Integer> list = dmDao.selectChildDeptList(deptIdx);
+		if(list != null || list.size() != 0) {
+			for(int dept : list) {
+				row += dmDao.deleteDept(name, dept);
+			}
+		}
 		return 0;
 	}
 

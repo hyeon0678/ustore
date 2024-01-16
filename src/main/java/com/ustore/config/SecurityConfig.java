@@ -53,6 +53,7 @@ public class SecurityConfig {
 		.antMatchers("/", "/main/**").permitAll()
 		.antMatchers("/resource/**").permitAll()
         .antMatchers("/ws/**").permitAll()
+        .antMatchers("/pos/**").permitAll()
         .antMatchers("/**").authenticated()
         .and()
 		.formLogin()	

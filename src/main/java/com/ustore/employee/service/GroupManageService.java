@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -44,6 +45,7 @@ public class GroupManageService {
 		logger.info("current year : "+enterYear);
 		
 		employee.setEmpPhone(employee.getEmpPhone().replace("-", ""));
+		employee.setEmpExtNo(employee.getEmpExtNo().replace("-", ""));
 		String newPw = encoder.encode(employee.getEmpPhone().substring(3));
 		logger.info(employee.getEmpPhone().substring(3));
 		employee.setEmpPw(newPw);
@@ -69,9 +71,6 @@ public class GroupManageService {
 		logger.info(empId);
 		int positionCode = PositionEnum.findDefindCode(employee.getPositionType());
 		employee.setPosition(positionCode);
-		
-		int departmentCode = DepartmentEnum.findDefindCode(employee.getDeptName());
-		employee.setDeptId(departmentCode);
 		
 		int row = groupManageDao.insertEmp(employee);
 		row += groupManageDao.insertEducation(employee);
