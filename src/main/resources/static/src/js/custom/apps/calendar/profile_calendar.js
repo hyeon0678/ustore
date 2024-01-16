@@ -129,7 +129,8 @@ var KTAppCalendar = function () {
     request.fail(function( jqXHR, textStatus ) {
         alert( "Request failed: " + textStatus );
       });
-});
+// };
+    });
 
     // Init validator
     const initValidator = () => {
@@ -316,7 +317,6 @@ var KTAppCalendar = function () {
 
                                     location.href="employee/addevent";
 
-
                                     calendar.render();
 
                                     // Reset form for demo purposes only
@@ -379,6 +379,25 @@ var KTAppCalendar = function () {
             // Prevent default button action
             e.preventDefault();
             console.log("수정 일정2 id",data.id);
+
+            $('#kt_modal_add_event_submit').on('click',function(){
+                var sch_idx = data.id;
+                console.log("삭제 일정!!!!!!!!!!!! id : " , data.id);
+                console.log("삭제 일정 idx : " , sch_idx);
+                
+                $.ajax({
+                    type:'post',
+                    url:'/employee/delete.ajax',
+                    data:{'sch_idx' : data.id},
+                    dataType:'JSON',
+                    success:function(data){
+                        console.log(data,"번 일정 삭제");
+                    },
+                    error:function(e){
+                        console.log(e);
+                    }
+                });
+            });
             
 
             // Validate form before submit
@@ -409,26 +428,10 @@ var KTAppCalendar = function () {
                                 }
                             }).then(function (result) {
                                 if (result.isConfirmed) {
+                                    modal.hide();                                                
 
-                                    // $('#kt_modal_add_event_submit').on('click',function(){
-                                        var sch_idx = data.id;
-                                        console.log("삭제 일정!!!!!!!!!!!! id : " , data.id);
-                                        console.log("삭제 일정 idx : " , sch_idx);
-                                        
-                                        $.ajax({
-                                            type:'post',
-                                            url:'/employee/delete.ajax',
-                                            data:{'sch_idx' : data.id},
-                                            dataType:'JSON',
-                                            success:function(data){
-                                                console.log(data,"번 일정 삭제");
-                                                modal.hide();                                                
-                                            },
-                                            error:function(e){
-                                                console.log(e);
-                                            }
-                                        });
-                                    // });
+
+                                    
 
                                     // Enable submit button after loading
                                     submitButton.disabled = false;
@@ -641,7 +644,9 @@ var KTAppCalendar = function () {
             viewEditButton.style.display = 'none';
             viewEventDescription.style.display = 'none';
             viewEndDate.innerText = ' - - ';
+            console.log("출근 날짜 데이터 : " + viewEndDate);
             viewEndTime.innerText = ' : : ';
+            console.log("출근 시간 데이터 : " + viewEndTime);
         } else if (data.scheduleType == 13) {
             viewScheduleType.innerText = '퇴근';
             viewDeleteButton.style.display = 'none';
@@ -686,7 +691,7 @@ var KTAppCalendar = function () {
             console.log(data.id);
 
             Swal.fire({
-                text: "Are you sure you would like to delete this event?",
+                text: "정말 해당 일정을 삭제하시겠습니까?",
                 icon: "warning",
                 showCancelButton: true,
                 buttonsStyling: false,
@@ -700,7 +705,23 @@ var KTAppCalendar = function () {
                 if (result.value) {
 
                     // calendar.getEventById(data.id).remove();
-                    location.href="/employee/schedule/delete?sch_idx="+data.id;
+                    // location.href="/employee/schedule/delete?sch_idx="+data.id;
+
+                    $.ajax({
+                        type:'post',
+                        url:'/employee/delete.ajax',
+                        data:{'sch_idx' : data.id},
+                        dataType:'JSON',
+                        success:function(data){
+                            console.log(data,"번 일정 삭제");
+                            location.href="/employee/home";
+                        },
+                        error:function(e){
+                            console.log(e);
+                        }
+                    });
+
+
                     console.log("del",data.id);
                     console.log("del",calendar);
 
@@ -848,7 +869,7 @@ var KTAppCalendar = function () {
         //     });
         // } else {
             startTimeFlatpickr.setDate(data.startDate, true, 'Y-m-d H:i');
-            endTimeFlatpickr.setDate(data.endDate, true, 'Y-m-d H:i');
+            endTimeFlatpickr.setDate(data.startDate, true, 'Y-m-d H:i');
             endFlatpickr.setDate(data.startDate, true, 'Y-m-d H:i');
             // allDayToggle.checked = false;
             datepickerWrappers.forEach(dw => {

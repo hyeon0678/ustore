@@ -42,7 +42,8 @@ public class EmpProfileService {
 	public void addevent(Map<String, String> params) {
 		logger.info("service_params : " + params);
 		dao.addevent(params);
-		dao.addalarmevent(params);
+		
+//		dao.addalarmevent(params);
 	}
 
 	public List<Map<String, Object>> profilecalendar(String empIdx) {

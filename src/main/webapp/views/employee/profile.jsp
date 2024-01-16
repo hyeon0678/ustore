@@ -135,15 +135,15 @@ License: For each use you must have a valid license purchased only from above li
 												<div class="d-flex flex-wrap flex-stack">
 													<div class="d-flex flex-column flex-grow-1 pe-8">
 														<div class="d-flex flex-wrap">
-															<div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+															<!-- <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
 																<div class="d-flex align-items-center">
 																	<div class="text-gray-900 fs-2 fw-bold me-1">오늘의 일정</div>
 																</div>
-																<!--end::Number-->
-																<!--begin::Label-->
+																end::Number
+																begin::Label
 																<div class="fw-semibold fs-6 text-gray-500">일정 갯수</div>
-																<!--end::Label-->
-															</div>
+																end::Label
+															</div> -->
 															<!--end::Stat-->
 															<!--begin::Stat-->
 															<div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
@@ -158,16 +158,16 @@ License: For each use you must have a valid license purchased only from above li
 															</div>
 															<!--end::Stat-->
 															<!--begin::Stat-->
-															<div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
-																<!--begin::Number-->
+															<!-- <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+																begin::Number
 																<div class="d-flex align-items-center">
 																	<div class="text-gray-900 fs-2 fw-bold me-1">주간 근무 시간</div>
 																</div>
-																<!--end::Number-->
-																<!--begin::Label-->
+																end::Number
+																begin::Label
 																<div class="fw-semibold fs-6 text-gray-500">총 주간 근무 시간</div>
-																<!--end::Label-->
-															</div>
+																end::Label
+															</div> -->
 															<!--end::Stat-->
 														</div>
 														<!--end::Stats-->

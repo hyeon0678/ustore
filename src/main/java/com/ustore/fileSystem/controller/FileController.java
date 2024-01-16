@@ -53,7 +53,7 @@ public class FileController {
 		
 		int randomnum =  (int)(Math.random()*10000000);
 		long MillisTime = System.currentTimeMillis();
-		long RandomPhotoName = randomnum+MillisTime;
+		String RandomPhotoName = "UStore_"+MillisTime+"_"+randomnum;
 		logger.info("무작위 난수 : " + RandomPhotoName);
 //		더미 코드 : 파일 이름 불러오기 방식에 따라 비활성화 할 것
 		

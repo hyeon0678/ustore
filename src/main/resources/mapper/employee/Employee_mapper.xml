@@ -113,7 +113,7 @@ where sch_idx in (SELECT sch_idx FROM schedule WHERE sch_subject = '출퇴근' A
 select * from schedule s where sch_idx = #{param1}
 </select>
 
-<delete id="delete">
+<delete id="employeDel">
 	DELETE FROM schedule WHERE sch_idx = #{param1}
 </delete>
 
