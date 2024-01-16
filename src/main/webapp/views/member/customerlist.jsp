@@ -256,6 +256,13 @@
 	<!--end::Body-->
 	
 	<script>
+	
+$(function(){
+		
+		headerOnReady();
+	})
+
+	
 	var showpage =1;
 	console.log("페이지 읽기 시작");
 	listcall(showpage);

@@ -299,6 +299,13 @@
 	<!--end::Body-->
 	<script>
 	
+	
+$(function(){
+		
+		headerOnReady();
+	})
+
+	
 	var selectboxchage = function(value){		
 		console.log("값변경 : "+value);
 		$("#changeinput").val(value);
