@@ -99,7 +99,7 @@
 						<i>${board.reg_date}</i>
 						<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
 						<div class="form-check" style="position: absolute; top:380px; right:550px;">
-    						<input class="form-check-input" type="checkbox" name="top_fixed" id="flexCheckDefault" value="Y" onchange="save()"/>
+    						<input class="form-check-input" type="checkbox" name="top_fixed" id="flexCheckDefault" ${board.top_fixed == 'Y' ? 'checked' : ''} onchange="save()"/>
     						<label class="form-check-label" for="flexCheckDefault">상단 고정 여부</label>
 						</div>
 						</p>
