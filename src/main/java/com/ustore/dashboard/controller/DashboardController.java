@@ -52,19 +52,14 @@ public class DashboardController {
 		String firstSelectedDate = selectedDate.substring(0, 10);
 		String lastSelectedDate = selectedDate.substring(13, 23);
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDate startDate = LocalDate.parse(firstSelectedDate, formatter);
+        LocalDate endDate = LocalDate.parse(lastSelectedDate, formatter);
 
-		LocalDate birthdate = LocalDate.parse(firstSelectedDate, formatter);
-
-		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String TrfirstSelectedDate = birthdate.format(outputFormatter);
-
-		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-
-		LocalDate birthdate2 = LocalDate.parse(lastSelectedDate, formatter2);
-
-		DateTimeFormatter outputFormatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String TrlastSelectedDate = birthdate2.format(outputFormatter2);
+     
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String TrfirstSelectedDate = startDate.format(outputFormatter);
+        String TrlastSelectedDate = endDate.format(outputFormatter);
 
 		logger.info("TrlastSelectedDate : " + TrlastSelectedDate);
 		logger.info("TrfirstSelectedDate : " + TrfirstSelectedDate);
@@ -114,22 +109,19 @@ public class DashboardController {
   public ArrayList<DashboardDto> dashboardCategoryUpdate(@RequestParam("selectedCateDate") String selectedCateDate) {
 	  
 	  logger.info("카테고리 컨트롤러 들어옴 : "+selectedCateDate);
-		String firstSelectedDate = selectedCateDate.substring(0, 10);
-		String lastSelectedDate = selectedCateDate.substring(13, 23);
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+      String firstSelectedDate = selectedCateDate.substring(0, 10);
+      String lastSelectedDate = selectedCateDate.substring(13, 23);
 
-		LocalDate birthdate = LocalDate.parse(firstSelectedDate, formatter);
 
-		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String TrfirstSelectedDate = birthdate.format(outputFormatter);
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+      LocalDate startDate = LocalDate.parse(firstSelectedDate, formatter);
+      LocalDate endDate = LocalDate.parse(lastSelectedDate, formatter);
 
-		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-		LocalDate birthdate2 = LocalDate.parse(lastSelectedDate, formatter2);
-
-		DateTimeFormatter outputFormatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String TrlastSelectedDate = birthdate2.format(outputFormatter2);
+      DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+      String TrfirstSelectedDate = startDate.format(outputFormatter);
+      String TrlastSelectedDate = endDate.format(outputFormatter);
 	  
 		logger.info("TrfirstSelectedDate  :"+TrfirstSelectedDate);
 	  logger.info("TrlastSelectedDate  :"+TrlastSelectedDate);

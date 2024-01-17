@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="ko">
 <!--begin::Head-->
 <head>
 <base href="../../../" />
-<title>stock_detail</title>
+<title>Ustore</title>
 <meta charset="utf-8" />
 <meta name="description"
 	content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
@@ -75,9 +76,9 @@ h1 {
 <body id="kt_body"
 	class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
 	<sec:authorize access="isAuthenticated()">
-	<sec:authentication property="principal" var="principal"/>
-	<!--begin::Theme mode setup on page load-->
-	<script>
+		<sec:authentication property="principal" var="principal" />
+		<!--begin::Theme mode setup on page load-->
+		<script>
 		var defaultThemeMode = "light";
 		var themeMode;
 		if (document.documentElement) {
@@ -98,218 +99,232 @@ h1 {
 			document.documentElement.setAttribute("data-bs-theme", themeMode);
 		}
 	</script>
-	<!--end::Theme mode setup on page load-->
-	<!--begin::Main-->
-	<!--begin::Root-->
-	<!--begin::Header 헤더 시작 -->
-			<jsp:include page="/views/common/header.jsp"></jsp:include>
-			<!--end::Header 헤더 닫기-->
-	<div class="d-flex flex-column flex-root">
-		<!--begin::Page-->
-		<div class="page d-flex flex-row flex-column-fluid">
-			<!--begin::Wrapper-->
-			
-			<div class="wrapper d-flex flex-column flex-row-fluid"
-				id="kt_wrapper">
-				<!--begin::Content-->
-				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
-				<h1 class="text-gray-900 fw-bold my-1 fs-2" style="margin-left: 50px;">재고 상세보기</h1>
-				<div class="text-end">
-    <a href="/stock/stockmanagement/list">
-        <button type="button" class="btn btn-light-primary me-3" id="btnGoBack" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-            <i class="ki-duotone ki-filter fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-            </i>뒤로가기
-        </button>
-    </a>
-</div>
-					<!--================================메인 내용들어가는부분================================================-->
-					<!--사이드바 넣는곳  -->
-					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
+		<!--end::Theme mode setup on page load-->
+		<!--begin::Main-->
+		<!--begin::Root-->
+		<!--begin::Header 헤더 시작 -->
+		<jsp:include page="/views/common/header.jsp"></jsp:include>
+		<!--end::Header 헤더 닫기-->
+		<div class="d-flex flex-column flex-root">
+			<!--begin::Page-->
+			<div class="page d-flex flex-row flex-column-fluid">
+				<!--begin::Wrapper-->
 
-					<!-- 사이드바 닫는곳 -->
+				<div class="wrapper d-flex flex-column flex-row-fluid"
+					id="kt_wrapper">
+					<!--begin::Content-->
+					<div class="content fs-6 d-flex flex-column flex-column-fluid"
+						id="kt_content"
+						style="margin-top: 30px; background-color: #fffff8; margin-left: 30px">
+						<h1 class="text-gray-900 fw-bold my-1 fs-2"
+							style="margin-left: 50px;">재고 상세보기</h1>
+						<div class="text-end">
+							<a href="/stock/stockmanagement/list">
+								<button type="button" class="btn btn-light-primary me-3"
+									id="btnGoBack" data-kt-menu-trigger="click"
+									data-kt-menu-placement="bottom-end">
+									<i class="ki-duotone ki-filter fs-2"> <span class="path1"></span>
+										<span class="path2"></span>
+									</i>뒤로가기
+								</button>
+							</a>
+						</div>
+						<!--================================메인 내용들어가는부분================================================-->
+						<!--사이드바 넣는곳  -->
+						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 
-					<!--begin::Post-->
-					<div class="container">
-					<h3 style="color:#fffff8;">칸 넣기용</h3>
-					</div>
-					<div class="stock">
-    <table id="stockDetailTable">
-        <tr>
-            <td>분류</td>
-            <td colspan="2" id="categoryName"></td>
-        </tr>
-        <tr>
-            <td>상품 코드</td>
-            <td id="productId"></td>
-            
-        </tr>
-        <tr>
-            <td>상품 명</td>
-            <td id="productName"></td>
-        </tr>
-        <tr>
-            <td>재고</td>
-            <td id="stock"></td>
-        </tr>
-        <tr>
-            <td>단위(파렛트)</td>
-            <td id="unitQuantity" style="text-align: center;"></td>
-            <td><button onclick="modifyUnitQuantity()" id="unitQuantityBtn" class="btn btn-primary">단위 수정</button></td>
-        </tr>
-        <tr>
-            <td>단가</td>
-            <td id="purchasePrice" style="text-align: center;"></td>
-            <td><button onclick="modifyPurchasePrice()" id="purchaseBtn" class="btn btn-primary">단가 수정</button></td>
-        </tr>
-    
-    </table>
-</div>
-					<div>
-						<div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-    <table class="table table-hover table-rounded table-striped border gy-7 gs-7" style="text-align: center;">
-        <thead>
-            <tr class="text-start fw-bold fs-7 text-uppercase gs-0" style="color: #c6da52;">
-                <th style="text-align: center;">입고 날짜</th>
-                <th style="text-align: center;">파렛트/전체</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach items="${incomingList}" var="incoming">
-                <tr>
-                    <td>${incoming.receiptDate}</td>
-                    <td>${incoming.quantity}/${incoming.unitQuantity * incoming.quantity}</td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
-</div>
+						<!-- 사이드바 닫는곳 -->
 
-					</div>
-					<hr width="100%" color="black" align="center">
+						<!--begin::Post-->
+						<div class="container">
+							<h3 style="color: #fffff8;">칸 넣기용</h3>
+						</div>
+						<div class="stock">
+							<table id="stockDetailTable">
+								<tr>
+									<td>분류</td>
+									<td colspan="2" id="categoryName"></td>
+								</tr>
+								<tr>
+									<td>상품 코드</td>
+									<td id="productId"></td>
 
-					<h1>폐기/파손/분실</h1>
-					<div class="container">
-						<button type="button" class="btn btn-primary"
-							data-bs-toggle="modal" data-bs-target="#kt_modal_2"
-							style="background-color: #C6DA52">폐기/파손 등록</button>
+								</tr>
+								<tr>
+									<td>상품 명</td>
+									<td id="productName"></td>
+								</tr>
+								<tr>
+									<td>재고</td>
+									<td id="stock"></td>
+								</tr>
+								<tr>
+									<td>단위(파렛트)</td>
+									<td id="unitQuantity" style="text-align: center;"></td>
+									<td><button onclick="modifyUnitQuantity()"
+											id="unitQuantityBtn" class="btn btn-primary">단위 수정</button></td>
+								</tr>
+								<tr>
+									<td>단가</td>
+									<td id="purchasePrice" style="text-align: center;"></td>
+									<td><button onclick="modifyPurchasePrice()"
+											id="purchaseBtn" class="btn btn-primary">단가 수정</button></td>
+								</tr>
 
-						<div class="modal fade" tabindex="-1" id="kt_modal_2">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h3 class="modal-title">폐기/파손 등록</h3>
+							</table>
+						</div>
+						<div>
+							<div class="table-responsive"
+								style="max-height: 400px; overflow-y: auto;">
+								<table
+									class="table table-hover table-rounded table-striped border gy-7 gs-7"
+									style="text-align: center;">
+									<thead>
+										<tr class="text-start fw-bold fs-7 text-uppercase gs-0"
+											style="color: #c6da52;">
+											<th style="text-align: center;">입고 날짜</th>
+											<th style="text-align: center;">파렛트/전체</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${incomingList}" var="incoming">
+											<tr>
+												<td>${incoming.receiptDate}</td>
+												<td>${incoming.quantity}/${incoming.unitQuantity * incoming.quantity}</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
 
-										<!--begin::Close-->
-										<div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-											data-bs-dismiss="modal" aria-label="Close">
-											<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
-												class="path2"></span></i>
+						</div>
+						<hr width="100%" color="black" align="center">
+
+						<h1>폐기/파손/분실</h1>
+						<div class="container">
+							<button type="button" class="btn btn-primary"
+								data-bs-toggle="modal" data-bs-target="#kt_modal_2"
+								style="background-color: #C6DA52">폐기/파손 등록</button>
+
+							<div class="modal fade" tabindex="-1" id="kt_modal_2">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h3 class="modal-title">폐기/파손 등록</h3>
+
+											<!--begin::Close-->
+											<div
+												class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+												data-bs-dismiss="modal" aria-label="Close">
+												<i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+													class="path2"></span></i>
+											</div>
+											<!--end::Close-->
 										</div>
-										<!--end::Close-->
-									</div>
 
-									<div class="modal-body">
-										<div class="table-responsive">
-											<table
-												class="table table-hover table-rounded table-striped border gy-7 gs-7">
-												<thead>
-													<tr
-														class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200">
+										<div class="modal-body">
+											<div class="table-responsive">
+												<table
+													class="table table-hover table-rounded table-striped border gy-7 gs-7">
+													<thead>
+														<tr
+															class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200">
 
-														<th class="min-w-70px">구분</th>
-														<th colspan="2"><select
-															class="form-select form-select-solid"
-															data-control="select2" data-placeholder="선택"
-															data-hide-search="true">
-																<option></option>
-																<option value="1" selected="selected">파손</option>
-																<option value="2">폐기</option>
-																<option value="3">분실</option>
+															<th class="min-w-70px">구분</th>
+															<th colspan="2"><select
+																class="form-select form-select-solid"
+																data-control="select2" data-placeholder="선택"
+																data-hide-search="true">
+																	<option></option>
+																	<option value="1" selected="selected">파손</option>
+																	<option value="2">폐기</option>
+																	<option value="3">분실</option>
 
-														</select></th>
+															</select></th>
 
 
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td class="min-w-70px">수량</td>
-														<td colspan="2"><input type="text"
-															class="form-control" placeholder="개수를 입력해 주세요." /></td>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td class="min-w-70px">수량</td>
+															<td colspan="2"><input type="text"
+																class="form-control" placeholder="개수를 입력해 주세요." /></td>
 
 
-													</tr>
-													<tr>
-														<td class="min-w-70px">사유</td>
-														<td colspan="2" rowspan="5"><textarea cols="50"
-																rows="10" placeholder="내용을 입력해 주세요"  class="form-control"></textarea></td>
+														</tr>
+														<tr>
+															<td class="min-w-70px">사유</td>
+															<td colspan="2" rowspan="5"><textarea cols="50"
+																	rows="10" placeholder="내용을 입력해 주세요"
+																	class="form-control"></textarea></td>
 
 
-													</tr>
-												</tbody>
-											</table>
+														</tr>
+													</tbody>
+												</table>
+											</div>
 										</div>
-									</div>
 
-									<div class="modal-footer">
+										<div class="modal-footer">
 
-										<button class="btn btn-primary">등록</button>
+											<button class="btn btn-primary">등록</button>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 
-					<div>
-						<div class="table-responsive" id="tableContainer" style="max-height: 400px; overflow-y: auto;">
-							<table
-								class="table table-hover table-rounded table-striped border gy-7 gs-7">
-								<thead>
-									<tr class="text-start fw-bold fs-7 text-uppercase gs-0" style=" color: #c6da52;">
-										<th class="min-w-125px">파손/폐기/분실 일자</th>
-										<th class="min-w-125px">구분</th>
-										<th class="min-w-125px">수량(낱개)</th>
-										<th class="min-w-125px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;사유</th>
+						<div>
+							<div class="table-responsive" id="tableContainer"
+								style="max-height: 400px; overflow-y: auto;">
+								<table
+									class="table table-hover table-rounded table-striped border gy-7 gs-7">
+									<thead>
+										<tr class="text-start fw-bold fs-7 text-uppercase gs-0"
+											style="color: #c6da52;">
+											<th class="min-w-125px">파손/폐기/분실 일자</th>
+											<th class="min-w-125px">구분</th>
+											<th class="min-w-125px">수량(낱개)</th>
+											<th class="min-w-125px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;사유</th>
 
-									</tr>
-								</thead>
-								<tbody id="tableBody">
-									
-									
-								</tbody>
-							</table>
+										</tr>
+									</thead>
+									<tbody id="tableBody">
 
+
+									</tbody>
+								</table>
+
+							</div>
 						</div>
 					</div>
+					<!--end::Content-->
 				</div>
-				<!--end::Content-->
+				<!--end::Wrapper-->
 			</div>
-			<!--end::Wrapper-->
+			<!--end::Page-->
 		</div>
-		<!--end::Page-->
-	</div>
-	<!--end::Root-->
+		<!--end::Root-->
 
-	<!--begin::Javascript-->
-	<script>
+		<!--begin::Javascript-->
+		<script>
 		var hostUrl = "/";
 	</script>
-	<!--begin::Global Javascript Bundle(mandatory for all pages)-->
-	<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
-	<script src="resource/assets/js/scripts.bundle.js"></script>
-	<script
-		src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-	<script
-		src="resource/assets/js/custom/apps/ecommerce/catalog/categories.js"></script>
-	<script src="resource/assets/js/widgets.bundle.js"></script>
-	<script src="resource/assets/js/custom/widgets.js"></script>
+		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
+		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="resource/assets/js/scripts.bundle.js"></script>
+		<script
+			src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<script
+			src="resource/assets/js/custom/apps/ecommerce/catalog/categories.js"></script>
+		<script src="resource/assets/js/widgets.bundle.js"></script>
+		<script src="resource/assets/js/custom/widgets.js"></script>
 
-	<script>
+		<script>
 		$("#kt_daterangepicker_1").daterangepicker();
 	</script>
-	<script>
+		<script>
     document.addEventListener('DOMContentLoaded', function () {
      
         fetchStockDetail(); 
@@ -430,7 +445,7 @@ h1 {
             return;
         }
 
-        // ',' 제거
+  
         var unitQuantityWithoutComma = newUnitQuantity.replace(/,/g, '');
 
         var empIdx = ${principal.username};
@@ -616,8 +631,8 @@ function viewNum(Num) {
 }
 </script>
 
-	<!--end::Custom Javascript-->
-	<!--end::Javascript-->
+		<!--end::Custom Javascript-->
+		<!--end::Javascript-->
 	</sec:authorize>
 </body>
 <!--end::Body-->

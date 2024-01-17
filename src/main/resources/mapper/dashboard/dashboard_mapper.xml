@@ -19,7 +19,7 @@ GROUP BY
     products.product_name
 ORDER BY
     selling_price DESC
-LIMIT 5;
+LIMIT 5
 
 </select>
 
@@ -37,7 +37,7 @@ GROUP BY
     products.product_name
 ORDER BY
     selling_price DESC
-LIMIT 5;
+LIMIT 5
 
 </select>
 
@@ -96,7 +96,7 @@ INNER JOIN products ON payments_detail.product_id = products.product_id
 INNER JOIN category ON products.category_id = category.category_id
 INNER JOIN payments ON payments_detail.payment_id = payments.payment_id
 WHERE
-    DATE(payments.payment_date) = CURDATE();
+    DATE(payments.payment_date) = CURDATE()
 </select>
 <select id="dashboardCategoryUpdate" resultType="DashboardDto">
   SELECT
