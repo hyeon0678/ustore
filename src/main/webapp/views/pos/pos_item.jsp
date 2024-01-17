@@ -773,7 +773,7 @@ License: For each use you must have a valid license purchased only from above li
 		    pay_method: "card",    //  결제 메서드  -- 필수 입력값
 		    merchant_uid : memberId+"_"+Date.now(), // 결제 번호 --- 필수 입력값
 		    name : 'UStore',  // 결제 이름 -- 필수 입력값
-		    amount : 100,   // 가격 -- 필수 입력값    -- replace($('#endSellingSum').text())
+		    amount : replace($('#endSellingSum').text()),   // 가격 -- 필수 입력값    -- replace($('#endSellingSum').text())
 		    buyer_tel: contactNum,
 		  }, function (rsp) { // callback
 			  console.log('결제 콜백 함수',rsp.success);
