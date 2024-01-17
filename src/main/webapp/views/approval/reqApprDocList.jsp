@@ -198,7 +198,8 @@
 	        "emptyTable": "문서가 없습니다.",
 	        "infoEmpty": "표시할 항목이 없습니다.",
 	        "info": "총 _TOTAL_ 개 중 _START_ - _END_ "
-	    }
+	    },
+	    "order" : {"기안일자":"desc"}
 	});
 	</script>
 </html>
