@@ -249,7 +249,7 @@
 			content += '<tr>';
 			content += '<td style="width:80%;">'+item.repl_content+'</td>';
 			content += '<td style="text-align: end; white-space:nowrap;">'+item.reg_date+'</td>';
-			content += '<td>'+'<div style="text-align: end;">'+'<button id="d" class="btn btn-primary" style="padding:5px; white-space:nowrap;" onclick='+"'location.href="+'"anboard/replyDel?anony_board_idx='+item.anony_board_idx+'&repl_idx='+item.repl_idx+'"'+"'>"+'삭제하기'+'</button>'+'</div>'+'</td>';
+			content += '<td>'+'<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">'+'<div style="text-align: end;">'+'<button id="d" class="btn btn-primary" style="padding:5px; white-space:nowrap;" onclick='+"'location.href="+'"anboard/replyDel?anony_board_idx='+item.anony_board_idx+'&repl_idx='+item.repl_idx+'"'+"'>"+'삭제하기'+'</button>'+'</div>'+'</sec:authorize>'+'</td>';
 			content += '</tr>';
 			
 			console.log(content);
