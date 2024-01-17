@@ -229,7 +229,11 @@
 </body>
 <!--end::Body-->
 <script>
-		$(".kt_daterangepicker_1").daterangepicker();
+		$(".kt_daterangepicker_1").daterangepicker({
+            locale: {
+                format: 'YYYY/MM/DD'
+            }
+        });
 	</script>
 
 <script>
@@ -262,14 +266,12 @@
             var today = new Date();
             today.setHours(0, 0, 0, 0);
 
-            var startDateParts = startDateString.split('/');
-            var endDateParts = endDateString.split('/');
-
-            var startDate = new Date(startDateParts[2], startDateParts[0] - 1, startDateParts[1]);
-            var endDate = new Date(endDateParts[2], endDateParts[0] - 1, endDateParts[1]);
+       
+            var startDate = new Date(startDateString);
+            var endDate = new Date(endDateString);
 
             if (isNaN(startDate) || isNaN(endDate) || startDate > today || endDate > today) {
-                InfoModal("오늘 날짜를 넘기면 검색이 불가능 합니다!.");
+                InfoModal("오늘 날짜를 넘기면 검색이 불가능합니다!");
                 return;
             }
 
@@ -372,7 +374,7 @@ $(document).ready(function() {
         return month + '월' + day + '일';
     }
 
-    // 차트 초기 설정 함수
+    
     function initializeChart(data) {
         const maxTotalPrice = Math.max(...data.list1.map(item => item.totalPrice));
         const maxTotalPriceOrder = Math.max(...data.list3.map(item => item.totalUsedPoints));
@@ -418,26 +420,26 @@ $(document).ready(function() {
         myChart = new Chart(ctx, config);
     }
 
-    // 데이터 정규화 함수
+ 
     function normalizeData(data, maxValue) {
         return data.map(value => (maxValue !== 0 ? (value / maxValue) * 100 : value));
     }
 
-    // 초기 차트 데이터 로드
+
     $.ajax({
         url: '/accounting/dashboardday/list',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
             console.log('Received data from server:', data);
-            initializeChart(data); // 초기 차트 설정 함수 호출
+            initializeChart(data); 
         },
         error: function(error) {
             console.error('Error fetching dashboard data:', error);
         }
     });
 
-    // 검색 버튼 클릭 시 이벤트 처리
+
     $(document).on('click', '#priceBtn', function() {
         if ($('#Bselect').val() === '주간' && !isWeeklyClicked) {
             isWeeklyClicked = true;
@@ -453,7 +455,7 @@ $(document).ready(function() {
             });
         } else if ($('#Bselect').val() === '일간') {
             isWeeklyClicked = false; 
-            // 데이터를 다시 불러오고 차트를 업데이트
+
             $.ajax({
                 url: '/accounting/dashboardday/list',
                 type: 'GET',
@@ -644,14 +646,11 @@ $(document).ready(function() {
         var today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        var startDateParts = startDateString.split('/');
-        var endDateParts = endDateString.split('/');
-
-        var startDate = new Date(startDateParts[2], startDateParts[0] - 1, startDateParts[1]);
-        var endDate = new Date(endDateParts[2], endDateParts[0] - 1, endDateParts[1]);
+        var startDate = new Date(startDateString);
+        var endDate = new Date(endDateString);
 
         if (isNaN(startDate) || isNaN(endDate) || startDate > today || endDate > today) {
-            InfoModal("오늘 날짜를 넘기면 검색이 불가능 합니다!.");
+            InfoModal("오늘 날짜를 넘기면 검색이 불가능합니다!");
             return;
         }
         console.log('Selected date!!:', selectedCateDate);

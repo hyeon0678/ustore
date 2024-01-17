@@ -6,7 +6,7 @@
 <!--begin::Head-->
 <head>
 <base href="../../../" />
-<title>order_list</title>
+<title>Ustore</title>
 <meta charset="utf-8" />
 <meta name="description"
 	content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
@@ -78,55 +78,67 @@
 			<div class="wrapper d-flex flex-column flex-row-fluid"
 				id="kt_wrapper">
 				<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
-				<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px" > 
+				<div class="content fs-6 d-flex flex-column flex-column-fluid"
+					id="kt_content"
+					style="margin-top: 30px; background-color: #fffff8; margin-left: 30px">
 					<h1 class="text-gray-900 fw-bold my-1 fs-2"
 						style="margin-left: 50px;">발주 리스트</h1>
 					<!--================================메인 내용들어가는부분================================================-->
 					<!--사이드바 넣는곳  -->
-					
+
 
 					<!-- 사이드바 닫는곳 -->
 
 					<!--begin::Post-->
 					<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
-						<!--begin::Container--><div class="card card-flush mb-0" data-kt-sticky="false" data-kt-sticky-name="inbox-aside-sticky" data-kt-sticky-offset="{default: false, xl: '100px'}" data-kt-sticky-height="300px" data-kt-sticky-width="{lg: '275px'}" data-kt-sticky-left="auto" data-kt-sticky-top="100px" data-kt-sticky-animation="false" data-kt-sticky-zindex="95">
-											<!--begin::Aside content-->
-											<div class="card-body">
-												<!--==========================================서브 사이드바 컨텐츠 리스트==================================================================-->											
-													<!--begin::Menu-->
-													<div class="menu menu-column menu-rounded menu-state-bg menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary" style="width: 100%; white-space:nowrap">
-														<!--begin::Menu item-->
-														
-														<!--end::Menu item-->
-														<!--begin::Menu item-->
-														<div class="menu-item mb-3" onclick="location.href='/order/list';">
-															<!--begin::Inbox  href="/customer/general" -->
-															<span class="menu-link" >
-																<span class="menu-icon"><img src="resource/assets/media/icon/side_products.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"></span>
-																
-																<span class="menu-title fw-bold">발주</span>
-															</span>
-															<!--end::Inbox-->
-														</div>
-														<div class="menu-item mb-3">
-															<!--begin::Inbox-->
-															<span class="menu-link active">
-																<span class="menu-icon"><img src="resource/assets/media/icon/side_products.svg" class="ki-duotone ki-gift fs-2" style="opacity:.3"></span>
-																
-																<span class="menu-title fw-bold">발주 리스트</span>
-															</span>
-															<!--end::Inbox-->
-														</div>
-														<!--end::Menu item-->
-														<!--begin::Menu item-->
-														
-														<!--end::Menu item-->
-													</div>
-													<!--end::Menu-->
-													
-											</div>
-											<!--end::Aside content-->
-										</div>
+						<!--begin::Container-->
+						<div class="card card-flush mb-0" data-kt-sticky="false"
+							data-kt-sticky-name="inbox-aside-sticky"
+							data-kt-sticky-offset="{default: false, xl: '100px'}"
+							data-kt-sticky-height="300px"
+							data-kt-sticky-width="{lg: '275px'}" data-kt-sticky-left="auto"
+							data-kt-sticky-top="100px" data-kt-sticky-animation="false"
+							data-kt-sticky-zindex="95">
+							<!--begin::Aside content-->
+							<div class="card-body">
+								<!--==========================================서브 사이드바 컨텐츠 리스트==================================================================-->
+								<!--begin::Menu-->
+								<div
+									class="menu menu-column menu-rounded menu-state-bg menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary"
+									style="width: 100%; white-space: nowrap">
+									<!--begin::Menu item-->
+
+									<!--end::Menu item-->
+									<!--begin::Menu item-->
+									<div class="menu-item mb-3"
+										onclick="location.href='/order/list';">
+										<!--begin::Inbox  href="/customer/general" -->
+										<span class="menu-link"> <span class="menu-icon"><img
+												src="resource/assets/media/icon/side_products.svg"
+												class="ki-duotone ki-gift fs-2" style="opacity: .3"></span> <span
+											class="menu-title fw-bold">발주</span>
+										</span>
+										<!--end::Inbox-->
+									</div>
+									<div class="menu-item mb-3">
+										<!--begin::Inbox-->
+										<span class="menu-link active"> <span class="menu-icon"><img
+												src="resource/assets/media/icon/side_products.svg"
+												class="ki-duotone ki-gift fs-2" style="opacity: .3"></span> <span
+											class="menu-title fw-bold">발주 리스트</span>
+										</span>
+										<!--end::Inbox-->
+									</div>
+									<!--end::Menu item-->
+									<!--begin::Menu item-->
+
+									<!--end::Menu item-->
+								</div>
+								<!--end::Menu-->
+
+							</div>
+							<!--end::Aside content-->
+						</div>
 						<div class="container-xxl">
 							<!--begin::Category-->
 							<div class="card card-flush">
@@ -143,7 +155,7 @@
 												data-kt-ecommerce-category-filter="search"
 												class="form-control form-control-solid w-250px ps-12"
 												placeholder="입고 날짜를 입력 해주세요." />
-												<button class="btn btn-primary">검색</button>
+											<button class="btn btn-primary">검색</button>
 										</div>
 										<!--end::Search-->
 
@@ -180,8 +192,7 @@
 														data-order-idx="${List.orderIdx}"> ${List.orderIdx} </a></td>
 													<td>${List.resourceName}</td>
 
-													<td>${List.driverName}
-														&nbsp;&nbsp;&nbsp;&nbsp;</td>
+													<td>${List.driverName}&nbsp;&nbsp;&nbsp;&nbsp;</td>
 
 												</tr>
 											</c:forEach>
@@ -216,7 +227,8 @@
 	<script src="resource/assets/js/scripts.bundle.js"></script>
 	<!--end::Global Javascript Bundle-->
 	<!--begin::Vendors Javascript(used for this page only)-->
-	 --><script
+	-->
+	<script
 		src="resource/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 	<!--end::Vendors Javascript-->
 	<!--begin::Custom Javascript(used for this page only)-->
@@ -271,13 +283,11 @@
 	</div>
 
 	<script>
-	
 		$(document)
 				.ready(
 						function() {
 							var modalClicked = false;
-						
-					
+
 							$('#kt_modal_1')
 									.on(
 											'show.bs.modal',
@@ -315,7 +325,12 @@
 																				+ order.productName
 																				+ '</td>'
 																				+ '<td style="text-align: center;">'
-																				+  order.quantity +'/'+order.quantity * order.unitQuantity+'&emsp;'+'</td>' 
+																				+ order.quantity
+																				+ '/'
+																				+ order.quantity
+																				* order.unitQuantity
+																				+ '&emsp;'
+																				+ '</td>'
 																				+ '</tr>';
 																		modalTableBody
 																				.append(html);
@@ -333,7 +348,8 @@
 															});
 												}
 											});
-							headerOnReady();});
+							headerOnReady();
+						});
 	</script>
 </body>
 <!--end::Body-->
