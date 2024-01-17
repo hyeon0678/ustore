@@ -441,10 +441,11 @@
 																class="path1"></span><span class="path2"></span></i>
 													</div>
 													<!--end::Close-->
+													<h2>회원 등급 변경</h2>
 												</div>
-												<div class="">
+												<div class="" style="float: left; width: 100%; height: 140px;">
 													<div class="content_tree"
-														style="float: left; width: 280px; height: 300px; overflow-y: auto;">
+														style="float: left; width: 100%; height: 140px; display: flex;">
 														<!-- 조직도 그리기 -->
 														<!-- <span>여기에 조직도를 그려주세요</span> -->
 														<!--begin::Col 드롭박스 >> 회원 상태-->
@@ -488,11 +489,12 @@
 														<i class="ki-duotone ki-cross fs-1"><span
 																class="path1"></span><span class="path2"></span></i>
 													</div>
+													<h2>회원 등급 변경</h2>
 													<!--end::Close-->
 												</div>
-												<div class="">
+												<div class="" style="float: left; width: 100%; height: 140px;">
 													<div class="content_tree"
-														style="float: left; width: 280px; height: 300px; overflow-y: auto;">
+														style="float: left; width: 100%; height: 140px; display: flex;"">
 														<!-- 조직도 그리기 -->
 														<!-- <span>여기에 조직도를 그려주세요</span> -->
 														<!--begin::Col 드롭박스 >> 회원 상태-->
