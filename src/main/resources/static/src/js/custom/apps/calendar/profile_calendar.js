@@ -278,6 +278,9 @@ var KTAppCalendar = function () {
                                 }
                             }).then(function (result) {
                                 if (result.isConfirmed) {
+
+                                    
+
                                     modal.hide();
 
                                     // Enable submit button after loading
@@ -315,13 +318,14 @@ var KTAppCalendar = function () {
                                     //     allDay: allDayEvent
                                     // });
 
-                                    location.href="employee/addevent";
+                                    
 
                                     calendar.render();
 
                                     // Reset form for demo purposes only
                                     // form.reset();
                                 }
+                                // location.href="employee/addevent";
                             });
 
                             form.submit(); // Submit form
@@ -329,7 +333,7 @@ var KTAppCalendar = function () {
                     } else {
                         // Show popup warning 
                         Swal.fire({
-                            text: "오류 발생, 잠시 후 다시 시도해주세요.",
+                            text: "취소되었습니다.",
                             icon: "error",
                             buttonsStyling: false,
                             confirmButtonText: "확인",
@@ -428,6 +432,9 @@ var KTAppCalendar = function () {
                                 }
                             }).then(function (result) {
                                 if (result.isConfirmed) {
+
+                                    
+
                                     modal.hide();                                                
 
 
@@ -482,6 +489,7 @@ var KTAppCalendar = function () {
                                     // Reset form for demo purposes only
                                     // form.reset();
                                 }
+                                // location.href="employee/addevent";
                             });
 
                             form.submit(); // Submit form
@@ -489,7 +497,7 @@ var KTAppCalendar = function () {
                     } else {
                         // Show popup warning 
                         Swal.fire({
-                            text: "오류 발생, 잠시 후 다시 시도해주세요.",
+                            text: "취소되었습니다.",
                             icon: "error",
                             buttonsStyling: false,
                             confirmButtonText: "확인",
@@ -786,7 +794,7 @@ var KTAppCalendar = function () {
                     modal.hide(); // Hide modal				
                 } else if (result.dismiss === 'cancel') {
                     Swal.fire({
-                        text: "오류 발생, 잠시 후 다시 시도해주세요.",
+                        text: "취소되었습니다.",
                         icon: "error",
                         buttonsStyling: false,
                         confirmButtonText: "확인",
@@ -822,7 +830,7 @@ var KTAppCalendar = function () {
                     modal.hide(); // Hide modal				
                 } else if (result.dismiss === 'cancel') {
                     Swal.fire({
-                        text: "일정 취소에 오류가 발생했습니다 잠시 후 다시 시도해주세요.",
+                        text: "취소되었습니다.",
                         icon: "error",
                         buttonsStyling: false,
                         confirmButtonText: "확인",

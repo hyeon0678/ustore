@@ -76,32 +76,40 @@
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin: 50px"> 
 					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 					<!--================================메인 내용들어가는부분================================================-->
-						<div style="margin-top: 100px; margin-left: 50px;">
+											
+						<div class="text" style="text-align: end;">
+							<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
+								<button class="btn btn-primary" data-kt-element="send" onclick="anboardDel()" style="right: 30px; white-space:nowrap;">삭제하기</button>
+							</sec:authorize>
+							
+							<button type="button" onclick="location.href='/anboard/list'" class="btn btn-primary" style="white-space:nowrap;">목록으로</button>
+							
+							
+						</div>
+						
+						
+						<div class="card" style="text-align: left; margin: 50px;">
+						
+						
+						<div class="card-header" style="margin: 10px; align-items: center;">
 							<h1>${board.anony_subject}</h1>
 						</div>
 						
-						<div class="text-end">
-							<button type="button" onclick="location.href='/anboard/list'" class="btn btn-primary" style="position: absolute; top:200px; right:200px; font-size: 10px; ">
-    							목록으로
-							</button>
-						</div>
-						<div style="text-align: left; margin-top: 100px; margin-left: 50px;">
-						<div>
+						
+						<p style="margin: 10px;">
 						<i class="ki-duotone ki-user fs-2">
 							<span class="path1"></span>
 							<span class="path2"></span>
 						</i>
 						${board.reg_date}
-						</div>
-							<div style="text-align: right; margin-top: -40px; margin-right: 380px;">
-							<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
+						</p>
+						
+						<div class="card-body" style="text-align: right;">
 							
-    						<button class="btn btn-primary"  data-kt-element="send" onclick="anboardDel()">삭제하기</button>
-							</sec:authorize>
-							<div style="width: 100%; text-align: start; margin-top: 20px; margin-bottom: 30px;/* height: 95%; */ /* overflow: auto; */ /* border: solid lightgrey; */">
+							<div style="width: 90%; text-align: start; margin-top: 20px; margin-bottom: 30px;">
 								<c:forEach items="${newFileList}" var="files">
 									<img src="/ustore/photo/${files.newfilename}" alt="${files.newfilename}" style="margin: 10px; width: 100%"/>
 								</c:forEach>
@@ -110,65 +118,42 @@
 							
 							<div style="text-align: left;">
 								<i class="ki-duotone ki-message-text-2 fs-2">
-								<span class="path1"></span>
-								<span class="path2"></span>
-								<span class="path3"></span>
+									<span class="path1"></span>
+									<span class="path2"></span>
+									<span class="path3"></span>
 								</i>조회수 : ${board.anony_hit}
 							</div>
-								<hr color="black" width="100%">
-								<thread>
-							<div style="margin-right: 60px;text-align: start;">
-								<i class="ki-duotone ki-user fs-2">
-									<span class="path1"></span>
-									<span class="path2"></span>
-								</i>
-									<input type="text"style="width: 50%; text-align: left;" id="reply" placeholder="댓글을 입력 해주세요."/>
-									<button type="button" id="getreply" class="btn btn-primary" style="font-size: 10px;">
-    									작성
-									</button>
+						</div>
+							
+							
+								<div class="card-footer">
+									
+									<input type="text" class="form-control" style="width: 90%;height:50px;float: left;" id="reply" placeholder="댓글을 입력 해주세요."/>
+									
+									<div style="text-align: end;">
+										<button type="button" id="getreply" class="btn btn-primary" style="white-space:nowrap;">
+    										작성
+										</button>
 									</div>
-									</thread>
-										
-										
-							</div>
-							<table>
-							<tr>
-								<tbody id = "list">
+								<table style="width: 100%;">
+								
+									<tbody id = "list">
 		
-								</tbody>
-							<tr>
+									</tbody>
+								
 							</table>
-							<!-- 
-								<hr color="black" width="100%">
-								<div style="text-align: left;">
-								<p>
-								<i class="ki-duotone ki-user fs-2">
-								<span class="path1"></span>
-								<span class="path2"></span>
-								</i>2023-12-10 14:28</p>그러게 말이에요..
-								</div>
-								<div style="margin-top: -30px;">
-								<button style="border-radius: 10px; height: 23px; background-color: white;">x</button>
-								</div>
-								<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-								<div style="text-align: left;">
-								<p>
-								<i class="ki-duotone ki-user fs-2">
-									<span class="path1"></span>
-									<span class="path2"></span>
-									</i>2023-12-10 14:28</p>그러게 말이에요..</div>
-								<div style="margin-top: -30px;">
-								<button style="border-radius: 10px; height: 23px; background-color: white;">x</button>
-								</div>
-							-->
-					</div>
-					</div>
+							
+					<!-- </div> -->
+					
 				<!--end::Content--> 
     			</div>
 				<!--end::Wrapper-->
 			</div>
+			</div>
+			</div>
+			</div>
+			</div>
 			<!--end::Page-->
-		</div>
 		<!--end::Root-->
 								
 		<!--begin::Javascript-->
@@ -210,8 +195,21 @@
 	$(function(){headerOnReady()})
 	
 	function anboardDel(){
-		console.log("글 삭제");
-		location.href='anboard/delete.ajax?anony_idx='+anony_idx;
+		Swal.fire({
+		 text: '정말 삭제 하시겠습니까?',
+	        icon: 'warning',
+	        showCancelButton: true,
+	        confirmButtonText: '확인',
+	        cancelButtonText: '취소',
+	        customClass: {
+	            confirmButton: 'btn btn-danger',
+	            cancelButton: 'btn btn-light'
+	        }
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+				location.href='anboard/delete.ajax?anony_idx='+anony_idx;
+	        }
+	    });
 	}
 	
 	$("#getreply").on("click", function(){
@@ -249,9 +247,9 @@
 
 		list.forEach(function(item,repl_idx){
 			content += '<tr>';
-			content += '<td>'+item.repl_content+'</td>';
-			content += '<td>'+item.reg_date+'</td>';	
-			content += '<td>'+'<button id="d" class="btn btn-primary" style="padding:5px;" onclick='+"'location.href="+'"anboard/replyDel?anony_board_idx='+item.anony_board_idx+'&repl_idx='+item.repl_idx+'"'+"'>"+'삭제하기</div>'+'</button>';
+			content += '<td style="width:80%;">'+item.repl_content+'</td>';
+			content += '<td style="text-align: end; white-space:nowrap;">'+item.reg_date+'</td>';
+			content += '<td>'+'<div style="text-align: end;">'+'<button id="d" class="btn btn-primary" style="padding:5px; white-space:nowrap;" onclick='+"'location.href="+'"anboard/replyDel?anony_board_idx='+item.anony_board_idx+'&repl_idx='+item.repl_idx+'"'+"'>"+'삭제하기'+'</button>'+'</div>'+'</td>';
 			content += '</tr>';
 			
 			console.log(content);

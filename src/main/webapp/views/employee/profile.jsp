@@ -92,9 +92,9 @@ License: For each use you must have a valid license purchased only from above li
 															<p class="text-gray-900 fs-2 fw-bold me-1">${employee.empName}</p>
 														</div>
 														<div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
-															<a href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
-															<i class="ki-duotone ki-profile-circle fs-4 me-1">
-															</i>${principal.username}</a>
+															<div class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
+															${principal.username}
+															</div>
 														</div>
 													</div>
 													
@@ -185,7 +185,7 @@ License: For each use you must have a valid license purchased only from above li
 								<!--begin::details View-->
 								<div class="card mb-5 mb-xl-10" id="kt_profile_details_view">
 									<!--begin::Card header-->
-									<div class="card-header cursor-pointer">
+									<div class="card-header">
 										<!--begin::Card title-->
 										<div class="card-title m-0">
 											<h3 class="fw-bold m-0">프로필 상세정보</h3>

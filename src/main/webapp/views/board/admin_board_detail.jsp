@@ -76,73 +76,94 @@
 				<!--begin::Wrapper-->
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
 					<!--begin::Content-->
-					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin-left: 30px"> 
+					<div class="content fs-6 d-flex flex-column flex-column-fluid" id="kt_content" style="margin-top: 30px; background-color: #fffff8; margin: 50px"> 
 					<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 					<!--================================메인 내용들어가는부분================================================-->
-						<div style="margin-top: 100px; margin-left: 50px;">
-							<h1>${board.notice_subject}</h1>
+						
+						
+						<div class="text" style="text-align: end;">
+							<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
+								<input type="checkbox" class="form-check-input" name="top_fixed" id="flexCheckDefault" ${board.top_fixed == 'Y' ? 'checked' : ''} onchange="save()" style="margin: 10px; float: none; white-space:nowrap;" />
+    							<label class="form-check-label" for="flexCheckDefault" style="right: 30px; white-space:nowrap;">상단 고정 여부</label>
+    							<button class="btn btn-primary" id="Deladboard" data-kt-element="send" onclick="adboardDel()" style="right: 30px; white-space:nowrap;">삭제하기</button>
+							</sec:authorize>
+						
+							<button type="button" onclick="location.href='/adboard/list'" class="btn btn-primary" style="white-space:nowrap;">목록으로</button>
 							
 						</div>
 						
-						<div class="text-end">
-							<button type="button" onclick="location.href='/adboard/list'" style="background-color: #C6DA52; position: absolute; width:70px; height: 40px; top:200px; right:200px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
-    							목록으로
-							</button>
+						
+						
+						<div class="form-check" style="text-align: end; margin-right: 10%;">
+    						
 						</div>
-						<div style="text-align: left; margin-top: 100px; margin-left: 50px;">
+						
+						
+						
+						
+						<div class="card" style="text-align: left; margin: 50px;">
+						
+						
 						<!-- <div class="card" style="background-color: white;"> -->
-						<p>
+						<div class="card-header" style="margin: 10px; align-items: center;">
+							<h1>${board.notice_subject}</h1>
+						</div>
+						
+						
+						<p style="margin: 10px;">
 						<i class="ki-duotone ki-user fs-2">
 							<span class="path1"></span>
 							<span class="path2"></span>
 						</i> 
 						<i>${board.emp_name}</i>
 						<i>${board.reg_date}</i>
-						<sec:authorize access="hasAnyRole('ROLE_인사팀', 'ROLE_점장')">
-						<div class="form-check" style="position: absolute; top:380px; right:550px;">
-    						<input class="form-check-input" type="checkbox" name="top_fixed" id="flexCheckDefault" ${board.top_fixed == 'Y' ? 'checked' : ''} onchange="save()"/>
-    						<label class="form-check-label" for="flexCheckDefault">상단 고정 여부</label>
-						</div>
 						</p>
-						<div style="text-align: right; margin-top: -48px; margin-right: 380px;">
-    
-						<button class="btn btn-primary"  data-kt-element="send" onclick="adboardDel()">삭제하기</button>
-						</sec:authorize>
-						<!-- </button> -->
-
-						<div style="width: 100%; /* height: 95%; */ /* overflow: auto; */ /* border: solid lightgrey; */ text-align: center;">
-							<c:forEach items="${newFileList}" var="files">
-								<img src="/ustore/photo/${files.newfilename}" alt="${files.newfilename}" style="margin: 10px; width: 75%"/>
-							</c:forEach>
-								
-    						<p style="text-align: left;width: 100%;">${board.notice_content}</p>
-						</div>
-						<div style="text-align: left;">조회수 : ${board.notice_hit}</div>
-						<div style="margin-right:150px;">
-						<c:forEach items="${file}" var="file">
-						<p>file : ${file.orifilname}
 						
+						<div class="card-body" style="text-align: right;">
+
+						<div style="width: 90%; text-align: start; margin-top: 20px; margin-bottom: 30px;">
+							<c:forEach items="${newFileList}" var="files">
+								<img src="/ustore/photo/${files.newfilename}" alt="${files.newfilename}" style="margin: 10px; width: 100%"/>
+							</c:forEach>
+    						${board.notice_content}
+						</div>
+						
+						<div style="text-align: left;">
+							<i class="ki-duotone ki-message-text-2 fs-2">
+								<span class="path1"></span>
+								<span class="path2"></span>
+								<span class="path3"></span>
+							</i> 조회수 : ${board.notice_hit}
+						</div>
+						</div>
+						
+						<div class="card-footer" style="text-align: end;">
+						<!-- <hr color="black" width="100%"> -->
+						<!-- <div style="margin-right:150px;"> -->
+						<c:forEach items="${file}" var="file">
+						<p>
+						file : ${file.orifilname}
 						<!-- 시작 : 다운로드 코드 -->
-						<button type="button" onclick="location.href='download.do?file=${file.newfilename}'" style="background-color: #C6DA52; position: absolute; width:60px; height: 20px; font-size: 10px; color: #FFFFFF; border: #C6DA52;">
+						<button type="button" onclick="location.href='download.do?file=${file.newfilename}'" class="btn btn-primary" style="padding:5px; font-size: 10px;">
     						다운로드
     					</button>
-    					<!-- 종료 : 다운로드 코드 -->
-    					
     					</p>
+    					<!-- 종료 : 다운로드 코드 -->
     					</c:forEach>
     					</div>
 
-						<hr color="black" width="100%">
+						
 
 
 
-					</div>
+					<!-- </div> -->
 					</div>
 				<!--end::Content--> 
     			</div>
 				<!--end::Wrapper-->
 			</div>
 			<!--end::Page-->
+		</div>
 		</div>
 								
 		<!--begin::Javascript-->
@@ -176,7 +197,6 @@
 	<!--end::Body-->
 	
 	<script>
-	/* photoCall(); */
 	
 	console.log("글 번호 호출");
 	var notice_idx = ${board.notice_idx};
@@ -184,75 +204,22 @@
 	$(function(){headerOnReady()})
 	
 	
-	/* $(function(){headerOnReady()}) */
-	
-	/* function photoCall(){
-		console.log("공지사항 이미지 호출");
-		$.ajax({
-			type:'GET',
-			data:{'notice_idx':notice_idx},
-			url:'board/photo.ajax',
-			dataType:'JSON',
-			success:function(data){
-				let photo = data.photo
-				let img = "/ustore/photo/"+photo;
-				
-				console.log('공지사항이미지');
-				console.log("img값 : + "img);
-				
-				drawlist(data.list);
-				console.log("성공 : " + data.list);
-
-			},error:function(error){
-				console.log("발생 : " + error);
-			}
-			
-		});
-	}
-	
-	function drawlist(img){
-		console.log("drawlist : " + img);
-		var content = '';
-		
-	} */
-	
-	
-	/* console.log("공지사항이미지불러오기!!:" + photoCall); */
-	
-	/* function drawlist(list){
-		console.log("drawlist:" + list);
-		var content='';
-		
-		list.forEach(function (item, new_file_name) {
-			content += '<div>'
-			content += '<img src="''"/>'
-			
-		});
-	} */
-	
-	/* $(function(){
-		
-		$.ajax({
-			type:'GET',
-			data:{'notice_idx':notice_idx},
-			url:'board/photo.ajax',
-			dataType:'JSON',
-			success:function(data){
-				console.log('공지사항이미지');
-				let photo = data.photo
-				let img = "/ustore/photo/"+photo;
-				$('.board-photo').prop("src", img)
-			},error:function(error){
-				console.log(error);
-			}
-			
-		});
-	}) */
-	
-	
 	function adboardDel(){
-		console.log("글 삭제");
-		location.href='adboard/delete.ajax?notice_idx='+notice_idx;
+		Swal.fire({
+	        text: '정말 삭제 하시겠습니까?',
+	        icon: 'warning',
+	        showCancelButton: true,
+	        confirmButtonText: '확인',
+	        cancelButtonText: '취소',
+	        customClass: {
+	            confirmButton: 'btn btn-danger',
+	            cancelButton: 'btn btn-light'
+	        }
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	    		location.href='adboard/delete.ajax?notice_idx='+notice_idx;
+	        }
+	    });
 	}
 	
 	
@@ -285,9 +252,16 @@
     		});		
     			
 		};
+		
+	
 
 		
 	
+	</script>
+	<script>
+	function DeladBoard(){
+		
+	}
 	</script>
 	
 	

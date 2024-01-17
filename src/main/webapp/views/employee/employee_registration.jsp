@@ -5,7 +5,7 @@
 	<!--begin::Head-->
 	<head>
 <base href="../" />
-		<title>Craft | Bootstrap 5 HTML Admin Dashboard Theme - Craft by KeenThemes</title>
+		<title>UStore</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
 		<meta name="keywords" content="Craft, bootstrap, bootstrap 5, admin themes, dark mode, free admin themes, bootstrap admin, bootstrap dashboard" />
@@ -56,26 +56,13 @@
 						<!--begin::Toolbar-->
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
-								<!--begin::Info-->
 								<div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
-									<!--begin::Title-->
 									<h1 class="text-gray-900 fw-bold my-1 fs-2">인사관리
-									<small class="text-muted fs-6 fw-normal ms-1"></small></h1>
-									<!--end::Title-->
-									<!--begin::Breadcrumb-->
-									<ul class="breadcrumb fw-semibold fs-base my-1">
-										<li class="breadcrumb-item text-muted">
-											<a href="index.go" class="text-muted text-hover-primary">Home</a>
-										</li>
-										<li class="breadcrumb-item text-muted">인사관리</li>
-										<li class="breadcrumb-item text-gray-900">직원등록</li>
-									</ul>
-									<!--end::Breadcrumb-->
+										<small class="text-muted fs-6 fw-normal ms-1"></small>
+									</h1>
+									
 								</div>
-								<!--end::Info-->
-								<!--begin::Actions-->
 								
-								<!--end::Actions-->
 							</div>
 						</div>
 						<!--end::Toolbar-->

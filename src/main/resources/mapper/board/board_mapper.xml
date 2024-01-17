@@ -15,21 +15,21 @@ values (#{anony_subject},#{anony_content})
 </insert>
 
 <select id="adList" resultType="map">
-select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , n.reg_date , n.notice_del, n.top_fixed  
+select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date , n.notice_del, n.top_fixed  
 from notice n inner join employee e on n.emp_idx = e.emp_idx and n.notice_del ='n' 
 order by top_fixed desc, notice_idx desc
 </select>
 
 <select id="anList" resultType="map">
-select anony_idx, anony_subject, anony_hit , reg_date from anony_board order by anony_idx desc
+select anony_idx, anony_subject, anony_hit , TO_CHAR(reg_date, 'yyyy-mm-dd') as reg_date from anony_board order by anony_idx desc
 </select>
 
 <select id="adboardDetail" resultType="map">
-select n.notice_idx, n.notice_subject , n.notice_content , e.emp_name , n.notice_hit , n.reg_date , n.top_fixed  from notice n inner join employee e on n.emp_idx = e.emp_idx where notice_idx = #{param1}
+select n.notice_idx, n.notice_subject , n.notice_content , e.emp_name , n.notice_hit , DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date , n.top_fixed  from notice n inner join employee e on n.emp_idx = e.emp_idx where notice_idx = #{param1}
 </select>
 
 <select id="anboardDetail" resultType="map">
-select anony_idx, anony_subject , anony_content , anony_hit , reg_date
+select anony_idx, anony_subject , anony_content , anony_hit , TO_CHAR(reg_date, 'yyyy-mm-dd') as reg_date
 from anony_board  where anony_idx = #{param1}
 </select>
 
@@ -66,21 +66,21 @@ from anony_board  where anony_idx = #{param1}
 </delete>
 
 <select id="adlistSearch" resultType="map">
-	select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , n.reg_date , n.notice_del, n.top_fixed  
+	select n.notice_idx, n.notice_subject , e.emp_name , n.notice_hit , DATE_FORMAT(n.reg_date, '%Y-%m-%d') AS reg_date, n.notice_del, n.top_fixed  
 	from notice n inner join employee e on n.emp_idx = e.emp_idx and n.notice_del ='n' WHERE notice_subject LIKE CONCAT('%',#{param1},'%')
 	order by top_fixed desc, notice_idx desc
 </select>
 
 <select id="anlistSearch" resultType="map">
-	select anony_idx, anony_subject  , anony_hit , reg_date from anony_board WHERE anony_subject LIKE CONCAT('%',#{param1},'%')
+	select anony_idx, anony_subject  , anony_hit , TO_CHAR(reg_date, 'yyyy-mm-dd') as reg_date from anony_board WHERE anony_subject LIKE CONCAT('%',#{param1},'%')
 </select>
 
 <select id="adboardNum" resultType="Integer">
-	SELECT notice_idx FROM notice n where emp_idx = #{emp_idx} and notice_subject = #{notice_subject} and notice_content = #{notice_content} and reg_date = CURDATE()
+	SELECT notice_idx FROM notice n where emp_idx = #{emp_idx} and notice_subject = #{notice_subject} and notice_content = #{notice_content} and reg_date = CURRENT_TIMESTAMP()
 </select>
 
 <select id="anboardNum" resultType="Integer">
-	SELECT anony_idx FROM anony_board ab where anony_subject = #{anony_subject} and anony_content = #{anony_content} and reg_date = CURDATE()
+	SELECT anony_idx FROM anony_board ab where anony_subject = #{anony_subject} and anony_content = #{anony_content} and reg_date = CURRENT_TIMESTAMP()
 </select>
 
 <select id="adfile" resultType="map">

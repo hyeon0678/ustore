@@ -50,6 +50,7 @@
 					<!--================================메인 내용들어가는부분================================================-->
 						<jsp:include page="/views/common/sidebar.jsp"></jsp:include>
 						<!--begin::Toolbar-->
+						
 						<div class="toolbar" id="kt_toolbar">
 							<div class="container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
 								<!--begin::Info-->
@@ -58,11 +59,16 @@
 								</div>
 							</div>
 						</div>
+						
+						
+						
 						<form action="adboard/Write" method="post" enctype="multipart/form-data">
+							
 							<div hidden="true">
 								<input type="text" value="${sessionScope.emp_idx}" name="emp_idx"/>
 								<input type="text" value="${sessionScope.dept_id}" name="dept_id"/>
 							</div>
+							
 							<div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
 								<div class="container-xxl" style="background-color: white;margin: 20px;">
 									<div style="margin-top:20px">
@@ -84,7 +90,9 @@
 									</div>
 								</div>
 							</div>
+							
 						</form>
+						
 					</div>
 				<!--end::Content--> 
     			</div>

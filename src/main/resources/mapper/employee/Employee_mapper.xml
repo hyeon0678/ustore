@@ -122,7 +122,7 @@ select * from schedule s where sch_idx = #{param1}
 </delete>
 
 <select id="attCheck" resultType="Integer">
-SELECT COUNT(*) FROM schedule WHERE sch_content = '출근' AND DATE(sch_start_date) = CURDATE() and emp_idx = #{emp_idx}
+SELECT COUNT(*) FROM schedule WHERE sch_subject ='출퇴근' AND DATE(sch_start_date) = CURDATE() and emp_idx = #{emp_idx}
 </select>
 
 <select id="levCheck" resultType="Integer">
