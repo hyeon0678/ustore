@@ -51,6 +51,7 @@ public class SecurityConfig {
 		http.httpBasic().disable().csrf().disable()
 		.authorizeRequests()
 		.antMatchers("/", "/main/**").permitAll()
+		.antMatchers("/error/**").permitAll()
 		.antMatchers("/resource/**").permitAll()
         .antMatchers("/ws/**").permitAll()
         .antMatchers("/pos/**").permitAll()
