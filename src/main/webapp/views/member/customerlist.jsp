@@ -5,7 +5,7 @@
 	<!--begin::Head-->
 	<head>
 	<base href="../../" />
-		<title>USstore</title>
+		<title>UStore</title>
 		<meta charset="utf-8" />
 		
 		<meta name="description" content="Craft admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
@@ -124,7 +124,7 @@
 														<hr style="border:1px color= silver;" width="90%">
 														
 														<!--begin::Menu item-->
-														<div class="menu-item mb-3">
+														<div class="menu-item mb-3" onclick="location.href='/customer/home';">
 															<!--begin::Inbox-->
 															<span class="menu-link active">
 																<span class="menu-icon">
