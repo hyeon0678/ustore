@@ -316,6 +316,8 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="modal fade" id="kt_modal_add_event" tabindex-="1" aria-hidden="true" data-bs-focus="false">
 									<div class="modal-dialog modal-dialog-centered mw-650px">
 										<div class="modal-content">
+										
+										
 											<form action="employee/addevent" id="kt_modal_add_event_form" method="post">
 												<div class="modal-header">
 													<h2 class="fw-bold" data-kt-calendar="title">Add Event</h2>
@@ -365,7 +367,7 @@ License: For each use you must have a valid license purchased only from above li
 														<label class="fs-6 fw-semibold mb-2">일정 내용</label>
 														<input type="text" class="form-control form-control-solid" placeholder="" name="calendar_event_description" />
 													</div>
-													<div class="fv-row mb-9">
+													<div class="fv-row mb-9" hidden="true">
 														<div class="form-check form-switch form-check-custom form-check-solid">
 															<label class="fs-6 fw-semibold mb-2" for="flexSwitchChecked">
 																알림
@@ -411,12 +413,14 @@ License: For each use you must have a valid license purchased only from above li
 												</div>
 												<div class="modal-footer flex-center">
 													<button type="reset" id="kt_modal_add_event_cancel" class="btn btn-light">취소</button>
+													
 													<button id="kt_modal_add_event_submit" class="btn btn-primary">
 														<span class="indicator-label">추가</span>
 														<span class="indicator-progress">Please wait... 
 															<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
 														</span>
 													 </button>
+													 
 												</div>
 											</form>
 										</div>
@@ -601,7 +605,7 @@ License: For each use you must have a valid license purchased only from above li
 				console.log(error);
 			}
 		});
-	})
+	});
 	
 	
 	

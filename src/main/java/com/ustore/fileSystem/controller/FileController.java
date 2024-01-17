@@ -65,8 +65,8 @@ public class FileController {
 //		//content-Disposition : 내려보낼 내용이 문자(inline)인지 파일(attachment)인지 명시
 //		//파일일 경우 파일명이 들어가는데, 한글은 다 깨진다.
 //		//DB에서 원본 파일명을 가져왔다고 가정하자
-//		String oriFileName=URLEncoder.encode(randomnum+ext, "utf-8");
-		String oriFileName=URLEncoder.encode(file, "utf-8");
+		String oriFileName=URLEncoder.encode(RandomPhotoName+ext, "utf-8");
+//		String oriFileName=URLEncoder.encode(file, "utf-8");
 //		 //"attachment;fileName="원본.jpg""
 		headers.add("content-Disposition", "attachment;fileName=\""+oriFileName+"\"");
 //		
