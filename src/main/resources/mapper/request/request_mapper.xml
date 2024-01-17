@@ -60,11 +60,11 @@ GROUP BY pd.product_id ,pd.quantity
 
 <!-- 환불 포인트 검색 -->
 <select id="refundPointSelect" resultType="map">
-	SELECT p2.earned_points,p2.member_id FROM payments p2 WHERE p2.iamport_idx =#{param1}
+	SELECT p2.earned_points,p2.member_id,p2.used_points FROM payments p2 WHERE p2.iamport_idx =#{param1}
 </select>
 
 <!-- 포인트 감소 -->
 <update id="refundUpdatePoint">
-	UPDATE total_point SET total_point =((SELECT total_point WHERE member_idx=#{member_id})-#{earned_points}) WHERE member_idx =#{member_id}
+	UPDATE total_point SET total_point =((SELECT total_point WHERE member_idx=#{member_id})-#{earned_points}+#{used_points}) WHERE member_idx =#{member_id}
 </update>
 </mapper>

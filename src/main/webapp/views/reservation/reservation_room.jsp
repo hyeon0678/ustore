@@ -625,7 +625,7 @@
 					if(data){
 						drawresource();
 					}else{
-						alert('예약 삭제에 실패하였습니다. 다시 시도해 주세요');
+						FalseModal('예약 삭제에 실패하였습니다. 다시 시도해 주세요');
 					}
 		        },
 		        error: function (e) {
@@ -684,7 +684,7 @@
         					drawresource();		
         				}else{
 
-        					alert('오류가 발생했습니다. 다시 시도해 주세요');
+        					FalseModal('오류가 발생했습니다. 다시 시도해 주세요');
         				}
         				
         	        },
@@ -730,7 +730,7 @@
 			if($('.date').text()>= formattedDate){
 				if(dateInputValue == formattedDate){
 					if(formattedHour > startTime){
-						alert('날짜와 시간을 확인해 주세요.');
+						FalseModal('날짜와 시간을 확인해 주세요.');
 						drawresource();
 					}else{
 						reserget(startTop,startWidth,finalWidth,startTime,endTime);
@@ -740,7 +740,7 @@
 				}
 			
 		}else{
-			alert('날짜와 시간을 확인해 주세요.');
+			FalseModal('날짜와 시간을 확인해 주세요.');
 			drawresource();
 		}
 		}
@@ -771,7 +771,7 @@
 	        success: function (data) {
 				console.log(data);
 				if(!data){
-					alert('자원 추가 실패 다시 확인해주세요');
+					FalseModal('자원 추가 실패 다시 확인해주세요');
 					$('#resourceName').val('');
 				}else{
 					$('#resourceName').val('');
@@ -841,17 +841,35 @@
     }
 	
 	const scheduler = document.getElementById('scroll-container');
+	let isMouseDown = false;
+	let initialMouseX = 0;
 
-	scheduler.addEventListener('mousemove', (e) => {
-	  const mouseX = e.clientX;
-	  const schedulerRect = scheduler.getBoundingClientRect();
+	scheduler.addEventListener('mousedown', (e) => {
+	  isMouseDown = true;
+	  initialMouseX = e.clientX;
 
-	  // 마우스가 스케줄러 내에 있을 때만 스크롤 이동
-	  if (mouseX >= schedulerRect.left && mouseX <= schedulerRect.right) {
-	    const schedulerWidth = scheduler.offsetWidth;
-	    const scrollAmount = 0.7 *(mouseX - schedulerRect.left) / schedulerWidth;
+	  // 클릭한 지점이 스케줄러 영역 내에 있는지 확인
+	  if (e.target === scheduler || scheduler.contains(e.target)) {
+	    e.preventDefault(); // 드래그 시 브라우저의 기본 드래그 행동을 막음
+	  }
+	});
 
-	    scheduler.scrollLeft = scheduler.scrollWidth * scrollAmount;
+	document.addEventListener('mouseup', () => {
+	  isMouseDown = false;
+	});
+
+	document.addEventListener('mousemove', (e) => {
+	  if (isMouseDown) {
+	    const mouseX = e.clientX;
+	    const mouseDeltaX = 1.3 * (mouseX - initialMouseX);
+	    initialMouseX = mouseX;
+
+	    const maxScrollLeft = scheduler.scrollWidth - scheduler.clientWidth;
+
+	    // 현재 마우스 위치가 스케줄러 영역 내에 있는 경우에만 스크롤 조정
+	    if (e.target === scheduler || scheduler.contains(e.target)) {
+	      scheduler.scrollLeft = Math.max(0, Math.min(maxScrollLeft, scheduler.scrollLeft + mouseDeltaX));
+	    }
 	  }
 	});
 </script>

@@ -32,7 +32,7 @@ public class RequestController {
 	public boolean refund(@RequestParam String iamportIdx) {
 		boolean cancel = UtilToken.main(iamportIdx);
 		if (cancel) {
-			requestService.refund(iamportIdx);
+			requestService.refund(iamportIdx); 
 		}
 		return cancel;
 	}

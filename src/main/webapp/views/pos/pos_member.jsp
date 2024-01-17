@@ -29,7 +29,8 @@ License: For each use you must have a valid license purchased only from above li
 		<!--end::Vendor Stylesheets-->
 		<!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 		
-		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+		<link href="resource/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
 		<!--end::Global Stylesheets Bundle-->
 		<script>// Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }</script>
 	</head>
@@ -122,6 +123,7 @@ License: For each use you must have a valid license purchased only from above li
 		<!--begin::Global Javascript Bundle(mandatory for all pages)-->
 
 		<script src="resource/assets/js/scripts.bundle.js"></script>
+		<script src="resource/assets/plugins/global/plugins.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Vendors Javascript(used for this page only)-->
 	
@@ -147,7 +149,7 @@ License: For each use you must have a valid license purchased only from above li
         if(selectedOption == 'contact_num'){
         	if(searchText.length!= 0 &&searchText.length < 4){
         		console.log(searchText.length);
-        		alert("전화번호는 뒷자리 4자리를 입력해 주세요.");
+        		InfoModal("전화번호는 뒷자리 4자리를 입력해 주세요.");
         	}else{
 			memberSearch(selectedOption,searchText);	
         	}
@@ -169,7 +171,7 @@ License: For each use you must have a valid license purchased only from above li
 	        success: function (data) {
 				console.log(data);
 				if(data.list.length==0){
-					alert('검색 결과가 없습니다.');
+					InfoModal('검색 결과가 없습니다.');
 				}
 				drawList(data);
 	        },
@@ -210,9 +212,19 @@ License: For each use you must have a valid license purchased only from above li
 		}
 	}
 	
+
 	
-	
-	
+	function InfoModal(message) {
+		Swal.fire({
+            text: message,
+            icon: 'info',
+            buttonsStyling: false,
+            confirmButtonText: '확인',
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            }
+        });
+	}
 	
 </script>
 </html>
