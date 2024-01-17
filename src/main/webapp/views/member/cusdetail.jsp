@@ -623,14 +623,16 @@ $(function(){
 	
 	function newdate(){
 		console.log("기간 변경 하기 기능 들어가기");
-		console.log(gradeidx)
+		console.log(gradeidx);
+		var exdate= ${info.expiry_date};
+		var state = ${info.member_state};
 		// 기간연장
 		if (${info.member_state} == '84'){
 		var gradesatus=$('#dategrade').val();
-		location.href='customer/newdate?idx='+memberidx+'&&gradeidx='+gradesatus;			
+		location.href='customer/newdate?idx='+memberidx+'&&gradeidx='+gradesatus+'&&state='+state;			
 		}else {
 			var gradesatus=$('#dategrade').val();
-			location.href='customer/newdate?idx='+memberidx+'&&gradeidx='+gradesatus;	
+			location.href='customer/newdate?idx='+memberidx+'&&gradeidx='+gradesatus+'&&state='+state;	
 		}
 		
 	}
@@ -981,12 +983,12 @@ function datepoint(){
     }
 	
 	
-
-
 	var msg = "${msg}";
 	if(msg != ""){
-		alert(msg);
+		SuccessModal(msg);
+		//alert(msg);
 	}
+
 
 </script>
 

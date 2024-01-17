@@ -214,6 +214,24 @@ public class MemberService {
 
 
 
+	public String cusex(int idx) {
+		
+		return dao.cusex(idx);
+	}
+
+
+
+
+
+	public String newexdate(int idx, int gradeidx, String exdate) {
+		int row = dao.newexdate(idx, gradeidx,exdate);
+		return row>0?"변경에 성공 하였습니다.":"변경에 실패 하였습니다.";
+	}
+
+
+
+
+
 	
 
 

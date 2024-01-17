@@ -54,6 +54,10 @@ public interface MemberDao {
 
 	void delupdate(int idx);
 
+	String cusex(int idx);
+
+	int newexdate(int idx, int gradeidx, String exdate);
+
 	
 
 }

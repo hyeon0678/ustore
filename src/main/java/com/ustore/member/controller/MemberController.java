@@ -454,7 +454,7 @@ public class MemberController {
 		logger.info("회원수정 페이지(save)  호출하기");
 		logger.info("member idx : "+params);
 		String msg = service.updatesave(params);
-		ModelAndView mav = new ModelAndView("member/customerlist");
+		ModelAndView mav = new ModelAndView("redirect:/customer/detail");
 		//logger.info("info : "+map.toString());
 		mav.addObject("msg",msg);
 		mav.addObject("idx",params.get("idx"));
@@ -470,7 +470,7 @@ public class MemberController {
 		String msg = service.del(idx);
 		service.delupdate(idx);
 		logger.info(idx+" : 탈퇴 성공");
-		ModelAndView mav = new ModelAndView("member/customerlist");
+		ModelAndView mav = new ModelAndView("redirect:/customer/home");
 		//logger.info("info : "+map.toString());
 		mav.addObject("msg",msg);
 		
@@ -479,12 +479,26 @@ public class MemberController {
 	
 	@RequestMapping(value = "customer/newdate")
 	@ResponseBody
-	public ModelAndView newdate(@RequestParam int idx,@RequestParam int gradeidx) {
-		logger.info("회원탈퇴 페이지  호출하기");
+	public ModelAndView newdate(@RequestParam int idx,@RequestParam int gradeidx, @RequestParam int state) {
+		logger.info("기간연장 페이지  호출하기");
 		logger.info("member idx : "+idx);
 		logger.info("gradeidx  : "+gradeidx);
+		logger.info("state  : "+state);
 		
-		String msg = service.newdate(idx,gradeidx);
+		String msg ="";
+		
+		if (state == 84) {
+			
+			String exdate = service.cusex(idx); 
+			logger.info("exdate : "+exdate);
+			
+			msg = service.newexdate(idx,gradeidx,exdate);
+			
+		}else {
+			
+			msg = service.newdate(idx,gradeidx);
+		}
+		
 		
 		ModelAndView mav = new ModelAndView("redirect:/customer/detail");
 		//logger.info("info : "+map.toString());
@@ -492,6 +506,8 @@ public class MemberController {
 		mav.addObject("idx",idx);
 		
 		return mav;
+		
+		
 	}
 	
 	
