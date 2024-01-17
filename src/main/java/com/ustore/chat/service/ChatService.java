@@ -185,16 +185,17 @@ public class ChatService {
 		int row = chatDao.deleteParticipants(roomNum,name);
 		logger.info("-------------------------------------deleteParticipants {}", row);
 		if(row>0) {
-			String userInfo = chatDao.selectUserInfo(name);
-			ChatDto leaveMsg = new ChatDto();
-			leaveMsg.setRoomNum(Integer.toString(roomNum));
-			leaveMsg.setSender("system");
-			leaveMsg.setData(userInfo+"님이 채팅방을 나가셨습니다");
-			saveChat(leaveMsg);
-			messageTemplete.convertAndSend("/topic/chat/"+roomNum,leaveMsg);
-			return "SUCCESS";
+			
+			
 		}
-		return "FAIL";
+		String userInfo = chatDao.selectUserInfo(name);
+		ChatDto leaveMsg = new ChatDto();
+		leaveMsg.setRoomNum(Integer.toString(roomNum));
+		leaveMsg.setSender("system");
+		leaveMsg.setData(userInfo+"님이 채팅방을 나가셨습니다");
+		saveChat(leaveMsg);
+		messageTemplete.convertAndSend("/topic/chat/"+roomNum,leaveMsg);
+		return "SUCCESS";
 	}
 
 	public void setRead(int roomNum, int chatIdx, String name) {
