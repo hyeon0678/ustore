@@ -613,7 +613,7 @@ License: For each use you must have a valid license purchased only from above li
 	    });
 	}
 	
-	var allSellingSum = 0;
+	var allSellingSum = '${allSellingSum}';
 	function drawPosCart(data){
 		var content = '';
 		console.log("data.allSellingSum",data.allSellingSum);
