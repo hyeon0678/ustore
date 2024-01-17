@@ -192,9 +192,9 @@ public class ChatService {
 			leaveMsg.setData(userInfo+"님이 채팅방을 나가셨습니다");
 			saveChat(leaveMsg);
 			messageTemplete.convertAndSend("/topic/chat/"+roomNum,leaveMsg);
-			return "SUCCESS";
+			
 		}
-		return "FAIL";
+		return "SUCCESS";
 	}
 
 	public void setRead(int roomNum, int chatIdx, String name) {
