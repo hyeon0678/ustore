@@ -539,7 +539,7 @@ License: For each use you must have a valid license purchased only from above li
 														<a href="#" class="btn btn-primary" id=delete>삭제하기</a>
 														<div>
 															<a href="/employee/management" class="btn btn-light btn-active-light-primary me-2">돌아가기</a>
-															<a href="#" class="btn btn-primary" id="modify">프로필 수정</a>
+															<a class="btn btn-primary" id="modify">프로필 수정</a>
 														</div>
 														
 													</div>
