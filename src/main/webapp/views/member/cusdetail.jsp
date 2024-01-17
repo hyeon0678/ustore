@@ -949,7 +949,11 @@ function datepoint(){
     $(document).on('click', '#refundBut', function() {
         var iamportIdx = $(this).data('product-id');
 		console.log('환불 버튼 클릭시 포트 번호 요소 가져오기 확인 : ',iamportIdx);
-        refund(iamportIdx);
+		confirmCancelModal('환불하시겠습니까?', function (result) {
+		    if (result.isConfirmed) {
+		        refund(iamportIdx);
+		    }
+		});
     });
 	
     // 환불 요청
@@ -964,10 +968,10 @@ function datepoint(){
 	        success: function (data) {
 				console.log(data);
 				if(data){	
-				alert('환불이 되었습니다.');
+					SuccessModal('환불이 되었습니다.');
 				basicproduct();
 				}else{
-					alert('환불이 실패했습니다.');
+					FalseModal('환불이 실패했습니다.');
 				}
 	        },
 	        error: function (e) {

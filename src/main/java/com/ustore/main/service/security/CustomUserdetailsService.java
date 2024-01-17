@@ -30,7 +30,7 @@ public class CustomUserdetailsService implements UserDetailsService{
 		if(customUser == null)
 			throw new UsernameNotFoundException("아이디에 해당하는 사용자를 찾을 수 없습니다");
 		else if(customUser.getEmpQuit().equals("Y")) {
-			throw new UsernameNotFoundException("아이디에 해당하는 사용자를 찾을 수 없습니다");
+			throw new UsernameNotFoundException("퇴사한 직원 입니다");
 		}
 		
 		CustomUserDetails customUserDetails = new CustomUserDetails();

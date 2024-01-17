@@ -232,7 +232,7 @@ License: For each use you must have a valid license purchased only from above li
 											</table>
 												<div style="display: flex; align-items: center;">
 												    <h3 style="margin-left: 20px;" id="allSellingSum">총 결제 금액 : ${allSellingSum} 원</h3>
-												    <button type="button" id="modalBut" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
+												    <button type="button" id="modalBut" class="btn btn-primary mx-2" data-bs-toggle="modal" onclick="checkAndOpenModal()">
 												        결제 하기
 												    </button>
 												</div>
@@ -565,7 +565,7 @@ License: For each use you must have a valid license purchased only from above li
 	        success: function (data) {
 				console.log(data);
 				if(!data.success){					
-				noconfirmCancelModal('재고가 없습니다.');
+				InfoModal('재고가 없습니다.');
 				}
 				drawPosCart(data);
 	        },
@@ -603,7 +603,7 @@ License: For each use you must have a valid license purchased only from above li
 	        success: function (data) {
 				console.log(data);
 				if(!data.success){					
-				noconfirmCancelModal('해당 제품이 이미 장바구니에 있습니다.');
+				InfoModal('해당 제품이 이미 장바구니에 있습니다.');
 				}					
 				drawPosCart(data);
 	        },
@@ -613,6 +613,7 @@ License: For each use you must have a valid license purchased only from above li
 	    });
 	}
 	
+	var allSellingSum = 0;
 	function drawPosCart(data){
 		var content = '';
 		console.log("data.allSellingSum",data.allSellingSum);
@@ -647,6 +648,7 @@ License: For each use you must have a valid license purchased only from above li
 		});
 		$('#cartBody').empty();
 		$('#cartBody').append(content);
+		allSellingSum = data.allSellingSum;
 		$('#allSellingSum').text("총 결제 금액 : " + viewNum(data.allSellingSum) + " 원");
 		
 		
@@ -728,7 +730,7 @@ License: For each use you must have a valid license purchased only from above li
 	        success: function (data) {
 				console.log(data);
 				if(data.itemList.length==0){
-					noconfirmCancelModal('검색 결과가 없습니다.');
+					InfoModal('검색 결과가 없습니다.');
 				}
 				drawPosItem(data);
 	        },
@@ -795,10 +797,11 @@ License: For each use you must have a valid license purchased only from above li
 				        success: function (data) {
 							console.log(data);
 							if(data){
-								alert('결제가 완료 되었습니다.');
-								window.location.href = "/pos/member";
+								confirmCancelModal('결제가 완료 되었습니다.', () => {
+								    window.location.href = "/pos/member";
+								});
 							}else{
-								alert('결제 오류 발생 관리자에게 문의해주세요.');
+								FalseModal('결제 오류 발생 관리자에게 문의해주세요.');
 							}
 				        },
 				        error: function (e) {
@@ -807,22 +810,62 @@ License: For each use you must have a valid license purchased only from above li
 				    });
 			    } else { // 실패했을때
 			      var msg = '결제에 실패하였습니다.';
-			      alert(msg);
+			      FalseModal(msg);
 			    }
 		  });
 		}
-	function noconfirmCancelModal(message) {
+	
+	
+	function checkAndOpenModal() {
+        if (allSellingSum == 0) {
+        	FalseModal('상품을 선택해주세요.');
+        } else {
+            // 여기서 allSellingSum 값을 활용할 수 있습니다.
+            console.log('클릭한 버튼의 allSellingSum 값:', allSellingSum);
+            $('#kt_modal_1').modal('show');
+        }
+    }
+	
+	
+	
+	
+	
+
+	function InfoModal(message) {
+		Swal.fire({
+            text: message,
+            icon: 'info',
+            buttonsStyling: false,
+            confirmButtonText: '확인',
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            }
+        });
+	}
+	
+	function FalseModal(message) {
+		Swal.fire({
+            text: message,
+            icon: 'error',
+            buttonsStyling: false,
+            confirmButtonText: '확인',
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            }
+        });
+	}
+	
+	function confirmCancelModal(message, callback) {
 	    Swal.fire({
 	        text: message,
-	        icon: 'question',
+	        icon: 'success',
 	        buttonsStyling: false,
 	        confirmButtonText: '확인',
 	        showCancelButton: false, 
 	        customClass: {
-	            confirmButton: 'btn btn-primary',
+	            confirmButton: 'btn btn-primary', 
 	        }
-	    });
+	    }).then(callback);
 	}
-	
 	</script>
 </html>
